@@ -50,13 +50,13 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
   return (
     <>
       <section class="space-y-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Ejemplo</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Example</h2>
         <Card glass class="p-6">
           <div class="flex flex-wrap items-start gap-4">{props.entry.demo(values as never)}</div>
         </Card>
         <Show when={entries.length}>
           <div class="rounded-lg border border-border bg-card/40 p-4">
-            <p class="mb-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Controles</p>
+            <p class="mb-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">Controls</p>
             <div class="flex flex-wrap items-end gap-4">
               <For each={entries}>
                 {([key, ctrl]) => (
@@ -69,7 +69,7 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
       </section>
 
       <section class="space-y-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Código</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Code</h2>
         <CodeBlock code={code()} />
       </section>
     </>

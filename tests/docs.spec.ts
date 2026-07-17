@@ -20,8 +20,8 @@ test.describe('docs render', () => {
       // The doc title is the first h1 (a demo like PageHeader may render its own).
       await expect(page.locator('h1').first()).toBeVisible()
       await expect(page.locator('h1').first()).not.toBeEmpty()
-      await expect(page.getByRole('heading', { name: 'Ejemplo' })).toBeVisible()
-      await expect(page.getByRole('heading', { name: 'Código' })).toBeVisible()
+      await expect(page.getByRole('heading', { name: 'Example' })).toBeVisible()
+      await expect(page.getByRole('heading', { name: 'Code' })).toBeVisible()
 
       expect(errors, `runtime errors on #/${id}`).toEqual([])
     })
@@ -73,19 +73,19 @@ test.describe('interactions', () => {
 
   test('dropdown opens a menu', async ({ page }) => {
     await page.goto('/#/dropdown')
-    await page.getByRole('button', { name: 'Acciones' }).click()
+    await page.getByRole('button', { name: 'Actions' }).click()
     await expect(page.getByRole('menuitem').first()).toBeVisible()
   })
 
   test('modal opens a dialog', async ({ page }) => {
     await page.goto('/#/modal')
-    await page.getByRole('button', { name: 'Abrir modal' }).click()
-    await expect(page.getByText('¿Deseas continuar con la operación?')).toBeVisible()
+    await page.getByRole('button', { name: 'Open modal' }).click()
+    await expect(page.getByText('Do you want to continue with this action?')).toBeVisible()
   })
 
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
     await page.goto('/#/date-field')
-    await page.getByRole('button', { name: 'Fecha de entrega' }).click()
+    await page.getByRole('button', { name: 'Due date' }).click()
     // A day cell is only present when the (portaled) calendar renders on top.
     await expect(page.getByRole('button', { name: '15', exact: true })).toBeVisible()
   })
@@ -106,8 +106,8 @@ test.describe('interactions', () => {
   test('context menu opens on right-click', async ({ page }) => {
     await page.goto('/#/context-menu')
     // Scope to the live demo card (the code block also contains this text).
-    await page.locator('div.flex.flex-wrap.items-start').getByText('Haz clic derecho aquí').click({ button: 'right' })
-    await expect(page.getByRole('menuitem', { name: 'Copiar' })).toBeVisible()
+    await page.locator('div.flex.flex-wrap.items-start').getByText('Right-click here').click({ button: 'right' })
+    await expect(page.getByRole('menuitem', { name: 'Copy' })).toBeVisible()
   })
 
   test('toggle flips aria-pressed', async ({ page }) => {
@@ -120,39 +120,39 @@ test.describe('interactions', () => {
 
   test('toggle-group presses the clicked segment', async ({ page }) => {
     await page.goto('/#/toggle-group')
-    const centro = page.getByRole('button', { name: 'Centro' })
-    await expect(centro).not.toHaveAttribute('data-pressed', '')
-    await centro.click()
-    await expect(centro).toHaveAttribute('data-pressed', '')
+    const center = page.getByRole('button', { name: 'Center' })
+    await expect(center).not.toHaveAttribute('data-pressed', '')
+    await center.click()
+    await expect(center).toHaveAttribute('data-pressed', '')
   })
 
   test('segmented-control selects the clicked segment', async ({ page }) => {
     await page.goto('/#/segmented-control')
-    const tarjetas = page.getByRole('radio', { name: 'Tarjetas' })
-    await expect(tarjetas).not.toBeChecked()
-    await page.getByText('Tarjetas', { exact: true }).click()
-    await expect(tarjetas).toBeChecked()
+    const cards = page.getByRole('radio', { name: 'Cards' })
+    await expect(cards).not.toBeChecked()
+    await page.getByText('Cards', { exact: true }).click()
+    await expect(cards).toBeChecked()
   })
 
   test('input reflects typed text', async ({ page }) => {
     await page.goto('/#/input')
-    const field = page.getByPlaceholder('Nombre completo')
+    const field = page.getByPlaceholder('Full name')
     await field.fill('Luis Rivera')
     await expect(field).toHaveValue('Luis Rivera')
   })
 
   test('textarea reflects typed text', async ({ page }) => {
     await page.goto('/#/textarea')
-    const field = page.getByPlaceholder('Escribe una nota…')
-    await field.fill('Una nota de prueba')
-    await expect(field).toHaveValue('Una nota de prueba')
+    const field = page.getByPlaceholder('Write a note…')
+    await field.fill('A test note')
+    await expect(field).toHaveValue('A test note')
   })
 
   test('select changes value', async ({ page }) => {
     await page.goto('/#/select')
     const select = page.locator('main select').first()
-    await select.selectOption('pausado')
-    await expect(select).toHaveValue('pausado')
+    await select.selectOption('paused')
+    await expect(select).toHaveValue('paused')
   })
 
   test('combobox opens and shows options', async ({ page }) => {
@@ -172,8 +172,8 @@ test.describe('interactions', () => {
 
   test('radio-group selects the second option', async ({ page }) => {
     await page.goto('/#/radio-group')
-    await page.getByText('Anual', { exact: true }).click()
-    await expect(page.getByRole('radio', { name: 'Anual' })).toBeChecked()
+    await page.getByText('Annual', { exact: true }).click()
+    await expect(page.getByRole('radio', { name: 'Annual' })).toBeChecked()
   })
 
   test('slider increases on ArrowRight', async ({ page }) => {
@@ -197,34 +197,34 @@ test.describe('interactions', () => {
 
   test('drawer opens with content', async ({ page }) => {
     await page.goto('/#/drawer')
-    await page.getByRole('button', { name: 'Abrir panel' }).click()
-    await expect(page.getByText(/Contenido del panel lateral/)).toBeVisible()
+    await page.getByRole('button', { name: 'Open panel' }).click()
+    await expect(page.getByText(/Side panel content/)).toBeVisible()
   })
 
   test('popover opens with content', async ({ page }) => {
     await page.goto('/#/popover')
     // The Kobalte trigger wraps the Button, so two buttons share the name.
-    await page.getByRole('button', { name: 'Abrir popover' }).first().click()
-    await expect(page.getByText('Panel flotante', { exact: true })).toBeVisible()
+    await page.getByRole('button', { name: 'Open popover' }).first().click()
+    await expect(page.getByText('Floating panel', { exact: true })).toBeVisible()
   })
 
   test('alert dialog opens with content', async ({ page }) => {
     await page.goto('/#/alert-dialog')
-    await page.getByRole('button', { name: 'Eliminar cuenta' }).click()
-    await expect(page.getByRole('alertdialog')).toContainText('Esta acción es permanente')
+    await page.getByRole('button', { name: 'Delete account' }).click()
+    await expect(page.getByRole('alertdialog')).toContainText('This action is permanent')
   })
 
   test('toast appears on trigger', async ({ page }) => {
     await page.goto('/#/toast')
-    await page.getByRole('button', { name: 'Éxito' }).click()
-    await expect(page.getByText('Guardado').first()).toBeVisible()
+    await page.getByRole('button', { name: 'Success' }).click()
+    await expect(page.getByText('Saved').first()).toBeVisible()
   })
 
   test('tooltip shows on hover', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile', 'hover N/A on touch')
     await page.goto('/#/tooltip')
-    await page.getByRole('button', { name: 'Pásame el cursor' }).first().hover()
-    await expect(page.getByText('Soy un tooltip')).toBeVisible({ timeout: 3000 })
+    await page.getByRole('button', { name: 'Hover me' }).first().hover()
+    await expect(page.getByText("I'm a tooltip")).toBeVisible({ timeout: 3000 })
   })
 
   test('hover-card shows on hover', async ({ page }, testInfo) => {
@@ -236,10 +236,10 @@ test.describe('interactions', () => {
 
   test('virtual-list reveals higher rows on scroll', async ({ page }) => {
     await page.goto('/#/virtual-list')
-    await expect(page.getByText('Fila 1', { exact: true })).toBeVisible()
-    await expect(page.getByText('Fila 25', { exact: true })).toHaveCount(0)
-    await page.getByText('Fila 1', { exact: true }).hover()
+    await expect(page.getByText('Row 1', { exact: true })).toBeVisible()
+    await expect(page.getByText('Row 25', { exact: true })).toHaveCount(0)
+    await page.getByText('Row 1', { exact: true }).hover()
     await page.mouse.wheel(0, 800)
-    await expect(page.getByText('Fila 25', { exact: true })).toBeVisible()
+    await expect(page.getByText('Row 25', { exact: true })).toBeVisible()
   })
 })

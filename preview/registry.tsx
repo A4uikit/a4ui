@@ -31,69 +31,69 @@ export interface DocEntry {
 }
 
 // Sidebar group order.
-export const DOC_GROUPS = ['Empezar', 'Acciones', 'Formularios', 'Datos', 'Overlays', 'Feedback', 'Navegación', 'Layout']
+export const DOC_GROUPS = ['Get started', 'Actions', 'Forms', 'Data', 'Overlays', 'Feedback', 'Navigation', 'Layout']
 
 export const DOCS: DocEntry[] = [
-  // ---- Empezar --------------------------------------------------------------
+  // ---- Get started ----------------------------------------------------------
   {
     id: 'instalacion',
-    title: 'Instalación',
-    group: 'Empezar',
-    blurb: 'A4ui es una librería de componentes SolidJS con estética "Spatial Glass". Instálala y ten todo el diseño resuelto.',
+    title: 'Installation',
+    group: 'Get started',
+    blurb: 'A4ui is a SolidJS component library with a "Spatial Glass" look. Install it and get all the design decisions solved for you.',
     demo: () => (
       <div class="space-y-3 text-sm text-muted-foreground">
-        <p>1. Instala el paquete. 2. Añade el preset a Tailwind. 3. Importa los estilos una vez. Listo.</p>
-        <p>Requiere <code class="rounded bg-muted px-1 font-mono">solid-js</code> y <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> en tu proyecto.</p>
+        <p>1. Install the package. 2. Add the preset to Tailwind. 3. Import the styles once. Done.</p>
+        <p>Requires <code class="rounded bg-muted px-1 font-mono">solid-js</code> and <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> in your project.</p>
       </div>
     ),
-    code: `# 1. instalar
+    code: `# 1. install
 npm install @a4ui/core
 
-// 2. tailwind.config.ts — añade el preset
+// 2. tailwind.config.ts — add the preset
 import a4ui from '@a4ui/core/preset'
 export default {
   presets: [a4ui],
   content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 }
 
-// 3. tu entry (una sola vez)
+// 3. your entry (just once)
 import '@a4ui/core/styles.css'`,
   },
   {
     id: 'uso',
-    title: 'Uso rápido',
-    group: 'Empezar',
-    blurb: 'Importa cualquier componente desde "a4ui" y úsalo. Todo respeta el tema claro/oscuro y la accesibilidad de Kobalte.',
+    title: 'Quick start',
+    group: 'Get started',
+    blurb: 'Import any component from "a4ui" and use it. Everything respects the light/dark theme and Kobalte accessibility.',
     demo: () => (
       <div class="flex flex-wrap items-center gap-3">
-        <UI.Button>Un botón</UI.Button>
-        <UI.Badge tone="success">Listo</UI.Badge>
+        <UI.Button>A button</UI.Button>
+        <UI.Badge tone="success">Ready</UI.Badge>
         <UI.Spinner />
       </div>
     ),
     code: `import { Button, Badge, Spinner } from '@a4ui/core'
 
-export function Ejemplo() {
+export function Example() {
   return (
     <>
-      <Button>Un botón</Button>
-      <Badge tone="success">Listo</Badge>
+      <Button>A button</Button>
+      <Badge tone="success">Ready</Badge>
       <Spinner />
     </>
   )
 }`,
   },
 
-  // ---- Acciones -------------------------------------------------------------
+  // ---- Actions --------------------------------------------------------------
   {
     id: 'button',
     title: 'Button',
-    group: 'Acciones',
-    blurb: 'Botón con 4 variantes. Por defecto type="button" para no enviar formularios por accidente. Prueba los controles ↓',
+    group: 'Actions',
+    blurb: 'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. Try the controls ↓',
     controls: {
       variant: { type: 'select', label: 'variant', options: ['primary', 'secondary', 'outline', 'ghost'], default: 'primary' },
       disabled: { type: 'boolean', label: 'disabled', default: false },
-      label: { type: 'text', label: 'texto', default: 'Guardar' },
+      label: { type: 'text', label: 'text', default: 'Save' },
     },
     demo: (c) => (
       <UI.Button variant={c.variant as UI.ButtonVariant} disabled={c.disabled as boolean}>
@@ -108,29 +108,29 @@ export function Ejemplo() {
     id: 'alert',
     title: 'Alert',
     group: 'Feedback',
-    blurb: 'Banner inline para mensajes contextuales, con 4 tonos. Prueba los controles ↓',
+    blurb: 'Inline banner for contextual messages, with 4 tones. Try the controls ↓',
     controls: {
       tone: { type: 'select', label: 'tone', options: ['info', 'success', 'warning', 'danger'], default: 'info' },
-      title: { type: 'text', label: 'title', default: 'Información' },
+      title: { type: 'text', label: 'title', default: 'Information' },
     },
     demo: (c) => (
       <div class="w-full">
         <UI.Alert tone={c.tone as UI.AlertTone} title={c.title as string}>
-          Este es el contenido del aviso.
+          This is the alert content.
         </UI.Alert>
       </div>
     ),
-    code: (c) => `<Alert tone="${c.tone}" title="${c.title}">Este es el contenido del aviso.</Alert>`,
+    code: (c) => `<Alert tone="${c.tone}" title="${c.title}">This is the alert content.</Alert>`,
   },
 
-  // ---- Formularios ----------------------------------------------------------
+  // ---- Forms ----------------------------------------------------------------
   {
     id: 'switch',
     title: 'Switch',
-    group: 'Formularios',
-    blurb: 'Interruptor on/off accesible (Kobalte).',
+    group: 'Forms',
+    blurb: 'Accessible on/off toggle (Kobalte).',
     controls: {
-      label: { type: 'text', label: 'label', default: 'Notificaciones' },
+      label: { type: 'text', label: 'label', default: 'Notifications' },
       disabled: { type: 'boolean', label: 'disabled', default: false },
     },
     demo: (c) => {
@@ -141,14 +141,14 @@ export function Ejemplo() {
 <Switch checked={on()} onChange={setOn} label="${c.label}"${c.disabled ? ' disabled' : ''} />`,
   },
 
-  // ---- Datos ----------------------------------------------------------------
+  // ---- Data -----------------------------------------------------------------
   {
     id: 'stat',
     title: 'Stat',
-    group: 'Datos',
-    blurb: 'Tarjeta KPI con entrada animada (solid-motionone) y count-up del número (respeta reduced-motion). Cambia el valor y velo contar ↓',
+    group: 'Data',
+    blurb: 'KPI card with an animated entrance (solid-motionone) and a count-up on the number (respects reduced-motion). Change the value and watch it count ↓',
     controls: {
-      label: { type: 'text', label: 'label', default: 'Ingresos' },
+      label: { type: 'text', label: 'label', default: 'Revenue' },
       value: { type: 'number', label: 'value', default: 125400, min: 0, max: 1000000 },
       tone: { type: 'select', label: 'tone', options: ['primary', 'success', 'danger', 'neutral'], default: 'success' },
     },
@@ -171,82 +171,82 @@ export function Ejemplo() {
     id: 'tooltip',
     title: 'Tooltip',
     group: 'Overlays',
-    blurb: 'Etiqueta flotante al enfocar/pasar el cursor (Kobalte).',
+    blurb: 'Floating label shown on focus/hover (Kobalte).',
     controls: {
-      content: { type: 'text', label: 'content', default: 'Soy un tooltip' },
+      content: { type: 'text', label: 'content', default: "I'm a tooltip" },
     },
     demo: (c) => (
       <UI.Tooltip content={c.content as string}>
-        <UI.Button variant="outline">Pásame el cursor</UI.Button>
+        <UI.Button variant="outline">Hover me</UI.Button>
       </UI.Tooltip>
     ),
     code: (c) => `<Tooltip content="${c.content}">
-  <Button variant="outline">Pásame el cursor</Button>
+  <Button variant="outline">Hover me</Button>
 </Tooltip>`,
   },
 
-  // ---- Acciones -------------------------------------------------------------
+  // ---- Actions --------------------------------------------------------------
   {
     id: 'dropdown',
     title: 'Dropdown',
-    group: 'Acciones',
-    blurb: 'Menú de acciones (Kobalte). El propio trigger ES el botón, así que sus hijos deben ser no interactivos.',
+    group: 'Actions',
+    blurb: 'Actions menu (Kobalte). The trigger itself IS the button, so its children must be non-interactive.',
     demo: () => (
       <UI.Dropdown
-        label="Acciones"
+        label="Actions"
         items={[
-          { label: 'Editar', onSelect: () => UI.toast.info('Editar') },
-          { label: 'Duplicar', onSelect: () => UI.toast.info('Duplicar') },
-          { label: 'Eliminar', onSelect: () => UI.toast.error('Eliminado'), destructive: true },
+          { label: 'Edit', onSelect: () => UI.toast.info('Edit') },
+          { label: 'Duplicate', onSelect: () => UI.toast.info('Duplicate') },
+          { label: 'Delete', onSelect: () => UI.toast.error('Deleted'), destructive: true },
         ]}
       >
         <span class="inline-flex items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground">
-          Acciones ▾
+          Actions ▾
         </span>
       </UI.Dropdown>
     ),
     code: `<Dropdown
-  label="Acciones"
+  label="Actions"
   items={[
-    { label: 'Editar', onSelect: () => editar() },
-    { label: 'Eliminar', onSelect: () => borrar(), destructive: true },
+    { label: 'Edit', onSelect: () => edit() },
+    { label: 'Delete', onSelect: () => remove(), destructive: true },
   ]}
 >
-  <span class="...">Acciones ▾</span>
+  <span class="...">Actions ▾</span>
 </Dropdown>`,
   },
   {
     id: 'context-menu',
     title: 'ContextMenu',
-    group: 'Acciones',
-    blurb: 'Menú contextual al hacer clic derecho sobre el elemento hijo (el objetivo).',
+    group: 'Actions',
+    blurb: 'Context menu shown on right-click over the child element (the target).',
     demo: () => (
       <UI.ContextMenu
         items={[
-          { label: 'Copiar', onSelect: () => UI.toast.info('Copiado') },
-          { label: 'Pegar', onSelect: () => UI.toast.info('Pegado') },
-          { label: 'Borrar', onSelect: () => UI.toast.error('Borrado'), destructive: true },
+          { label: 'Copy', onSelect: () => UI.toast.info('Copied') },
+          { label: 'Paste', onSelect: () => UI.toast.info('Pasted') },
+          { label: 'Delete', onSelect: () => UI.toast.error('Deleted'), destructive: true },
         ]}
       >
         <div class="grid h-24 w-full place-items-center rounded-md border border-dashed border-border text-sm text-muted-foreground">
-          Haz clic derecho aquí
+          Right-click here
         </div>
       </UI.ContextMenu>
     ),
     code: `<ContextMenu
   items={[
-    { label: 'Copiar', onSelect: () => copiar() },
-    { label: 'Borrar', onSelect: () => borrar(), destructive: true },
+    { label: 'Copy', onSelect: () => copy() },
+    { label: 'Delete', onSelect: () => remove(), destructive: true },
   ]}
 >
-  <div class="...">Haz clic derecho aquí</div>
+  <div class="...">Right-click here</div>
 </ContextMenu>`,
   },
   {
     id: 'toggle',
     title: 'Toggle',
-    group: 'Acciones',
-    blurb: 'Botón de dos estados (presionado / no) — ideal para barras de herramientas.',
+    group: 'Actions',
+    blurb: 'Two-state button (pressed / not) — ideal for toolbars.',
     demo: () => {
       const [on, setOn] = createSignal(false)
       return (
@@ -255,16 +255,16 @@ export function Ejemplo() {
         </UI.Toggle>
       )
     },
-    code: `const [negrita, setNegrita] = createSignal(false)
-<Toggle pressed={negrita()} onChange={setNegrita}>
+    code: `const [bold, setBold] = createSignal(false)
+<Toggle pressed={bold()} onChange={setBold}>
   <BoldIcon />
 </Toggle>`,
   },
   {
     id: 'toggle-group',
     title: 'ToggleGroup',
-    group: 'Acciones',
-    blurb: 'Fila de botones segmentados; el valor puede quedar en null si se deselecciona.',
+    group: 'Actions',
+    blurb: 'Row of segmented buttons; the value can become null when deselected.',
     demo: () => {
       const [align, setAlign] = createSignal<string | null>('left')
       return (
@@ -272,9 +272,9 @@ export function Ejemplo() {
           value={align()}
           onChange={setAlign}
           options={[
-            { value: 'left', label: 'Izquierda' },
-            { value: 'center', label: 'Centro' },
-            { value: 'right', label: 'Derecha' },
+            { value: 'left', label: 'Left' },
+            { value: 'center', label: 'Center' },
+            { value: 'right', label: 'Right' },
           ]}
         />
       )
@@ -284,228 +284,228 @@ export function Ejemplo() {
   value={align()}
   onChange={setAlign}
   options={[
-    { value: 'left', label: 'Izquierda' },
-    { value: 'center', label: 'Centro' },
+    { value: 'left', label: 'Left' },
+    { value: 'center', label: 'Center' },
   ]}
 />`,
   },
   {
     id: 'segmented-control',
     title: 'SegmentedControl',
-    group: 'Acciones',
-    blurb: 'Selección única con un indicador animado que se desliza bajo la opción activa.',
+    group: 'Actions',
+    blurb: 'Single selection with an animated indicator that slides under the active option.',
     demo: () => {
-      const [view, setView] = createSignal('lista')
+      const [view, setView] = createSignal('list')
       return (
         <UI.SegmentedControl
           value={view()}
           onChange={setView}
           options={[
-            { value: 'lista', label: 'Lista' },
-            { value: 'tarjetas', label: 'Tarjetas' },
-            { value: 'tabla', label: 'Tabla' },
+            { value: 'list', label: 'List' },
+            { value: 'cards', label: 'Cards' },
+            { value: 'table', label: 'Table' },
           ]}
         />
       )
     },
-    code: `const [vista, setVista] = createSignal('lista')
+    code: `const [view, setView] = createSignal('list')
 <SegmentedControl
-  value={vista()}
-  onChange={setVista}
+  value={view()}
+  onChange={setView}
   options={[
-    { value: 'lista', label: 'Lista' },
-    { value: 'tarjetas', label: 'Tarjetas' },
+    { value: 'list', label: 'List' },
+    { value: 'cards', label: 'Cards' },
   ]}
 />`,
   },
 
-  // ---- Formularios ----------------------------------------------------------
+  // ---- Forms ----------------------------------------------------------------
   {
     id: 'input',
     title: 'Input',
-    group: 'Formularios',
-    blurb: 'Campo de texto controlado. Usa value/onInput (onInput recibe el string, no el evento).',
+    group: 'Forms',
+    blurb: 'Controlled text field. Uses value/onInput (onInput receives the string, not the event).',
     controls: {
-      placeholder: { type: 'text', label: 'placeholder', default: 'Nombre completo' },
+      placeholder: { type: 'text', label: 'placeholder', default: 'Full name' },
       disabled: { type: 'boolean', label: 'disabled', default: false },
     },
     demo: (c) => {
-      const [nombre, setNombre] = createSignal('')
-      return <UI.Input value={nombre()} onInput={setNombre} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-xs" />
+      const [name, setName] = createSignal('')
+      return <UI.Input value={name()} onInput={setName} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-xs" />
     },
-    code: (c) => `const [nombre, setNombre] = createSignal('')
-<Input value={nombre()} onInput={setNombre} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
+    code: (c) => `const [name, setName] = createSignal('')
+<Input value={name()} onInput={setName} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
   },
   {
     id: 'textarea',
     title: 'Textarea',
-    group: 'Formularios',
-    blurb: 'Campo multilínea controlado, redimensionable en vertical.',
+    group: 'Forms',
+    blurb: 'Controlled multi-line field, resizable vertically.',
     controls: {
-      placeholder: { type: 'text', label: 'placeholder', default: 'Escribe una nota…' },
+      placeholder: { type: 'text', label: 'placeholder', default: 'Write a note…' },
       disabled: { type: 'boolean', label: 'disabled', default: false },
     },
     demo: (c) => {
-      const [texto, setTexto] = createSignal('')
-      return <UI.Textarea value={texto()} onInput={setTexto} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-sm" />
+      const [text, setText] = createSignal('')
+      return <UI.Textarea value={text()} onInput={setText} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-sm" />
     },
-    code: (c) => `const [nota, setNota] = createSignal('')
-<Textarea value={nota()} onInput={setNota} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
+    code: (c) => `const [note, setNote] = createSignal('')
+<Textarea value={note()} onInput={setNote} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
   },
   {
     id: 'select',
     title: 'Select',
-    group: 'Formularios',
-    blurb: 'Select nativo controlado (value/onChange recibe el string). Los <option> van como hijos.',
+    group: 'Forms',
+    blurb: 'Controlled native select (value/onChange receives the string). The <option>s go as children.',
     demo: () => {
-      const [estado, setEstado] = createSignal('activo')
+      const [status, setStatus] = createSignal('active')
       return (
-        <UI.Select value={estado()} onChange={setEstado} class="max-w-xs">
-          <option value="activo">Activo</option>
-          <option value="pausado">Pausado</option>
-          <option value="archivado">Archivado</option>
+        <UI.Select value={status()} onChange={setStatus} class="max-w-xs">
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+          <option value="archived">Archived</option>
         </UI.Select>
       )
     },
-    code: `const [estado, setEstado] = createSignal('activo')
-<Select value={estado()} onChange={setEstado}>
-  <option value="activo">Activo</option>
-  <option value="pausado">Pausado</option>
+    code: `const [status, setStatus] = createSignal('active')
+<Select value={status()} onChange={setStatus}>
+  <option value="active">Active</option>
+  <option value="paused">Paused</option>
 </Select>`,
   },
   {
     id: 'combobox',
     title: 'Combobox',
-    group: 'Formularios',
-    blurb: 'Selección única con búsqueda por escritura (Kobalte). Opciones como lista de strings.',
+    group: 'Forms',
+    blurb: 'Single selection with type-to-search (Kobalte). Options as a list of strings.',
     demo: () => {
-      const [estado, setEstado] = createSignal('Sonora')
+      const [state, setState] = createSignal('Sonora')
       return (
         <div class="max-w-xs">
           <UI.Combobox
             options={['Sonora', 'Sinaloa', 'Jalisco', 'Nuevo León', 'Chihuahua']}
-            value={estado()}
-            onChange={setEstado}
-            placeholder="Busca un estado…"
+            value={state()}
+            onChange={setState}
+            placeholder="Search a state…"
           />
         </div>
       )
     },
-    code: `const [estado, setEstado] = createSignal('Sonora')
+    code: `const [state, setState] = createSignal('Sonora')
 <Combobox
   options={['Sonora', 'Sinaloa', 'Jalisco', 'Nuevo León']}
-  value={estado()}
-  onChange={setEstado}
-  placeholder="Busca un estado…"
+  value={state()}
+  onChange={setState}
+  placeholder="Search a state…"
 />`,
   },
   {
     id: 'checkbox',
     title: 'Checkbox',
-    group: 'Formularios',
-    blurb: 'Casilla de verificación con etiqueta clicable (checked/onChange).',
+    group: 'Forms',
+    blurb: 'Checkbox with a clickable label (checked/onChange).',
     controls: {
-      label: { type: 'text', label: 'label', default: 'Acepto los términos' },
+      label: { type: 'text', label: 'label', default: 'I accept the terms' },
     },
     demo: (c) => {
-      const [acepto, setAcepto] = createSignal(false)
-      return <UI.Checkbox checked={acepto()} onChange={setAcepto} label={c.label as string} />
+      const [accepted, setAccepted] = createSignal(false)
+      return <UI.Checkbox checked={accepted()} onChange={setAccepted} label={c.label as string} />
     },
-    code: (c) => `const [acepto, setAcepto] = createSignal(false)
-<Checkbox checked={acepto()} onChange={setAcepto} label="${c.label}" />`,
+    code: (c) => `const [accepted, setAccepted] = createSignal(false)
+<Checkbox checked={accepted()} onChange={setAccepted} label="${c.label}" />`,
   },
   {
     id: 'radio-group',
     title: 'RadioGroup',
-    group: 'Formularios',
-    blurb: 'Grupo de opción única accesible (Kobalte), con etiqueta opcional.',
+    group: 'Forms',
+    blurb: 'Accessible single-choice group (Kobalte), with an optional label.',
     demo: () => {
-      const [plan, setPlan] = createSignal('mensual')
+      const [plan, setPlan] = createSignal('monthly')
       return (
         <UI.RadioGroup
           value={plan()}
           onChange={setPlan}
-          label="Plan de pago"
+          label="Billing plan"
           options={[
-            { value: 'mensual', label: 'Mensual' },
-            { value: 'anual', label: 'Anual' },
+            { value: 'monthly', label: 'Monthly' },
+            { value: 'annual', label: 'Annual' },
             { value: 'enterprise', label: 'Enterprise', disabled: true },
           ]}
         />
       )
     },
-    code: `const [plan, setPlan] = createSignal('mensual')
+    code: `const [plan, setPlan] = createSignal('monthly')
 <RadioGroup
   value={plan()}
   onChange={setPlan}
-  label="Plan de pago"
+  label="Billing plan"
   options={[
-    { value: 'mensual', label: 'Mensual' },
-    { value: 'anual', label: 'Anual' },
+    { value: 'monthly', label: 'Monthly' },
+    { value: 'annual', label: 'Annual' },
   ]}
 />`,
   },
   {
     id: 'slider',
     title: 'Slider',
-    group: 'Formularios',
-    blurb: 'Control deslizante de un solo valor (Kobalte), con etiqueta y valor visibles.',
+    group: 'Forms',
+    blurb: 'Single-value slider (Kobalte), with a visible label and value.',
     controls: {
-      label: { type: 'text', label: 'label', default: 'Precio máx.' },
+      label: { type: 'text', label: 'label', default: 'Max price' },
       min: { type: 'number', label: 'min', default: 0, min: 0, max: 100 },
       max: { type: 'number', label: 'max', default: 100, min: 0, max: 1000 },
       step: { type: 'number', label: 'step', default: 5, min: 1, max: 50 },
     },
     demo: (c) => {
-      const [precio, setPrecio] = createSignal(50)
+      const [price, setPrice] = createSignal(50)
       return (
         <div class="w-64">
-          <UI.Slider value={precio()} onChange={setPrecio} min={c.min as number} max={c.max as number} step={c.step as number} label={c.label as string} />
+          <UI.Slider value={price()} onChange={setPrice} min={c.min as number} max={c.max as number} step={c.step as number} label={c.label as string} />
         </div>
       )
     },
-    code: (c) => `const [precio, setPrecio] = createSignal(50)
-<Slider value={precio()} onChange={setPrecio} min={${c.min}} max={${c.max}} step={${c.step}} label="${c.label}" />`,
+    code: (c) => `const [price, setPrice] = createSignal(50)
+<Slider value={price()} onChange={setPrice} min={${c.min}} max={${c.max}} step={${c.step}} label="${c.label}" />`,
   },
   {
     id: 'number-input',
     title: 'NumberInput',
-    group: 'Formularios',
-    blurb: 'Campo numérico con botones −/+ (Kobalte NumberField).',
+    group: 'Forms',
+    blurb: 'Numeric field with −/+ buttons (Kobalte NumberField).',
     controls: {
       min: { type: 'number', label: 'min', default: 0, min: -100, max: 100 },
       max: { type: 'number', label: 'max', default: 99, min: 0, max: 1000 },
     },
     demo: (c) => {
-      const [cantidad, setCantidad] = createSignal(1)
-      return <UI.NumberInput value={cantidad()} onChange={setCantidad} min={c.min as number} max={c.max as number} />
+      const [quantity, setQuantity] = createSignal(1)
+      return <UI.NumberInput value={quantity()} onChange={setQuantity} min={c.min as number} max={c.max as number} />
     },
-    code: (c) => `const [cantidad, setCantidad] = createSignal(1)
-<NumberInput value={cantidad()} onChange={setCantidad} min={${c.min}} max={${c.max}} />`,
+    code: (c) => `const [quantity, setQuantity] = createSignal(1)
+<NumberInput value={quantity()} onChange={setQuantity} min={${c.min}} max={${c.max}} />`,
   },
   {
     id: 'date-field',
     title: 'DateField',
-    group: 'Formularios',
-    blurb: 'Selector de fecha con calendario mensual en español. Valor en formato YYYY-MM-DD (local).',
+    group: 'Forms',
+    blurb: 'Date picker with a monthly calendar. Value in YYYY-MM-DD format (local).',
     demo: () => {
-      const [fecha, setFecha] = createSignal('')
+      const [date, setDate] = createSignal('')
       return (
         <div class="max-w-xs">
-          <UI.DateField value={fecha()} onChange={setFecha} label="Fecha de entrega" />
+          <UI.DateField value={date()} onChange={setDate} label="Due date" />
         </div>
       )
     },
-    code: `const [fecha, setFecha] = createSignal('')
-<DateField value={fecha()} onChange={setFecha} label="Fecha de entrega" />`,
+    code: `const [date, setDate] = createSignal('')
+<DateField value={date()} onChange={setDate} label="Due date" />`,
   },
   {
     id: 'dropzone',
     title: 'Dropzone',
-    group: 'Formularios',
-    blurb: 'Zona de arrastrar y soltar (o clic para elegir). Entrega File[] a onFiles; tú controlas la subida.',
+    group: 'Forms',
+    blurb: 'Drag-and-drop area (or click to choose). Hands File[] to onFiles; you control the upload.',
     controls: {
-      hint: { type: 'text', label: 'hint', default: 'XML o PDF, hasta 10 MB' },
+      hint: { type: 'text', label: 'hint', default: 'XML or PDF, up to 10 MB' },
       disabled: { type: 'boolean', label: 'disabled', default: false },
     },
     demo: (c) => (
@@ -515,7 +515,7 @@ export function Ejemplo() {
           accept=".xml,.pdf"
           hint={c.hint as string}
           disabled={c.disabled as boolean}
-          onFiles={(files) => UI.toast.success(`${files.length} archivo(s) seleccionado(s)`)}
+          onFiles={(files) => UI.toast.success(`${files.length} file(s) selected`)}
         />
       </div>
     ),
@@ -523,19 +523,19 @@ export function Ejemplo() {
   multiple
   accept=".xml,.pdf"
   hint="${c.hint}"${c.disabled ? '\n  disabled' : ''}
-  onFiles={(files) => subir(files)}
+  onFiles={(files) => upload(files)}
 />`,
   },
 
-  // ---- Datos ----------------------------------------------------------------
+  // ---- Data -----------------------------------------------------------------
   {
     id: 'badge',
     title: 'Badge',
-    group: 'Datos',
-    blurb: 'Pastilla de estado con 5 tonos semánticos.',
+    group: 'Data',
+    blurb: 'Status pill with 5 semantic tones.',
     controls: {
       tone: { type: 'select', label: 'tone', options: ['neutral', 'success', 'warning', 'danger', 'info'], default: 'success' },
-      text: { type: 'text', label: 'texto', default: 'pagado' },
+      text: { type: 'text', label: 'text', default: 'paid' },
     },
     demo: (c) => (
       <UI.Badge tone={c.tone as UI.BadgeTone}>{c.text as string}</UI.Badge>
@@ -545,8 +545,8 @@ export function Ejemplo() {
   {
     id: 'card',
     title: 'Card',
-    group: 'Datos',
-    blurb: 'Superficie contenedora con sub-partes (Header/Title/Content). Con glass, superficie esmerilada + glow.',
+    group: 'Data',
+    blurb: 'Container surface with sub-parts (Header/Title/Content). With glass, a frosted surface + glow.',
     controls: {
       glass: { type: 'boolean', label: 'glass', default: true },
       glow: { type: 'boolean', label: 'glow', default: true },
@@ -554,30 +554,30 @@ export function Ejemplo() {
     demo: (c) => (
       <UI.Card glass={c.glass as boolean} glow={c.glow as boolean} class="w-full max-w-sm">
         <UI.CardHeader>
-          <UI.CardTitle>Factura #A4-1024</UI.CardTitle>
+          <UI.CardTitle>Invoice #A4-1024</UI.CardTitle>
         </UI.CardHeader>
         <UI.CardContent class="text-sm text-muted-foreground">
-          Emitida el 12 jul 2026 · Total $12,400 MXN.
+          Issued Jul 12, 2026 · Total $12,400 MXN.
         </UI.CardContent>
       </UI.Card>
     ),
     code: (c) => `<Card${c.glass ? ' glass' : ''}${c.glow ? ' glow' : ' glow={false}'}>
   <CardHeader>
-    <CardTitle>Factura #A4-1024</CardTitle>
+    <CardTitle>Invoice #A4-1024</CardTitle>
   </CardHeader>
-  <CardContent>Emitida el 12 jul 2026 · Total $12,400 MXN.</CardContent>
+  <CardContent>Issued Jul 12, 2026 · Total $12,400 MXN.</CardContent>
 </Card>`,
   },
   {
     id: 'table',
     title: 'Table',
-    group: 'Datos',
-    blurb: 'Primitivas de tabla (Table + Head/Body/Row/HeadCell/Cell). Para listas largas, virtualiza.',
+    group: 'Data',
+    blurb: 'Table primitives (Table + Head/Body/Row/HeadCell/Cell). For long lists, virtualize.',
     demo: () => (
       <UI.Table>
         <UI.TableHead>
           <UI.TableRow>
-            <UI.TableHeadCell>Producto</UI.TableHeadCell>
+            <UI.TableHeadCell>Product</UI.TableHeadCell>
             <UI.TableHeadCell>Stock</UI.TableHeadCell>
           </UI.TableRow>
         </UI.TableHead>
@@ -587,7 +587,7 @@ export function Ejemplo() {
             <UI.TableCell>128</UI.TableCell>
           </UI.TableRow>
           <UI.TableRow>
-            <UI.TableCell>Módulo X</UI.TableCell>
+            <UI.TableCell>Module X</UI.TableCell>
             <UI.TableCell>42</UI.TableCell>
           </UI.TableRow>
         </UI.TableBody>
@@ -596,7 +596,7 @@ export function Ejemplo() {
     code: `<Table>
   <TableHead>
     <TableRow>
-      <TableHeadCell>Producto</TableHeadCell>
+      <TableHeadCell>Product</TableHeadCell>
       <TableHeadCell>Stock</TableHeadCell>
     </TableRow>
   </TableHead>
@@ -611,10 +611,10 @@ export function Ejemplo() {
   {
     id: 'virtual-list',
     title: 'VirtualList',
-    group: 'Datos',
-    blurb: 'Lista virtualizada: solo las filas visibles viven en el DOM. Requiere altura fija en class.',
+    group: 'Data',
+    blurb: 'Virtualized list: only the visible rows live in the DOM. Requires a fixed height in class.',
     controls: {
-      rows: { type: 'number', label: 'filas', default: 1000, min: 0, max: 100000 },
+      rows: { type: 'number', label: 'rows', default: 1000, min: 0, max: 100000 },
     },
     demo: (c) => (
       <UI.VirtualList
@@ -624,24 +624,24 @@ export function Ejemplo() {
       >
         {(i) => (
           <div class="flex h-9 items-center border-b border-border px-3 text-sm text-foreground">
-            Fila {i + 1}
+            Row {i + 1}
           </div>
         )}
       </UI.VirtualList>
     ),
     code: (c) => `<VirtualList
-  each={registros()} {/* ${c.rows} filas */}
+  each={records()} {/* ${c.rows} rows */}
   estimateSize={36}
   class="h-[65vh] w-full"
 >
-  {(reg) => <FilaRegistro registro={reg} />}
+  {(record) => <RecordRow record={record} />}
 </VirtualList>`,
   },
   {
     id: 'pagination',
     title: 'Pagination',
-    group: 'Datos',
-    blurb: 'Paginador anterior/siguiente con "Página X de Y" y un resumen opcional a la izquierda.',
+    group: 'Data',
+    blurb: 'Previous/next pager with "Page X of Y" and an optional summary on the left.',
     controls: {
       totalPages: { type: 'number', label: 'totalPages', default: 8, min: 1, max: 100 },
     },
@@ -653,7 +653,7 @@ export function Ejemplo() {
             page={page()}
             totalPages={c.totalPages as number}
             onChange={setPage}
-            summary={<span>1,234 registros</span>}
+            summary={<span>1,234 records</span>}
           />
         </div>
       )
@@ -663,14 +663,14 @@ export function Ejemplo() {
   page={page()}
   totalPages={${c.totalPages}}
   onChange={setPage}
-  summary={<span>1,234 registros</span>}
+  summary={<span>1,234 records</span>}
 />`,
   },
   {
     id: 'avatar',
     title: 'Avatar',
-    group: 'Datos',
-    blurb: 'Avatar de usuario (Kobalte Image): muestra la imagen o, si falla, las iniciales.',
+    group: 'Data',
+    blurb: 'User avatar (Kobalte Image): shows the image or, if it fails, the initials.',
     controls: {
       fallback: { type: 'text', label: 'fallback', default: 'LR' },
       src: { type: 'text', label: 'src', default: '' },
@@ -681,17 +681,17 @@ export function Ejemplo() {
       </div>
     ),
     code: (c) => c.src
-      ? `<Avatar src="${c.src}" alt="Usuario" fallback="${c.fallback}" />`
+      ? `<Avatar src="${c.src}" alt="User" fallback="${c.fallback}" />`
       : `<Avatar fallback="${c.fallback}" />`,
   },
   {
     id: 'progress',
     title: 'Progress',
-    group: 'Datos',
-    blurb: 'Barra de progreso determinada (Kobalte Progress), con etiqueta y valor opcionales.',
+    group: 'Data',
+    blurb: 'Determinate progress bar (Kobalte Progress), with an optional label and value.',
     controls: {
       value: { type: 'number', label: 'value', default: 64, min: 0, max: 100 },
-      label: { type: 'text', label: 'label', default: 'Subiendo archivos' },
+      label: { type: 'text', label: 'label', default: 'Uploading files' },
     },
     demo: (c) => (
       <div class="w-64">
@@ -703,11 +703,11 @@ export function Ejemplo() {
   {
     id: 'meter',
     title: 'Meter',
-    group: 'Datos',
-    blurb: 'Medidor estático de una magnitud (Kobalte Meter) — p. ej. uso de disco o cupo.',
+    group: 'Data',
+    blurb: 'Static gauge for a measurement (Kobalte Meter) — e.g. disk usage or quota.',
     controls: {
       value: { type: 'number', label: 'value', default: 38, min: 0, max: 50 },
-      label: { type: 'text', label: 'label', default: 'Almacenamiento' },
+      label: { type: 'text', label: 'label', default: 'Storage' },
     },
     demo: (c) => (
       <div class="w-64">
@@ -719,23 +719,23 @@ export function Ejemplo() {
   {
     id: 'separator',
     title: 'Separator',
-    group: 'Datos',
-    blurb: 'Divisor visual/semántico horizontal o vertical (Kobalte Separator).',
+    group: 'Data',
+    blurb: 'Horizontal or vertical visual/semantic divider (Kobalte Separator).',
     controls: {
       orientation: { type: 'select', label: 'orientation', options: ['horizontal', 'vertical'], default: 'horizontal' },
     },
     demo: (c) =>
       c.orientation === 'vertical' ? (
         <div class="flex h-16 items-center gap-4 text-sm text-foreground">
-          <span>Izquierda</span>
+          <span>Left</span>
           <UI.Separator orientation="vertical" />
-          <span>Derecha</span>
+          <span>Right</span>
         </div>
       ) : (
         <div class="w-full max-w-xs space-y-3 text-sm text-foreground">
-          <p>Sección superior</p>
+          <p>Top section</p>
           <UI.Separator orientation="horizontal" />
-          <p>Sección inferior</p>
+          <p>Bottom section</p>
         </div>
       ),
     code: (c) => `<Separator orientation="${c.orientation}" />`,
@@ -743,8 +743,8 @@ export function Ejemplo() {
   {
     id: 'skeleton',
     title: 'Skeleton',
-    group: 'Datos',
-    blurb: 'Placeholder con pulso mientras carga el contenido. Da el tamaño con class.',
+    group: 'Data',
+    blurb: 'Pulsing placeholder while content loads. Set the size with class.',
     demo: () => (
       <div class="w-full max-w-sm space-y-2">
         <UI.Skeleton class="h-4 w-3/4" />
@@ -761,56 +761,56 @@ export function Ejemplo() {
     id: 'modal',
     title: 'Modal',
     group: 'Overlays',
-    blurb: 'Diálogo (Kobalte). variant="center" para confirmaciones cortas; "drawer" (default) para formularios.',
+    blurb: 'Dialog (Kobalte). variant="center" for short confirmations; "drawer" (default) for forms.',
     controls: {
       variant: { type: 'select', label: 'variant', options: ['drawer', 'center'], default: 'center' },
-      title: { type: 'text', label: 'title', default: 'Confirmar operación' },
+      title: { type: 'text', label: 'title', default: 'Confirm action' },
     },
     demo: (c) => {
       const [open, setOpen] = createSignal(false)
       return (
         <>
-          <UI.Button onClick={() => setOpen(true)}>Abrir modal</UI.Button>
+          <UI.Button onClick={() => setOpen(true)}>Open modal</UI.Button>
           <UI.Modal open={open()} onOpenChange={setOpen} variant={c.variant as 'drawer' | 'center'} title={c.title as string}>
-            <p class="text-sm text-muted-foreground">¿Deseas continuar con la operación?</p>
+            <p class="text-sm text-muted-foreground">Do you want to continue with this action?</p>
             <div class="mt-4 flex justify-end gap-2">
-              <UI.Button variant="outline" onClick={() => setOpen(false)}>Cancelar</UI.Button>
-              <UI.Button onClick={() => setOpen(false)}>Aceptar</UI.Button>
+              <UI.Button variant="outline" onClick={() => setOpen(false)}>Cancel</UI.Button>
+              <UI.Button onClick={() => setOpen(false)}>Confirm</UI.Button>
             </div>
           </UI.Modal>
         </>
       )
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
-<Button onClick={() => setOpen(true)}>Abrir</Button>
+<Button onClick={() => setOpen(true)}>Open</Button>
 <Modal open={open()} onOpenChange={setOpen} variant="${c.variant}" title="${c.title}">
-  <p>¿Deseas continuar?</p>
+  <p>Do you want to continue?</p>
 </Modal>`,
   },
   {
     id: 'drawer',
     title: 'Drawer',
     group: 'Overlays',
-    blurb: 'Panel deslizante anclado a la derecha (Kobalte Dialog), con cabecera fija opcional (title/subtitle).',
+    blurb: 'Sliding panel anchored to the right (Kobalte Dialog), with an optional fixed header (title/subtitle).',
     controls: {
-      title: { type: 'text', label: 'title', default: 'Detalle del cliente' },
+      title: { type: 'text', label: 'title', default: 'Customer detail' },
       subtitle: { type: 'text', label: 'subtitle', default: 'Rivera S.A. de C.V.' },
     },
     demo: (c) => {
       const [open, setOpen] = createSignal(false)
       return (
         <>
-          <UI.Button variant="outline" onClick={() => setOpen(true)}>Abrir panel</UI.Button>
+          <UI.Button variant="outline" onClick={() => setOpen(true)}>Open panel</UI.Button>
           <UI.Drawer open={open()} onOpenChange={setOpen} title={c.title as string} subtitle={c.subtitle as string}>
             <div class="p-6 text-sm text-muted-foreground">
-              Contenido del panel lateral: formulario, detalles, etc.
+              Side panel content: a form, details, etc.
             </div>
           </UI.Drawer>
         </>
       )
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
-<Button onClick={() => setOpen(true)}>Abrir panel</Button>
+<Button onClick={() => setOpen(true)}>Open panel</Button>
 <Drawer open={open()} onOpenChange={setOpen} title="${c.title}" subtitle="${c.subtitle}">
   <div class="p-6">…</div>
 </Drawer>`,
@@ -819,60 +819,60 @@ export function Ejemplo() {
     id: 'popover',
     title: 'Popover',
     group: 'Overlays',
-    blurb: 'Panel flotante al hacer clic en el trigger (Kobalte Popover).',
+    blurb: 'Floating panel shown on trigger click (Kobalte Popover).',
     demo: () => (
-      <UI.Popover trigger={<UI.Button variant="outline">Abrir popover</UI.Button>}>
+      <UI.Popover trigger={<UI.Button variant="outline">Open popover</UI.Button>}>
         <div class="w-48 text-sm">
-          <p class="font-medium text-foreground">Panel flotante</p>
-          <p class="text-muted-foreground">Contenido contextual al hacer clic.</p>
+          <p class="font-medium text-foreground">Floating panel</p>
+          <p class="text-muted-foreground">Contextual content on click.</p>
         </div>
       </UI.Popover>
     ),
-    code: `<Popover trigger={<Button variant="outline">Filtros</Button>}>
-  <div class="w-48">…contenido…</div>
+    code: `<Popover trigger={<Button variant="outline">Filters</Button>}>
+  <div class="w-48">…content…</div>
 </Popover>`,
   },
   {
     id: 'hover-card',
     title: 'HoverCard',
     group: 'Overlays',
-    blurb: 'Panel flotante que aparece al pasar el cursor sobre el trigger (Kobalte HoverCard).',
+    blurb: 'Floating panel that appears on hover over the trigger (Kobalte HoverCard).',
     demo: () => (
       <UI.HoverCard trigger={<UI.Button variant="ghost">@luis_rivera</UI.Button>}>
         <div class="w-56 text-sm">
           <p class="font-semibold text-foreground">Luis Alfredo Rivera</p>
-          <p class="text-muted-foreground">Ingeniería · Sonora Precision</p>
+          <p class="text-muted-foreground">Engineering · Sonora Precision</p>
         </div>
       </UI.HoverCard>
     ),
     code: `<HoverCard trigger={<a href="/u/luis">@luis_rivera</a>}>
-  <PerfilResumen usuario={usuario} />
+  <ProfileSummary user={user} />
 </HoverCard>`,
   },
   {
     id: 'alert-dialog',
     title: 'AlertDialog',
     group: 'Overlays',
-    blurb: 'Diálogo de confirmación centrado (Kobalte AlertDialog) para acciones destructivas.',
+    blurb: 'Centered confirmation dialog (Kobalte AlertDialog) for destructive actions.',
     controls: {
-      title: { type: 'text', label: 'title', default: '¿Eliminar cuenta?' },
+      title: { type: 'text', label: 'title', default: 'Delete account?' },
     },
     demo: (c) => {
       const [open, setOpen] = createSignal(false)
       return (
         <>
-          <UI.Button variant="outline" onClick={() => setOpen(true)}>Eliminar cuenta</UI.Button>
+          <UI.Button variant="outline" onClick={() => setOpen(true)}>Delete account</UI.Button>
           <UI.AlertDialog open={open()} onOpenChange={setOpen} title={c.title as string}>
-            Esta acción es permanente y no se puede deshacer.{' '}
-            <UI.Button variant="ghost" class="mt-3" onClick={() => setOpen(false)}>Entendido</UI.Button>
+            This action is permanent and can't be undone.{' '}
+            <UI.Button variant="ghost" class="mt-3" onClick={() => setOpen(false)}>Got it</UI.Button>
           </UI.AlertDialog>
         </>
       )
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
-<Button onClick={() => setOpen(true)}>Eliminar cuenta</Button>
+<Button onClick={() => setOpen(true)}>Delete account</Button>
 <AlertDialog open={open()} onOpenChange={setOpen} title="${c.title}">
-  Esta acción es permanente y no se puede deshacer.
+  This action is permanent and can't be undone.
 </AlertDialog>`,
   },
 
@@ -881,42 +881,42 @@ export function Ejemplo() {
     id: 'toast',
     title: 'Toast',
     group: 'Feedback',
-    blurb: 'Notificaciones imperativas: llama toast.success/error/info desde cualquier lugar. El Toaster ya está montado.',
+    blurb: 'Imperative notifications: call toast.success/error/info from anywhere. The Toaster is already mounted.',
     demo: () => (
       <div class="flex flex-wrap gap-2">
-        <UI.Button onClick={() => UI.toast.success('Guardado', 'Los cambios se guardaron.')}>Éxito</UI.Button>
-        <UI.Button variant="outline" onClick={() => UI.toast.error('Error al guardar')}>Error</UI.Button>
-        <UI.Button variant="ghost" onClick={() => UI.toast.info('Sincronizando…')}>Info</UI.Button>
+        <UI.Button onClick={() => UI.toast.success('Saved', 'Your changes were saved.')}>Success</UI.Button>
+        <UI.Button variant="outline" onClick={() => UI.toast.error('Failed to save')}>Error</UI.Button>
+        <UI.Button variant="ghost" onClick={() => UI.toast.info('Syncing…')}>Info</UI.Button>
       </div>
     ),
-    code: `// una sola vez, cerca del root:
+    code: `// just once, near the root:
 <Toaster />
 
-// desde cualquier parte:
-toast.success('Guardado', 'Los cambios se guardaron.')
-toast.error('Error al guardar')`,
+// from anywhere:
+toast.success('Saved', 'Your changes were saved.')
+toast.error('Failed to save')`,
   },
   {
     id: 'spinner',
     title: 'Spinner',
     group: 'Feedback',
-    blurb: 'Indicador de carga giratorio con role="status" y etiqueta accesible.',
+    blurb: 'Spinning loading indicator with role="status" and an accessible label.',
     demo: () => (
       <div class="flex items-center gap-4">
         <UI.Spinner />
-        <UI.Spinner class="h-8 w-8 text-primary" label="Procesando" />
+        <UI.Spinner class="h-8 w-8 text-primary" label="Processing" />
       </div>
     ),
     code: `<Spinner />
-<Spinner class="h-8 w-8 text-primary" label="Procesando" />`,
+<Spinner class="h-8 w-8 text-primary" label="Processing" />`,
   },
 
-  // ---- Navegación -----------------------------------------------------------
+  // ---- Navigation -----------------------------------------------------------
   {
     id: 'tabs',
     title: 'Tabs',
-    group: 'Navegación',
-    blurb: 'Pestañas accesibles (Kobalte) con indicador animado. Controladas por value/onChange.',
+    group: 'Navigation',
+    blurb: 'Accessible tabs (Kobalte) with an animated indicator. Controlled by value/onChange.',
     demo: () => {
       const [tab, setTab] = createSignal('general')
       return (
@@ -925,9 +925,9 @@ toast.error('Error al guardar')`,
             value={tab()}
             onChange={setTab}
             items={[
-              { value: 'general', label: 'General', content: <p class="text-sm text-muted-foreground">Ajustes generales.</p> },
-              { value: 'seguridad', label: 'Seguridad', content: <p class="text-sm text-muted-foreground">Contraseña y accesos.</p> },
-              { value: 'facturacion', label: 'Facturación', content: <p class="text-sm text-muted-foreground">Métodos de pago.</p> },
+              { value: 'general', label: 'General', content: <p class="text-sm text-muted-foreground">General settings.</p> },
+              { value: 'security', label: 'Security', content: <p class="text-sm text-muted-foreground">Password and access.</p> },
+              { value: 'billing', label: 'Billing', content: <p class="text-sm text-muted-foreground">Payment methods.</p> },
             ]}
           />
         </div>
@@ -938,52 +938,52 @@ toast.error('Error al guardar')`,
   value={tab()}
   onChange={setTab}
   items={[
-    { value: 'general', label: 'General', content: <AjustesGenerales /> },
-    { value: 'seguridad', label: 'Seguridad', content: <AjustesSeguridad /> },
+    { value: 'general', label: 'General', content: <GeneralSettings /> },
+    { value: 'security', label: 'Security', content: <SecuritySettings /> },
   ]}
 />`,
   },
   {
     id: 'accordion',
     title: 'Accordion',
-    group: 'Navegación',
-    blurb: 'Acordeón accesible (Kobalte). multiple permite abrir varias secciones a la vez.',
+    group: 'Navigation',
+    blurb: 'Accessible accordion (Kobalte). multiple lets several sections be open at once.',
     demo: () => (
       <div class="w-full max-w-md">
         <UI.Accordion
           items={[
-            { value: 'envio', title: '¿Cuánto tarda el envío?', content: 'De 3 a 5 días hábiles.' },
-            { value: 'pago', title: '¿Qué métodos de pago aceptan?', content: 'Tarjeta, transferencia y OXXO.' },
-            { value: 'garantia', title: '¿Hay garantía?', content: '12 meses en todos los equipos.' },
+            { value: 'shipping', title: 'How long does shipping take?', content: '3 to 5 business days.' },
+            { value: 'payment', title: 'Which payment methods do you accept?', content: 'Card, bank transfer, and OXXO.' },
+            { value: 'warranty', title: 'Is there a warranty?', content: '12 months on all equipment.' },
           ]}
         />
       </div>
     ),
     code: `<Accordion
   items={[
-    { value: 'envio', title: '¿Cuánto tarda el envío?', content: 'De 3 a 5 días hábiles.' },
-    { value: 'pago', title: '¿Qué métodos de pago aceptan?', content: 'Tarjeta y transferencia.' },
+    { value: 'shipping', title: 'How long does shipping take?', content: '3 to 5 business days.' },
+    { value: 'payment', title: 'Which payment methods do you accept?', content: 'Card and bank transfer.' },
   ]}
 />`,
   },
   {
     id: 'breadcrumb',
     title: 'Breadcrumb',
-    group: 'Navegación',
-    blurb: 'Ruta de navegación (Kobalte Breadcrumbs). El último elemento es la página actual.',
+    group: 'Navigation',
+    blurb: 'Navigation trail (Kobalte Breadcrumbs). The last item is the current page.',
     demo: () => (
       <UI.Breadcrumb
         items={[
-          { label: 'Inicio', href: '#' },
-          { label: 'Clientes', href: '#' },
+          { label: 'Home', href: '#' },
+          { label: 'Customers', href: '#' },
           { label: 'Rivera S.A.' },
         ]}
       />
     ),
     code: `<Breadcrumb
   items={[
-    { label: 'Inicio', href: '/' },
-    { label: 'Clientes', href: '/clientes' },
+    { label: 'Home', href: '/' },
+    { label: 'Customers', href: '/customers' },
     { label: 'Rivera S.A.' },
   ]}
 />`,
@@ -991,27 +991,27 @@ toast.error('Error al guardar')`,
   {
     id: 'page-header',
     title: 'PageHeader',
-    group: 'Navegación',
-    blurb: 'Cabecera de página consistente: breadcrumb opcional, título, subtítulo y slot de acciones a la derecha.',
+    group: 'Navigation',
+    blurb: 'Consistent page header: optional breadcrumb, title, subtitle, and an actions slot on the right.',
     controls: {
       title: { type: 'text', label: 'title', default: 'Rivera S.A. de C.V.' },
-      subtitle: { type: 'text', label: 'subtitle', default: 'Cliente desde 2019 · 42 facturas' },
+      subtitle: { type: 'text', label: 'subtitle', default: 'Customer since 2019 · 42 invoices' },
     },
     demo: (c) => (
       <div class="w-full">
         <UI.PageHeader
-          breadcrumb={['Clientes', 'Rivera S.A.']}
+          breadcrumb={['Customers', 'Rivera S.A.']}
           title={c.title as string}
           subtitle={c.subtitle as string}
-          actions={<UI.Button>Nueva factura</UI.Button>}
+          actions={<UI.Button>New invoice</UI.Button>}
         />
       </div>
     ),
     code: (c) => `<PageHeader
-  breadcrumb={['Clientes', 'Rivera S.A.']}
+  breadcrumb={['Customers', 'Rivera S.A.']}
   title="${c.title}"
   subtitle="${c.subtitle}"
-  actions={<Button>Nueva factura</Button>}
+  actions={<Button>New invoice</Button>}
 />`,
   },
 
@@ -1020,18 +1020,18 @@ toast.error('Error al guardar')`,
     id: 'app-shell',
     title: 'AppShell',
     group: 'Layout',
-    blurb: 'Estructura de app basada en slots: fondo espacial (z-0), barra lateral, topbar, banner y <main> con cross-fade entre rutas.',
+    blurb: 'Slot-based app structure: space background (z-0), sidebar, topbar, banner, and a <main> with a cross-fade between routes.',
     demo: () => (
       <p class="text-sm text-muted-foreground">
-        AppShell envuelve TODA la aplicación (fondo + sidebar + topbar + rutas), por lo que no se muestra
-        en vivo aquí — anidaría un segundo shell. Mira el código para el uso real.
+        AppShell wraps the ENTIRE app (background + sidebar + topbar + routes), so it isn't shown
+        live here — it would nest a second shell. See the code for real usage.
       </p>
     ),
     code: `import { AppShell } from '@a4ui/core'
 
 <AppShell
-  sidebar={<MiSidebar />}
-  topbar={<MiTopbar />}
+  sidebar={<MySidebar />}
+  topbar={<MyTopbar />}
   banner={<DemoBanner />}
 >
   <Routes>…</Routes>
@@ -1041,26 +1041,26 @@ toast.error('Error al guardar')`,
     id: 'space-background',
     title: 'SpaceBackground',
     group: 'Layout',
-    blurb: 'El fondo "space glass": capa fija (z-0) con estrellas, nebulosa, planetas y estrellas fugaces. Respeta reduced-motion.',
+    blurb: 'The "space glass" background: a fixed layer (z-0) with stars, nebula, planets, and shooting stars. Respects reduced-motion.',
     demo: () => (
       <p class="text-sm text-muted-foreground">
-        SpaceBackground es una capa fija a pantalla completa (ya activa detrás de esta página gracias al
-        propio catálogo). No se renderiza en vivo aquí para no apilar un segundo fondo. Uso en el código.
+        SpaceBackground is a fixed full-screen layer (already active behind this page thanks to the
+        catalog itself). It isn't rendered live here so it doesn't stack a second background. Usage in the code.
       </p>
     ),
     code: `import { SpaceBackground } from '@a4ui/core'
 
-// normalmente lo pone AppShell por ti; para usarlo suelto:
+// AppShell usually adds it for you; to use it standalone:
 <div class="relative min-h-screen">
   <SpaceBackground />
-  <div class="relative z-10">…contenido…</div>
+  <div class="relative z-10">…content…</div>
 </div>`,
   },
   {
     id: 'theme-toggle',
     title: 'ThemeToggle',
     group: 'Layout',
-    blurb: 'Botón que alterna tema claro/oscuro. El icono muestra el tema ACTUAL (🌙 oscuro, ☀️ claro).',
+    blurb: 'Button that toggles light/dark theme. The icon shows the CURRENT theme (🌙 dark, ☀️ light).',
     demo: () => <UI.ThemeToggle />,
     code: `import { ThemeToggle } from '@a4ui/core'
 
@@ -1070,7 +1070,7 @@ toast.error('Error al guardar')`,
     id: 'effects-toggle',
     title: 'EffectsToggle',
     group: 'Layout',
-    blurb: 'Activa/desactiva los efectos visuales (vidrio + starfield + animaciones). Apagado = modo calmado, opaco y sin movimiento.',
+    blurb: 'Turns visual effects on/off (glass + starfield + animations). Off = calm mode, opaque and motionless.',
     demo: () => <UI.EffectsToggle />,
     code: `import { EffectsToggle } from '@a4ui/core'
 
@@ -1080,22 +1080,22 @@ toast.error('Error al guardar')`,
     id: 'nav-group',
     title: 'NavGroup',
     group: 'Layout',
-    blurb: 'Categoría plegable de la barra lateral (native <details>). Abierta por defecto; el chevron rota al plegar.',
+    blurb: 'Collapsible sidebar category (native <details>). Open by default; the chevron rotates when collapsed.',
     controls: {
-      title: { type: 'text', label: 'title', default: 'Facturación' },
+      title: { type: 'text', label: 'title', default: 'Billing' },
     },
     demo: (c) => (
       <div class="w-56">
         <UI.NavGroup title={c.title as string}>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Facturas</a>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Pagos</a>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Notas de crédito</a>
+          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Invoices</a>
+          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Payments</a>
+          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Credit notes</a>
         </UI.NavGroup>
       </div>
     ),
     code: (c) => `<NavGroup title="${c.title}">
-  <NavLink href="/facturas">Facturas</NavLink>
-  <NavLink href="/pagos">Pagos</NavLink>
+  <NavLink href="/invoices">Invoices</NavLink>
+  <NavLink href="/payments">Payments</NavLink>
 </NavGroup>`,
   },
 ]

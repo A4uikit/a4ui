@@ -6,38 +6,38 @@ import { Badge, Button, Card } from '../src'
 
 const LAYERS = [
   {
-    tag: 'Comportamiento',
+    tag: 'Behavior',
     tech: 'Kobalte',
-    desc: 'Foco, teclado, ARIA y portales — accesibilidad correcta de fábrica.',
+    desc: 'Focus, keyboard, ARIA, and portals — correct accessibility out of the box.',
     icon: '⌨️',
   },
   {
-    tag: 'Movimiento',
+    tag: 'Motion',
     tech: 'solid-transition-group + motionone',
-    desc: 'Transiciones cortas y funcionales, count-up, y modo calmado. Respeta reduced-motion.',
+    desc: 'Short, functional transitions, count-up, and calm mode. Respects reduced-motion.',
     icon: '🎞️',
   },
   {
     tag: 'Visual',
     tech: 'Tailwind preset + tokens',
-    desc: 'Glassmorphism, fondo estelar, glow, y tema claro/oscuro por tokens.',
+    desc: 'Glassmorphism, starfield background, glow, and light/dark theme via tokens.',
     icon: '🪟',
   },
 ]
 
 const STATS = [
-  { n: '40+', label: 'componentes' },
+  { n: '40+', label: 'components' },
   { n: '6', label: 'helpers' },
-  { n: '2', label: 'temas' },
-  { n: '10k+', label: 'filas virtualizadas' },
+  { n: '2', label: 'themes' },
+  { n: '10k+', label: 'virtualized rows' },
 ]
 
 const CATEGORIES = [
-  { title: 'Acciones', items: 'Button · Dropdown' },
-  { title: 'Datos', items: 'Table · VirtualList · Pagination · Badge' },
-  { title: 'Formularios', items: 'Input · Select · Checkbox · DateField · Dropzone' },
+  { title: 'Actions', items: 'Button · Dropdown' },
+  { title: 'Data', items: 'Table · VirtualList · Pagination · Badge' },
+  { title: 'Forms', items: 'Input · Select · Checkbox · DateField · Dropzone' },
   { title: 'Overlays', items: 'Modal · Drawer · Toast' },
-  { title: 'Navegación', items: 'Tabs · Accordion · PageHeader' },
+  { title: 'Navigation', items: 'Tabs · Accordion · PageHeader' },
   { title: 'Layout', items: 'AppShell · SpaceBackground · NavGroup' },
 ]
 
@@ -51,11 +51,11 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
           A4ui
         </h1>
         <p class="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-          El design system + librería de componentes de la familia Rivera. Instala <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">a4ui</code> y
-          ten todo el diseño bueno hecho — como Bootstrap/MUI, pero con look propio.
+          The Rivera family's design system + component library. Install <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">a4ui</code> and
+          get all the good design done for you — like Bootstrap/MUI, but with its own look.
         </p>
         <div class="mt-8 flex items-center justify-center gap-3">
-          <Button onClick={props.onExplore}>Explorar componentes →</Button>
+          <Button onClick={props.onExplore}>Explore components →</Button>
           <Button variant="outline" onClick={() => window.open('https://github.com', '_blank')}>
             GitHub
           </Button>
@@ -77,7 +77,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
       {/* 3 capas */}
       <section class="space-y-5">
         <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Tres capas, una identidad
+          Three layers, one identity
         </h2>
         <div class="grid gap-4 md:grid-cols-3">
           <For each={LAYERS}>
@@ -95,10 +95,10 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
 
       {/* Install */}
       <section class="space-y-4">
-        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">Instalación</h2>
+        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">Installation</h2>
         <Card class="mx-auto max-w-2xl overflow-hidden">
           <pre class="overflow-x-auto p-5 font-mono text-sm leading-relaxed text-foreground">
-            <span class="text-muted-foreground"># instalar</span>
+            <span class="text-muted-foreground"># install</span>
             {'\n'}npm install @a4ui/core{'\n\n'}
             <span class="text-muted-foreground">// tailwind.config.ts</span>
             {'\n'}import a4ui from '@a4ui/core/preset'{'\n'}
@@ -110,9 +110,9 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         </Card>
       </section>
 
-      {/* Categorías */}
+      {/* Categories */}
       <section class="space-y-5">
-        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">Qué incluye</h2>
+        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">What's included</h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <For each={CATEGORIES}>
             {(c) => (
@@ -125,7 +125,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         </div>
         <div class="text-center">
           <Button variant="ghost" onClick={props.onExplore}>
-            Ver todos en el catálogo →
+            See all in the catalog →
           </Button>
         </div>
       </section>

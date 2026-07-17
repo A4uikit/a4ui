@@ -40,7 +40,7 @@ export function App(): JSX.Element {
         </button>
         <nav class="flex items-center gap-1">
           <Button variant={view().kind === 'home' ? 'secondary' : 'ghost'} onClick={() => setView({ kind: 'home' })}>
-            Inicio
+            Home
           </Button>
           <Button variant={isDocs() ? 'secondary' : 'ghost'} onClick={() => openDocs()}>
             Docs
@@ -71,7 +71,7 @@ export function App(): JSX.Element {
                 class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground md:hidden"
                 onClick={() => setNavOpen(true)}
               >
-                ☰ Componentes
+                ☰ Components
               </button>
               <DocContent id={selectedId()} />
             </div>
@@ -80,7 +80,7 @@ export function App(): JSX.Element {
       </AppShell>
 
       {/* Mobile docs navigation (dogfoods the Drawer). */}
-      <Drawer open={navOpen()} onOpenChange={setNavOpen} title="Componentes">
+      <Drawer open={navOpen()} onOpenChange={setNavOpen} title="Components">
         <div class="p-4">
           <DocsNav
             selected={selectedId()}
