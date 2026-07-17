@@ -2,6 +2,10 @@
 
 [![npm](https://img.shields.io/npm/v/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![license](https://img.shields.io/npm/l/@a4ui/core.svg)](./LICENSE)
+[![Lighthouse: Performance 100](https://img.shields.io/badge/Lighthouse-Perf_100-success)](https://a4uikit.github.io/a4ui/)
+[![Lighthouse: Accessibility 100](https://img.shields.io/badge/A11y-100-success)](https://a4uikit.github.io/a4ui/)
+[![Lighthouse: Best Practices 100](https://img.shields.io/badge/Best_Practices-100-success)](https://a4uikit.github.io/a4ui/)
+[![Lighthouse: SEO 100](https://img.shields.io/badge/SEO-100-success)](https://a4uikit.github.io/a4ui/)
 
 **Spatial Glass** — a design system & component library for **SolidJS**
 (glassmorphism + starfield backdrop + light/dark themes). Named after the 4
@@ -50,6 +54,25 @@ import { Button, Card, Modal } from '@a4ui/core'
 layout — plus a virtualized list, motion helpers, and a generic `AppShell` with
 the animated `SpaceBackground`. Browse them all (with live prop controls and
 copyable code) in the **[docs site](https://a4uikit.github.io/a4ui/)**.
+
+## Using with AI agents
+
+Everything an AI coding agent (Claude Code, Codex, Cursor, …) needs to use A4ui
+ships **in the package**, so it works from `node_modules` without visiting the docs:
+
+- **Typed API + examples** — every export has JSDoc with an `@example` in the
+  shipped `.d.ts` (`node_modules/@a4ui/core/dist/index.d.ts`), so editor
+  autocomplete and agents get the props and usage inline.
+- **`llms.txt`** — a machine-readable summary of every component:
+  https://a4uikit.github.io/a4ui/llms.txt
+
+Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
+
+> This project uses **@a4ui/core** (SolidJS design system). Import components as
+> named exports from `@a4ui/core`; import `@a4ui/core/styles.css` once in the app
+> entry; add `@a4ui/core/preset` to `tailwind.config`. Props are typed with
+> JSDoc/`@example` in the package's `.d.ts`. Full component list:
+> https://a4uikit.github.io/a4ui/llms.txt
 
 ## Develop
 

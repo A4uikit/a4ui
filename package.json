@@ -48,8 +48,9 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite build --watch",
-    "preview": "vite --config vite.preview.config.ts",
-    "preview:build": "vite build --config vite.preview.config.ts",
+    "preview": "node scripts/gen-llms.mjs && vite --config vite.preview.config.ts",
+    "preview:build": "node scripts/gen-llms.mjs && vite build --config vite.preview.config.ts",
+    "gen:llms": "node scripts/gen-llms.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src",
     "test": "playwright test",

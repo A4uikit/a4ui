@@ -13,3 +13,6 @@ playwright/.cache/
 
 # stray Playwright QA scripts
 pw-*.mjs
+
+# generated docs artifact (built by scripts/gen-llms.mjs on preview build)
+preview/public/llms.txt
