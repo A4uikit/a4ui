@@ -6,18 +6,22 @@ import { Sparkles } from 'lucide-solid'
 
 import { setEffects, useEffects } from '../lib/effects'
 
-export function EffectsToggle() {
+interface EffectsToggleProps {
+  label?: string
+}
+
+export function EffectsToggle(props: EffectsToggleProps) {
   const on = useEffects()
   return (
     <button
       type="button"
       class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground aria-pressed:text-primary"
       aria-pressed={on()}
-      aria-label="Efectos visuales"
+      aria-label={props.label ?? 'Visual effects'}
       title={
         on()
-          ? 'Efectos visuales activos (vidrio + animaciones) — clic para modo calmado'
-          : 'Modo calmado (opaco, sin animaciones) — clic para activar efectos'
+          ? 'Visual effects on — click for calm mode'
+          : 'Calm mode — click to enable effects'
       }
       onClick={() => setEffects(!on())}
     >

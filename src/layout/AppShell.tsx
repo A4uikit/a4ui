@@ -32,13 +32,13 @@ interface AppShellProps extends ParentProps {
 function defaultErrorFallback(err: unknown, reset: () => void): JSX.Element {
   return (
     <div class="mx-auto max-w-md py-20 text-center">
-      <p class="text-lg font-semibold">Algo salió mal al cargar esta página</p>
+      <p class="text-lg font-semibold">Something went wrong loading this page</p>
       <p class="mt-1 break-words text-sm text-muted-foreground">{String((err as Error)?.message ?? err)}</p>
       <div class="mt-4 flex justify-center gap-2">
         <Button variant="outline" onClick={reset}>
-          Reintentar
+          Retry
         </Button>
-        <Button onClick={() => window.location.reload()}>Recargar</Button>
+        <Button onClick={() => window.location.reload()}>Reload</Button>
       </div>
     </div>
   )

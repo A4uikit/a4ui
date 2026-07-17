@@ -16,6 +16,7 @@ interface DrawerProps extends ParentProps {
   title?: string
   subtitle?: string
   class?: string
+  closeLabel?: string
 }
 
 export function Drawer(props: DrawerProps): JSX.Element {
@@ -40,7 +41,7 @@ export function Drawer(props: DrawerProps): JSX.Element {
                 </div>
                 <Dialog.CloseButton
                   class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                  aria-label="Cerrar"
+                  aria-label={props.closeLabel ?? 'Close'}
                 >
                   <X class="h-5 w-5" />
                 </Dialog.CloseButton>

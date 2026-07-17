@@ -6,15 +6,19 @@ import { Show, type JSX } from 'solid-js'
 
 import { toggleTheme, useTheme } from '../lib/theme'
 
-export function ThemeToggle(): JSX.Element {
+interface ThemeToggleProps {
+  label?: string
+}
+
+export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   const theme = useTheme()
   return (
     <button
       type="button"
       onClick={toggleTheme}
       class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
-      aria-label="Cambiar tema"
-      title="Cambiar tema claro/oscuro"
+      aria-label={props.label ?? 'Toggle theme'}
+      title={props.label ?? 'Toggle theme'}
     >
       <Show when={theme() === 'dark'} fallback={<Sun class="h-[18px] w-[18px]" />}>
         <Moon class="h-[18px] w-[18px]" />

@@ -11,20 +11,20 @@ import { Portal } from 'solid-js/web'
 
 import { cn } from '../lib/cn'
 
-const WEEKDAYS = ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do']
+const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTHS = [
-  'enero',
-  'febrero',
-  'marzo',
-  'abril',
-  'mayo',
-  'junio',
-  'julio',
-  'agosto',
-  'septiembre',
-  'octubre',
-  'noviembre',
-  'diciembre',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ]
 
 /** Format a local Date as `YYYY-MM-DD` (zero-padded, no timezone shift). */
@@ -42,11 +42,11 @@ function parse(value: string): Date | null {
   return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]))
 }
 
-/** Human-readable trigger label, e.g. `15 mar 2026`. */
-function displayLabel(value: string): string | null {
+/** Human-readable trigger label, e.g. `15 Mar 2026`. */
+function displayLabel(value: string, months: string[]): string | null {
   const d = parse(value)
   if (!d) return null
-  return `${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`
+  return `${d.getDate()} ${months[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`
 }
 
 function sameDay(a: Date, b: Date): boolean {
@@ -59,6 +59,10 @@ interface DateFieldProps {
   label?: string
   disabled?: boolean
   class?: string
+  /** Full month names, January … December order (12 entries). */
+  months?: string[]
+  /** Weekday headers, Monday-first (7 entries). */
+  weekdays?: string[]
 }
 
 export function DateField(props: DateFieldProps): JSX.Element {
@@ -176,8 +180,8 @@ export function DateField(props: DateFieldProps): JSX.Element {
         onClick={() => (open() ? close() : openPopover())}
         class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        <span class={displayLabel(props.value) ? '' : 'text-muted-foreground'}>
-          {displayLabel(props.value) ?? props.label ?? 'Seleccionar fecha'}
+        <span class={displayLabel(props.value, props.months ?? MONTHS) ? '' : 'text-muted-foreground'}>
+          {displayLabel(props.value, props.months ?? MONTHS) ?? props.label ?? 'Select date'}
         </span>
         <CalendarDays class="h-4 w-4 shrink-0 text-muted-foreground" />
       </button>
@@ -193,18 +197,18 @@ export function DateField(props: DateFieldProps): JSX.Element {
             <button
               type="button"
               onClick={prevMonth}
-              aria-label="Mes anterior"
+              aria-label="Previous month"
               class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
             >
               <ChevronLeft class="h-4 w-4" />
             </button>
             <span class="text-sm font-medium capitalize text-foreground">
-              {MONTHS[viewMonth()]} {viewYear()}
+              {(props.months ?? MONTHS)[viewMonth()]} {viewYear()}
             </span>
             <button
               type="button"
               onClick={nextMonth}
-              aria-label="Mes siguiente"
+              aria-label="Next month"
               class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
             >
               <ChevronRight class="h-4 w-4" />
@@ -212,7 +216,7 @@ export function DateField(props: DateFieldProps): JSX.Element {
           </div>
 
           <div class="mb-1 grid grid-cols-7 gap-0.5 text-center text-[11px] font-medium text-muted-foreground">
-            <For each={WEEKDAYS}>{(w) => <span>{w}</span>}</For>
+            <For each={props.weekdays ?? WEEKDAYS}>{(w) => <span>{w}</span>}</For>
           </div>
 
           <div class="grid grid-cols-7 gap-0.5">

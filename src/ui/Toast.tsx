@@ -33,7 +33,7 @@ function show(tone: ToastTone, title: string, description?: string): void {
           <KToast.Description class="text-muted-foreground">{description}</KToast.Description>
         </Show>
       </div>
-      <KToast.CloseButton class="text-muted-foreground hover:text-foreground" aria-label="Cerrar">
+      <KToast.CloseButton class="text-muted-foreground hover:text-foreground" aria-label="Close">
         ✕
       </KToast.CloseButton>
     </KToast>

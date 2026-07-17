@@ -43,14 +43,14 @@ test.describe('interactions', () => {
   test('theme toggle flips data-theme', async ({ page }) => {
     await page.goto('/#/button')
     const before = await page.locator('html').getAttribute('data-theme')
-    await page.getByRole('button', { name: 'Cambiar tema' }).click()
+    await page.getByRole('button', { name: 'Toggle theme' }).click()
     await expect.poll(() => page.locator('html').getAttribute('data-theme')).not.toBe(before)
   })
 
   test('effects toggle switches calm mode', async ({ page }) => {
     await page.goto('/#/button')
     const had = await page.evaluate(() => document.documentElement.classList.contains('calm'))
-    await page.getByRole('button', { name: 'Efectos visuales' }).click()
+    await page.getByRole('button', { name: 'Visual effects' }).click()
     await expect
       .poll(() => page.evaluate(() => document.documentElement.classList.contains('calm')))
       .toBe(!had)
@@ -92,8 +92,8 @@ test.describe('interactions', () => {
 
   test('pagination advances the page', async ({ page }) => {
     await page.goto('/#/pagination')
-    await page.getByRole('button', { name: 'Página siguiente' }).click()
-    await expect(page.getByText(/Página\s*2\s*de/)).toBeVisible()
+    await page.getByRole('button', { name: 'Next page' }).click()
+    await expect(page.getByText(/Page\s*2\s*of/)).toBeVisible()
   })
 
   test('button doc control updates the code block', async ({ page }) => {

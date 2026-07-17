@@ -14,7 +14,7 @@ export function Spinner(props: SpinnerProps): JSX.Element {
       viewBox="0 0 24 24"
       fill="none"
       role="status"
-      aria-label={props.label ?? 'Cargando'}
+      aria-label={props.label ?? 'Loading'}
     >
       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
       <path
