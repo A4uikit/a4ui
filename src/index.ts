@@ -5,8 +5,8 @@
 // src/ui/ or src/layout/, re-export it here. See CLAUDE.md → "Extraction plan".
 //
 // Consumers import the styles once (tokens + motion) and the components:
-//   import 'a4ui/styles.css'
-//   import { Button, Card, Modal } from 'a4ui'
+//   import '@a4ui/core/styles.css'
+//   import { Button, Card, Modal } from '@a4ui/core'
 
 export const A4UI_VERSION = '0.0.0'
 

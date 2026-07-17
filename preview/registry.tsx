@@ -47,17 +47,17 @@ export const DOCS: DocEntry[] = [
       </div>
     ),
     code: `# 1. instalar
-npm install a4ui
+npm install @a4ui/core
 
 // 2. tailwind.config.ts — añade el preset
-import a4ui from 'a4ui/preset'
+import a4ui from '@a4ui/core/preset'
 export default {
   presets: [a4ui],
-  content: ['./src/**/*.{ts,tsx}', './node_modules/a4ui/dist/**/*.js'],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 }
 
 // 3. tu entry (una sola vez)
-import 'a4ui/styles.css'`,
+import '@a4ui/core/styles.css'`,
   },
   {
     id: 'uso',
@@ -71,7 +71,7 @@ import 'a4ui/styles.css'`,
         <UI.Spinner />
       </div>
     ),
-    code: `import { Button, Badge, Spinner } from 'a4ui'
+    code: `import { Button, Badge, Spinner } from '@a4ui/core'
 
 export function Ejemplo() {
   return (
@@ -1027,7 +1027,7 @@ toast.error('Error al guardar')`,
         en vivo aquí — anidaría un segundo shell. Mira el código para el uso real.
       </p>
     ),
-    code: `import { AppShell } from 'a4ui'
+    code: `import { AppShell } from '@a4ui/core'
 
 <AppShell
   sidebar={<MiSidebar />}
@@ -1048,7 +1048,7 @@ toast.error('Error al guardar')`,
         propio catálogo). No se renderiza en vivo aquí para no apilar un segundo fondo. Uso en el código.
       </p>
     ),
-    code: `import { SpaceBackground } from 'a4ui'
+    code: `import { SpaceBackground } from '@a4ui/core'
 
 // normalmente lo pone AppShell por ti; para usarlo suelto:
 <div class="relative min-h-screen">
@@ -1062,7 +1062,7 @@ toast.error('Error al guardar')`,
     group: 'Layout',
     blurb: 'Botón que alterna tema claro/oscuro. El icono muestra el tema ACTUAL (🌙 oscuro, ☀️ claro).',
     demo: () => <UI.ThemeToggle />,
-    code: `import { ThemeToggle } from 'a4ui'
+    code: `import { ThemeToggle } from '@a4ui/core'
 
 <ThemeToggle />`,
   },
@@ -1072,7 +1072,7 @@ toast.error('Error al guardar')`,
     group: 'Layout',
     blurb: 'Activa/desactiva los efectos visuales (vidrio + starfield + animaciones). Apagado = modo calmado, opaco y sin movimiento.',
     demo: () => <UI.EffectsToggle />,
-    code: `import { EffectsToggle } from 'a4ui'
+    code: `import { EffectsToggle } from '@a4ui/core'
 
 <EffectsToggle />`,
   },

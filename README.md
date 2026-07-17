@@ -14,26 +14,26 @@ Three layers, one identity:
 ## Install (once published)
 
 ```bash
-npm install a4ui
+npm install @a4ui/core
 ```
 
 ## Use
 
 ```ts
 // tailwind.config.ts
-import a4ui from 'a4ui/preset'
+import a4ui from '@a4ui/core/preset'
 export default {
   presets: [a4ui],
-  content: ['./src/**/*.{ts,tsx}', './node_modules/a4ui/dist/**/*.js'],
+  content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 }
 ```
 
 ```tsx
 // entry (once)
-import 'a4ui/styles.css'
+import '@a4ui/core/styles.css'
 
 // anywhere
-import { Button, Card, Modal } from 'a4ui'
+import { Button, Card, Modal } from '@a4ui/core'
 ```
 
 ## Status

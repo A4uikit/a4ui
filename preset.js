@@ -1,24 +1,24 @@
 // A4ui — Spatial Glass Tailwind preset.
 //
 // Spread into a consumer's Tailwind config so the semantic color names resolve
-// to the CSS variables shipped in `a4ui/styles.css`, Tailwind alpha modifiers
+// to the CSS variables shipped in `@a4ui/core/styles.css`, Tailwind alpha modifiers
 // (`bg-primary/90`, `ring-emerald-500/30`, …) keep working, and the glass
 // surface classes (.card / .bg-glass / .tile-glass / .glow-edge) are generated
 // by Tailwind — so ALL surface styling decisions live here, not in a hand-rolled
 // stylesheet. (The CSS variables, motion keyframes and starfield still ship as
-// `a4ui/styles.css` — vars and @keyframes can't be Tailwind utilities.)
+// `@a4ui/core/styles.css` — vars and @keyframes can't be Tailwind utilities.)
 //
-//   import a4ui from 'a4ui/preset'
+//   import a4ui from '@a4ui/core/preset'
 //   export default {
 //     presets: [a4ui],
-//     content: ['./src/**/*.{ts,tsx}', './node_modules/a4ui/dist/**/*.js'],
+//     content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 //   }
 
 import plugin from 'tailwindcss/plugin'
 
 // Frosted "space glass" surfaces. addComponents so they tree-shake like any
 // utility (emitted only when the class is found in scanned content — a4ui's own
-// components use them, so scanning ./node_modules/a4ui/dist covers it).
+// components use them, so scanning ./node_modules/@a4ui/core/dist covers it).
 const glass = plugin(({ addComponents }) => {
   addComponents({
     // ---- Primary glass surface ----

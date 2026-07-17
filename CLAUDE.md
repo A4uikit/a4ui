@@ -164,12 +164,12 @@ npm run lint
 
 ```ts
 // tailwind.config.ts
-import a4ui from 'a4ui/preset'
-export default { presets: [a4ui], content: ['./src/**/*.{ts,tsx}', './node_modules/a4ui/dist/**/*.js'] }
+import a4ui from '@a4ui/core/preset'
+export default { presets: [a4ui], content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'] }
 ```
 ```tsx
-import 'a4ui/styles.css'            // una vez, en el entry
-import { Button, Card, Modal } from 'a4ui'
+import '@a4ui/core/styles.css'            // una vez, en el entry
+import { Button, Card, Modal } from '@a4ui/core'
 ```
 
 ## Relacionado

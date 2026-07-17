@@ -99,13 +99,13 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         <Card class="mx-auto max-w-2xl overflow-hidden">
           <pre class="overflow-x-auto p-5 font-mono text-sm leading-relaxed text-foreground">
             <span class="text-muted-foreground"># instalar</span>
-            {'\n'}npm install a4ui{'\n\n'}
+            {'\n'}npm install @a4ui/core{'\n\n'}
             <span class="text-muted-foreground">// tailwind.config.ts</span>
-            {'\n'}import a4ui from 'a4ui/preset'{'\n'}
+            {'\n'}import a4ui from '@a4ui/core/preset'{'\n'}
             export default {'{'} presets: [a4ui] {'}'}{'\n\n'}
             <span class="text-muted-foreground">// entry</span>
-            {'\n'}import 'a4ui/styles.css'{'\n'}
-            import {'{'} Button, Card, Modal {'}'} from 'a4ui'
+            {'\n'}import '@a4ui/core/styles.css'{'\n'}
+            import {'{'} Button, Card, Modal {'}'} from '@a4ui/core'
           </pre>
         </Card>
       </section>
