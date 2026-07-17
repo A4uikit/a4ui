@@ -1,0 +1,143 @@
+/* A4ui — Spatial Glass design tokens + motion.
+ *
+ * Pure CSS (no @tailwind / @apply) so it can be imported directly by any
+ * consumer: `import 'a4ui/styles.css'`. Dark "night" theme is the default;
+ * `data-theme="light"` on the root opts into the light palette.
+ *
+ * Extracted verbatim from the source project
+ * (sonora precision/alfredorust/solid/src/index.css) — keep in sync until that
+ * app consumes this package instead. */
+
+:root {
+  --background: 222 47% 7%;
+  --foreground: 213 31% 91%;
+  --card: 222 40% 11%;
+  --card-foreground: 213 31% 91%;
+  --muted: 217 33% 17%;
+  /* 75% (not 65%) for WCAG AA contrast on glass/dark surfaces (pa11y/axe). */
+  --muted-foreground: 215 25% 75%;
+  --border: 217 30% 22%;
+  --input: 217 30% 22%;
+  --primary: 217 91% 60%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 199 89% 55%;
+  --accent-foreground: 0 0% 100%;
+  --ring: 217 91% 60%;
+  --destructive: 0 72% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Semantic data colors (financial direction) — constant across themes. */
+  --data-emit: 160 84% 39%;
+  --data-received: 347 89% 61%;
+  --data-net: 199 89% 48%;
+
+  --font-sans: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sidebar-w: 248px;
+  --sidebar-w-collapsed: 68px;
+
+  /* Shadow color for glass surfaces (consumed by the glass plugin in preset.js).
+     Undefined in the source project, so its .card box-shadow silently dropped —
+     defined here so the intended elevation renders. Low alpha in use, so one
+     dark value covers both themes. */
+  --shadow: 222 47% 4%;
+  --radius-xl: 1rem;
+}
+
+:root[data-theme='light'] {
+  --background: 214 32% 95%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --muted: 214 30% 92%;
+  /* 38% (not 47%) for WCAG AA contrast on light/glass surfaces (pa11y/axe). */
+  --muted-foreground: 215 22% 38%;
+  --border: 214 24% 84%;
+  --input: 214 32% 91%;
+  --primary: 217 91% 55%;
+  --primary-foreground: 0 0% 100%;
+  --accent: 199 89% 48%;
+  --accent-foreground: 0 0% 100%;
+  --ring: 217 91% 55%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'cv02', 'cv03', 'cv04';
+}
+
+/* ---- Motion (transform/opacity only, short & functional) --------------- */
+
+/* Route/page cross-fade (AppShell wraps routed content in a <Transition>). */
+.page-enter-active,
+.page-exit-active { transition: opacity 0.16s ease-out; }
+.page-enter,
+.page-exit-to { opacity: 0; }
+
+/* Modal — MUST be @keyframes (Kobalte Dialog presence listens for
+   animationend, not transitionend, or the exit never resolves). */
+@keyframes modal-overlay-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes modal-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modal-content-in {
+  from { opacity: 0; transform: scale(0.96) translateY(4px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes modal-content-out {
+  from { opacity: 1; transform: scale(1) translateY(0); }
+  to { opacity: 0; transform: scale(0.96) translateY(4px); }
+}
+.modal-overlay[data-expanded] { animation: modal-overlay-in 0.15s ease-out; }
+.modal-overlay[data-closed] { animation: modal-overlay-out 0.15s ease-in; }
+.modal-content[data-expanded] { animation: modal-content-in 0.18s ease-out; }
+.modal-content[data-closed] { animation: modal-content-out 0.15s ease-in; }
+
+/* Toast — same animationend-only presence mechanism as Dialog. */
+@keyframes toast-in {
+  from { opacity: 0; transform: translateX(16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes toast-out {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(16px); }
+}
+.toast-item[data-opened] { animation: toast-in 0.2s ease-out; }
+.toast-item[data-closed] { animation: toast-out 0.18s ease-in; }
+
+/* Table row enter/exit fade. */
+.row-enter-active,
+.row-exit-active { transition: opacity 0.15s ease-out; }
+.row-enter,
+.row-exit-to { opacity: 0; }
+
+/* Drawer / Modal drawer-variant slide-over (Kobalte Dialog presence →
+   animationend keyframes, keyed off data-expanded/data-closed like Modal). */
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes drawer-out {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+.drawer-content[data-expanded] { animation: drawer-in 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+.drawer-content[data-closed] { animation: drawer-out 0.2s ease-in; }
+
+/* Reduced motion: resolve near-instantly rather than removing outright, so
+   libraries that gate DOM unmount on transitionend/animationend (Kobalte
+   Dialog/Toast, solid-transition-group) still fire the event. Add
+   `force-motion` to <html> to opt back in (the ⚡ / effects toggle). */
+@media (prefers-reduced-motion: reduce) {
+  html:not(.force-motion) *,
+  html:not(.force-motion) *::before,
+  html:not(.force-motion) *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

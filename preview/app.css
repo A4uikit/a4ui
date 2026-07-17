@@ -1,0 +1,6 @@
+/* Tailwind layers — the glass plugin (preset.js) injects into `components`,
+   utilities carry all layout/spacing/color. The a4ui tokens + starfield CSS are
+   imported separately in main.tsx (they're what ships as a4ui/styles.css). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
