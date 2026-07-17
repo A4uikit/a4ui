@@ -39,7 +39,8 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
 ## Conventions
 
 - **Commits:** atomic, in **English**, Conventional-Commits style
-  (`feat:` `fix:` `docs:` `chore:` `ci:` `test:`).
+  (`feat:` `fix:` `docs:` `chore:` `ci:` `test:`). **No AI attribution** — never
+  add `Co-Authored-By:` or "Generated with …" trailers.
 - **CSS doctrine (blocked):** anything Tailwind can express → Tailwind utilities in
   JSX. Glass surfaces → the plugin in `preset.js`. CSS variables + motion
   `@keyframes` → `src/styles/tokens.css`. Starfield → `src/styles/space.css`.
@@ -60,18 +61,35 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
    add a behavior test to `tests/docs.spec.ts` if it's interactive.
 4. `npm run typecheck && npm run build && npm test` must stay green.
 
-## Releasing to npm
+## Workflow — how to push & release
 
-Publishing is automated via **OIDC trusted publishing** — no tokens or 2FA prompts.
+Two separate flows. **Pushing code ≠ publishing a version.**
 
+**1. Everyday changes** — push to `main`; the docs site redeploys automatically.
 ```bash
-npm version patch    # or minor / major — bumps package.json + tags vX.Y.Z
+# make changes, then:
+git add -A
+git commit -m "type: short description"   # atomic, English, Conventional Commits, NO AI attribution
+git push origin main                       # → GitHub Actions redeploys the docs (pages.yml)
+```
+Keep `npm run typecheck` / `npm run build` / `npm test` green before pushing.
+
+**2. Publishing a new npm version** — cut a release; CI publishes via OIDC (no token).
+```bash
+npm version patch     # 0.1.1 → 0.1.2  (fix) · minor = feature · major = breaking
 git push && git push --tags
 gh release create vX.Y.Z --generate-notes
 ```
+`npm version` bumps `package.json` + creates the `vX.Y.Z` tag. Creating the GitHub
+Release triggers `.github/workflows/publish.yml`, which runs
+`npm publish --provenance --access public` via **OIDC trusted publishing** — no
+tokens, no passkey, no 2FA prompt.
 
-Creating the GitHub Release triggers `.github/workflows/publish.yml`, which runs
-`npm publish --provenance --access public` via OIDC.
+> Semver (pre-1.0): `patch` for fixes, `minor` for features **or** behavior
+> changes, `major` once the API stabilizes.
+
+> If history was force-pushed on another machine, re-sync your clone with
+> `git fetch origin && git reset --hard origin/main` (a plain `git pull` will fail).
 
 ## Links
 
