@@ -5,9 +5,12 @@ import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** A single actionable row rendered by {@link ContextMenu}. */
 export interface ContextMenuItem {
   label: string
+  /** Called when the item is chosen (click or keyboard activation). */
   onSelect: () => void
+  /** Styles the label as a destructive action (e.g. "Delete"). */
   destructive?: boolean
   disabled?: boolean
 }
@@ -17,6 +20,17 @@ interface ContextMenuProps extends ParentProps {
   class?: string
 }
 
+/**
+ * Right-click (or long-press) menu built on Kobalte's `ContextMenu`
+ * primitive. `children` is the element that acts as the trigger/target area.
+ *
+ * @example
+ * ```tsx
+ * <ContextMenu items={[{ label: 'Rename', onSelect: rename }, { label: 'Delete', onSelect: remove, destructive: true }]}>
+ *   <div class="rounded border p-4">Right-click me</div>
+ * </ContextMenu>
+ * ```
+ */
 export function ContextMenu(props: ContextMenuProps): JSX.Element {
   return (
     <KContextMenu>

@@ -3,10 +3,25 @@
 // default (every group starts expanded).
 import type { JSX, ParentProps } from 'solid-js'
 
+/** Props for {@link NavGroup}. */
 interface NavGroupProps extends ParentProps {
+  /** Category heading shown in the summary row (rendered uppercase). */
   title: string
 }
 
+/**
+ * Collapsible sidebar nav category. Uses native `<details>`/`<summary>` (no
+ * JS state), with a chevron that rotates via a `group-[[open]]` CSS variant.
+ * Expanded by default; wrap a list of nav links as `children`.
+ *
+ * @example
+ * ```tsx
+ * <NavGroup title="Settings">
+ *   <NavLink href="/settings/profile">Profile</NavLink>
+ *   <NavLink href="/settings/billing">Billing</NavLink>
+ * </NavGroup>
+ * ```
+ */
 export function NavGroup(props: NavGroupProps): JSX.Element {
   return (
     <details open class="group">

@@ -6,13 +6,24 @@ import { Show } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface SwitchProps {
+  /** Whether the switch is on. Controlled — pair with `onChange`. */
   checked: boolean
   onChange: (checked: boolean) => void
+  /** Optional visible label rendered next to the control. */
   label?: string
   disabled?: boolean
   class?: string
 }
 
+/**
+ * Accessible on/off switch, built on Kobalte's Switch primitive.
+ *
+ * @example
+ * ```tsx
+ * const [enabled, setEnabled] = createSignal(false)
+ * <Switch checked={enabled()} onChange={setEnabled} label="Enable notifications" />
+ * ```
+ */
 export function Switch(props: SwitchProps): JSX.Element {
   return (
     <KSwitch

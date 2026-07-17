@@ -5,10 +5,23 @@ import type { JSX, ParentProps } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface TooltipProps extends ParentProps {
+  /** Content shown inside the tooltip popover. */
   content: JSX.Element
+  /** Applied to the tooltip popover (`KTooltip.Content`), not the trigger. */
   class?: string
 }
 
+/**
+ * Hover/focus tooltip, built on Kobalte's Tooltip primitive. `children` is
+ * the trigger element; `content` is rendered in a portal on hover/focus.
+ *
+ * @example
+ * ```tsx
+ * <Tooltip content="Delete this item">
+ *   <IconButton icon={<TrashIcon />} aria-label="Delete" />
+ * </Tooltip>
+ * ```
+ */
 export function Tooltip(props: TooltipProps): JSX.Element {
   return (
     <KTooltip>

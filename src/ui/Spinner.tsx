@@ -4,9 +4,19 @@ import { cn } from '../lib/cn'
 
 interface SpinnerProps {
   class?: string
+  /** Accessible label announced to screen readers via `aria-label`. Default: `'Loading'`. */
   label?: string
 }
 
+/**
+ * Small spinning loading indicator (inline SVG, no primitive). Use for
+ * indeterminate loading states such as button/inline busy states.
+ *
+ * @example
+ * ```tsx
+ * <Spinner label="Saving" />
+ * ```
+ */
 export function Spinner(props: SpinnerProps): JSX.Element {
   return (
     <svg

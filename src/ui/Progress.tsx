@@ -7,11 +7,22 @@ import { cn } from '../lib/cn'
 
 interface ProgressProps {
   value: number
+  /** Upper bound of `value`. Default: 100. */
   max?: number
+  /** Label shown above the bar, paired with an auto-generated value label (e.g. "50%"). */
   label?: string
   class?: string
 }
 
+/**
+ * Determinate progress bar, built on Kobalte's `Progress` primitive. Use to
+ * show completion of a known-length task (upload, multi-step form, etc.).
+ *
+ * @example
+ * ```tsx
+ * <Progress value={uploaded()} max={totalBytes()} label="Uploading" />
+ * ```
+ */
 export function Progress(props: ProgressProps): JSX.Element {
   return (
     <KProgress

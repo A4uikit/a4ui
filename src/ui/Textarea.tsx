@@ -10,10 +10,22 @@ const TEXTAREA_BASE =
 interface TextareaProps
   extends Omit<JSX.TextareaHTMLAttributes<HTMLTextAreaElement>, 'value' | 'onInput'> {
   value: string
+  /** Called with the new string value on every input event (not the raw DOM event). */
   onInput: (value: string) => void
   class?: string
 }
 
+/**
+ * Controlled multi-line text field — a plain `<textarea>` styled to match
+ * {@link Input}. Any other native textarea attribute (e.g. `rows`, `placeholder`,
+ * `disabled`) is passed through.
+ *
+ * @example
+ * ```tsx
+ * const [bio, setBio] = createSignal('')
+ * <Textarea value={bio()} onInput={setBio} placeholder="Tell us about yourself" />
+ * ```
+ */
 export function Textarea(props: TextareaProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'onInput', 'class'])
   return (

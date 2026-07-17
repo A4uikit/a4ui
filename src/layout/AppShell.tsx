@@ -13,6 +13,7 @@ import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
 import { SpaceBackground } from './SpaceBackground'
 
+/** Props for {@link AppShell}. All slots are optional — pass only what your app needs. */
 interface AppShellProps extends ParentProps {
   /** Left column (e.g. a Sidebar). Rendered as a flex child; owns its own width. */
   sidebar?: JSX.Element
@@ -25,7 +26,9 @@ interface AppShellProps extends ParentProps {
   background?: JSX.Element
   /** Max content width for <main>. Default '1400px'. */
   maxWidth?: string
-  /** Override the default error fallback shown when a route throws. */
+  /** Override the default error fallback shown when a route throws. Receives
+      the caught error and a `reset` callback that re-renders the ErrorBoundary's
+      children. */
   errorFallback?: (err: unknown, reset: () => void) => JSX.Element
 }
 
@@ -44,6 +47,21 @@ function defaultErrorFallback(err: unknown, reset: () => void): JSX.Element {
   )
 }
 
+/**
+ * Generic app shell: a fixed {@link SpaceBackground} behind a flex layout of
+ * an optional sidebar slot plus a content column (optional banner + topbar +
+ * routed `<main>`). Slot-based and unopinionated about the sidebar — pass
+ * your own component via `sidebar` and it manages its own width/collapse.
+ * `<main>` is wrapped in `Suspense` + an `ErrorBoundary` (with a ~160ms page
+ * cross-fade) so a route chunk failing or still loading never blanks the shell.
+ *
+ * @example
+ * ```tsx
+ * <AppShell sidebar={<Sidebar />} topbar={<Topbar />}>
+ *   <Route />
+ * </AppShell>
+ * ```
+ */
 export function AppShell(props: ParentProps<AppShellProps>): JSX.Element {
   const fallback = (err: unknown, reset: () => void) =>
     (props.errorFallback ?? defaultErrorFallback)(err, reset)

@@ -33,6 +33,18 @@ const start = initial()
 apply(start)
 const [effectsOn, setSignal] = createSignal(start)
 
+/**
+ * Reactive accessor for the "visual effects" switch: `true` = full
+ * space-glass experience (glass, starfield, animation), `false` = calm mode.
+ * Backing signal shared module-wide, so every consumer (e.g.
+ * {@link EffectsToggle}) reads the same source of truth.
+ *
+ * @example
+ * ```ts
+ * const effectsOn = useEffects()
+ * console.log(effectsOn()) // true | false
+ * ```
+ */
 export function useEffects() {
   return effectsOn
 }
@@ -42,6 +54,15 @@ export function isCalm(): boolean {
   return !effectsOn()
 }
 
+/**
+ * Persist and apply the visual-effects switch: toggles `html.calm` (opaque
+ * surfaces, no starfield, no motion when off) and updates {@link useEffects}.
+ *
+ * @example
+ * ```ts
+ * setEffects(false) // enter calm mode
+ * ```
+ */
 export function setEffects(on: boolean): void {
   lsSafe()?.setItem(STORAGE_KEY, on ? '1' : '0')
   apply(on)

@@ -24,6 +24,20 @@ interface VirtualListProps<T> {
   children: (item: T, index: Accessor<number>) => JSX.Element
 }
 
+/**
+ * Virtualized list built on `@tanstack/solid-virtual` — renders only the
+ * visible rows (plus `overscan`) so lists of any length mount and scroll
+ * instantly. The scroll container's height MUST be constrained via `class`
+ * (e.g. `"h-[65vh]"`); virtualization requires a fixed viewport to measure
+ * against.
+ *
+ * @example
+ * ```tsx
+ * <VirtualList each={rows()} estimateSize={40} class="h-[65vh]">
+ *   {(row, index) => <div>{index()}: {row.name}</div>}
+ * </VirtualList>
+ * ```
+ */
 export function VirtualList<T>(props: VirtualListProps<T>): JSX.Element {
   const [scrollEl, setScrollEl] = createSignal<HTMLElement>()
   const virt = createVirtualizer({

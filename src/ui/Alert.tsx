@@ -10,6 +10,7 @@ import { Dynamic } from 'solid-js/web'
 
 import { cn } from '../lib/cn'
 
+/** Semantic tone of an {@link Alert}; drives the border/background tint and icon. */
 export type AlertTone = 'info' | 'success' | 'warning' | 'danger'
 
 const TONE: Record<AlertTone, { wrap: string; icon: string; Icon: Component<{ class?: string }> }> = {
@@ -20,11 +21,24 @@ const TONE: Record<AlertTone, { wrap: string; icon: string; Icon: Component<{ cl
 }
 
 interface AlertProps extends ParentProps {
+  /** Visual/semantic tone. Defaults to `'info'`. */
   tone?: AlertTone
+  /** Optional bold heading shown above the body text. */
   title?: string
   class?: string
 }
 
+/**
+ * Inline status banner (not a toast/dialog) built on Kobalte's `Alert` primitive,
+ * for surfacing info/success/warning/danger messages inline in the page.
+ *
+ * @example
+ * ```tsx
+ * <Alert tone="warning" title="Heads up">
+ *   Your session will expire in 5 minutes.
+ * </Alert>
+ * ```
+ */
 export function Alert(props: AlertProps): JSX.Element {
   const tone = () => TONE[props.tone ?? 'info']
   return (

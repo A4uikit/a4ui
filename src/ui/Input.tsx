@@ -10,10 +10,22 @@ const INPUT_BASE =
 interface InputProps
   extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onInput'> {
   value: string
+  /** Called with the raw string value on every input event (controlled). */
   onInput: (value: string) => void
   class?: string
 }
 
+/**
+ * Themed text input with a value/onInput controlled-string API (instead of raw
+ * DOM events). All other native `<input>` attributes pass through, so `type`,
+ * `disabled`, `placeholder`, etc. work as usual.
+ *
+ * @example
+ * ```tsx
+ * const [name, setName] = createSignal('')
+ * <Input value={name()} onInput={setName} placeholder="Full name" />
+ * ```
+ */
 export function Input(props: InputProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'onInput', 'class'])
   return (

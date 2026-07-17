@@ -5,18 +5,38 @@ import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** One option in a {@link ToggleGroup}: its `value` and visible `label`. */
 export interface ToggleGroupOption {
   value: string
   label: string
 }
 
 interface ToggleGroupProps {
+  /** Currently selected option's `value`, or `null` if none is selected. Controlled — pair with `onChange`. */
   value: string | null
   onChange: (value: string | null) => void
+  /** Options to render, in order, as segmented buttons. */
   options: ToggleGroupOption[]
   class?: string
 }
 
+/**
+ * Single-select segmented button row, built on Kobalte's ToggleGroup
+ * primitive — for exclusive-choice controls like view mode or alignment.
+ *
+ * @example
+ * ```tsx
+ * const [align, setAlign] = createSignal<string | null>('left')
+ * <ToggleGroup
+ *   value={align()}
+ *   onChange={setAlign}
+ *   options={[
+ *     { value: 'left', label: 'Left' },
+ *     { value: 'center', label: 'Center' },
+ *   ]}
+ * />
+ * ```
+ */
 export function ToggleGroup(props: ToggleGroupProps): JSX.Element {
   return (
     <KToggleGroup

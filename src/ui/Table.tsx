@@ -10,6 +10,27 @@ interface TableProps extends ParentProps {
   class?: string
 }
 
+/**
+ * Table root — a plain `<table>` wrapped in a horizontal-scroll container.
+ * Compose with {@link TableHead}, {@link TableBody}, {@link TableRow},
+ * {@link TableHeadCell}, and {@link TableCell}.
+ *
+ * @example
+ * ```tsx
+ * <Table>
+ *   <TableHead>
+ *     <TableRow>
+ *       <TableHeadCell>Name</TableHeadCell>
+ *     </TableRow>
+ *   </TableHead>
+ *   <TableBody>
+ *     <TableRow>
+ *       <TableCell>Alfredo</TableCell>
+ *     </TableRow>
+ *   </TableBody>
+ * </Table>
+ * ```
+ */
 export function Table(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -21,6 +42,14 @@ export function Table(props: TableProps): JSX.Element {
   )
 }
 
+/**
+ * `<thead>` wrapper with the muted, bottom-bordered header styling.
+ *
+ * @example
+ * ```tsx
+ * <TableHead><TableRow><TableHeadCell>Name</TableHeadCell></TableRow></TableHead>
+ * ```
+ */
 export function TableHead(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -30,6 +59,14 @@ export function TableHead(props: TableProps): JSX.Element {
   )
 }
 
+/**
+ * `<tbody>` wrapper — no default styling beyond passing through `class`.
+ *
+ * @example
+ * ```tsx
+ * <TableBody><TableRow><TableCell>Alfredo</TableCell></TableRow></TableBody>
+ * ```
+ */
 export function TableBody(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -39,6 +76,14 @@ export function TableBody(props: TableProps): JSX.Element {
   )
 }
 
+/**
+ * `<tr>` wrapper — adds the row bottom-border and hover highlight.
+ *
+ * @example
+ * ```tsx
+ * <TableRow><TableCell>Alfredo</TableCell></TableRow>
+ * ```
+ */
 export function TableRow(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -48,6 +93,14 @@ export function TableRow(props: TableProps): JSX.Element {
   )
 }
 
+/**
+ * `<th>` wrapper — small uppercase heading style, use inside {@link TableHead}.
+ *
+ * @example
+ * ```tsx
+ * <TableHeadCell>Name</TableHeadCell>
+ * ```
+ */
 export function TableHeadCell(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -57,6 +110,14 @@ export function TableHeadCell(props: TableProps): JSX.Element {
   )
 }
 
+/**
+ * `<td>` wrapper — standard cell padding and vertical alignment.
+ *
+ * @example
+ * ```tsx
+ * <TableCell>Alfredo</TableCell>
+ * ```
+ */
 export function TableCell(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (

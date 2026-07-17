@@ -4,6 +4,7 @@ import { UploadCloud } from 'lucide-solid'
 import { type JSX, Show, createSignal } from 'solid-js'
 
 interface DropzoneProps {
+  /** Called with the dropped or browsed files; the caller owns upload/validation. */
   onFiles: (files: File[]) => void
   /** `accept` attribute for the hidden input, e.g. ".xml,.zip". */
   accept?: string
@@ -14,6 +15,16 @@ interface DropzoneProps {
   label?: string
 }
 
+/**
+ * Presentational drag-and-drop (or click-to-browse) file dropzone. Not a Kobalte
+ * wrapper — just a styled `role="button"` region plus a hidden `<input type="file">`.
+ * It only collects `File[]` via `onFiles`; it does not upload or store anything.
+ *
+ * @example
+ * ```tsx
+ * <Dropzone accept=".xml,.zip" multiple onFiles={(files) => upload(files)} />
+ * ```
+ */
 export function Dropzone(props: DropzoneProps): JSX.Element {
   const [dragOver, setDragOver] = createSignal(false)
   let input: HTMLInputElement | undefined

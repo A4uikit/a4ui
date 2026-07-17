@@ -7,12 +7,27 @@ import { Show } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface AlertDialogProps extends ParentProps {
+  /** Whether the dialog is currently visible. */
   open: boolean
+  /** Called when the dialog requests to open/close (overlay click, Escape, etc). */
   onOpenChange: (open: boolean) => void
+  /** Optional heading rendered above the description. */
   title?: string
   class?: string
 }
 
+/**
+ * Centered, focus-trapped confirmation modal built on Kobalte's `AlertDialog`
+ * primitive. Use for interruptive confirmations (e.g. "Delete this item?")
+ * rather than for general-purpose dialogs.
+ *
+ * @example
+ * ```tsx
+ * <AlertDialog open={confirmOpen()} onOpenChange={setConfirmOpen} title="Delete project?">
+ *   This action cannot be undone.
+ * </AlertDialog>
+ * ```
+ */
 export function AlertDialog(props: AlertDialogProps): JSX.Element {
   return (
     <KAlertDialog open={props.open} onOpenChange={props.onOpenChange}>

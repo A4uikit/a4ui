@@ -5,17 +5,31 @@ import { ChevronLeft, ChevronRight } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 
 interface PaginationProps {
+  /** Current page, 1-indexed. */
   page: number
   totalPages: number
   onChange: (page: number) => void
+  /** Left-aligned slot, e.g. a row-count summary like "1,234 registros · 1–50". */
   summary?: JSX.Element
+  /** Override default English labels/text for i18n. */
   labels?: {
     previous?: string
     next?: string
+    /** Formats the center label; default is `` `Page ${page} of ${total}` ``. */
     page?: (page: number, total: number) => string
   }
 }
 
+/**
+ * Prev/next pager with a "Page X of Y" label and an optional summary slot.
+ * Purely client-side and controlled — the parent owns the `page` signal and
+ * is responsible for slicing its own data to match.
+ *
+ * @example
+ * ```tsx
+ * <Pagination page={page()} totalPages={totalPages()} onChange={setPage} />
+ * ```
+ */
 export function Pagination(props: PaginationProps): JSX.Element {
   return (
     <div class="flex flex-col gap-3 border-t border-border p-3 sm:flex-row sm:items-center sm:justify-between">

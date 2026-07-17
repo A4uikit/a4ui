@@ -3,18 +3,37 @@ import { Accordion as KAccordion } from '@kobalte/core/accordion'
 import type { JSX } from 'solid-js'
 import { For } from 'solid-js'
 
+/** A single collapsible section rendered by {@link Accordion}. */
 export interface AccordionItem {
+  /** Unique identifier for the item; used to track expanded state. */
   value: string
+  /** Text shown in the trigger row. */
   title: string
+  /** Content revealed when the item is expanded. */
   content: JSX.Element
 }
 
 interface AccordionProps {
   items: AccordionItem[]
+  /** Allow more than one item to be expanded at the same time. Defaults to `false` (single-open). */
   multiple?: boolean
   class?: string
 }
 
+/**
+ * Accessible, collapsible list of sections built on Kobalte's `Accordion` primitive.
+ * Each entry in `items` renders as a header/trigger row plus a content panel.
+ *
+ * @example
+ * ```tsx
+ * <Accordion
+ *   items={[
+ *     { value: 'a', title: 'What is A4ui?', content: <p>A SolidJS design system.</p> },
+ *     { value: 'b', title: 'How do I install it?', content: <p>npm install a4ui</p> },
+ *   ]}
+ * />
+ * ```
+ */
 export function Accordion(props: AccordionProps): JSX.Element {
   return (
     <KAccordion multiple={props.multiple ?? false} class={props.class}>

@@ -5,10 +5,27 @@ import { For, Show, type JSX } from 'solid-js'
 interface PageHeaderProps {
   title: string
   subtitle?: string
+  /** Trail of crumb labels, in order; the last one is rendered highlighted as the current page. */
   breadcrumb?: string[]
+  /** Right-aligned slot for page-level actions (buttons, menus, etc.). */
   actions?: JSX.Element
 }
 
+/**
+ * Consistent top-of-page header: optional breadcrumb trail, title, subtitle,
+ * and a right-aligned actions slot. Use at the top of a route/page for a
+ * uniform layout across the app.
+ *
+ * @example
+ * ```tsx
+ * <PageHeader
+ *   title="Invoices"
+ *   subtitle="Manage billing documents"
+ *   breadcrumb={['Home', 'Billing', 'Invoices']}
+ *   actions={<Button>New invoice</Button>}
+ * />
+ * ```
+ */
 export function PageHeader(props: PageHeaderProps): JSX.Element {
   return (
     <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

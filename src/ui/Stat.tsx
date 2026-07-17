@@ -9,6 +9,7 @@ import { cn } from '../lib/cn'
 import { createCountUp, prefersReducedMotion } from '../lib/motion'
 import { Card, CardContent } from './Card'
 
+/** Color scheme applied to a {@link Stat}'s icon badge. */
 export type StatTone = 'primary' | 'success' | 'danger' | 'neutral'
 
 const TONE_CLASSES: Record<StatTone, string> = {
@@ -31,6 +32,17 @@ interface StatProps {
   class?: string
 }
 
+/**
+ * KPI / stat card showing a label, an animated count-up numeric value, and
+ * an optional tone-colored icon badge. Combines a `solid-motionone` fade-up
+ * entrance (use `delay` to stagger a row of stats) with the `createCountUp`
+ * tween — both automatically disabled under `prefers-reduced-motion`.
+ *
+ * @example
+ * ```tsx
+ * <Stat label="Active users" value={activeUsers()} tone="success" icon={<UsersIcon />} />
+ * ```
+ */
 export function Stat(props: StatProps): JSX.Element {
   const reduced = prefersReducedMotion()
   const count = createCountUp(() => props.value)

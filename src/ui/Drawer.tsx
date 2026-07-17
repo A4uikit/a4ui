@@ -13,12 +13,28 @@ import { cn } from '../lib/cn'
 interface DrawerProps extends ParentProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Sticky glass header title. Omit to render fully custom header content in `children`. */
   title?: string
+  /** Small muted line under `title`; only shown when `title` is also set. */
   subtitle?: string
   class?: string
+  /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string
 }
 
+/**
+ * Right-anchored slide-over panel built on Kobalte's `Dialog` (focus trap, portal,
+ * and open/close presence handled for you). Use for create/edit forms or detail
+ * panels that need more room than a centered `Modal`.
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = createSignal(false)
+ * <Drawer open={open()} onOpenChange={setOpen} title="Edit invoice">
+ *   <p>Drawer content…</p>
+ * </Drawer>
+ * ```
+ */
 export function Drawer(props: DrawerProps): JSX.Element {
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>

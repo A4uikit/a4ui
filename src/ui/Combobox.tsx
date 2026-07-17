@@ -6,13 +6,29 @@ import type { JSX } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface ComboboxProps {
+  /** Full list of selectable string options (filtered as the user types). */
   options: string[]
   value: string
+  /** Called with the newly selected option, or `''` if the selection is cleared. */
   onChange: (value: string) => void
   placeholder?: string
   class?: string
 }
 
+/**
+ * Searchable single-select dropdown for plain string options, built on
+ * Kobalte's `Combobox` primitive with a filterable text input and trigger.
+ *
+ * @example
+ * ```tsx
+ * <Combobox
+ *   options={['Draft', 'Active', 'Archived']}
+ *   value={status()}
+ *   onChange={setStatus}
+ *   placeholder="Select a status"
+ * />
+ * ```
+ */
 export function Combobox(props: ComboboxProps): JSX.Element {
   return (
     <KCombobox

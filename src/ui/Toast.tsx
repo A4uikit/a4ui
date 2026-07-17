@@ -7,6 +7,7 @@ import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** Visual/semantic tone of a toast — controls its border/background accent color. */
 export type ToastTone = 'success' | 'error' | 'info'
 
 const TONE_CLASSES: Record<ToastTone, string> = {
@@ -40,6 +41,17 @@ function show(tone: ToastTone, title: string, description?: string): void {
   ))
 }
 
+/**
+ * Imperative API to show a toast notification from anywhere in the app (event
+ * handlers, mutation `onError`/`onSuccess`, etc.) — no component context
+ * needed. Requires a mounted {@link Toaster} to render into.
+ *
+ * @example
+ * ```tsx
+ * toast.success('Saved', 'Your changes were saved.')
+ * toast.error('Something went wrong')
+ * ```
+ */
 export const toast = {
   success: (title: string, description?: string) => show('success', title, description),
   error: (title: string, description?: string) => show('error', title, description),

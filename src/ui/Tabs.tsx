@@ -5,6 +5,7 @@ import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** One tab: its unique `value`, trigger `label`, and panel `content`. */
 export interface TabItem {
   value: string
   label: string
@@ -12,12 +13,31 @@ export interface TabItem {
 }
 
 interface TabsProps {
+  /** Tabs to render, in order — each contributes a trigger and a panel. */
   items: TabItem[]
+  /** Currently selected tab's `value`. Controlled — pair with `onChange`. */
   value: string
   onChange: (value: string) => void
   class?: string
 }
 
+/**
+ * Accessible tabs, built on Kobalte's Tabs primitive, with a sliding selection
+ * indicator.
+ *
+ * @example
+ * ```tsx
+ * const [tab, setTab] = createSignal('profile')
+ * <Tabs
+ *   value={tab()}
+ *   onChange={setTab}
+ *   items={[
+ *     { value: 'profile', label: 'Profile', content: <ProfilePanel /> },
+ *     { value: 'billing', label: 'Billing', content: <BillingPanel /> },
+ *   ]}
+ * />
+ * ```
+ */
 export function Tabs(props: TabsProps): JSX.Element {
   return (
     <KTabs value={props.value} onChange={props.onChange} class={props.class}>

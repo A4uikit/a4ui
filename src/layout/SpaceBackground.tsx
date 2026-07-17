@@ -83,6 +83,19 @@ function buildStars(tints: string[]): string {
   return html
 }
 
+/**
+ * The "space glass" backdrop: a fixed, `aria-hidden` layer (z-0) meant to sit
+ * behind all page content (this is {@link AppShell}'s default `background`).
+ * Renders a randomized starfield (with twinkle + occasional shooting stars,
+ * or rockets in light theme), static nebula/planets, gyroscope parallax on
+ * phones, and cursor-glow/magnetic-button effects. Takes no props; reacts to
+ * {@link useTheme} for star tints and to `motionReduced()` to skip all motion.
+ *
+ * @example
+ * ```tsx
+ * <SpaceBackground />
+ * ```
+ */
 export function SpaceBackground() {
   let root!: HTMLDivElement
   let starfieldEl!: HTMLDivElement

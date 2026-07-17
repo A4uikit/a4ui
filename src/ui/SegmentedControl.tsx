@@ -6,6 +6,7 @@ import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** A single selectable choice within a {@link SegmentedControl}. */
 export interface SegmentedOption {
   value: string
   label: string
@@ -18,6 +19,24 @@ interface SegmentedControlProps {
   class?: string
 }
 
+/**
+ * Single-choice segmented control with an animated indicator that slides
+ * under the selected item, built on Kobalte's `SegmentedControl` primitive.
+ * Use for a small, always-visible set of mutually exclusive options (e.g.
+ * view toggles) as a more compact alternative to {@link RadioGroup}.
+ *
+ * @example
+ * ```tsx
+ * <SegmentedControl
+ *   value={view()}
+ *   onChange={setView}
+ *   options={[
+ *     { value: 'list', label: 'List' },
+ *     { value: 'grid', label: 'Grid' },
+ *   ]}
+ * />
+ * ```
+ */
 export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
   return (
     <KSegmentedControl

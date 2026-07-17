@@ -7,11 +7,23 @@ import { cn } from '../lib/cn'
 
 interface MeterProps {
   value: number
+  /** @default 100 */
   max?: number
+  /** Label shown above the track, paired with an auto-formatted value label. */
   label?: string
   class?: string
 }
 
+/**
+ * Static measurement gauge (e.g. disk/quota usage) on Kobalte's `Meter` primitive.
+ * Unlike a progress bar, a meter represents a fixed measurement against a range,
+ * not an in-flight operation.
+ *
+ * @example
+ * ```tsx
+ * <Meter value={72} max={100} label="Storage used" />
+ * ```
+ */
 export function Meter(props: MeterProps): JSX.Element {
   return (
     <KMeter

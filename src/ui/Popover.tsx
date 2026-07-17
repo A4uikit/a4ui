@@ -5,10 +5,23 @@ import type { JSX, ParentProps } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface PopoverProps extends ParentProps {
+  /** Element that opens the popover on click; wrapped in an inline-flex trigger. */
   trigger: JSX.Element
   class?: string
 }
 
+/**
+ * Click-triggered floating panel, built on Kobalte's `Popover` primitive
+ * (handles positioning, focus, dismiss, and portaling). Use for contextual
+ * content anchored to a trigger element, such as a filter panel or menu.
+ *
+ * @example
+ * ```tsx
+ * <Popover trigger={<Button>Filters</Button>}>
+ *   <p>Panel content</p>
+ * </Popover>
+ * ```
+ */
 export function Popover(props: PopoverProps): JSX.Element {
   return (
     <KPopover>

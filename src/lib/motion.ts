@@ -14,6 +14,11 @@ const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
  * Snapshot of the user's reduced-motion preference at call time. Not
  * reactive to preference changes mid-session (matches theme.ts's one-shot
  * environment read) — reload picks up changes.
+ *
+ * @example
+ * ```ts
+ * if (prefersReducedMotion()) skipEntranceAnimation()
+ * ```
  */
 export function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false
@@ -40,10 +45,31 @@ if (typeof document !== 'undefined') {
   document.documentElement.classList.toggle('force-motion', untrack(motionForced))
 }
 
+/**
+ * Reactive accessor for the persisted "force full motion" opt-out (the ⚡
+ * MotionToggle) — `true` re-enables animation even when the OS requests
+ * reduced motion.
+ *
+ * @example
+ * ```ts
+ * const forced = useMotionForced()
+ * console.log(forced()) // true | false
+ * ```
+ */
 export function useMotionForced(): Accessor<boolean> {
   return motionForced
 }
 
+/**
+ * Persist the "force full motion" choice, toggle `html.force-motion`
+ * (which the reduced-motion `@media` block in styles.css keys off), and
+ * update {@link useMotionForced}.
+ *
+ * @example
+ * ```ts
+ * setMotionForced(true) // opt back into full motion despite OS setting
+ * ```
+ */
 export function setMotionForced(on: boolean): void {
   motionStore()?.setItem(FORCE_MOTION_KEY, on ? '1' : '0')
   if (typeof document !== 'undefined') document.documentElement.classList.toggle('force-motion', on)
@@ -55,6 +81,11 @@ export function setMotionForced(on: boolean): void {
  * or when the OS asks for reduced motion and the user hasn't forced it. JS-driven
  * motion (SpaceBackground, count-up) gates on this rather than
  * prefersReducedMotion() directly.
+ *
+ * @example
+ * ```ts
+ * if (!motionReduced()) startParallaxLoop()
+ * ```
  */
 export function motionReduced(): boolean {
   return isCalm() || (prefersReducedMotion() && !motionForced())
@@ -68,6 +99,12 @@ const easeOutCubic = (t: number): number => 1 - (1 - t) ** 3
  * yet, and this needs to interpolate a plain number rather than a DOM
  * property, so it's a small hand-rolled WAAPI-adjacent tween for KPI count-up).
  * Jumps straight to the target under prefers-reduced-motion.
+ *
+ * @example
+ * ```tsx
+ * const animated = createCountUp(() => props.value, 800)
+ * return <span>{Math.round(animated())}</span>
+ * ```
  */
 export function createCountUp(target: Accessor<number>, durationMs = 600): Accessor<number> {
   const [value, setValue] = createSignal(0)

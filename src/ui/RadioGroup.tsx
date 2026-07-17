@@ -5,6 +5,7 @@ import { For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** A single selectable choice within a {@link RadioGroup}. */
 export interface RadioOption {
   value: string
   label: string
@@ -15,10 +16,29 @@ interface RadioGroupProps {
   value: string
   onChange: (value: string) => void
   options: RadioOption[]
+  /** Group label rendered above the options. */
   label?: string
   class?: string
 }
 
+/**
+ * Accessible single-choice group, built on Kobalte's `RadioGroup` primitive
+ * (arrow-key navigation, ARIA roles). Use when all options should stay
+ * visible at once, unlike {@link Select} which hides options until opened.
+ *
+ * @example
+ * ```tsx
+ * <RadioGroup
+ *   label="Plan"
+ *   value={plan()}
+ *   onChange={setPlan}
+ *   options={[
+ *     { value: 'free', label: 'Free' },
+ *     { value: 'pro', label: 'Pro' },
+ *   ]}
+ * />
+ * ```
+ */
 export function RadioGroup(props: RadioGroupProps): JSX.Element {
   return (
     <KRadioGroup

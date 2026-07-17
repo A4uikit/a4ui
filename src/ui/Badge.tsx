@@ -6,6 +6,7 @@ import { type JSX, type ParentProps, splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** Semantic tone of a {@link Badge}; drives its background/text/ring color. */
 export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
 const TONE_CLASSES: Record<BadgeTone, string> = {
@@ -20,10 +21,21 @@ const BADGE_BASE =
   'badge inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ring-1 ring-inset whitespace-nowrap'
 
 interface BadgeProps extends ParentProps {
+  /** Visual/semantic tone. Defaults to `'neutral'`. */
   tone?: BadgeTone
   class?: string
 }
 
+/**
+ * Small rounded pill for status/labels, e.g. counts, states, or tags.
+ * Generic design-system primitive — app-specific tone mappers (e.g. mapping a
+ * business status to a {@link BadgeTone}) should live in the consuming app.
+ *
+ * @example
+ * ```tsx
+ * <Badge tone="success">Active</Badge>
+ * ```
+ */
 export function Badge(props: BadgeProps): JSX.Element {
   const [local, rest] = splitProps(props, ['tone', 'class', 'children'])
   return (

@@ -54,8 +54,11 @@ function sameDay(a: Date, b: Date): boolean {
 }
 
 interface DateFieldProps {
+  /** Selected date as `YYYY-MM-DD` (local, no timezone shift), or `''` for none. */
   value: string
+  /** Called with the newly picked date as `YYYY-MM-DD`. */
   onChange: (value: string) => void
+  /** Placeholder shown on the trigger when `value` is empty. */
   label?: string
   disabled?: boolean
   class?: string
@@ -65,6 +68,17 @@ interface DateFieldProps {
   weekdays?: string[]
 }
 
+/**
+ * Compact hand-rolled month-grid date picker (no Kobalte primitive covers this yet).
+ * Trigger button opens a portaled popover calendar; closes on outside click, Escape,
+ * scroll, or resize. Speaks plain `YYYY-MM-DD` strings, never `Date`/`toISOString`.
+ *
+ * @example
+ * ```tsx
+ * const [date, setDate] = createSignal('2026-07-14')
+ * <DateField value={date()} onChange={setDate} label="Due date" />
+ * ```
+ */
 export function DateField(props: DateFieldProps): JSX.Element {
   const [open, setOpen] = createSignal(false)
   // Month currently shown in the grid — seeded ONCE from the value (or today).

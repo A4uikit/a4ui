@@ -15,6 +15,20 @@ interface SelectProps
   class?: string
 }
 
+/**
+ * Controlled native `<select>`, styled to match the design system. Pass
+ * `<option>` elements as children. Not a Kobalte primitive — for a
+ * non-native, fully custom dropdown consider building on Kobalte's `Select`
+ * directly.
+ *
+ * @example
+ * ```tsx
+ * <Select value={country()} onChange={setCountry}>
+ *   <option value="mx">Mexico</option>
+ *   <option value="us">United States</option>
+ * </Select>
+ * ```
+ */
 export function Select(props: SelectProps): JSX.Element {
   const [local, rest] = splitProps(props, ['value', 'onChange', 'class', 'children'])
   let el!: HTMLSelectElement

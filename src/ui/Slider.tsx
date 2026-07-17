@@ -9,13 +9,27 @@ import { cn } from '../lib/cn'
 interface SliderProps {
   value: number
   onChange: (value: number) => void
+  /** Default: 0. */
   min?: number
+  /** Default: 100. */
   max?: number
+  /** Increment step. Default: 1. */
   step?: number
+  /** Label shown above the track, paired with an auto-generated value label. */
   label?: string
   class?: string
 }
 
+/**
+ * Single-value range slider, built on Kobalte's `Slider` primitive (which
+ * natively supports multiple thumbs). This wrapper accepts and emits a plain
+ * `number` instead of an array, for a simpler single-thumb API.
+ *
+ * @example
+ * ```tsx
+ * <Slider label="Volume" value={volume()} onChange={setVolume} min={0} max={100} />
+ * ```
+ */
 export function Slider(props: SliderProps): JSX.Element {
   return (
     <KSlider

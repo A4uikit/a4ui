@@ -6,10 +6,22 @@ import { Show, type JSX } from 'solid-js'
 
 import { toggleTheme, useTheme } from '../lib/theme'
 
+/** Props for {@link ThemeToggle}. */
 interface ThemeToggleProps {
+  /** Accessible label / tooltip text. Defaults to `'Toggle theme'`. */
   label?: string
 }
 
+/**
+ * Icon button that flips between dark and light theme. The icon shows the
+ * CURRENT theme (moon when dark, sun when light), not the theme you'd switch
+ * to. Wraps {@link useTheme} + {@link toggleTheme}.
+ *
+ * @example
+ * ```tsx
+ * <ThemeToggle label="Switch theme" />
+ * ```
+ */
 export function ThemeToggle(props: ThemeToggleProps): JSX.Element {
   const theme = useTheme()
   return (

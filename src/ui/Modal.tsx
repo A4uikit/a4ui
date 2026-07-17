@@ -15,12 +15,33 @@ import { cn } from '../lib/cn'
 interface ModalProps extends ParentProps {
   open: boolean
   onOpenChange: (open: boolean) => void
+  /** Header title; omitting it hides the whole header bar. */
   title?: string
+  /**
+   * `'drawer'` (default): right-anchored slide-over, more room, less jarring —
+   * use for forms/detail panels. `'center'`: classic centered modal — use for
+   * short confirmations (e.g. destructive yes/no).
+   * @default 'drawer'
+   */
   variant?: 'drawer' | 'center'
   class?: string
+  /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string
 }
 
+/**
+ * Dialog on Kobalte's `Dialog` primitive (focus trap, portal, presence handled
+ * for you), rendered as either a slide-over drawer or a centered modal depending
+ * on `variant`.
+ *
+ * @example
+ * ```tsx
+ * const [open, setOpen] = createSignal(false)
+ * <Modal open={open()} onOpenChange={setOpen} variant="center" title="Delete item?">
+ *   <p>This action cannot be undone.</p>
+ * </Modal>
+ * ```
+ */
 export function Modal(props: ModalProps): JSX.Element {
   const isCenter = () => props.variant === 'center'
   return (

@@ -3,6 +3,7 @@ import { splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** Visual style of a {@link Button}. Defaults to `'primary'`. */
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost'
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
@@ -20,12 +21,22 @@ const BUTTON_BASE =
 interface ButtonProps
   extends ParentProps,
     Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> {
+  /** Visual style. Defaults to `'primary'`. */
   variant?: ButtonVariant
   class?: string
   /** Defaults to "button" so action buttons inside a form never submit it by accident. */
   type?: 'button' | 'submit' | 'reset'
 }
 
+/**
+ * Base button primitive: a plain `<button>` with A4ui's variants, focus ring,
+ * and press/hover transitions. Accepts all standard button HTML attributes.
+ *
+ * @example
+ * ```tsx
+ * <Button variant="outline" onClick={() => save()}>Save</Button>
+ * ```
+ */
 export function Button(props: ButtonProps): JSX.Element {
   const [local, rest] = splitProps(props, ['variant', 'class', 'type', 'children'])
   return (

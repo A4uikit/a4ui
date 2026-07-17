@@ -5,16 +5,33 @@ import { For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
+/** A single crumb rendered by {@link Breadcrumb}. */
 export interface BreadcrumbItem {
   label: string
+  /** Link target. Omit (or leave undefined on the last item) to render plain text for the current page. */
   href?: string
 }
 
 interface BreadcrumbProps {
+  /** Ordered trail from root to current page; the last item is treated as the current location. */
   items: BreadcrumbItem[]
   class?: string
 }
 
+/**
+ * Navigation trail built on Kobalte's `Breadcrumbs` primitive. The last item
+ * in `items` is rendered as plain (non-link) text to indicate the current page.
+ *
+ * @example
+ * ```tsx
+ * <Breadcrumb
+ *   items={[
+ *     { label: 'Projects', href: '/projects' },
+ *     { label: 'A4ui' },
+ *   ]}
+ * />
+ * ```
+ */
 export function Breadcrumb(props: BreadcrumbProps): JSX.Element {
   return (
     <KBreadcrumbs class={cn('text-sm', props.class)}>

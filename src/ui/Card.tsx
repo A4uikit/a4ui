@@ -18,6 +18,21 @@ interface CardProps extends DivProps {
   glow?: boolean
 }
 
+/**
+ * Container surface for grouping related content, with an optional frosted
+ * "space glass" look. Compose with {@link CardHeader}, {@link CardTitle}, and
+ * {@link CardContent}.
+ *
+ * @example
+ * ```tsx
+ * <Card glass>
+ *   <CardHeader>
+ *     <CardTitle>Usage</CardTitle>
+ *   </CardHeader>
+ *   <CardContent>1,204 requests today</CardContent>
+ * </Card>
+ * ```
+ */
 export function Card(props: CardProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children', 'glass', 'glow'])
   // Glow defaults to the card's glass state when not explicitly set.
@@ -38,6 +53,7 @@ export function Card(props: CardProps): JSX.Element {
   )
 }
 
+/** Header region of a {@link Card}; typically wraps a {@link CardTitle}. */
 export function CardHeader(props: DivProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -47,6 +63,7 @@ export function CardHeader(props: DivProps): JSX.Element {
   )
 }
 
+/** Heading text (rendered as an `<h2>`) for a {@link Card}. */
 export function CardTitle(props: DivProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
@@ -56,6 +73,7 @@ export function CardTitle(props: DivProps): JSX.Element {
   )
 }
 
+/** Main body region of a {@link Card}, below the header. */
 export function CardContent(props: DivProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
