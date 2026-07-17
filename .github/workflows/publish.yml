@@ -1,0 +1,31 @@
+name: Publish to npm
+
+# Publishes @a4ui/core to npm when you cut a GitHub Release. Uses npm "trusted
+# publishing" (OIDC) — no token or passkey needed; the CI proves its identity to
+# npm via OpenID Connect. `--provenance` attaches a verifiable link between the
+# package and this workflow/commit.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # required for npm trusted publishing (OIDC)
+
+env:
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+      # Trusted publishing needs a recent npm (OIDC support landed in 11.5+).
+      - run: npm install -g npm@latest
+      - run: npm ci
+      - run: npm publish --provenance --access public
