@@ -245,4 +245,14 @@ test.describe('interactions', () => {
     await page.mouse.wheel(0, 800)
     await expect(page.getByText('Row 25', { exact: true })).toBeVisible()
   })
+
+  test('command palette searches and navigates', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Search components' }).click()
+    await page.getByPlaceholder('Search components…').fill('modal')
+    // Click the "Modal" result (scoped to the palette dialog) → navigates to its doc.
+    await page.getByRole('dialog').getByText('Modal', { exact: true }).click()
+    await expect(page).toHaveURL(/#\/modal$/)
+    await expect(page.getByRole('heading', { level: 1, name: 'Modal' })).toBeVisible()
+  })
 })
