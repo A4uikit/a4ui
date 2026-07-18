@@ -74,3 +74,24 @@ export { SpaceBackground } from './layout/SpaceBackground'
 export { ThemeToggle } from './layout/ThemeToggle'
 export { EffectsToggle } from './layout/EffectsToggle'
 export { NavGroup } from './layout/NavGroup'
+
+// Themes (src/themes) — swappable color palettes (Space is the default). Pick one
+// with `selectTheme('dino')`, restore the saved one with `initTheme()`, or build
+// your own from a ThemeDefinition. Distinct from the light/dark `setTheme` above.
+export {
+  themes,
+  space,
+  dino,
+  doctor,
+  scientist,
+  soccer,
+  activeTheme,
+  selectTheme,
+  applyThemeDefinition,
+  initTheme,
+  themeToCss,
+  themeToJson,
+  TOKEN_ORDER,
+  type ThemeDefinition,
+  type Palette,
+} from './themes'
