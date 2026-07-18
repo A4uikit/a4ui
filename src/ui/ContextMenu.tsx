@@ -34,9 +34,7 @@ interface ContextMenuProps extends ParentProps {
 export function ContextMenu(props: ContextMenuProps): JSX.Element {
   return (
     <KContextMenu>
-      <KContextMenu.Trigger class={cn('inline-flex', props.class)}>
-        {props.children}
-      </KContextMenu.Trigger>
+      <KContextMenu.Trigger class={cn('inline-flex', props.class)}>{props.children}</KContextMenu.Trigger>
       <KContextMenu.Portal>
         <KContextMenu.Content class="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <For each={props.items}>

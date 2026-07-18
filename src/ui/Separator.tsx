@@ -25,11 +25,7 @@ export function Separator(props: SeparatorProps): JSX.Element {
   return (
     <KSeparator
       orientation={orientation()}
-      class={cn(
-        'bg-border',
-        orientation() === 'vertical' ? 'w-px self-stretch' : 'h-px w-full',
-        props.class,
-      )}
+      class={cn('bg-border', orientation() === 'vertical' ? 'w-px self-stretch' : 'h-px w-full', props.class)}
     />
   )
 }

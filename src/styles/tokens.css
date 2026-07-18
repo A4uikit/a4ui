@@ -75,57 +75,127 @@ body {
 
 /* Route/page cross-fade (AppShell wraps routed content in a <Transition>). */
 .page-enter-active,
-.page-exit-active { transition: opacity 0.16s ease-out; }
+.page-exit-active {
+  transition: opacity 0.16s ease-out;
+}
 .page-enter,
-.page-exit-to { opacity: 0; }
+.page-exit-to {
+  opacity: 0;
+}
 
 /* Modal — MUST be @keyframes (Kobalte Dialog presence listens for
    animationend, not transitionend, or the exit never resolves). */
-@keyframes modal-overlay-in { from { opacity: 0; } to { opacity: 1; } }
-@keyframes modal-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes modal-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 @keyframes modal-content-in {
-  from { opacity: 0; transform: scale(0.96) translateY(4px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 @keyframes modal-content-out {
-  from { opacity: 1; transform: scale(1) translateY(0); }
-  to { opacity: 0; transform: scale(0.96) translateY(4px); }
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96) translateY(4px);
+  }
 }
-.modal-overlay[data-expanded] { animation: modal-overlay-in 0.15s ease-out; }
-.modal-overlay[data-closed] { animation: modal-overlay-out 0.15s ease-in; }
-.modal-content[data-expanded] { animation: modal-content-in 0.18s ease-out; }
-.modal-content[data-closed] { animation: modal-content-out 0.15s ease-in; }
+.modal-overlay[data-expanded] {
+  animation: modal-overlay-in 0.15s ease-out;
+}
+.modal-overlay[data-closed] {
+  animation: modal-overlay-out 0.15s ease-in;
+}
+.modal-content[data-expanded] {
+  animation: modal-content-in 0.18s ease-out;
+}
+.modal-content[data-closed] {
+  animation: modal-content-out 0.15s ease-in;
+}
 
 /* Toast — same animationend-only presence mechanism as Dialog. */
 @keyframes toast-in {
-  from { opacity: 0; transform: translateX(16px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 @keyframes toast-out {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(16px); }
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(16px);
+  }
 }
-.toast-item[data-opened] { animation: toast-in 0.2s ease-out; }
-.toast-item[data-closed] { animation: toast-out 0.18s ease-in; }
+.toast-item[data-opened] {
+  animation: toast-in 0.2s ease-out;
+}
+.toast-item[data-closed] {
+  animation: toast-out 0.18s ease-in;
+}
 
 /* Table row enter/exit fade. */
 .row-enter-active,
-.row-exit-active { transition: opacity 0.15s ease-out; }
+.row-exit-active {
+  transition: opacity 0.15s ease-out;
+}
 .row-enter,
-.row-exit-to { opacity: 0; }
+.row-exit-to {
+  opacity: 0;
+}
 
 /* Drawer / Modal drawer-variant slide-over (Kobalte Dialog presence →
    animationend keyframes, keyed off data-expanded/data-closed like Modal). */
 @keyframes drawer-in {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }
 @keyframes drawer-out {
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
 }
-.drawer-content[data-expanded] { animation: drawer-in 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
-.drawer-content[data-closed] { animation: drawer-out 0.2s ease-in; }
+.drawer-content[data-expanded] {
+  animation: drawer-in 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer-content[data-closed] {
+  animation: drawer-out 0.2s ease-in;
+}
 
 /* Reduced motion: resolve near-instantly rather than removing outright, so
    libraries that gate DOM unmount on transitionend/animationend (Kobalte

@@ -1,0 +1,9 @@
+dist
+node_modules
+preview/dist
+playwright-report
+test-results
+package-lock.json
+
+.claude/
+preview/public/og.png

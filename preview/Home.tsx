@@ -51,8 +51,9 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
           A4ui
         </h1>
         <p class="mx-auto mt-4 max-w-xl text-lg text-muted-foreground">
-          The Rivera family's design system + component library. Install <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">a4ui</code> and
-          get all the good design done for you — like Bootstrap/MUI, but with its own look.
+          The Rivera family's design system + component library. Install{' '}
+          <code class="rounded bg-muted px-1.5 py-0.5 font-mono text-sm">a4ui</code> and get all the good
+          design done for you — like Bootstrap/MUI, but with its own look.
         </p>
         <div class="mt-8 flex items-center justify-center gap-3">
           <Button onClick={props.onExplore}>Explore components →</Button>
@@ -95,14 +96,17 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
 
       {/* Install */}
       <section class="space-y-4">
-        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">Installation</h2>
+        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Installation
+        </h2>
         <Card class="mx-auto max-w-2xl overflow-hidden">
           <pre class="overflow-x-auto p-5 font-mono text-sm leading-relaxed text-foreground">
             <span class="text-muted-foreground"># install</span>
             {'\n'}npm install @a4ui/core{'\n\n'}
             <span class="text-muted-foreground">// tailwind.config.ts</span>
             {'\n'}import a4ui from '@a4ui/core/preset'{'\n'}
-            export default {'{'} presets: [a4ui] {'}'}{'\n\n'}
+            export default {'{'} presets: [a4ui] {'}'}
+            {'\n\n'}
             <span class="text-muted-foreground">// entry</span>
             {'\n'}import '@a4ui/core/styles.css'{'\n'}
             import {'{'} Button, Card, Modal {'}'} from '@a4ui/core'
@@ -112,7 +116,9 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
 
       {/* Categories */}
       <section class="space-y-5">
-        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">What's included</h2>
+        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          What's included
+        </h2>
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <For each={CATEGORIES}>
             {(c) => (

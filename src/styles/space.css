@@ -5,56 +5,114 @@
  * content at z-index >= 10 (AppShell already does this). Bundled into
  * `a4ui/styles.css` after the component surfaces. */
 
-#space { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+#space {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
 
 #space .sky {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background:
-    radial-gradient(1200px 700px at 82% -8%, hsl(217 91% 60% / .34), transparent 60%),
-    radial-gradient(900px 600px at 8% 12%, hsl(275 80% 55% / .28), transparent 60%),
-    radial-gradient(1000px 800px at 50% 120%, hsl(199 89% 55% / .24), transparent 55%),
-    radial-gradient(700px 500px at 30% 55%, hsl(330 80% 55% / .14), transparent 60%),
-    hsl(var(--background));
+    radial-gradient(1200px 700px at 82% -8%, hsl(217 91% 60% / 0.34), transparent 60%),
+    radial-gradient(900px 600px at 8% 12%, hsl(275 80% 55% / 0.28), transparent 60%),
+    radial-gradient(1000px 800px at 50% 120%, hsl(199 89% 55% / 0.24), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(330 80% 55% / 0.14), transparent 60%), hsl(var(--background));
 }
 [data-theme='light'] #space .sky {
   background:
-    radial-gradient(1100px 680px at 84% -10%, hsl(38 95% 70% / .38), transparent 60%),
-    radial-gradient(900px 600px at 6% 8%, hsl(217 91% 70% / .32), transparent 60%),
-    radial-gradient(1000px 820px at 50% 120%, hsl(275 70% 75% / .26), transparent 55%),
-    radial-gradient(700px 500px at 30% 55%, hsl(340 85% 70% / .18), transparent 60%),
-    hsl(var(--background));
+    radial-gradient(1100px 680px at 84% -10%, hsl(38 95% 70% / 0.38), transparent 60%),
+    radial-gradient(900px 600px at 6% 8%, hsl(217 91% 70% / 0.32), transparent 60%),
+    radial-gradient(1000px 820px at 50% 120%, hsl(275 70% 75% / 0.26), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(340 85% 70% / 0.18), transparent 60%), hsl(var(--background));
 }
-@keyframes nebulaShift { 0%, 100% { filter: hue-rotate(0deg); } 50% { filter: hue-rotate(18deg); } }
+@keyframes nebulaShift {
+  0%,
+  100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(18deg);
+  }
+}
 
 /* Aurora — dark theme only */
 #space .aurora {
-  position: absolute; top: -10%; left: -10%; right: -10%; height: 46%;
-  background: linear-gradient(180deg, hsl(160 84% 45% / .16), hsl(199 89% 55% / .10) 45%, transparent 80%);
-  filter: blur(40px); opacity: .55; mix-blend-mode: screen;
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  right: -10%;
+  height: 46%;
+  background: linear-gradient(180deg, hsl(160 84% 45% / 0.16), hsl(199 89% 55% / 0.1) 45%, transparent 80%);
+  filter: blur(40px);
+  opacity: 0.55;
+  mix-blend-mode: screen;
 }
-[data-theme='light'] #space .aurora { display: none; }
-@keyframes auroraSway { 0%,100% { transform: translateX(-2%) scaleY(1); opacity: .5; } 50% { transform: translateX(3%) scaleY(1.08); opacity: .68; } }
+[data-theme='light'] #space .aurora {
+  display: none;
+}
+@keyframes auroraSway {
+  0%,
+  100% {
+    transform: translateX(-2%) scaleY(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(3%) scaleY(1.08);
+    opacity: 0.68;
+  }
+}
 
 /* Randomized starfield — each star is generated in SpaceBackground.tsx with a
    random position/size/brightness/bloom, so there's no visible tiling pattern.
    Static (no drift): moving the field behind the frosted cards re-blurs every
    frame and felt laggy; a subset twinkles for life instead. */
-#space #starfield { position: absolute; inset: 0; }
-[data-theme='light'] #space #starfield { opacity: 0.85; }
+#space #starfield {
+  position: absolute;
+  inset: 0;
+}
+[data-theme='light'] #space #starfield {
+  opacity: 0.85;
+}
 /* A few stars drift smoothly like the satellite: each is a tiny element moving
    via its own transform (GPU-composited, cheap), NOT the whole field. Uses
    `alternate` so it eases out and back with no loop jump. Per-star --dx/--dy. */
-@keyframes starDrift { from { transform: translate(0, 0); } to { transform: translate(var(--dx, 0), var(--dy, 0)); } }
+@keyframes starDrift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(var(--dx, 0), var(--dy, 0));
+  }
+}
 
 /* Rocket exhaust flame (custom SVG rocket in SpaceBackground.tsx) — flickers. */
-.rk-flame { transform-box: fill-box; transform-origin: 50% 0%; animation: rocketFlame 0.12s ease-in-out infinite alternate; }
-@keyframes rocketFlame { from { transform: scaleY(0.8); opacity: 0.85; } to { transform: scaleY(1.06); opacity: 1; } }
+.rk-flame {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: rocketFlame 0.12s ease-in-out infinite alternate;
+}
+@keyframes rocketFlame {
+  from {
+    transform: scaleY(0.8);
+    opacity: 0.85;
+  }
+  to {
+    transform: scaleY(1.06);
+    opacity: 1;
+  }
+}
 
 /* Legacy tiled star layers (kept for parity; the current SpaceBackground scatters
    individual stars into #starfield instead). Sized generously: small dots nearly
    vanish under backdrop-filter blur, so keep them >= 2.5px. */
 #space .stars {
-  position: absolute; inset: -50%; background-repeat: repeat;
+  position: absolute;
+  inset: -50%;
+  background-repeat: repeat;
   background-image:
     radial-gradient(4px 4px at 20px 30px, hsl(var(--foreground)), transparent),
     radial-gradient(3.6px 3.6px at 120px 90px, hsl(var(--foreground)), transparent),
@@ -63,7 +121,9 @@
     radial-gradient(3.4px 3.4px at 380px 220px, hsl(330 80% 84%), transparent),
     radial-gradient(3px 3px at 90px 190px, hsl(var(--foreground)), transparent),
     radial-gradient(2.8px 2.8px at 260px 250px, hsl(48 90% 82%), transparent);
-  background-size: 420px 300px; opacity: 1; animation: drift 140s linear infinite;
+  background-size: 420px 300px;
+  opacity: 1;
+  animation: drift 140s linear infinite;
 }
 [data-theme='light'] #space .stars {
   background-image:
@@ -75,9 +135,15 @@
     radial-gradient(3px 3px at 90px 190px, hsl(40 90% 50%), transparent),
     radial-gradient(2.8px 2.8px at 260px 250px, hsl(48 90% 52%), transparent);
 }
-#space .stars.s2 { background-size: 640px 480px; opacity: .85; animation-duration: 200s; }
+#space .stars.s2 {
+  background-size: 640px 480px;
+  opacity: 0.85;
+  animation-duration: 200s;
+}
 #space .stars.s3 {
-  background-size: 260px 190px; opacity: 1; animation-duration: 95s;
+  background-size: 260px 190px;
+  opacity: 1;
+  animation-duration: 95s;
   background-image:
     radial-gradient(6px 6px at 40px 50px, hsl(var(--foreground)), transparent),
     radial-gradient(5.6px 5.6px at 160px 130px, hsl(199 89% 85%), transparent),
@@ -85,77 +151,190 @@
     radial-gradient(5px 5px at 90px 20px, hsl(330 85% 85%), transparent);
 }
 [data-theme='light'] #space .stars.s3 {
-  opacity: .8;
+  opacity: 0.8;
   background-image:
     radial-gradient(6px 6px at 40px 50px, hsl(38 92% 50%), transparent),
     radial-gradient(5.6px 5.6px at 160px 130px, hsl(45 95% 54%), transparent),
     radial-gradient(5.8px 5.8px at 250px 40px, hsl(30 88% 48%), transparent),
     radial-gradient(5px 5px at 90px 20px, hsl(50 92% 55%), transparent);
 }
-@keyframes drift { from { transform: translate3d(0,0,0); } to { transform: translate3d(-420px,-300px,0); } }
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-420px, -300px, 0);
+  }
+}
 
 /* Individually-placed twinkling stars */
 .twinkle {
-  position: absolute; width: 5px; height: 5px; border-radius: 50%;
-  background: hsl(var(--foreground)); box-shadow: 0 0 14px 3px hsl(var(--foreground) / .9);
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: hsl(var(--foreground));
+  box-shadow: 0 0 14px 3px hsl(var(--foreground) / 0.9);
   animation: twinkle 3.2s ease-in-out infinite;
 }
-[data-theme='light'] .twinkle { background: hsl(40 92% 50%); box-shadow: 0 0 14px 3px hsl(40 92% 50% / .85); }
-@keyframes twinkle { 0%,100% { opacity: .25; transform: scale(.6); } 50% { opacity: 1; transform: scale(1.15); } }
+[data-theme='light'] .twinkle {
+  background: hsl(40 92% 50%);
+  box-shadow: 0 0 14px 3px hsl(40 92% 50% / 0.85);
+}
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.6);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
 
 /* Constellations — thin line art connecting a handful of stars */
-#space .constellation { position: absolute; opacity: 1; }
-[data-theme='light'] #space .constellation { opacity: .6; }
-[data-theme='light'] #space .constellation .cline { stroke: hsl(38 92% 50%) !important; }
-[data-theme='light'] #space .constellation .cdot { fill: hsl(222 47% 20%) !important; }
+#space .constellation {
+  position: absolute;
+  opacity: 1;
+}
+[data-theme='light'] #space .constellation {
+  opacity: 0.6;
+}
+[data-theme='light'] #space .constellation .cline {
+  stroke: hsl(38 92% 50%) !important;
+}
+[data-theme='light'] #space .constellation .cdot {
+  fill: hsl(222 47% 20%) !important;
+}
 
 /* Planets / moons — decorative, corner-anchored, gentle float */
-.planet { border-radius: 50%; }
-.planet::after {
-  content: ''; position: absolute; inset: -34% -55%; border-radius: 50%;
-  border: 3px solid hsl(var(--foreground) / .18); transform: rotate(-24deg);
+.planet {
+  border-radius: 50%;
 }
-.planet-glow { border-radius: 50%; filter: blur(2px); }
-@keyframes floaty { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-14px) rotate(4deg); } }
-.floaty { animation: floaty 12s ease-in-out infinite; }
-.floaty.slow { animation-duration: 18s; }
+.planet::after {
+  content: '';
+  position: absolute;
+  inset: -34% -55%;
+  border-radius: 50%;
+  border: 3px solid hsl(var(--foreground) / 0.18);
+  transform: rotate(-24deg);
+}
+.planet-glow {
+  border-radius: 50%;
+  filter: blur(2px);
+}
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(4deg);
+  }
+}
+.floaty {
+  animation: floaty 12s ease-in-out infinite;
+}
+.floaty.slow {
+  animation-duration: 18s;
+}
 
 /* Asteroid belt (small drifting rocks) */
-.asteroid { border-radius: 40% 55% 50% 45%; background: hsl(var(--foreground) / .35); }
-@keyframes asteroidDrift { 0%,100% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(-8px,6px) rotate(25deg); } }
+.asteroid {
+  border-radius: 40% 55% 50% 45%;
+  background: hsl(var(--foreground) / 0.35);
+}
+@keyframes asteroidDrift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-8px, 6px) rotate(25deg);
+  }
+}
 
 /* Shooting star — bright core + tapered glowing trail */
 .shooter {
-  position: absolute; height: 2.5px; border-radius: 999px; transform-origin: left center;
-  background: linear-gradient(90deg, hsla(0,0%,100%,0) 0%, hsla(199,90%,85%,.55) 55%, hsla(0,0%,100%,.98) 100%);
-  filter: blur(.2px) drop-shadow(0 0 3px hsla(199,90%,80%,.5));
+  position: absolute;
+  height: 2.5px;
+  border-radius: 999px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    hsla(0, 0%, 100%, 0) 0%,
+    hsla(199, 90%, 85%, 0.55) 55%,
+    hsla(0, 0%, 100%, 0.98) 100%
+  );
+  filter: blur(0.2px) drop-shadow(0 0 3px hsla(199, 90%, 80%, 0.5));
 }
 .shooter::before {
-  content: ''; position: absolute; right: -2px; top: 50%; width: 6px; height: 6px; border-radius: 50%;
-  transform: translateY(-50%); background: radial-gradient(circle, #fff 0%, hsla(199,95%,88%,.95) 50%, transparent 75%);
-  box-shadow: 0 0 8px 2px #fff, 0 0 20px 7px hsla(199,90%,75%,.85), 0 0 38px 14px hsla(199,90%,60%,.4);
+  content: '';
+  position: absolute;
+  right: -2px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: radial-gradient(circle, #fff 0%, hsla(199, 95%, 88%, 0.95) 50%, transparent 75%);
+  box-shadow:
+    0 0 8px 2px #fff,
+    0 0 20px 7px hsla(199, 90%, 75%, 0.85),
+    0 0 38px 14px hsla(199, 90%, 60%, 0.4);
 }
 .shooter::after {
-  content: ''; position: absolute; left: 0; top: 50%; width: 55%; height: 1px; transform: translateY(-50%);
-  background: hsla(199,85%,92%,.65); filter: blur(2px);
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 55%;
+  height: 1px;
+  transform: translateY(-50%);
+  background: hsla(199, 85%, 92%, 0.65);
+  filter: blur(2px);
 }
 
 /* Satellite (drifting glyph, e.g. a lucide "satellite" icon) */
-@keyframes satelliteDrift { from { transform: translate(0,0) rotate(-18deg); } to { transform: translate(126vw, 34vh) rotate(-18deg); } }
-#satellite { animation: satelliteDrift 46s linear infinite; }
+@keyframes satelliteDrift {
+  from {
+    transform: translate(0, 0) rotate(-18deg);
+  }
+  to {
+    transform: translate(126vw, 34vh) rotate(-18deg);
+  }
+}
+#satellite {
+  animation: satelliteDrift 46s linear infinite;
+}
 
 /* Cursor-following ambient glow (nebula that trails the pointer) */
 #cursorGlow {
-  border-radius: 50%; transform: translate(-50%,-50%);
-  background: radial-gradient(circle, hsl(217 91% 60% / .10), transparent 70%);
-  opacity: 0; transition: opacity .4s ease;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, hsl(217 91% 60% / 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html:not(.force-motion) #space .stars, html:not(.force-motion) .twinkle,
-  html:not(.force-motion) .floaty, html:not(.force-motion) .shooter,
-  html:not(.force-motion) #satellite, html:not(.force-motion) .asteroid { animation: none !important; }
-  html:not(.force-motion) #cursorGlow { display: none !important; }
-  html:not(.force-motion) #space .sky, html:not(.force-motion) #space .aurora { animation: none !important; }
-  .card.glow-edge::before { display: none; }
+  html:not(.force-motion) #space .stars,
+  html:not(.force-motion) .twinkle,
+  html:not(.force-motion) .floaty,
+  html:not(.force-motion) .shooter,
+  html:not(.force-motion) #satellite,
+  html:not(.force-motion) .asteroid {
+    animation: none !important;
+  }
+  html:not(.force-motion) #cursorGlow {
+    display: none !important;
+  }
+  html:not(.force-motion) #space .sky,
+  html:not(.force-motion) #space .aurora {
+    animation: none !important;
+  }
+  .card.glow-edge::before {
+    display: none;
+  }
 }

@@ -32,11 +32,7 @@ export function EffectsToggle(props: EffectsToggleProps) {
       class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground aria-pressed:text-primary"
       aria-pressed={on()}
       aria-label={props.label ?? 'Visual effects'}
-      title={
-        on()
-          ? 'Visual effects on — click for calm mode'
-          : 'Calm mode — click to enable effects'
-      }
+      title={on() ? 'Visual effects on — click for calm mode' : 'Calm mode — click to enable effects'}
       onClick={() => setEffects(!on())}
     >
       <Sparkles class="h-[18px] w-[18px]" />

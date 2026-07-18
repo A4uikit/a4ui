@@ -41,15 +41,9 @@ interface RadioGroupProps {
  */
 export function RadioGroup(props: RadioGroupProps): JSX.Element {
   return (
-    <KRadioGroup
-      value={props.value}
-      onChange={props.onChange}
-      class={cn('flex flex-col gap-2', props.class)}
-    >
+    <KRadioGroup value={props.value} onChange={props.onChange} class={cn('flex flex-col gap-2', props.class)}>
       <Show when={props.label}>
-        <KRadioGroup.Label class="text-sm font-medium text-foreground">
-          {props.label}
-        </KRadioGroup.Label>
+        <KRadioGroup.Label class="text-sm font-medium text-foreground">{props.label}</KRadioGroup.Label>
       </Show>
       <For each={props.options}>
         {(option) => (

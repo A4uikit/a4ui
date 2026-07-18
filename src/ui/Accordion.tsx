@@ -56,9 +56,7 @@ export function Accordion(props: AccordionProps): JSX.Element {
                 </svg>
               </KAccordion.Trigger>
             </KAccordion.Header>
-            <KAccordion.Content class="pb-3 text-sm text-muted-foreground">
-              {item.content}
-            </KAccordion.Content>
+            <KAccordion.Content class="pb-3 text-sm text-muted-foreground">{item.content}</KAccordion.Content>
           </KAccordion.Item>
         )}
       </For>

@@ -39,7 +39,9 @@ export function PageHeader(props: PageHeaderProps): JSX.Element {
                     {/* Same "/" separator as the standalone Breadcrumb component. */}
                     <span class="text-muted-foreground/60">/</span>
                   </Show>
-                  <span classList={{ 'text-foreground': i() === (props.breadcrumb?.length ?? 0) - 1 }}>{crumb}</span>
+                  <span classList={{ 'text-foreground': i() === (props.breadcrumb?.length ?? 0) - 1 }}>
+                    {crumb}
+                  </span>
                 </>
               )}
             </For>

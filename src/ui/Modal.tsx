@@ -88,7 +88,10 @@ export function Modal(props: ModalProps): JSX.Element {
                   <Dialog.Title class="text-lg font-semibold leading-none tracking-tight">
                     {props.title}
                   </Dialog.Title>
-                  <Dialog.CloseButton class="text-muted-foreground hover:text-foreground" aria-label={props.closeLabel ?? 'Close'}>
+                  <Dialog.CloseButton
+                    class="text-muted-foreground hover:text-foreground"
+                    aria-label={props.closeLabel ?? 'Close'}
+                  >
                     ✕
                   </Dialog.CloseButton>
                 </div>

@@ -8,8 +8,7 @@ const SELECT_BASE =
   'w-full rounded-md border border-input bg-background text-foreground px-3 py-2 text-sm outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30'
 
 interface SelectProps
-  extends ParentProps,
-    Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange'> {
+  extends ParentProps, Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange'> {
   value: string
   onChange: (value: string) => void
   class?: string

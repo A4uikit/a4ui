@@ -45,7 +45,8 @@ export function VirtualList<T>(props: VirtualListProps<T>): JSX.Element {
       return props.each.length
     },
     getScrollElement: () => scrollEl() ?? null,
-    estimateSize: (i) => (typeof props.estimateSize === 'function' ? props.estimateSize(i) : props.estimateSize),
+    estimateSize: (i) =>
+      typeof props.estimateSize === 'function' ? props.estimateSize(i) : props.estimateSize,
     get overscan() {
       return props.overscan ?? 10
     },

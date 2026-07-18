@@ -13,7 +13,9 @@ export function DocsNav(props: { selected: string; onSelect: (id: string) => voi
           return (
             <Show when={items.length}>
               <div>
-                <p class="px-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">{group}</p>
+                <p class="px-2 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
+                  {group}
+                </p>
                 <ul class="mt-1 space-y-0.5">
                   <For each={items}>
                     {(d) => (
@@ -24,7 +26,8 @@ export function DocsNav(props: { selected: string; onSelect: (id: string) => voi
                           class="w-full rounded-md px-2 py-1.5 text-left text-sm transition-colors"
                           classList={{
                             'bg-primary/15 font-medium text-foreground': props.selected === d.id,
-                            'text-muted-foreground hover:bg-muted hover:text-foreground': props.selected !== d.id,
+                            'text-muted-foreground hover:bg-muted hover:text-foreground':
+                              props.selected !== d.id,
                           }}
                         >
                           {d.title}

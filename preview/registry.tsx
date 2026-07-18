@@ -2,7 +2,7 @@
 // entry renders a live demo (dogfooding the real components) plus the code you'd
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
-import { createSignal, For, type JSX } from 'solid-js'
+import { createSignal, type JSX } from 'solid-js'
 
 import * as UI from '../src'
 
@@ -31,7 +31,16 @@ export interface DocEntry {
 }
 
 // Sidebar group order.
-export const DOC_GROUPS = ['Get started', 'Actions', 'Forms', 'Data', 'Overlays', 'Feedback', 'Navigation', 'Layout']
+export const DOC_GROUPS = [
+  'Get started',
+  'Actions',
+  'Forms',
+  'Data',
+  'Overlays',
+  'Feedback',
+  'Navigation',
+  'Layout',
+]
 
 export const DOCS: DocEntry[] = [
   // ---- Get started ----------------------------------------------------------
@@ -39,11 +48,15 @@ export const DOCS: DocEntry[] = [
     id: 'instalacion',
     title: 'Installation',
     group: 'Get started',
-    blurb: 'A4ui is a SolidJS component library with a "Spatial Glass" look. Install it and get all the design decisions solved for you.',
+    blurb:
+      'A4ui is a SolidJS component library with a "Spatial Glass" look. Install it and get all the design decisions solved for you.',
     demo: () => (
       <div class="space-y-3 text-sm text-muted-foreground">
         <p>1. Install the package. 2. Add the preset to Tailwind. 3. Import the styles once. Done.</p>
-        <p>Requires <code class="rounded bg-muted px-1 font-mono">solid-js</code> and <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> in your project.</p>
+        <p>
+          Requires <code class="rounded bg-muted px-1 font-mono">solid-js</code> and{' '}
+          <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> in your project.
+        </p>
       </div>
     ),
     code: `# 1. install
@@ -63,7 +76,8 @@ import '@a4ui/core/styles.css'`,
     id: 'uso',
     title: 'Quick start',
     group: 'Get started',
-    blurb: 'Import any component from "a4ui" and use it. Everything respects the light/dark theme and Kobalte accessibility.',
+    blurb:
+      'Import any component from "a4ui" and use it. Everything respects the light/dark theme and Kobalte accessibility.',
     demo: () => (
       <div class="flex flex-wrap items-center gap-3">
         <UI.Button>A button</UI.Button>
@@ -89,9 +103,15 @@ export function Example() {
     id: 'button',
     title: 'Button',
     group: 'Actions',
-    blurb: 'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. Try the controls ↓',
+    blurb:
+      'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. Try the controls ↓',
     controls: {
-      variant: { type: 'select', label: 'variant', options: ['primary', 'secondary', 'outline', 'ghost'], default: 'primary' },
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['primary', 'secondary', 'outline', 'ghost'],
+        default: 'primary',
+      },
       disabled: { type: 'boolean', label: 'disabled', default: false },
       label: { type: 'text', label: 'text', default: 'Save' },
     },
@@ -110,7 +130,12 @@ export function Example() {
     group: 'Feedback',
     blurb: 'Inline banner for contextual messages, with 4 tones. Try the controls ↓',
     controls: {
-      tone: { type: 'select', label: 'tone', options: ['info', 'success', 'warning', 'danger'], default: 'info' },
+      tone: {
+        type: 'select',
+        label: 'tone',
+        options: ['info', 'success', 'warning', 'danger'],
+        default: 'info',
+      },
       title: { type: 'text', label: 'title', default: 'Information' },
     },
     demo: (c) => (
@@ -135,7 +160,14 @@ export function Example() {
     },
     demo: (c) => {
       const [on, setOn] = createSignal(true)
-      return <UI.Switch checked={on()} onChange={setOn} label={c.label as string} disabled={c.disabled as boolean} />
+      return (
+        <UI.Switch
+          checked={on()}
+          onChange={setOn}
+          label={c.label as string}
+          disabled={c.disabled as boolean}
+        />
+      )
     },
     code: (c) => `const [on, setOn] = createSignal(true)
 <Switch checked={on()} onChange={setOn} label="${c.label}"${c.disabled ? ' disabled' : ''} />`,
@@ -146,11 +178,17 @@ export function Example() {
     id: 'stat',
     title: 'Stat',
     group: 'Data',
-    blurb: 'KPI card with an animated entrance (solid-motionone) and a count-up on the number (respects reduced-motion). Change the value and watch it count ↓',
+    blurb:
+      'KPI card with an animated entrance (solid-motionone) and a count-up on the number (respects reduced-motion). Change the value and watch it count ↓',
     controls: {
       label: { type: 'text', label: 'label', default: 'Revenue' },
       value: { type: 'number', label: 'value', default: 125400, min: 0, max: 1000000 },
-      tone: { type: 'select', label: 'tone', options: ['primary', 'success', 'danger', 'neutral'], default: 'success' },
+      tone: {
+        type: 'select',
+        label: 'tone',
+        options: ['primary', 'success', 'danger', 'neutral'],
+        default: 'success',
+      },
     },
     demo: (c) => (
       <div class="w-full max-w-xs">
@@ -190,7 +228,8 @@ export function Example() {
     id: 'dropdown',
     title: 'Dropdown',
     group: 'Actions',
-    blurb: 'Actions menu (Kobalte). The trigger itself IS the button, so its children must be non-interactive.',
+    blurb:
+      'Actions menu (Kobalte). The trigger itself IS the button, so its children must be non-interactive.',
     demo: () => (
       <UI.Dropdown
         label="Actions"
@@ -331,7 +370,15 @@ export function Example() {
     },
     demo: (c) => {
       const [name, setName] = createSignal('')
-      return <UI.Input value={name()} onInput={setName} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-xs" />
+      return (
+        <UI.Input
+          value={name()}
+          onInput={setName}
+          placeholder={c.placeholder as string}
+          disabled={c.disabled as boolean}
+          class="max-w-xs"
+        />
+      )
     },
     code: (c) => `const [name, setName] = createSignal('')
 <Input value={name()} onInput={setName} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
@@ -347,7 +394,15 @@ export function Example() {
     },
     demo: (c) => {
       const [text, setText] = createSignal('')
-      return <UI.Textarea value={text()} onInput={setText} placeholder={c.placeholder as string} disabled={c.disabled as boolean} class="max-w-sm" />
+      return (
+        <UI.Textarea
+          value={text()}
+          onInput={setText}
+          placeholder={c.placeholder as string}
+          disabled={c.disabled as boolean}
+          class="max-w-sm"
+        />
+      )
     },
     code: (c) => `const [note, setNote] = createSignal('')
 <Textarea value={note()} onInput={setNote} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
@@ -460,7 +515,14 @@ export function Example() {
       const [price, setPrice] = createSignal(50)
       return (
         <div class="w-64">
-          <UI.Slider value={price()} onChange={setPrice} min={c.min as number} max={c.max as number} step={c.step as number} label={c.label as string} />
+          <UI.Slider
+            value={price()}
+            onChange={setPrice}
+            min={c.min as number}
+            max={c.max as number}
+            step={c.step as number}
+            label={c.label as string}
+          />
         </div>
       )
     },
@@ -478,7 +540,14 @@ export function Example() {
     },
     demo: (c) => {
       const [quantity, setQuantity] = createSignal(1)
-      return <UI.NumberInput value={quantity()} onChange={setQuantity} min={c.min as number} max={c.max as number} />
+      return (
+        <UI.NumberInput
+          value={quantity()}
+          onChange={setQuantity}
+          min={c.min as number}
+          max={c.max as number}
+        />
+      )
     },
     code: (c) => `const [quantity, setQuantity] = createSignal(1)
 <NumberInput value={quantity()} onChange={setQuantity} min={${c.min}} max={${c.max}} />`,
@@ -534,12 +603,15 @@ export function Example() {
     group: 'Data',
     blurb: 'Status pill with 5 semantic tones.',
     controls: {
-      tone: { type: 'select', label: 'tone', options: ['neutral', 'success', 'warning', 'danger', 'info'], default: 'success' },
+      tone: {
+        type: 'select',
+        label: 'tone',
+        options: ['neutral', 'success', 'warning', 'danger', 'info'],
+        default: 'success',
+      },
       text: { type: 'text', label: 'text', default: 'paid' },
     },
-    demo: (c) => (
-      <UI.Badge tone={c.tone as UI.BadgeTone}>{c.text as string}</UI.Badge>
-    ),
+    demo: (c) => <UI.Badge tone={c.tone as UI.BadgeTone}>{c.text as string}</UI.Badge>,
     code: (c) => `<Badge tone="${c.tone}">${c.text}</Badge>`,
   },
   {
@@ -680,9 +752,10 @@ export function Example() {
         <UI.Avatar src={(c.src as string) || undefined} fallback={c.fallback as string} />
       </div>
     ),
-    code: (c) => c.src
-      ? `<Avatar src="${c.src}" alt="User" fallback="${c.fallback}" />`
-      : `<Avatar fallback="${c.fallback}" />`,
+    code: (c) =>
+      c.src
+        ? `<Avatar src="${c.src}" alt="User" fallback="${c.fallback}" />`
+        : `<Avatar fallback="${c.fallback}" />`,
   },
   {
     id: 'progress',
@@ -722,7 +795,12 @@ export function Example() {
     group: 'Data',
     blurb: 'Horizontal or vertical visual/semantic divider (Kobalte Separator).',
     controls: {
-      orientation: { type: 'select', label: 'orientation', options: ['horizontal', 'vertical'], default: 'horizontal' },
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['horizontal', 'vertical'],
+        default: 'horizontal',
+      },
     },
     demo: (c) =>
       c.orientation === 'vertical' ? (
@@ -771,10 +849,17 @@ export function Example() {
       return (
         <>
           <UI.Button onClick={() => setOpen(true)}>Open modal</UI.Button>
-          <UI.Modal open={open()} onOpenChange={setOpen} variant={c.variant as 'drawer' | 'center'} title={c.title as string}>
+          <UI.Modal
+            open={open()}
+            onOpenChange={setOpen}
+            variant={c.variant as 'drawer' | 'center'}
+            title={c.title as string}
+          >
             <p class="text-sm text-muted-foreground">Do you want to continue with this action?</p>
             <div class="mt-4 flex justify-end gap-2">
-              <UI.Button variant="outline" onClick={() => setOpen(false)}>Cancel</UI.Button>
+              <UI.Button variant="outline" onClick={() => setOpen(false)}>
+                Cancel
+              </UI.Button>
               <UI.Button onClick={() => setOpen(false)}>Confirm</UI.Button>
             </div>
           </UI.Modal>
@@ -791,7 +876,8 @@ export function Example() {
     id: 'drawer',
     title: 'Drawer',
     group: 'Overlays',
-    blurb: 'Sliding panel anchored to the right (Kobalte Dialog), with an optional fixed header (title/subtitle).',
+    blurb:
+      'Sliding panel anchored to the right (Kobalte Dialog), with an optional fixed header (title/subtitle).',
     controls: {
       title: { type: 'text', label: 'title', default: 'Customer detail' },
       subtitle: { type: 'text', label: 'subtitle', default: 'Rivera S.A. de C.V.' },
@@ -800,11 +886,16 @@ export function Example() {
       const [open, setOpen] = createSignal(false)
       return (
         <>
-          <UI.Button variant="outline" onClick={() => setOpen(true)}>Open panel</UI.Button>
-          <UI.Drawer open={open()} onOpenChange={setOpen} title={c.title as string} subtitle={c.subtitle as string}>
-            <div class="p-6 text-sm text-muted-foreground">
-              Side panel content: a form, details, etc.
-            </div>
+          <UI.Button variant="outline" onClick={() => setOpen(true)}>
+            Open panel
+          </UI.Button>
+          <UI.Drawer
+            open={open()}
+            onOpenChange={setOpen}
+            title={c.title as string}
+            subtitle={c.subtitle as string}
+          >
+            <div class="p-6 text-sm text-muted-foreground">Side panel content: a form, details, etc.</div>
           </UI.Drawer>
         </>
       )
@@ -861,10 +952,14 @@ export function Example() {
       const [open, setOpen] = createSignal(false)
       return (
         <>
-          <UI.Button variant="outline" onClick={() => setOpen(true)}>Delete account</UI.Button>
+          <UI.Button variant="outline" onClick={() => setOpen(true)}>
+            Delete account
+          </UI.Button>
           <UI.AlertDialog open={open()} onOpenChange={setOpen} title={c.title as string}>
             This action is permanent and can't be undone.{' '}
-            <UI.Button variant="ghost" class="mt-3" onClick={() => setOpen(false)}>Got it</UI.Button>
+            <UI.Button variant="ghost" class="mt-3" onClick={() => setOpen(false)}>
+              Got it
+            </UI.Button>
           </UI.AlertDialog>
         </>
       )
@@ -881,12 +976,17 @@ export function Example() {
     id: 'toast',
     title: 'Toast',
     group: 'Feedback',
-    blurb: 'Imperative notifications: call toast.success/error/info from anywhere. The Toaster is already mounted.',
+    blurb:
+      'Imperative notifications: call toast.success/error/info from anywhere. The Toaster is already mounted.',
     demo: () => (
       <div class="flex flex-wrap gap-2">
         <UI.Button onClick={() => UI.toast.success('Saved', 'Your changes were saved.')}>Success</UI.Button>
-        <UI.Button variant="outline" onClick={() => UI.toast.error('Failed to save')}>Error</UI.Button>
-        <UI.Button variant="ghost" onClick={() => UI.toast.info('Syncing…')}>Info</UI.Button>
+        <UI.Button variant="outline" onClick={() => UI.toast.error('Failed to save')}>
+          Error
+        </UI.Button>
+        <UI.Button variant="ghost" onClick={() => UI.toast.info('Syncing…')}>
+          Info
+        </UI.Button>
       </div>
     ),
     code: `// just once, near the root:
@@ -925,9 +1025,21 @@ toast.error('Failed to save')`,
             value={tab()}
             onChange={setTab}
             items={[
-              { value: 'general', label: 'General', content: <p class="text-sm text-muted-foreground">General settings.</p> },
-              { value: 'security', label: 'Security', content: <p class="text-sm text-muted-foreground">Password and access.</p> },
-              { value: 'billing', label: 'Billing', content: <p class="text-sm text-muted-foreground">Payment methods.</p> },
+              {
+                value: 'general',
+                label: 'General',
+                content: <p class="text-sm text-muted-foreground">General settings.</p>,
+              },
+              {
+                value: 'security',
+                label: 'Security',
+                content: <p class="text-sm text-muted-foreground">Password and access.</p>,
+              },
+              {
+                value: 'billing',
+                label: 'Billing',
+                content: <p class="text-sm text-muted-foreground">Payment methods.</p>,
+              },
             ]}
           />
         </div>
@@ -953,7 +1065,11 @@ toast.error('Failed to save')`,
         <UI.Accordion
           items={[
             { value: 'shipping', title: 'How long does shipping take?', content: '3 to 5 business days.' },
-            { value: 'payment', title: 'Which payment methods do you accept?', content: 'Card, bank transfer, and OXXO.' },
+            {
+              value: 'payment',
+              title: 'Which payment methods do you accept?',
+              content: 'Card, bank transfer, and OXXO.',
+            },
             { value: 'warranty', title: 'Is there a warranty?', content: '12 months on all equipment.' },
           ]}
         />
@@ -973,11 +1089,7 @@ toast.error('Failed to save')`,
     blurb: 'Navigation trail (Kobalte Breadcrumbs). The last item is the current page.',
     demo: () => (
       <UI.Breadcrumb
-        items={[
-          { label: 'Home', href: '#' },
-          { label: 'Customers', href: '#' },
-          { label: 'Rivera S.A.' },
-        ]}
+        items={[{ label: 'Home', href: '#' }, { label: 'Customers', href: '#' }, { label: 'Rivera S.A.' }]}
       />
     ),
     code: `<Breadcrumb
@@ -1020,11 +1132,12 @@ toast.error('Failed to save')`,
     id: 'app-shell',
     title: 'AppShell',
     group: 'Layout',
-    blurb: 'Slot-based app structure: space background (z-0), sidebar, topbar, banner, and a <main> with a cross-fade between routes.',
+    blurb:
+      'Slot-based app structure: space background (z-0), sidebar, topbar, banner, and a <main> with a cross-fade between routes.',
     demo: () => (
       <p class="text-sm text-muted-foreground">
-        AppShell wraps the ENTIRE app (background + sidebar + topbar + routes), so it isn't shown
-        live here — it would nest a second shell. See the code for real usage.
+        AppShell wraps the ENTIRE app (background + sidebar + topbar + routes), so it isn't shown live here —
+        it would nest a second shell. See the code for real usage.
       </p>
     ),
     code: `import { AppShell } from '@a4ui/core'
@@ -1041,11 +1154,12 @@ toast.error('Failed to save')`,
     id: 'space-background',
     title: 'SpaceBackground',
     group: 'Layout',
-    blurb: 'The "space glass" background: a fixed layer (z-0) with stars, nebula, planets, and shooting stars. Respects reduced-motion.',
+    blurb:
+      'The "space glass" background: a fixed layer (z-0) with stars, nebula, planets, and shooting stars. Respects reduced-motion.',
     demo: () => (
       <p class="text-sm text-muted-foreground">
-        SpaceBackground is a fixed full-screen layer (already active behind this page thanks to the
-        catalog itself). It isn't rendered live here so it doesn't stack a second background. Usage in the code.
+        SpaceBackground is a fixed full-screen layer (already active behind this page thanks to the catalog
+        itself). It isn't rendered live here so it doesn't stack a second background. Usage in the code.
       </p>
     ),
     code: `import { SpaceBackground } from '@a4ui/core'
@@ -1070,7 +1184,8 @@ toast.error('Failed to save')`,
     id: 'effects-toggle',
     title: 'EffectsToggle',
     group: 'Layout',
-    blurb: 'Turns visual effects on/off (glass + starfield + animations). Off = calm mode, opaque and motionless.',
+    blurb:
+      'Turns visual effects on/off (glass + starfield + animations). Off = calm mode, opaque and motionless.',
     demo: () => <UI.EffectsToggle />,
     code: `import { EffectsToggle } from '@a4ui/core'
 
@@ -1080,16 +1195,32 @@ toast.error('Failed to save')`,
     id: 'nav-group',
     title: 'NavGroup',
     group: 'Layout',
-    blurb: 'Collapsible sidebar category (native <details>). Open by default; the chevron rotates when collapsed.',
+    blurb:
+      'Collapsible sidebar category (native <details>). Open by default; the chevron rotates when collapsed.',
     controls: {
       title: { type: 'text', label: 'title', default: 'Billing' },
     },
     demo: (c) => (
       <div class="w-56">
         <UI.NavGroup title={c.title as string}>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Invoices</a>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Payments</a>
-          <a href="#" class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground">Credit notes</a>
+          <a
+            href="#"
+            class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            Invoices
+          </a>
+          <a
+            href="#"
+            class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            Payments
+          </a>
+          <a
+            href="#"
+            class="block rounded-md px-3 py-1.5 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
+          >
+            Credit notes
+          </a>
         </UI.NavGroup>
       </div>
     ),

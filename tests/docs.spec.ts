@@ -106,7 +106,10 @@ test.describe('interactions', () => {
   test('context menu opens on right-click', async ({ page }) => {
     await page.goto('/#/context-menu')
     // Scope to the live demo card (the code block also contains this text).
-    await page.locator('div.flex.flex-wrap.items-start').getByText('Right-click here').click({ button: 'right' })
+    await page
+      .locator('div.flex.flex-wrap.items-start')
+      .getByText('Right-click here')
+      .click({ button: 'right' })
     await expect(page.getByRole('menuitem', { name: 'Copy' })).toBeVisible()
   })
 

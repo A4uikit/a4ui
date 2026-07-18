@@ -44,9 +44,7 @@ export function Breadcrumb(props: BreadcrumbProps): JSX.Element {
                 <Show
                   when={item.href && !isLast()}
                   fallback={
-                    <span class={isLast() ? 'font-medium text-foreground' : undefined}>
-                      {item.label}
-                    </span>
+                    <span class={isLast() ? 'font-medium text-foreground' : undefined}>{item.label}</span>
                   }
                 >
                   <KBreadcrumbs.Link href={item.href} class="transition-colors hover:text-foreground">

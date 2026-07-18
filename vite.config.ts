@@ -28,7 +28,7 @@ function emitStyles(): Plugin {
 // design dep left EXTERNAL so consumers dedupe a single copy (esp. solid-js —
 // two copies break reactivity).
 export default defineConfig({
-  plugins: [solid(), dts({ include: ['src'] }), emitStyles()],
+  plugins: [solid(), dts({ include: ['src'], exclude: ['**/*.test.ts', '**/*.test.tsx'] }), emitStyles()],
   build: {
     lib: {
       entry: { index: 'src/index.ts' },

@@ -51,12 +51,21 @@ export function Stat(props: StatProps): JSX.Element {
     <Motion.div
       initial={reduced ? false : { opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: reduced ? 0 : 0.32, delay: reduced ? 0 : (props.delay ?? 0), easing: 'ease-out' }}
+      transition={{
+        duration: reduced ? 0 : 0.32,
+        delay: reduced ? 0 : (props.delay ?? 0),
+        easing: 'ease-out',
+      }}
     >
       <Card glass glow class={props.class}>
         <CardContent class="flex items-center gap-4 p-5">
           <Show when={props.icon}>
-            <div class={cn('flex h-11 w-11 shrink-0 items-center justify-center rounded-lg', TONE_CLASSES[props.tone ?? 'neutral'])}>
+            <div
+              class={cn(
+                'flex h-11 w-11 shrink-0 items-center justify-center rounded-lg',
+                TONE_CLASSES[props.tone ?? 'neutral'],
+              )}
+            >
               {props.icon}
             </div>
           </Show>

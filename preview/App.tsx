@@ -42,11 +42,18 @@ export function App(): JSX.Element {
   const topbar = (
     <header class="bg-glass sticky top-0 z-20 flex items-center justify-between border-b border-border px-6 py-3">
       <div class="flex items-center gap-4">
-        <button type="button" class="text-lg font-bold tracking-tight" onClick={() => setView({ kind: 'home' })}>
+        <button
+          type="button"
+          class="text-lg font-bold tracking-tight"
+          onClick={() => setView({ kind: 'home' })}
+        >
           A4ui
         </button>
         <nav class="flex items-center gap-1">
-          <Button variant={view().kind === 'home' ? 'secondary' : 'ghost'} onClick={() => setView({ kind: 'home' })}>
+          <Button
+            variant={view().kind === 'home' ? 'secondary' : 'ghost'}
+            onClick={() => setView({ kind: 'home' })}
+          >
             Home
           </Button>
           <Button variant={isDocs() ? 'secondary' : 'ghost'} onClick={() => openDocs()}>

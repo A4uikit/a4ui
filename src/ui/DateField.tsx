@@ -207,61 +207,59 @@ export function DateField(props: DateFieldProps): JSX.Element {
             style={{ position: 'fixed', top: `${pos().top}px`, left: `${pos().left}px` }}
             class="z-50 w-72 rounded-lg border border-border bg-card p-3 text-card-foreground shadow-lg"
           >
-          <div class="mb-2 flex items-center justify-between">
-            <button
-              type="button"
-              onClick={prevMonth}
-              aria-label="Previous month"
-              class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
-            >
-              <ChevronLeft class="h-4 w-4" />
-            </button>
-            <span class="text-sm font-medium capitalize text-foreground">
-              {(props.months ?? MONTHS)[viewMonth()]} {viewYear()}
-            </span>
-            <button
-              type="button"
-              onClick={nextMonth}
-              aria-label="Next month"
-              class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
-            >
-              <ChevronRight class="h-4 w-4" />
-            </button>
-          </div>
+            <div class="mb-2 flex items-center justify-between">
+              <button
+                type="button"
+                onClick={prevMonth}
+                aria-label="Previous month"
+                class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
+              >
+                <ChevronLeft class="h-4 w-4" />
+              </button>
+              <span class="text-sm font-medium capitalize text-foreground">
+                {(props.months ?? MONTHS)[viewMonth()]} {viewYear()}
+              </span>
+              <button
+                type="button"
+                onClick={nextMonth}
+                aria-label="Next month"
+                class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
+              >
+                <ChevronRight class="h-4 w-4" />
+              </button>
+            </div>
 
-          <div class="mb-1 grid grid-cols-7 gap-0.5 text-center text-[11px] font-medium text-muted-foreground">
-            <For each={props.weekdays ?? WEEKDAYS}>{(w) => <span>{w}</span>}</For>
-          </div>
+            <div class="mb-1 grid grid-cols-7 gap-0.5 text-center text-[11px] font-medium text-muted-foreground">
+              <For each={props.weekdays ?? WEEKDAYS}>{(w) => <span>{w}</span>}</For>
+            </div>
 
-          <div class="grid grid-cols-7 gap-0.5">
-            <For each={cells()}>
-              {(d) => {
-                const inMonth = d.getMonth() === viewMonth()
-                const isSel = () => {
-                  const s = selected()
-                  return s ? sameDay(s, d) : false
-                }
-                const isToday = sameDay(today, d)
-                return (
-                  <button
-                    type="button"
-                    onClick={() => pick(d)}
-                    class={cn(
-                      'flex h-8 items-center justify-center rounded-md text-sm transition-colors',
-                      isSel()
-                        ? 'bg-primary font-semibold text-primary-foreground'
-                        : 'hover:bg-muted',
-                      !isSel() && !inMonth && 'text-muted-foreground/50',
-                      !isSel() && inMonth && 'text-foreground',
-                      !isSel() && isToday && 'ring-1 ring-inset ring-ring',
-                    )}
-                  >
-                    {d.getDate()}
-                  </button>
-                )
-              }}
-            </For>
-          </div>
+            <div class="grid grid-cols-7 gap-0.5">
+              <For each={cells()}>
+                {(d) => {
+                  const inMonth = d.getMonth() === viewMonth()
+                  const isSel = () => {
+                    const s = selected()
+                    return s ? sameDay(s, d) : false
+                  }
+                  const isToday = sameDay(today, d)
+                  return (
+                    <button
+                      type="button"
+                      onClick={() => pick(d)}
+                      class={cn(
+                        'flex h-8 items-center justify-center rounded-md text-sm transition-colors',
+                        isSel() ? 'bg-primary font-semibold text-primary-foreground' : 'hover:bg-muted',
+                        !isSel() && !inMonth && 'text-muted-foreground/50',
+                        !isSel() && inMonth && 'text-foreground',
+                        !isSel() && isToday && 'ring-1 ring-inset ring-ring',
+                      )}
+                    >
+                      {d.getDate()}
+                    </button>
+                  )
+                }}
+              </For>
+            </div>
           </div>
         </Portal>
       </Show>

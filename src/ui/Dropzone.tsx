@@ -67,9 +67,7 @@ export function Dropzone(props: DropzoneProps): JSX.Element {
       }}
     >
       <UploadCloud class="h-8 w-8 text-muted-foreground" />
-      <p class="text-sm font-medium text-foreground">
-        {props.label ?? 'Drag files here or click to browse'}
-      </p>
+      <p class="text-sm font-medium text-foreground">{props.label ?? 'Drag files here or click to browse'}</p>
       <Show when={props.hint}>
         <p class="text-xs text-muted-foreground">{props.hint}</p>
       </Show>
