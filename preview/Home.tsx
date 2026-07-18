@@ -32,6 +32,16 @@ const STATS = [
   { n: '10k+', label: 'virtualized rows' },
 ]
 
+const REPO_URL = 'https://github.com/A4uikit/a4ui'
+
+// Google Lighthouse scores for this docs site.
+const SCORES = [
+  { n: '100', label: 'Performance' },
+  { n: '100', label: 'Accessibility' },
+  { n: '100', label: 'Best Practices' },
+  { n: '100', label: 'SEO' },
+]
+
 const CATEGORIES = [
   { title: 'Actions', items: 'Button · Dropdown' },
   { title: 'Data', items: 'Table · VirtualList · Pagination · Badge' },
@@ -57,7 +67,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         </p>
         <div class="mt-8 flex items-center justify-center gap-3">
           <Button onClick={props.onExplore}>Explore components →</Button>
-          <Button variant="outline" onClick={() => window.open('https://github.com', '_blank')}>
+          <Button variant="outline" onClick={() => window.open(REPO_URL, '_blank', 'noopener,noreferrer')}>
             GitHub
           </Button>
         </div>
@@ -73,6 +83,37 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
             </Card>
           )}
         </For>
+      </section>
+
+      {/* Lighthouse — perfect scores */}
+      <section class="space-y-4">
+        <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          Perfect Lighthouse scores
+        </h2>
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <For each={SCORES}>
+            {(s) => (
+              <Card glass glow class="p-5 text-center">
+                <div class="flex items-baseline justify-center gap-1">
+                  <span class="text-4xl font-bold tabular-nums text-primary">{s.n}</span>
+                  <span class="text-sm text-muted-foreground">/100</span>
+                </div>
+                <div class="mt-1 text-xs uppercase tracking-wide text-muted-foreground">{s.label}</div>
+              </Card>
+            )}
+          </For>
+        </div>
+        <p class="text-center text-xs text-muted-foreground">
+          Measured with Google Lighthouse on this site — a perfect 100 across the board.{' '}
+          <a
+            href="https://a4uikit.github.io/a4ui/lighthouse.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-primary underline underline-offset-2"
+          >
+            View the report
+          </a>
+        </p>
       </section>
 
       {/* 3 capas */}

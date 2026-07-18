@@ -36,6 +36,18 @@ const DocsNav = lazy(() => import('./DocsNav').then((m) => ({ default: m.DocsNav
 const CommandPalette = lazy(() => import('./CommandPalette'))
 const SettingsDrawer = lazy(() => import('./SettingsDrawer').then((m) => ({ default: m.SettingsDrawer })))
 
+// Brand marks (lucide dropped its logo icons) — monochrome, follow currentColor.
+const GithubIcon = () => (
+  <svg viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4" aria-hidden="true">
+    <path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-.87-.01-1.7-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02.8-.22 1.65-.33 2.5-.33.85 0 1.7.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.75 0 .27.18.58.69.48A10.01 10.01 0 0 0 22 12c0-5.52-4.48-10-10-10z" />
+  </svg>
+)
+const NpmIcon = () => (
+  <svg viewBox="0 0 18 7" fill="currentColor" class="h-auto w-6" aria-hidden="true">
+    <path d="M0 0h18v6H9v1H5V6H0V0zm1 5h2V2h1v3h1V1H1v4zm5-4v5h2V5h2V1H6zm2 1h1v2H8V2zm3-1v4h2V2h1v3h1V2h1v3h1V1h-6z" />
+  </svg>
+)
+
 const FIRST_DOC = 'instalacion'
 
 type View = { kind: 'home' } | { kind: 'docs'; id: string }
@@ -137,6 +149,26 @@ export function App(): JSX.Element {
         >
           <SettingsIcon class="h-4 w-4" />
         </button>
+        <a
+          href="https://github.com/A4uikit/a4ui"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden h-9 w-9 place-items-center rounded-md border border-border bg-card/50 text-muted-foreground transition hover:text-foreground sm:grid"
+          aria-label="GitHub repository"
+          title="GitHub"
+        >
+          <GithubIcon />
+        </a>
+        <a
+          href="https://www.npmjs.com/package/@a4ui/core"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden h-9 w-9 place-items-center rounded-md border border-border bg-card/50 text-muted-foreground transition hover:text-foreground sm:grid"
+          aria-label="npm package"
+          title="npm"
+        >
+          <NpmIcon />
+        </a>
         <EffectsToggle />
         <ThemeToggle />
       </div>

@@ -6,6 +6,17 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.4.3] — 2026-07-18
+
+### Changed
+
+- README Lighthouse badges now link to the published Lighthouse report
+  (`/lighthouse.html`) instead of the docs home. Scores re-verified at 100 across
+  Performance / Accessibility / Best Practices / SEO after adding a `robots.txt`.
+  (Docs-site changes — a themes tutorial page, live theme-settings persistence,
+  the Lighthouse showcase, and GitHub/npm links — ship on the site, not the npm
+  package.)
+
 ## [0.4.2] — 2026-07-18
 
 ### Fixed
