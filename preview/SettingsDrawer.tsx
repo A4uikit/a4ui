@@ -199,18 +199,19 @@ export function SettingsDrawer(props: SettingsDrawerProps): JSX.Element {
           <div class="space-y-1.5">
             <For each={TOKENS}>
               {(t) => (
-                <label class="flex items-center justify-between gap-2 rounded-md px-1 py-1 text-sm hover:bg-muted/40">
-                  <span class="truncate text-muted-foreground">{t.label}</span>
-                  <span class="flex items-center gap-2">
-                    <span class="font-mono text-[10px] text-muted-foreground">{values[t.name]}</span>
-                    <input
-                      type="color"
-                      value={hslStrToHex(values[t.name] ?? '0 0% 0%')}
-                      onInput={(e) => setVar(t.name, hexToHslStr(e.currentTarget.value))}
-                      class="h-7 w-9 cursor-pointer rounded border border-border bg-transparent"
-                      aria-label={t.label}
-                    />
-                  </span>
+                // Swatch on the LEFT so the native color popup opens toward the
+                // screen centre (the drawer is flush to the right edge — a swatch
+                // on the right would open its picker off-screen and get clipped).
+                <label class="flex items-center gap-3 rounded-md px-1 py-1.5 text-sm hover:bg-muted/40">
+                  <input
+                    type="color"
+                    value={hslStrToHex(values[t.name] ?? '0 0% 0%')}
+                    onInput={(e) => setVar(t.name, hexToHslStr(e.currentTarget.value))}
+                    class="h-8 w-10 shrink-0 cursor-pointer rounded border border-border bg-transparent"
+                    aria-label={t.label}
+                  />
+                  <span class="flex-1 truncate text-muted-foreground">{t.label}</span>
+                  <span class="font-mono text-[10px] text-muted-foreground">{values[t.name]}</span>
                 </label>
               )}
             </For>
