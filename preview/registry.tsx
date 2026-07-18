@@ -2025,4 +2025,108 @@ toast.error('Failed to save')`,
   onMarkAllRead={markAllRead}
 />`,
   },
+  {
+    id: 'color-picker',
+    title: 'ColorPicker',
+    group: 'Forms',
+    blurb: 'Pick a color via the native picker, a hex field, or preset swatches.',
+    demo: () => {
+      const [color, setColor] = createSignal('#3b82f6')
+      return (
+        <div class="space-y-3">
+          <UI.ColorPicker value={color()} onChange={setColor} />
+          <div class="flex items-center gap-2 text-sm text-muted-foreground">
+            Selected: <span class="font-mono">{color()}</span>
+            <span class="h-4 w-4 rounded" style={{ background: color() }} />
+          </div>
+        </div>
+      )
+    },
+    code: `const [color, setColor] = createSignal('#3b82f6')
+<ColorPicker value={color()} onChange={setColor} />`,
+  },
+  {
+    id: 'comment',
+    title: 'Comment',
+    group: 'Data',
+    blurb: 'Threaded comment layout with avatars, timestamps, actions, and nested replies.',
+    demo: () => (
+      <div class="w-full max-w-lg">
+        <UI.Comment
+          actions={() => (
+            <>
+              <button type="button" class="hover:text-foreground">
+                Reply
+              </button>
+              <button type="button" class="hover:text-foreground">
+                Like
+              </button>
+            </>
+          )}
+          comment={{
+            id: '1',
+            author: 'Marina Vega',
+            time: '2h ago',
+            content: 'This component API is really clean — shipping it. 🚀',
+            replies: [
+              {
+                id: '2',
+                author: 'Theo Nakamura',
+                time: '1h ago',
+                content: 'Agreed. The nested threading is a nice touch.',
+              },
+            ],
+          }}
+        />
+      </div>
+    ),
+    code: `<Comment
+  comment={{ id: '1', author: 'Marina', content: 'Nice!', replies: [...] }}
+  actions={(c) => <button>Reply</button>}
+/>`,
+  },
+  {
+    id: 'calendar-heatmap',
+    title: 'CalendarHeatmap',
+    group: 'Data',
+    blurb: 'GitHub-style activity grid — intensity per day over the last weeks.',
+    demo: () => {
+      const today = new Date()
+      const values = Array.from({ length: 140 }, (_, i) => {
+        const d = new Date(today)
+        d.setDate(d.getDate() - i)
+        return { date: d.toISOString().slice(0, 10), count: (i * 5) % 12 }
+      })
+      return (
+        <div class="w-full overflow-x-auto">
+          <UI.CalendarHeatmap values={values} weeks={20} />
+        </div>
+      )
+    },
+    code: `<CalendarHeatmap
+  weeks={26}
+  values={[{ date: '2026-07-10', count: 3 }, …]}
+/>`,
+  },
+  {
+    id: 'portal',
+    title: 'Portal',
+    group: 'Layout',
+    blurb:
+      'Renders children into a detached DOM node (default <body>) — escapes overflow and stacking contexts.',
+    demo: () => (
+      <div class="text-sm text-muted-foreground">
+        The badge below is rendered via <code class="rounded bg-muted px-1 font-mono">Portal</code> into{' '}
+        <code class="rounded bg-muted px-1 font-mono">&lt;body&gt;</code>, so it escapes this card →
+        <UI.Portal>
+          <div class="fixed bottom-4 left-4 z-50 rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground shadow-lg">
+            Rendered via Portal
+          </div>
+        </UI.Portal>
+      </div>
+    ),
+    code: `<Portal>
+  <div class="fixed inset-0 grid place-items-center">Floating layer</div>
+</Portal>`,
+  },
 ]

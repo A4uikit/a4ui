@@ -6,6 +6,15 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.7.0] — 2026-07-18
+
+### Added
+
+- The **last four roadmap components**: `ColorPicker` (native picker + hex field +
+  swatches), `Comment` (threaded replies), `CalendarHeatmap` (contribution-style
+  activity grid), and `Portal` (render into a detached DOM node). The component
+  roadmap is now essentially complete.
+
 ## [0.6.0] — 2026-07-18
 
 ### Added
