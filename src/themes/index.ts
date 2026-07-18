@@ -12,7 +12,7 @@ import { createSignal } from 'solid-js'
 import { space, TOKEN_ORDER, themes, type Palette, type ThemeDefinition } from './palettes'
 
 export type { Palette, ThemeDefinition } from './palettes'
-export { themes, space, dino, doctor, scientist, soccer, TOKEN_ORDER } from './palettes'
+export { themes, space, dino, doctor, scientist, soccer, snow, christmas, TOKEN_ORDER } from './palettes'
 
 // Distinct from the light/dark mode key ('a4ui-theme' in ./lib/theme) — the two
 // persist independently, so picking a palette and toggling light/dark don't

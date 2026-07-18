@@ -409,3 +409,102 @@
     animation: none !important;
   }
 }
+
+/* ---- Snow scenery (the "snow" theme) ------------------------------------ */
+#snow,
+#xmas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+#snow .snow-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 800px at 50% -12%, hsl(var(--primary) / 0.18), transparent 60%),
+    radial-gradient(900px 700px at 82% 8%, hsl(var(--accent) / 0.14), transparent 60%), hsl(var(--background));
+}
+/* Snowflakes (shared by snow + christmas). Each drifts down with a sideways sway. */
+#snow .flake,
+#xmas .flake {
+  position: absolute;
+  top: -12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 4px rgba(255, 255, 255, 0.6);
+  will-change: transform;
+}
+[data-theme='light'] #snow .flake,
+[data-theme='light'] #xmas .flake {
+  background: hsl(205 45% 82%);
+  box-shadow: 0 0 3px hsl(205 45% 72% / 0.6);
+}
+@keyframes snowFall {
+  0% {
+    transform: translate(0, -12px);
+  }
+  100% {
+    transform: translate(var(--sway, 12px), 112vh);
+  }
+}
+/* Snow settling at the bottom + a frosted cap on cards (snow theme only). */
+#snow .snow-bank {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 9vh;
+  background: linear-gradient(to top, hsl(0 0% 100% / 0.5), transparent);
+  filter: blur(2px);
+}
+[data-theme='light'] #snow .snow-bank {
+  background: linear-gradient(to top, hsl(0 0% 100% / 0.95), transparent);
+}
+[data-scene='snow'] .card::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: 10px;
+  right: 10px;
+  height: 5px;
+  border-radius: 9999px;
+  background: hsl(0 0% 100% / 0.8);
+  filter: blur(1.5px);
+  pointer-events: none;
+}
+
+/* ---- Christmas scenery (the "christmas" theme) -------------------------- */
+#xmas .xmas-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1000px 700px at 50% -12%, hsl(var(--primary) / 0.14), transparent 55%),
+    radial-gradient(900px 600px at 15% 16%, hsl(var(--accent) / 0.16), transparent 60%),
+    hsl(var(--background));
+}
+#xmas .light {
+  position: absolute;
+  top: 10px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  animation: twinkleLight 2.2s ease-in-out infinite;
+}
+@keyframes twinkleLight {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 9px currentColor;
+  }
+  50% {
+    opacity: 0.35;
+    box-shadow: 0 0 3px currentColor;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not(.force-motion) #snow .flake,
+  html:not(.force-motion) #xmas .flake,
+  html:not(.force-motion) #xmas .light {
+    animation: none !important;
+  }
+}

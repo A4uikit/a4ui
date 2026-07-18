@@ -66,12 +66,19 @@ export { Breadcrumb, type BreadcrumbItem } from './ui/Breadcrumb'
 export { AlertDialog } from './ui/AlertDialog'
 export { ContextMenu, type ContextMenuItem } from './ui/ContextMenu'
 export { Combobox } from './ui/Combobox'
+export { Carousel, type CarouselProps } from './ui/Carousel'
+export { Stepper, type StepItem, type StepperProps } from './ui/Stepper'
+export { Timeline, type TimelineItem, type TimelineTone, type TimelineProps } from './ui/Timeline'
+export { Rating, type RatingProps } from './ui/Rating'
+export { Empty, type EmptyProps } from './ui/Empty'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
 export { AppShell } from './layout/AppShell'
 export { SpaceBackground } from './layout/SpaceBackground'
 export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'
+export { SnowScenery } from './layout/SnowScenery'
+export { ChristmasBackground } from './layout/ChristmasBackground'
 export { ThemeToggle } from './layout/ThemeToggle'
 export { EffectsToggle } from './layout/EffectsToggle'
 export { NavGroup } from './layout/NavGroup'
@@ -86,6 +93,8 @@ export {
   doctor,
   scientist,
   soccer,
+  snow,
+  christmas,
   activeTheme,
   selectTheme,
   applyThemeDefinition,

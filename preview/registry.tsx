@@ -1275,4 +1275,118 @@ toast.error('Failed to save')`,
   <NavLink href="/payments">Payments</NavLink>
 </NavGroup>`,
   },
+  {
+    id: 'carousel',
+    title: 'Carousel',
+    group: 'Data',
+    blurb:
+      'One slide at a time with arrows, clickable dots, arrow-key nav, and optional autoplay (pauses on hover).',
+    demo: () => (
+      <div class="w-full max-w-md">
+        <UI.Carousel
+          autoplayMs={3500}
+          slides={[1, 2, 3].map((n) => (
+            <div class="grid h-40 place-items-center bg-muted text-2xl font-bold text-foreground">
+              Slide {n}
+            </div>
+          ))}
+        />
+      </div>
+    ),
+    code: `<Carousel
+  autoplayMs={3500}
+  slides={[<Slide1 />, <Slide2 />, <Slide3 />]}
+/>`,
+  },
+  {
+    id: 'stepper',
+    title: 'Stepper',
+    group: 'Navigation',
+    blurb: 'Progress across ordered steps — completed, active, and upcoming states. Horizontal or vertical.',
+    demo: () => {
+      const [active, setActive] = createSignal(1)
+      return (
+        <div class="w-full max-w-lg space-y-4">
+          <UI.Stepper
+            active={active()}
+            onStepClick={setActive}
+            steps={[
+              { label: 'Account', description: 'Your details' },
+              { label: 'Plan', description: 'Pick a tier' },
+              { label: 'Payment', description: 'Add a card' },
+              { label: 'Done' },
+            ]}
+          />
+          <div class="flex gap-2">
+            <UI.Button variant="outline" onClick={() => setActive((s) => Math.max(0, s - 1))}>
+              Back
+            </UI.Button>
+            <UI.Button onClick={() => setActive((s) => Math.min(3, s + 1))}>Next</UI.Button>
+          </div>
+        </div>
+      )
+    },
+    code: `const [active, setActive] = createSignal(1)
+<Stepper active={active()} onStepClick={setActive} steps={[
+  { label: 'Account', description: 'Your details' },
+  { label: 'Plan', description: 'Pick a tier' },
+  { label: 'Payment' },
+]} />`,
+  },
+  {
+    id: 'timeline',
+    title: 'Timeline',
+    group: 'Data',
+    blurb: 'Vertical sequence of events with tinted dots, titles, timestamps, and descriptions.',
+    demo: () => (
+      <div class="w-full max-w-md">
+        <UI.Timeline
+          items={[
+            { title: 'Order placed', time: '09:24', tone: 'primary', description: 'Payment confirmed.' },
+            { title: 'Packed', time: '11:02', tone: 'default' },
+            { title: 'Shipped', time: '15:40', tone: 'success', description: 'Out for delivery.' },
+            { title: 'Delayed', time: '—', tone: 'danger', description: 'Weather hold.' },
+          ]}
+        />
+      </div>
+    ),
+    code: `<Timeline items={[
+  { title: 'Order placed', time: '09:24', tone: 'primary' },
+  { title: 'Shipped', time: '15:40', tone: 'success' },
+]} />`,
+  },
+  {
+    id: 'rating',
+    title: 'Rating',
+    group: 'Forms',
+    blurb:
+      'Star rating with hover preview, click-to-set, and keyboard support. Set readonly to just display.',
+    controls: {
+      readonly: { type: 'boolean', label: 'readonly', default: false },
+    },
+    demo: (c) => {
+      const [value, setValue] = createSignal(3)
+      return <UI.Rating value={value()} onChange={setValue} readonly={c.readonly as boolean} />
+    },
+    code: (c) => `const [value, setValue] = createSignal(3)
+<Rating value={value()} onChange={setValue}${c.readonly ? ' readonly' : ''} />`,
+  },
+  {
+    id: 'empty',
+    title: 'Empty',
+    group: 'Feedback',
+    blurb: 'Placeholder for empty states — icon, title, description, and an optional action slot.',
+    demo: () => (
+      <UI.Empty
+        title="No invoices yet"
+        description="When you create your first invoice it'll show up here."
+        action={<UI.Button>New invoice</UI.Button>}
+      />
+    ),
+    code: `<Empty
+  title="No invoices yet"
+  description="When you create your first invoice it'll show up here."
+  action={<Button>New invoice</Button>}
+/>`,
+  },
 ]

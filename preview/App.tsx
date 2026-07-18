@@ -20,9 +20,11 @@ import {
   activeTheme,
   AppShell,
   Button,
+  ChristmasBackground,
   Drawer,
   EffectsToggle,
   initTheme,
+  SnowScenery,
   SpaceBackground,
   ThemedScenery,
   ThemeToggle,
@@ -32,13 +34,20 @@ import { Home } from './Home'
 import { ThemeSelect } from './ThemeSelect'
 import { applyOverrides } from './themeStore'
 
-// Backdrop follows the active theme: Space keeps its bespoke starfield; every
-// other theme gets the lightweight token-tinted ThemedScenery with its motifs.
+// Backdrop follows the active theme: space keeps its starfield; snow and
+// christmas have bespoke scenery; every other theme gets the token-tinted
+// ThemedScenery with its motifs.
 function Scenery(): JSX.Element {
   return (
-    <Show when={activeTheme().motifs} fallback={<SpaceBackground />}>
-      {(motifs) => <ThemedScenery motifs={motifs()} />}
-    </Show>
+    <Switch fallback={<SpaceBackground />}>
+      <Match when={activeTheme().name === 'snow'}>
+        <SnowScenery />
+      </Match>
+      <Match when={activeTheme().name === 'christmas'}>
+        <ChristmasBackground />
+      </Match>
+      <Match when={activeTheme().motifs}>{(motifs) => <ThemedScenery motifs={motifs()} />}</Match>
+    </Switch>
   )
 }
 
@@ -158,7 +167,11 @@ export function App(): JSX.Element {
           <Button variant={navVariant(isDocs())} onClick={() => openDocs()}>
             Docs
           </Button>
-          <Button variant={navVariant(inExamples())} onClick={() => setView({ kind: 'examples' })}>
+          <Button
+            class="hidden sm:inline-flex"
+            variant={navVariant(inExamples())}
+            onClick={() => setView({ kind: 'examples' })}
+          >
             Examples
           </Button>
         </nav>

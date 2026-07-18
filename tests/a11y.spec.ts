@@ -8,7 +8,7 @@ import { expect, test } from '@playwright/test'
 // Desktop only (the palettes/DOM are identical across viewports; running once
 // keeps the suite fast).
 
-const THEMES = ['space', 'dino', 'doctor', 'scientist', 'soccer'] as const
+const THEMES = ['space', 'dino', 'doctor', 'scientist', 'soccer', 'snow', 'christmas'] as const
 const MODES = ['dark', 'light'] as const
 
 // Pages that between them render most token combinations (buttons of every

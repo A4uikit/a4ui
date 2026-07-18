@@ -278,5 +278,91 @@ export const soccer: ThemeDefinition = {
   },
 }
 
+// --- Snow: falling-snow winter — icy blue + frost white --------------------
+export const snow: ThemeDefinition = {
+  name: 'snow',
+  label: 'Snow',
+  description: 'A snowy winter: icy blues and frost white, with snow drifting down.',
+  icon: '❄️',
+  motifs: ['❄️', '⛄', '🌨️', '🏔️', '🧣', '☃️'],
+  dark: {
+    background: '215 45% 12%',
+    foreground: '210 30% 92%',
+    card: '215 40% 16%',
+    'card-foreground': '210 30% 92%',
+    muted: '215 30% 22%',
+    'muted-foreground': '210 20% 74%',
+    border: '215 25% 28%',
+    input: '215 25% 28%',
+    primary: '200 85% 38%',
+    'primary-foreground': '0 0% 100%',
+    accent: '190 75% 50%',
+    'accent-foreground': '200 45% 12%',
+    ring: '200 85% 38%',
+    destructive: '0 72% 52%',
+    'destructive-foreground': '0 0% 100%',
+  },
+  light: {
+    background: '205 45% 96%',
+    foreground: '215 45% 18%',
+    card: '0 0% 100%',
+    'card-foreground': '215 45% 18%',
+    muted: '205 35% 92%',
+    'muted-foreground': '215 22% 38%',
+    border: '205 30% 85%',
+    input: '205 35% 91%',
+    primary: '205 85% 38%',
+    'primary-foreground': '0 0% 100%',
+    accent: '190 80% 40%',
+    'accent-foreground': '200 45% 12%',
+    ring: '205 85% 38%',
+    destructive: '0 72% 48%',
+    'destructive-foreground': '0 0% 100%',
+  },
+}
+
+// --- Christmas: cozy holiday — cranberry red + pine green + candlelight -----
+export const christmas: ThemeDefinition = {
+  name: 'christmas',
+  label: 'Christmas',
+  description: 'Cozy holiday night: cranberry red, pine green, a tree, lights, and Santa.',
+  icon: '🎄',
+  motifs: ['🎄', '🎅', '🎁', '⭐', '🔔', '❄️', '🦌', '🕯️'],
+  dark: {
+    background: '160 30% 9%',
+    foreground: '40 30% 92%',
+    card: '160 28% 13%',
+    'card-foreground': '40 30% 92%',
+    muted: '160 20% 19%',
+    'muted-foreground': '40 18% 74%',
+    border: '160 20% 24%',
+    input: '160 20% 24%',
+    primary: '0 72% 46%',
+    'primary-foreground': '0 0% 100%',
+    accent: '140 55% 32%',
+    'accent-foreground': '0 0% 100%',
+    ring: '0 72% 46%',
+    destructive: '0 72% 52%',
+    'destructive-foreground': '0 0% 100%',
+  },
+  light: {
+    background: '40 44% 96%',
+    foreground: '160 40% 14%',
+    card: '0 0% 100%',
+    'card-foreground': '160 40% 14%',
+    muted: '40 30% 92%',
+    'muted-foreground': '160 18% 34%',
+    border: '40 25% 84%',
+    input: '40 30% 91%',
+    primary: '0 70% 44%',
+    'primary-foreground': '0 0% 100%',
+    accent: '140 55% 32%',
+    'accent-foreground': '0 0% 100%',
+    ring: '0 70% 44%',
+    destructive: '0 72% 48%',
+    'destructive-foreground': '0 0% 100%',
+  },
+}
+
 /** All built-in themes, in picker order. Space is the default. */
-export const themes: ThemeDefinition[] = [space, dino, doctor, scientist, soccer]
+export const themes: ThemeDefinition[] = [space, dino, doctor, scientist, soccer, snow, christmas]
