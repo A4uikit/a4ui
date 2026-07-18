@@ -6,8 +6,9 @@ import { RotateCcw, X } from 'lucide-solid'
 import { createMemo, For, onCleanup, onMount, type JSX } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { activeTheme, Badge, selectTheme, themes } from '../src'
+import { activeTheme, Badge, themes } from '../src'
 import { CodeBlock } from './CodeBlock'
+import { chooseBaseTheme, setOverride } from './themeStore'
 
 interface TokenDef {
   name: string
@@ -105,20 +106,20 @@ export function SettingsDrawer(props: SettingsDrawerProps): JSX.Element {
     onCleanup(() => window.removeEventListener('keydown', onKey))
   })
 
-  // Live-apply a single token globally (inline on <html> wins over the theme).
+  // Live-apply a single token globally (inline on <html> wins over the theme) and
+  // remember it for this browser session so a refresh keeps the edit.
   const setVar = (name: string, hsl: string) => {
     setValues(name, hsl)
-    document.documentElement.style.setProperty(`--${name}`, hsl)
+    setOverride(name, hsl)
   }
 
-  // Switch base theme: drop inline overrides, apply the theme, reseed pickers.
+  // Switch base theme: drop custom edits, apply the theme, reseed pickers.
   const chooseBase = (name: string) => {
-    for (const t of TOKENS) document.documentElement.style.removeProperty(`--${t.name}`)
-    selectTheme(name)
+    chooseBaseTheme(name)
     seed()
   }
 
-  // Clear edits back to the active theme's palette.
+  // Reset → back to the currently selected preset (clears session edits).
   const reset = () => chooseBase(activeTheme().name)
 
   const cssExport = createMemo(

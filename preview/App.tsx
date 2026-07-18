@@ -19,6 +19,7 @@ import {
 } from '../src'
 import { Home } from './Home'
 import { ThemeSelect } from './ThemeSelect'
+import { applyOverrides } from './themeStore'
 
 // Backdrop follows the active theme: Space keeps its bespoke starfield; every
 // other theme gets the lightweight token-tinted ThemedScenery with its motifs.
@@ -74,9 +75,11 @@ export function App(): JSX.Element {
     setSettingsOpen(true)
   }
 
-  // Restore the saved theme (palette) on boot, then wire ⌘K / Ctrl+K.
+  // Restore the saved theme (palette) + any session token edits on boot, then
+  // wire ⌘K / Ctrl+K.
   onMount(() => {
     initTheme()
+    applyOverrides()
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()

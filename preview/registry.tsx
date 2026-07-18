@@ -2,7 +2,7 @@
 // entry renders a live demo (dogfooding the real components) plus the code you'd
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
-import { createSignal, type JSX } from 'solid-js'
+import { createSignal, For, type JSX } from 'solid-js'
 
 import * as UI from '../src'
 
@@ -96,6 +96,52 @@ export function Example() {
     </>
   )
 }`,
+  },
+  {
+    id: 'themes',
+    title: 'Themes',
+    group: 'Get started',
+    blurb:
+      'Swap the whole color palette at runtime. Five built-in themes; apply one by name, restore the saved one on boot, or bring your own. Separate from the light/dark switch — a theme recolors under either mode.',
+    demo: () => (
+      <div class="space-y-3">
+        <div class="flex flex-wrap gap-2">
+          <For each={UI.themes}>
+            {(t) => (
+              <UI.Button
+                variant={t.name === UI.activeTheme().name ? 'primary' : 'outline'}
+                onClick={() => UI.selectTheme(t.name)}
+              >
+                {t.icon} {t.label}
+              </UI.Button>
+            )}
+          </For>
+        </div>
+        <p class="text-sm text-muted-foreground">
+          Click one — the whole site recolors live, and the choice is remembered across reloads. Or open the ⚙
+          theme-settings drawer (top bar) to fine-tune every token and export the CSS/JSON.
+        </p>
+      </div>
+    ),
+    code: `import { initTheme, selectTheme } from '@a4ui/core'
+
+// On app start — restore the saved theme (falls back to 'space')
+initTheme()
+
+// Switch anywhere: the UI recolors instantly and the choice persists
+selectTheme('dino') // 'space' | 'dino' | 'doctor' | 'scientist' | 'soccer'
+
+// ── Bring your own palette ─────────────────────────────────────────────
+// Design it live in the ⚙ theme-settings drawer, hit "Export — JSON", then:
+import { applyThemeDefinition, type ThemeDefinition } from '@a4ui/core'
+
+const brand: ThemeDefinition = {
+  name: 'brand', label: 'Brand', icon: '🎨', description: 'Our palette',
+  // 15 tokens each, as "H S% L%" channels (from the export):
+  dark:  { background: '222 47% 7%', foreground: '213 31% 91%', primary: '160 84% 39%', /* … */ },
+  light: { background: '0 0% 100%',  foreground: '222 47% 11%', primary: '160 84% 34%', /* … */ },
+}
+applyThemeDefinition(brand) // or add it to your own picker`,
   },
 
   // ---- Actions --------------------------------------------------------------

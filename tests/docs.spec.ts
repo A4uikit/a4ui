@@ -303,6 +303,29 @@ test.describe('interactions', () => {
     await expect.poll(primary).not.toBe(before)
   })
 
+  test('theme edits persist across reload; reset returns to the selected preset', async ({ page }) => {
+    await page.goto('/#/button')
+    const primary = () =>
+      page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim())
+    const themePrimary = await primary()
+    await page.getByRole('button', { name: 'Theme settings' }).click()
+    await page.locator('input[aria-label="Primary"]').evaluate((el) => {
+      ;(el as HTMLInputElement).value = '#e0219a'
+      el.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+    await expect.poll(primary).not.toBe(themePrimary)
+    const edited = await primary()
+    // An accidental refresh keeps the edit (sessionStorage).
+    await page.reload()
+    await expect.poll(primary).toBe(edited)
+    // Reset → back to the currently selected preset, and it stays after reload.
+    await page.getByRole('button', { name: 'Theme settings' }).click()
+    await page.getByRole('button', { name: 'Reset to theme' }).click()
+    await expect.poll(primary).toBe(themePrimary)
+    await page.reload()
+    await expect.poll(primary).toBe(themePrimary)
+  })
+
   test('cursor glow follows the pointer on space and themed backdrops', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'mobile', 'pointer glow is hover-only')
     const glowOpacity = () =>
