@@ -79,6 +79,25 @@ export { Descriptions, type DescriptionItem, type DescriptionsProps } from './ui
 export { Result, type ResultStatus, type ResultProps } from './ui/Result'
 export { Splitter, type SplitterProps } from './ui/Splitter'
 export { Command, type CommandItem, type CommandProps } from './ui/Command'
+export { TagInput, type TagInputProps } from './ui/TagInput'
+export { Collapse } from './ui/Collapse'
+export { RingProgress, type RingProgressProps } from './ui/RingProgress'
+export { BackToTop, type BackToTopProps } from './ui/BackToTop'
+export {
+  FloatingActionButton,
+  type FloatingActionButtonProps,
+  type FloatingActionButtonPosition,
+} from './ui/FloatingActionButton'
+export { Anchor, type AnchorItem, type AnchorProps } from './ui/Anchor'
+export { Highlight, type HighlightProps } from './ui/Highlight'
+export { List, type ListItem } from './ui/List'
+export { Countdown, type CountdownProps } from './ui/Countdown'
+export { Affix } from './ui/Affix'
+export { Transfer, type TransferItem, type TransferProps } from './ui/Transfer'
+export { Image, type ImageProps } from './ui/Image'
+export { SpeedDial, type SpeedDialAction, type SpeedDialProps } from './ui/SpeedDial'
+export { BottomNavigation, type BottomNavItem, type BottomNavigationProps } from './ui/BottomNavigation'
+export { Marquee } from './ui/Marquee'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.

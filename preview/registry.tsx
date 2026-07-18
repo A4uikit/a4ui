@@ -2,6 +2,7 @@
 // entry renders a live demo (dogfooding the real components) plus the code you'd
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
+import { Home, Plus, Search, User } from 'lucide-solid'
 import { createSignal, For, type JSX } from 'solid-js'
 
 import * as UI from '../src'
@@ -1577,5 +1578,250 @@ toast.error('Failed to save')`,
   { label: 'New file', hint: '⌘N', onSelect: createFile },
   { label: 'Search', hint: '⌘K', onSelect: openSearch },
 ]} />`,
+  },
+  {
+    id: 'tag-input',
+    title: 'TagInput',
+    group: 'Forms',
+    blurb: 'Multi-value text entry rendered as removable chips. Enter adds, Backspace removes the last.',
+    demo: () => {
+      const [tags, setTags] = createSignal(['solid', 'ui'])
+      return (
+        <div class="max-w-sm">
+          <UI.TagInput value={tags()} onChange={setTags} placeholder="Add a tag…" />
+        </div>
+      )
+    },
+    code: `const [tags, setTags] = createSignal(['solid', 'ui'])
+<TagInput value={tags()} onChange={setTags} placeholder="Add a tag…" />`,
+  },
+  {
+    id: 'collapse',
+    title: 'Collapse',
+    group: 'Layout',
+    blurb: 'A single expand/collapse region with a rotating chevron.',
+    demo: () => {
+      const [open, setOpen] = createSignal(true)
+      return (
+        <div class="w-full max-w-md rounded-lg border border-border">
+          <UI.Collapse open={open()} onOpenChange={setOpen} title="Shipping details">
+            Ships in 2–3 business days via your selected carrier.
+          </UI.Collapse>
+        </div>
+      )
+    },
+    code: `const [open, setOpen] = createSignal(true)
+<Collapse open={open()} onOpenChange={setOpen} title="Shipping details">
+  Ships in 2–3 business days.
+</Collapse>`,
+  },
+  {
+    id: 'ring-progress',
+    title: 'RingProgress',
+    group: 'Feedback',
+    blurb: 'Circular percentage progress ring.',
+    demo: () => <UI.RingProgress value={68} />,
+    code: `<RingProgress value={68} />`,
+  },
+  {
+    id: 'back-to-top',
+    title: 'BackToTop',
+    group: 'Navigation',
+    blurb: 'Floating button that appears after scrolling and returns to the top (bottom-right).',
+    demo: () => (
+      <div class="text-sm text-muted-foreground">
+        Scroll the page down — a “back to top” button appears in the bottom-right corner.
+        <UI.BackToTop threshold={40} />
+      </div>
+    ),
+    code: `<BackToTop threshold={300} />`,
+  },
+  {
+    id: 'fab',
+    title: 'FloatingActionButton',
+    group: 'Actions',
+    blurb: 'Prominent circular primary action pinned to a corner of the viewport.',
+    demo: () => (
+      <div class="text-sm text-muted-foreground">
+        A floating action button is pinned to the bottom-right corner →
+        <UI.FloatingActionButton label="Compose" icon={<Plus class="h-6 w-6" />} />
+      </div>
+    ),
+    code: `<FloatingActionButton label="Compose" icon={<Plus />} />`,
+  },
+  {
+    id: 'anchor',
+    title: 'Anchor',
+    group: 'Navigation',
+    blurb: 'Table-of-contents scroll-spy that highlights the section currently in view.',
+    demo: () => (
+      <UI.Anchor
+        items={[
+          { id: 'intro', label: 'Introduction' },
+          { id: 'install', label: 'Installation' },
+          { id: 'usage', label: 'Usage' },
+        ]}
+      />
+    ),
+    code: `<Anchor items={[
+  { id: 'intro', label: 'Introduction' },
+  { id: 'usage', label: 'Usage' },
+]} />`,
+  },
+  {
+    id: 'highlight',
+    title: 'Highlight',
+    group: 'Data',
+    blurb: 'Highlights every match of a query within a string.',
+    demo: () => (
+      <div class="text-sm text-foreground">
+        <UI.Highlight text="The quick brown fox jumps over the lazy dog" query="o" />
+      </div>
+    ),
+    code: `<Highlight text="…the lazy dog" query="o" />`,
+  },
+  {
+    id: 'list',
+    title: 'List',
+    group: 'Data',
+    blurb: 'Structured list with avatar, title/description, meta, and actions per row.',
+    demo: () => (
+      <div class="w-full max-w-md">
+        <UI.List
+          items={[
+            {
+              title: 'Marina Vega',
+              description: 'Product designer',
+              meta: '2m ago',
+              avatar: <UI.Avatar fallback="MV" />,
+            },
+            {
+              title: 'Theo Nakamura',
+              description: 'Engineer',
+              meta: '1h ago',
+              avatar: <UI.Avatar fallback="TN" />,
+            },
+          ]}
+        />
+      </div>
+    ),
+    code: `<List items={[
+  { title: 'Marina Vega', description: 'Product designer', avatar: <Avatar fallback="MV" /> },
+]} />`,
+  },
+  {
+    id: 'countdown',
+    title: 'Countdown',
+    group: 'Data',
+    blurb: 'Live countdown to a target date — days, hours, minutes, seconds.',
+    demo: () => <UI.Countdown to={new Date(Date.now() + (3 * 24 * 60 + 15) * 60 * 1000)} />,
+    code: `<Countdown to={new Date('2026-12-31T00:00:00')} />`,
+  },
+  {
+    id: 'affix',
+    title: 'Affix',
+    group: 'Layout',
+    blurb: 'Pins its content to the top of the viewport once you scroll past it.',
+    demo: () => (
+      <div class="text-sm text-muted-foreground">
+        Wrap content in <code class="rounded bg-muted px-1 font-mono">&lt;Affix&gt;</code> to pin it while the
+        page scrolls.
+      </div>
+    ),
+    code: `<Affix offsetTop={80}>
+  <Toolbar />
+</Affix>`,
+  },
+  {
+    id: 'transfer',
+    title: 'Transfer',
+    group: 'Forms',
+    blurb: 'Dual-list picker — move items between an available and a selected column.',
+    demo: () => {
+      const [sel, setSel] = createSignal(['b'])
+      return (
+        <UI.Transfer
+          selected={sel()}
+          onChange={setSel}
+          items={[
+            { value: 'a', label: 'Apples' },
+            { value: 'b', label: 'Bananas' },
+            { value: 'c', label: 'Cherries' },
+            { value: 'd', label: 'Dates' },
+          ]}
+        />
+      )
+    },
+    code: `const [sel, setSel] = createSignal(['b'])
+<Transfer selected={sel()} onChange={setSel} items={items} />`,
+  },
+  {
+    id: 'image',
+    title: 'Image',
+    group: 'Data',
+    blurb: 'Lazy image with a click-to-zoom lightbox.',
+    demo: () => <UI.Image src="/og.png" alt="A4ui preview" class="h-32 w-56" />,
+    code: `<Image src="/hero.png" alt="Hero" />`,
+  },
+  {
+    id: 'speed-dial',
+    title: 'SpeedDial',
+    group: 'Actions',
+    blurb: 'A FAB that fans out into multiple quick actions.',
+    demo: () => (
+      <div class="text-sm text-muted-foreground">
+        Tap the + in the bottom-right corner to fan out actions →
+        <UI.SpeedDial
+          actions={[
+            { icon: <Home class="h-5 w-5" />, label: 'Home', onClick: () => {} },
+            { icon: <Search class="h-5 w-5" />, label: 'Search', onClick: () => {} },
+          ]}
+        />
+      </div>
+    ),
+    code: `<SpeedDial actions={[
+  { icon: <Home />, label: 'Home', onClick: goHome },
+]} />`,
+  },
+  {
+    id: 'bottom-navigation',
+    title: 'BottomNavigation',
+    group: 'Navigation',
+    blurb: 'Mobile-style bottom bar for top-level navigation.',
+    demo: () => {
+      const [tab, setTab] = createSignal('home')
+      return (
+        <div class="w-full max-w-sm overflow-hidden rounded-lg border border-border">
+          <UI.BottomNavigation
+            value={tab()}
+            onChange={setTab}
+            items={[
+              { value: 'home', label: 'Home', icon: <Home class="h-5 w-5" /> },
+              { value: 'search', label: 'Search', icon: <Search class="h-5 w-5" /> },
+              { value: 'me', label: 'Profile', icon: <User class="h-5 w-5" /> },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [tab, setTab] = createSignal('home')
+<BottomNavigation value={tab()} onChange={setTab} items={items} />`,
+  },
+  {
+    id: 'marquee',
+    title: 'Marquee',
+    group: 'Layout',
+    blurb: 'Seamless infinite scroller — pauses on hover, respects reduced motion.',
+    demo: () => (
+      <UI.Marquee class="w-full">
+        <span class="mx-6 text-sm text-muted-foreground">SolidJS</span>
+        <span class="mx-6 text-sm text-muted-foreground">Kobalte</span>
+        <span class="mx-6 text-sm text-muted-foreground">Tailwind</span>
+        <span class="mx-6 text-sm text-muted-foreground">Spatial Glass</span>
+      </UI.Marquee>
+    ),
+    code: `<Marquee>
+  <Logo1 /> <Logo2 /> <Logo3 />
+</Marquee>`,
   },
 ]
