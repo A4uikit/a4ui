@@ -5,14 +5,14 @@
 // that can't rely on a CSS media query alone. JS animation uses **Motion**
 // (motion.dev, the `motion` package) — `animate`/`scroll`/`inView`/`stagger` are
 // re-exported below so components (and consumers) share one motion engine.
-import { animate } from 'motion'
+import { animate, inView, scroll, stagger, spring } from 'motion'
 import { createEffect, createSignal, onCleanup, untrack, type Accessor } from 'solid-js'
 
 import { isCalm } from './effects'
 
 // Re-export Motion's imperative API so the whole library shares one engine and
 // consumers can reach it without a second dependency.
-export { animate, inView, scroll, stagger, spring } from 'motion'
+export { animate, inView, scroll, stagger, spring }
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
@@ -153,5 +153,39 @@ export function animateIn(el: Element, opts: { y?: number; duration?: number; de
     el,
     { opacity: [0, 1], y: [opts.y ?? 8, 0] },
     { duration: opts.duration ?? 0.32, delay: opts.delay ?? 0, ease: 'easeOut' },
+  )
+}
+
+/**
+ * Reveal an element the first time it scrolls into view (fade + slide up), using
+ * Motion's `inView`. Reveals once (won't re-flash on re-entry) and is a no-op
+ * under reduced motion (the element stays visible). Returns a stop function.
+ *
+ * @example
+ * ```tsx
+ * let el!: HTMLDivElement
+ * onMount(() => revealOnScroll(el, { amount: 0.3 }))
+ * return <section ref={el}>…</section>
+ * ```
+ */
+export function revealOnScroll(
+  el: Element,
+  opts: { y?: number; duration?: number; amount?: number } = {},
+): () => void {
+  if (motionReduced()) return () => {}
+  ;(el as HTMLElement).style.opacity = '0'
+  let done = false
+  return inView(
+    el,
+    () => {
+      if (done) return
+      done = true
+      animate(
+        el,
+        { opacity: [0, 1], y: [opts.y ?? 16, 0] },
+        { duration: opts.duration ?? 0.5, ease: 'easeOut' },
+      )
+    },
+    { amount: opts.amount ?? 0.2 },
   )
 }

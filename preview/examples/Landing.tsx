@@ -1,6 +1,6 @@
 // Example template — Landing / marketing page. Full-page composition dogfooding A4ui.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
-import { createSignal, For, type JSX } from 'solid-js'
+import { createSignal, For, onMount, type JSX } from 'solid-js'
 import { Zap, Shield, Boxes, Palette, Gauge, Search } from 'lucide-solid'
 
 import {
@@ -13,6 +13,7 @@ import {
   TagInput,
   RingProgress,
   BackToTop,
+  revealOnScroll,
 } from '../../src'
 
 interface Feature {
@@ -100,6 +101,20 @@ export default function Landing(): JSX.Element {
   const [open, setOpen] = createSignal<number | null>(0)
   const [interests, setInterests] = createSignal<string[]>(['solid', 'design-systems'])
 
+  let marqueeEl: HTMLElement | undefined
+  let featuresEl: HTMLElement | undefined
+  let statsEl: HTMLElement | undefined
+  let faqEl: HTMLElement | undefined
+  let newsletterEl: HTMLElement | undefined
+
+  onMount(() => {
+    if (marqueeEl) revealOnScroll(marqueeEl, { amount: 0.15 })
+    if (featuresEl) revealOnScroll(featuresEl, { amount: 0.15 })
+    if (statsEl) revealOnScroll(statsEl, { amount: 0.15 })
+    if (faqEl) revealOnScroll(faqEl, { amount: 0.15 })
+    if (newsletterEl) revealOnScroll(newsletterEl, { amount: 0.15 })
+  })
+
   return (
     <div class="mx-auto max-w-7xl space-y-16 py-8">
       {/* Hero */}
@@ -121,7 +136,7 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* Trusted by marquee */}
-      <section class="space-y-4">
+      <section ref={marqueeEl} class="space-y-4">
         <p class="text-center text-xs font-medium uppercase tracking-wide text-muted-foreground">
           Trusted by teams at
         </p>
@@ -137,7 +152,7 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* Features grid */}
-      <section class="space-y-8">
+      <section ref={featuresEl} class="space-y-8">
         <div class="mx-auto max-w-2xl text-center">
           <h2 class="text-3xl font-bold tracking-tight">Everything you need</h2>
           <p class="mt-3 text-muted-foreground">
@@ -160,7 +175,7 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* Stats band */}
-      <section class="rounded-xl border border-border bg-card p-8">
+      <section ref={statsEl} class="rounded-xl border border-border bg-card p-8">
         <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
           <For each={STATS}>
             {(stat) => (
@@ -197,7 +212,7 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* FAQ via Collapse items */}
-      <section class="mx-auto max-w-2xl space-y-4">
+      <section ref={faqEl} class="mx-auto max-w-2xl space-y-4">
         <div class="text-center">
           <h2 class="text-3xl font-bold tracking-tight">Frequently asked questions</h2>
         </div>
@@ -218,7 +233,7 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* Newsletter / interests */}
-      <section class="rounded-xl border border-border bg-card p-8">
+      <section ref={newsletterEl} class="rounded-xl border border-border bg-card p-8">
         <div class="mx-auto max-w-2xl space-y-4 text-center">
           <h2 class="text-2xl font-bold tracking-tight">Stay in the loop</h2>
           <p class="text-sm text-muted-foreground">

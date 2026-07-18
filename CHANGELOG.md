@@ -6,6 +6,18 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.11.1] — 2026-07-18
+
+### Added
+
+- **`revealOnScroll(el, opts)`** — a reveal-once-on-scroll helper (fade + slide,
+  via Motion's `inView`), reduced-motion aware. Exported alongside `animateIn`
+  and the re-exported Motion API.
+- Docs: a **Motion** page (Get started) with a live staggered-spring demo that
+  teaches `animate` / `stagger` / `animateIn` / `revealOnScroll`.
+- Example motion: the **Storefront** product grid staggers in on load, and
+  **Landing** sections reveal on scroll.
+
 ## [0.11.0] — 2026-07-18
 
 ### Changed

@@ -3,7 +3,7 @@
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
 import { Home, Plus, Search, User } from 'lucide-solid'
-import { createSignal, For, type JSX } from 'solid-js'
+import { createSignal, For, onMount, type JSX } from 'solid-js'
 
 import * as UI from '../src'
 import * as Commerce from '../src/commerce'
@@ -147,6 +147,49 @@ const brand: ThemeDefinition = {
   light: { background: '0 0% 100%',  foreground: '222 47% 11%', primary: '160 84% 34%', /* … */ },
 }
 applyThemeDefinition(brand) // or add it to your own picker`,
+  },
+  {
+    id: 'motion',
+    title: 'Motion',
+    group: 'Get started',
+    blurb:
+      'Animate with Motion (motion.dev) — the same engine A4ui uses. The package re-exports animate / inView / scroll / stagger / spring, plus the animateIn and revealOnScroll helpers.',
+    demo: () => {
+      const boxes: HTMLDivElement[] = []
+      const play = () => {
+        UI.animate(
+          boxes.filter(Boolean),
+          { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] },
+          { delay: UI.stagger(0.08), type: 'spring', stiffness: 400, damping: 22 },
+        )
+      }
+      onMount(play)
+      return (
+        <div class="space-y-4">
+          <div class="flex gap-2">
+            <For each={[0, 1, 2, 3, 4, 5]}>
+              {(i) => (
+                <div
+                  ref={(el) => (boxes[i] = el)}
+                  class="grid h-12 w-12 place-items-center rounded-lg bg-primary/80 text-sm font-semibold text-primary-foreground"
+                >
+                  {i + 1}
+                </div>
+              )}
+            </For>
+          </div>
+          <UI.Button onClick={play}>Replay</UI.Button>
+        </div>
+      )
+    },
+    code: `import { animate, stagger, animateIn, revealOnScroll } from '@a4ui/core'
+
+// Staggered spring entrance
+animate(boxes, { opacity: [0, 1], y: [16, 0] }, { delay: stagger(0.08), type: 'spring' })
+
+// The one-liners the library uses internally (both reduced-motion aware):
+onMount(() => animateIn(cardEl, { delay: 0.1 }))          // fade/slide in on mount
+onMount(() => revealOnScroll(sectionEl, { amount: 0.2 })) // reveal once on scroll`,
   },
 
   // ---- Actions --------------------------------------------------------------

@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.11.0'
+export const A4UI_VERSION = '0.11.1'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -21,6 +21,7 @@ export {
   setMotionForced,
   createCountUp,
   animateIn,
+  revealOnScroll,
   // Motion (motion.dev) imperative API, re-exported so the whole app shares one
   // engine (used by Stat's entrance / count-up; reach for these for scroll-linked
   // reveals, staggered lists, springs, etc.).

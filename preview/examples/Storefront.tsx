@@ -1,9 +1,9 @@
 // Example template — Storefront. Full-page composition dogfooding A4ui commerce components.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
 import { ShoppingCart } from 'lucide-solid'
-import { createMemo, createSignal, For, Show, type JSX } from 'solid-js'
+import { createMemo, createSignal, For, onMount, Show, type JSX } from 'solid-js'
 
-import { Button } from '../../src'
+import { animateIn, Button } from '../../src'
 import { FilterGroup, ProductCard, ProductGrid } from '../../src/commerce'
 
 interface Product {
@@ -182,19 +182,27 @@ export default function Storefront(): JSX.Element {
         >
           <ProductGrid class="sm:grid-cols-2 lg:grid-cols-3">
             <For each={filtered()}>
-              {(product) => (
-                <ProductCard
-                  title={product.title}
-                  brand={BRAND_LABELS[product.brand]}
-                  category={CATEGORY_LABELS[product.category]}
-                  price={product.price}
-                  compareAt={product.compareAt}
-                  image={product.image}
-                  rating={product.rating}
-                  badge={product.badge}
-                  onAddToCart={() => setCartCount((count) => count + 1)}
-                />
-              )}
+              {(product, i) => {
+                let el: HTMLDivElement | undefined
+                onMount(() => {
+                  if (el) animateIn(el, { delay: i() * 0.05 })
+                })
+                return (
+                  <div ref={el}>
+                    <ProductCard
+                      title={product.title}
+                      brand={BRAND_LABELS[product.brand]}
+                      category={CATEGORY_LABELS[product.category]}
+                      price={product.price}
+                      compareAt={product.compareAt}
+                      image={product.image}
+                      rating={product.rating}
+                      badge={product.badge}
+                      onAddToCart={() => setCartCount((count) => count + 1)}
+                    />
+                  </div>
+                )
+              }}
             </For>
           </ProductGrid>
         </Show>
