@@ -60,7 +60,17 @@
     "test:ui": "playwright test --ui",
     "test:a11y": "playwright test a11y --project=desktop",
     "test:report": "playwright show-report",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,mjs,cjs,json,css,md,yml,html}": [
+      "prettier --write"
+    ]
   },
   "peerDependencies": {
     "solid-js": "^1.9.13"
@@ -84,7 +94,9 @@
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-solid": "^0.14.5",
+    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
+    "lint-staged": "^16.4.0",
     "playwright-core": "^1.61.1",
     "prettier": "^3.9.5",
     "tailwindcss": "^3.4.19",
