@@ -98,6 +98,16 @@ export { Image, type ImageProps } from './ui/Image'
 export { SpeedDial, type SpeedDialAction, type SpeedDialProps } from './ui/SpeedDial'
 export { BottomNavigation, type BottomNavItem, type BottomNavigationProps } from './ui/BottomNavigation'
 export { Marquee } from './ui/Marquee'
+export { DataGrid, type DataGridColumn, type DataGridProps } from './ui/DataGrid'
+export { TreeSelect, type TreeSelectProps } from './ui/TreeSelect'
+export { Cascader, type CascaderOption, type CascaderProps } from './ui/Cascader'
+export { Mentions, type MentionOption, type MentionsProps } from './ui/Mentions'
+export { Tour, type TourStep, type TourProps } from './ui/Tour'
+export {
+  NotificationCenter,
+  type NotificationItem,
+  type NotificationCenterProps,
+} from './ui/NotificationCenter'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.

@@ -125,7 +125,8 @@ test.describe('interactions', () => {
 
   test('toggle-group presses the clicked segment', async ({ page }) => {
     await page.goto('/#/toggle-group')
-    const center = page.getByRole('button', { name: 'Center' })
+    // `exact` so it doesn't also match the "NotificationCenter" sidebar item.
+    const center = page.getByRole('button', { name: 'Center', exact: true })
     await expect(center).not.toHaveAttribute('data-pressed', '')
     await center.click()
     await expect(center).toHaveAttribute('data-pressed', '')

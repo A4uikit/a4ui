@@ -1824,4 +1824,205 @@ toast.error('Failed to save')`,
   <Logo1 /> <Logo2 /> <Logo3 />
 </Marquee>`,
   },
+  {
+    id: 'data-grid',
+    title: 'DataGrid',
+    group: 'Data',
+    blurb: 'Sortable, filterable, paginated table — click a header to sort, type to filter.',
+    demo: () => (
+      <div class="w-full">
+        <UI.DataGrid
+          pageSize={5}
+          columns={[
+            { key: 'name', header: 'Name', sortable: true },
+            { key: 'role', header: 'Role', sortable: true },
+            { key: 'commits', header: 'Commits', sortable: true },
+            {
+              key: 'status',
+              header: 'Status',
+              render: (r) => (
+                <UI.Badge tone={r.status === 'Active' ? 'success' : 'neutral'}>{String(r.status)}</UI.Badge>
+              ),
+            },
+          ]}
+          rows={[
+            { name: 'Marina Vega', role: 'Designer', commits: 128, status: 'Active' },
+            { name: 'Theo Nakamura', role: 'Engineer', commits: 342, status: 'Active' },
+            { name: 'Priya Anand', role: 'PM', commits: 54, status: 'Away' },
+            { name: 'Lucas Moreau', role: 'Engineer', commits: 201, status: 'Active' },
+            { name: 'Sofia Rossi', role: 'Designer', commits: 89, status: 'Away' },
+            { name: 'Jae Kim', role: 'Engineer', commits: 156, status: 'Active' },
+            { name: 'Nadia Haddad', role: 'PM', commits: 47, status: 'Active' },
+          ]}
+        />
+      </div>
+    ),
+    code: `<DataGrid pageSize={5}
+  columns={[{ key: 'name', header: 'Name', sortable: true }, …]}
+  rows={rows}
+/>`,
+  },
+  {
+    id: 'tree-select',
+    title: 'TreeSelect',
+    group: 'Forms',
+    blurb: 'A select whose options come from an expandable tree; pick a leaf.',
+    demo: () => {
+      const [val, setVal] = createSignal<string>()
+      return (
+        <div class="max-w-xs">
+          <UI.TreeSelect
+            value={val()}
+            onChange={(v) => setVal(v)}
+            placeholder="Select a folder…"
+            nodes={[
+              {
+                id: 'src',
+                label: 'src',
+                children: [
+                  { id: 'ui', label: 'ui' },
+                  { id: 'lib', label: 'lib' },
+                ],
+              },
+              { id: 'docs', label: 'docs' },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [val, setVal] = createSignal<string>()
+<TreeSelect value={val()} onChange={setVal} nodes={nodes} />`,
+  },
+  {
+    id: 'cascader',
+    title: 'Cascader',
+    group: 'Forms',
+    blurb: 'Cascading columns for hierarchical choices (e.g. country → state → city).',
+    demo: () => {
+      const [path, setPath] = createSignal<string[]>([])
+      return (
+        <UI.Cascader
+          value={path()}
+          onChange={(p) => setPath(p)}
+          placeholder="Select a location…"
+          options={[
+            {
+              value: 'mx',
+              label: 'Mexico',
+              children: [
+                {
+                  value: 'son',
+                  label: 'Sonora',
+                  children: [
+                    { value: 'hmo', label: 'Hermosillo' },
+                    { value: 'obr', label: 'Ciudad Obregón' },
+                  ],
+                },
+                { value: 'jal', label: 'Jalisco', children: [{ value: 'gdl', label: 'Guadalajara' }] },
+              ],
+            },
+            {
+              value: 'us',
+              label: 'USA',
+              children: [
+                { value: 'ca', label: 'California', children: [{ value: 'sf', label: 'San Francisco' }] },
+              ],
+            },
+          ]}
+        />
+      )
+    },
+    code: `const [path, setPath] = createSignal<string[]>([])
+<Cascader value={path()} onChange={setPath} options={options} />`,
+  },
+  {
+    id: 'mentions',
+    title: 'Mentions',
+    group: 'Forms',
+    blurb: 'Textarea with @mention autocomplete — type @ to search and insert a name.',
+    demo: () => {
+      const [text, setText] = createSignal('Nice work ')
+      return (
+        <div class="max-w-md">
+          <UI.Mentions
+            value={text()}
+            onChange={setText}
+            placeholder="Type @ to mention someone…"
+            options={[
+              { value: 'marina', label: 'Marina Vega' },
+              { value: 'theo', label: 'Theo Nakamura' },
+              { value: 'priya', label: 'Priya Anand' },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [text, setText] = createSignal('')
+<Mentions value={text()} onChange={setText} options={people} />`,
+  },
+  {
+    id: 'tour',
+    title: 'Tour',
+    group: 'Overlays',
+    blurb: 'Guided coachmarks — spotlights elements step by step with a tooltip.',
+    demo: () => {
+      const [open, setOpen] = createSignal(false)
+      return (
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <UI.Button onClick={() => setOpen(true)}>Start tour</UI.Button>
+            <div id="tour-target-1" class="rounded-md border border-border bg-card px-3 py-2 text-sm">
+              Dashboard
+            </div>
+            <div id="tour-target-2" class="rounded-md border border-border bg-card px-3 py-2 text-sm">
+              Settings
+            </div>
+          </div>
+          <UI.Tour
+            open={open()}
+            onOpenChange={setOpen}
+            steps={[
+              { target: '#tour-target-1', title: 'Your dashboard', description: 'Everything starts here.' },
+              { target: '#tour-target-2', title: 'Settings', description: 'Tweak things to taste.' },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [open, setOpen] = createSignal(false)
+<Tour open={open()} onOpenChange={setOpen} steps={[
+  { target: '#nav', title: 'Navigation', description: 'Jump anywhere.' },
+]} />`,
+  },
+  {
+    id: 'notification-center',
+    title: 'NotificationCenter',
+    group: 'Overlays',
+    blurb: 'A bell with an unread count that opens a dismissible notification feed.',
+    demo: () => {
+      const [items, setItems] = createSignal([
+        {
+          id: '1',
+          title: 'New comment',
+          description: 'Theo replied to your thread',
+          time: '2m',
+          read: false,
+        },
+        { id: '2', title: 'Deploy finished', description: 'v0.5.0 is live', time: '1h', read: false },
+        { id: '3', title: 'Weekly report', description: 'Your summary is ready', time: '1d', read: true },
+      ])
+      return (
+        <UI.NotificationCenter
+          items={items()}
+          onDismiss={(id) => setItems(items().filter((n) => n.id !== id))}
+          onMarkAllRead={() => setItems(items().map((n) => ({ ...n, read: true })))}
+        />
+      )
+    },
+    code: `<NotificationCenter
+  items={items()}
+  onDismiss={dismiss}
+  onMarkAllRead={markAllRead}
+/>`,
+  },
 ]
