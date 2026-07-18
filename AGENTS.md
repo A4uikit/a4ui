@@ -63,26 +63,41 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
    add a behavior test to `tests/docs.spec.ts` if it's interactive.
 4. `npm run typecheck && npm run build && npm test` must stay green.
 
-## Adding a theme
+## Adding a theme — the recipe
 
 A **theme** is pure data (the 15 color tokens × dark/light) — no CSS file, no
 scenery required. `space` is the flagship default and matches `tokens.css`.
+Follow this checklist so nothing gets forgotten (each step is a bug we've hit):
 
-1. Add a `ThemeDefinition` to `src/themes/palettes.ts` (`name`, `label`, `icon`,
-   `description`, `dark`, `light`) and push it into the `themes` array. Keep
-   primary/accent lightness ≤ ~52% so white foreground text clears WCAG AA.
-2. Re-export the definition from `src/themes/index.ts` (and `src/index.ts` if it
-   should be a top-level named export).
-3. It shows up automatically in the docs topbar theme picker and the unit test in
-   `src/themes/themes.test.ts` validates its token format. Apply at runtime with
-   `selectTheme('<name>')`; users can also design one live in the docs **theme
-   settings drawer** (⚙︎ in the top bar) and export CSS/JSON.
+1. **Define it.** Add a `ThemeDefinition` to `src/themes/palettes.ts` (`name`,
+   `label`, `icon`, `description`, `dark`, `light`, optional `motifs`) and push it
+   into the `themes` array. Re-export from `src/themes/index.ts` (and from
+   `src/index.ts` if it should be a top-level named export).
+2. **Pass WCAG AA contrast — the easy one to forget.** Every solid surface must
+   clear 4.5:1 against its foreground, in BOTH modes:
+   - `primary`/`primary-foreground`, `accent`/`accent-foreground`,
+     `destructive`/`destructive-foreground`, and text tokens on their surfaces.
+   - White text needs a low-lightness surface: greens/teals fail around L38–40 —
+     push them to ~L30–32. Blues/violets pass higher (~L52).
+   - **Bright warm accents (amber, lime): use a _dark_ `accent-foreground`** rather
+     than darkening the accent into mud.
+   - Verify with `npm run test:a11y` (axe scans every theme × light/dark). Don't
+     eyeball it — that's how the green/teal themes shipped failing.
+3. **Add `motifs`** (6–8 emoji) for the backdrop. The docs auto-render
+   `ThemedScenery` (token-tinted nebula + floating/flying motifs + cursor glow +
+   magnetic + edge-glow) for any non-`space` theme via `AppShell`'s `background`
+   slot. `space` keeps its bespoke `SpaceBackground`. No per-theme effect code.
+4. **Run the gates:** `npm run typecheck && npm run lint && npm test` (the theme
+   auto-appears in the picker, the unit test in `src/themes/themes.test.ts`
+   validates token format, and `test:a11y` checks contrast).
 
-Themes only recolor the palette. For a distinct **backdrop**, give the theme a
-`motifs` array — the docs render `ThemedScenery` (token-tinted nebula + floating
-motif glyphs) for any non-`space` theme via `AppShell`'s `background` slot; `space`
-keeps its bespoke `SpaceBackground`. A theme can still ship a fully custom
-background component instead and pass it to `background` directly.
+### Invariant — never hardcode a color
+
+Any color in a **shared** component, the **preset**, or `ThemedScenery` MUST be
+`hsl(var(--token) / …)`, never a literal hue. A hardcoded hue looks fine on space
+(blue) but stays blue on every other theme — this is exactly how the `.glow-edge`
+edge-glow shipped blue on all themes. Hardcoded hues are only OK inside
+`SpaceBackground`/`space.css` (space-only scenery).
 
 ## Workflow — how to push & release
 
