@@ -47,6 +47,7 @@ export function storedTheme(): Theme {
  * ```
  */
 export function applyTheme(theme: Theme): void {
+  if (typeof document === 'undefined') return // SSR-safe: no-op on the server
   const root = document.documentElement
   if (theme === 'light') {
     root.setAttribute('data-theme', 'light')

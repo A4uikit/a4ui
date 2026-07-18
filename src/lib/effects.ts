@@ -26,6 +26,7 @@ function initial(): boolean {
 }
 
 function apply(on: boolean): void {
+  if (typeof document === 'undefined') return // SSR-safe: no-op on the server
   document.documentElement.classList.toggle('calm', !on)
 }
 
