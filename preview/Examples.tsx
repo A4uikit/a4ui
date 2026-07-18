@@ -8,7 +8,7 @@ import { EXAMPLES } from './examples/registry'
 
 export function ExamplesGallery(props: { onOpen: (id: string) => void }): JSX.Element {
   return (
-    <div class="mx-auto max-w-5xl py-8">
+    <div class="mx-auto max-w-7xl py-8">
       <header class="mb-8 text-center">
         <h1 class="text-3xl font-bold tracking-tight">Examples</h1>
         <p class="mx-auto mt-2 max-w-xl text-muted-foreground">
@@ -16,7 +16,7 @@ export function ExamplesGallery(props: { onOpen: (id: string) => void }): JSX.El
           the top bar and watch them all restyle.
         </p>
       </header>
-      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         <For each={EXAMPLES}>
           {(ex) => (
             <button type="button" class="text-left" onClick={() => props.onOpen(ex.id)}>

@@ -146,7 +146,7 @@ export function App(): JSX.Element {
   const navVariant = (active: boolean) => (active ? 'secondary' : 'ghost')
 
   const topbar = (
-    <header class="bg-glass sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-border px-4 py-3 sm:px-6">
+    <header class="bg-glass sticky top-0 z-20 flex items-center justify-between gap-1.5 border-b border-border px-2 py-3 sm:gap-2 sm:px-6">
       <div class="flex items-center gap-2 sm:gap-4">
         <button
           type="button"
@@ -213,7 +213,11 @@ export function App(): JSX.Element {
         >
           <NpmIcon />
         </a>
-        <EffectsToggle />
+        {/* Hidden on mobile to keep the topbar within 390px (calm-mode is a
+            power-user toggle; it stays available from small screens up). */}
+        <span class="hidden sm:inline-flex">
+          <EffectsToggle />
+        </span>
         <ThemeToggle />
       </div>
     </header>
@@ -221,7 +225,7 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <AppShell topbar={topbar} background={<Scenery />}>
+      <AppShell topbar={topbar} background={<Scenery />} maxWidth="1600px">
         <Switch fallback={<Home onExplore={() => openDocs()} />}>
           <Match when={view().kind === 'examples'}>
             <ExamplesGallery onOpen={(id) => setView({ kind: 'example', id })} />

@@ -49,7 +49,8 @@ test.describe('interactions', () => {
     await expect.poll(() => page.locator('html').getAttribute('data-theme')).not.toBe(before)
   })
 
-  test('effects toggle switches calm mode', async ({ page }) => {
+  test('effects toggle switches calm mode', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile', 'EffectsToggle is hidden on mobile (topbar space)')
     await page.goto('/#/button')
     const had = await page.evaluate(() => document.documentElement.classList.contains('calm'))
     await page.getByRole('button', { name: 'Visual effects' }).click()
