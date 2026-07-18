@@ -6,18 +6,32 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
-### Fixed
-
-- `theme`/`effects` no longer access the DOM at module load, so importing the
-  package no longer throws in a non-browser (SSR) context. (The components
-  themselves are still client-rendered — see the README "Server rendering" note.)
+## [0.4.0] — 2026-07-17
 
 ### Added
 
+- **Themes** — swappable color palettes (all 15 tokens × dark/light) as pure data.
+  Five built-ins: `space` (default), `dino`, `doctor`, `scientist`, `soccer`.
+  New API: `selectTheme(name | def)`, `initTheme()` (restores the saved theme from
+  `localStorage`), `applyThemeDefinition`, `activeTheme`, `themeToCss`/`themeToJson`,
+  and the `ThemeDefinition`/`Palette` types. Distinct from the light/dark
+  `setTheme`/`toggleTheme` mode switch — a theme recolors underneath either mode.
+- The `SpaceBackground` starfield (nebula, aurora, planets, glow, constellations)
+  now tints from the active theme's `--primary`/`--accent`/`--destructive` tokens,
+  so switching themes recolors the whole backdrop.
 - ESLint (flat config) + Prettier + a Vitest unit-test suite for the helpers.
 - Continuous integration (`ci.yml`) running typecheck, lint, unit tests, build,
   and the Playwright E2E suite on every push/PR.
 - `CONTRIBUTING.md`, this changelog, and issue/PR templates.
+
+### Fixed
+
+- `AppShell` page transitions no longer deadlock with lazy (suspending) routes —
+  dropping the `outin` mode fixed the content column occasionally staying blank
+  when navigating between views.
+- `theme`/`effects` no longer access the DOM at module load, so importing the
+  package no longer throws in a non-browser (SSR) context. (The components
+  themselves are still client-rendered — see the README "Server rendering" note.)
 
 ## [0.3.0] — 2026-07-17
 
