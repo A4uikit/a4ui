@@ -45,7 +45,7 @@ const glass = plugin(({ addComponents }) => {
       borderRadius: 'inherit',
       padding: '1px',
       background:
-        'radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), hsl(199 89% 65% / .9), hsl(217 91% 60% / .25) 45%, transparent 70%)',
+        'radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), hsl(var(--primary) / .9), hsl(var(--accent) / .25) 45%, transparent 70%)',
       WebkitMask: 'linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)',
       WebkitMaskComposite: 'xor',
       maskComposite: 'exclude',
@@ -57,11 +57,11 @@ const glass = plugin(({ addComponents }) => {
     '@media (prefers-reduced-motion: reduce)': {
       '.card.glow-edge::before': { display: 'none' },
     },
-    // Light theme: the cyan glow is faint on white — thicker + more vivid.
+    // Light theme: the glow is faint on white — thicker + more vivid.
     "[data-theme='light'] .card.glow-edge::before": {
       padding: '1.5px',
       background:
-        'radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), hsl(199 98% 48% / 1), hsl(275 90% 58% / 0.55) 42%, transparent 72%)',
+        'radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), hsl(var(--primary) / 1), hsl(var(--accent) / 0.55) 42%, transparent 72%)',
     },
 
     // ---- Floating overlay glass (menus, modals, drawers, toasts) ----

@@ -6,6 +6,13 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Fixed
+
+- The card edge-glow (`.glow-edge`) was hardcoded cyan/blue, so it stayed blue on
+  every theme once the effect was shared across themes. It now derives from the
+  theme's `--primary`/`--accent`, so the glow matches the theme (green for dino,
+  teal for doctor, etc.); space stays blue.
+
 ## [0.4.1] — 2026-07-18
 
 ### Added
