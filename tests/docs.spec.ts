@@ -255,4 +255,18 @@ test.describe('interactions', () => {
     await expect(page).toHaveURL(/#\/modal$/)
     await expect(page.getByRole('heading', { level: 1, name: 'Modal' })).toBeVisible()
   })
+
+  test('theme selector recolors the palette and persists across reload', async ({ page }) => {
+    await page.goto('/#/button')
+    const primary = () =>
+      page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim())
+    const before = await primary()
+    await page.getByRole('button', { name: 'Choose theme' }).click()
+    await page.getByRole('menuitem', { name: /Dino/ }).click()
+    await expect.poll(primary).not.toBe(before)
+    const dino = await primary()
+    // The choice survives a reload (persisted to localStorage).
+    await page.reload()
+    await expect.poll(primary).toBe(dino)
+  })
 })

@@ -68,6 +68,25 @@ scope it to `:root` (or `:root[data-theme='light']`) after importing the styles:
 Dark is the default; add `data-theme="light"` on `<html>` (or use the exported
 `toggleTheme()` / `<ThemeToggle />`) for the light palette.
 
+### Themes
+
+A **theme** is a full color palette (all 15 tokens, dark + light). A4ui ships
+several — `space` (the default), `dino`, `doctor`, `scientist`, `soccer` — and
+you can swap them at runtime; the whole UI recolors instantly and the choice is
+remembered:
+
+```tsx
+import { initTheme, selectTheme, themes } from '@a4ui/core'
+
+initTheme() // once at startup — restores the saved theme (or Space)
+selectTheme('dino') // switch by name; also accepts a ThemeDefinition
+```
+
+Build your own with the **[Theme Builder](https://a4uikit.github.io/a4ui/#/theme-builder)**
+(pick a color for every token, live-preview, export CSS or JSON), then apply the
+exported palette as a `ThemeDefinition`. This is separate from the light/dark
+`setTheme`/`toggleTheme` mode switch — a theme recolors underneath either mode.
+
 ## Server rendering
 
 A4ui is **client-first** — the components render in the browser (the glass,

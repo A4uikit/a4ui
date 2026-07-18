@@ -15,8 +15,11 @@ import {
   type JSX,
 } from 'solid-js'
 
-import { AppShell, Button, Drawer, EffectsToggle, ThemeToggle, Toaster } from '../src'
+import { Search as SearchIcon } from 'lucide-solid'
+
+import { AppShell, Button, Drawer, EffectsToggle, initTheme, ThemeToggle, Toaster } from '../src'
 import { Home } from './Home'
+import { ThemeSelect } from './ThemeSelect'
 
 const DocContent = lazy(() => import('./Docs').then((m) => ({ default: m.DocContent })))
 const DocsNav = lazy(() => import('./DocsNav').then((m) => ({ default: m.DocsNav })))
@@ -59,8 +62,9 @@ export function App(): JSX.Element {
     setCmdkOpen(true)
   }
 
-  // Global ⌘K / Ctrl+K opens the command palette.
+  // Restore the saved theme (palette) on boot, then wire ⌘K / Ctrl+K.
   onMount(() => {
+    initTheme()
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
@@ -74,8 +78,8 @@ export function App(): JSX.Element {
   const navVariant = (active: boolean) => (active ? 'secondary' : 'ghost')
 
   const topbar = (
-    <header class="bg-glass sticky top-0 z-20 flex items-center justify-between border-b border-border px-6 py-3">
-      <div class="flex items-center gap-4">
+    <header class="bg-glass sticky top-0 z-20 flex items-center justify-between gap-2 border-b border-border px-4 py-3 sm:px-6">
+      <div class="flex items-center gap-2 sm:gap-4">
         <button
           type="button"
           class="text-lg font-bold tracking-tight"
@@ -84,7 +88,12 @@ export function App(): JSX.Element {
           A4ui
         </button>
         <nav class="flex items-center gap-1">
-          <Button variant={navVariant(kind() === 'home')} onClick={() => setView({ kind: 'home' })}>
+          {/* Home is hidden on mobile — the A4ui brand already returns home. */}
+          <Button
+            class="hidden sm:inline-flex"
+            variant={navVariant(kind() === 'home')}
+            onClick={() => setView({ kind: 'home' })}
+          >
             Home
           </Button>
           <Button variant={navVariant(kind() === 'docs')} onClick={() => openDocs()}>
@@ -95,16 +104,18 @@ export function App(): JSX.Element {
           </Button>
         </nav>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5 sm:gap-2">
         <button
           type="button"
           onClick={openCmdk}
-          class="inline-flex items-center gap-2 rounded-md border border-border bg-card/50 px-3 py-1.5 text-sm text-muted-foreground transition hover:text-foreground"
+          class="inline-flex items-center gap-2 rounded-md border border-border bg-card/50 p-2 text-sm text-muted-foreground transition hover:text-foreground sm:px-3 sm:py-1.5"
           aria-label="Search components"
         >
-          Search
+          <SearchIcon class="h-4 w-4 sm:hidden" />
+          <span class="hidden sm:inline">Search</span>
           <kbd class="hidden rounded border border-border px-1 text-[10px] sm:inline">⌘K</kbd>
         </button>
+        <ThemeSelect />
         <EffectsToggle />
         <ThemeToggle />
       </div>

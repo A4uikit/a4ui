@@ -15,6 +15,8 @@ preset** (visual), and **solid-transition-group + solid-motionone** (motion).
 - `src/` — the published library:
   - `src/ui/*` — components. `src/layout/*` — `AppShell`, `SpaceBackground`, toggles.
     `src/lib/*` — helpers (`cn`, `theme`, `motion`, `effects`, `media`, `virtual`).
+    `src/themes/*` — swappable color palettes (`palettes.ts` = the theme data;
+    `index.ts` = `selectTheme`/`applyThemeDefinition`/`initTheme` runtime).
     `src/styles/*` — `tokens.css` (CSS vars + motion `@keyframes`) and `space.css`
     (starfield). `src/index.ts` — public entry (re-exports everything).
 - `preset.js` — the Tailwind preset: semantic colors → CSS vars, fonts, radius, and
@@ -60,6 +62,25 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
    code; optional `controls`). The render test is auto-generated from the registry;
    add a behavior test to `tests/docs.spec.ts` if it's interactive.
 4. `npm run typecheck && npm run build && npm test` must stay green.
+
+## Adding a theme
+
+A **theme** is pure data (the 15 color tokens × dark/light) — no CSS file, no
+scenery required. `space` is the flagship default and matches `tokens.css`.
+
+1. Add a `ThemeDefinition` to `src/themes/palettes.ts` (`name`, `label`, `icon`,
+   `description`, `dark`, `light`) and push it into the `themes` array. Keep
+   primary/accent lightness ≤ ~52% so white foreground text clears WCAG AA.
+2. Re-export the definition from `src/themes/index.ts` (and `src/index.ts` if it
+   should be a top-level named export).
+3. It shows up automatically in the docs topbar theme picker and the unit test in
+   `src/themes/themes.test.ts` validates its token format. Apply at runtime with
+   `selectTheme('<name>')`; users can also design one in the docs **Theme Builder**
+   (`#/theme-builder`) and export CSS/JSON.
+
+Themes only recolor. Per-theme **scenery** (a bespoke background like the
+`SpaceBackground` starfield) is a separate, optional component — future themes can
+ship their own and pass it to `AppShell`'s `background` slot.
 
 ## Workflow — how to push & release
 
