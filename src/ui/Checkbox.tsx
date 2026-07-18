@@ -25,7 +25,7 @@ export function Checkbox(props: CheckboxProps): JSX.Element {
     <label class={cn('inline-flex items-center gap-2 text-sm text-foreground', props.class)}>
       <input
         type="checkbox"
-        class="h-4 w-4 rounded border-input"
+        class="h-4 w-4 rounded border-input accent-primary"
         checked={props.checked}
         onChange={(ev) => props.onChange(ev.currentTarget.checked)}
       />

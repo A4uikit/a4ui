@@ -357,3 +357,25 @@ test.describe('interactions', () => {
     await expect(page.locator('#scenery')).toHaveCount(0)
   })
 })
+
+// --- Example/template pages render (derived from the examples registry) -------
+const exReg = readFileSync(path.resolve('preview/examples/registry.ts'), 'utf8')
+const EXAMPLE_IDS = [...exReg.matchAll(/id: '([^']+)'/g)].map((m) => m[1])
+
+test.describe('examples', () => {
+  test('gallery lists the templates', async ({ page }) => {
+    await page.goto('/#/examples')
+    await expect(page.getByRole('heading', { level: 1, name: 'Examples' })).toBeVisible()
+    await expect(page.getByText('Open →').first()).toBeVisible()
+  })
+
+  for (const id of EXAMPLE_IDS) {
+    test(`renders template: ${id}`, async ({ page }) => {
+      const errors: string[] = []
+      page.on('pageerror', (e) => errors.push(e.message))
+      await page.goto(`/#/examples/${id}`)
+      await expect(page.getByRole('button', { name: '← All examples' })).toBeVisible()
+      expect(errors, `runtime errors on #/examples/${id}`).toEqual([])
+    })
+  }
+})

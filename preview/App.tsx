@@ -3,7 +3,18 @@
 // command palette, and live theme-settings drawer are lazy-loaded so the Home
 // landing ships a minimal bundle.
 import { Settings as SettingsIcon, Search as SearchIcon } from 'lucide-solid'
-import { createEffect, createSignal, lazy, onCleanup, onMount, Show, Suspense, type JSX } from 'solid-js'
+import {
+  createEffect,
+  createSignal,
+  lazy,
+  Match,
+  onCleanup,
+  onMount,
+  Show,
+  Suspense,
+  Switch,
+  type JSX,
+} from 'solid-js'
 
 import {
   activeTheme,
@@ -35,6 +46,8 @@ const DocContent = lazy(() => import('./Docs').then((m) => ({ default: m.DocCont
 const DocsNav = lazy(() => import('./DocsNav').then((m) => ({ default: m.DocsNav })))
 const CommandPalette = lazy(() => import('./CommandPalette'))
 const SettingsDrawer = lazy(() => import('./SettingsDrawer').then((m) => ({ default: m.SettingsDrawer })))
+const ExamplesGallery = lazy(() => import('./Examples').then((m) => ({ default: m.ExamplesGallery })))
+const ExampleView = lazy(() => import('./Examples').then((m) => ({ default: m.ExampleView })))
 
 // Brand marks (lucide dropped its logo icons) — monochrome, follow currentColor.
 const GithubIcon = () => (
@@ -50,12 +63,16 @@ const NpmIcon = () => (
 
 const FIRST_DOC = 'instalacion'
 
-type View = { kind: 'home' } | { kind: 'docs'; id: string }
+type View =
+  { kind: 'home' } | { kind: 'docs'; id: string } | { kind: 'examples' } | { kind: 'example'; id: string }
 
-// Deep-link support: #/<id> = that doc, empty = Home.
+// Deep-link support: #/examples = gallery, #/examples/<id> = one example,
+// #/<id> = that doc, empty = Home.
 function viewFromHash(): View {
-  const id = decodeURIComponent(location.hash.replace(/^#\/?/, '')).trim()
-  return id ? { kind: 'docs', id } : { kind: 'home' }
+  const raw = decodeURIComponent(location.hash.replace(/^#\/?/, '')).trim()
+  if (raw === 'examples') return { kind: 'examples' }
+  if (raw.startsWith('examples/')) return { kind: 'example', id: raw.slice('examples/'.length) }
+  return raw ? { kind: 'docs', id: raw } : { kind: 'home' }
 }
 
 export function App(): JSX.Element {
@@ -68,14 +85,22 @@ export function App(): JSX.Element {
 
   createEffect(() => {
     const v = view()
-    const next = v.kind === 'docs' ? `#/${v.id}` : ''
+    const next =
+      v.kind === 'docs'
+        ? `#/${v.id}`
+        : v.kind === 'examples'
+          ? '#/examples'
+          : v.kind === 'example'
+            ? `#/examples/${v.id}`
+            : ''
     if (location.hash !== next) location.hash = next
   })
 
   const isDocs = () => view().kind === 'docs'
+  const inExamples = () => view().kind === 'examples' || view().kind === 'example'
   const selectedId = () => {
     const v = view()
-    return v.kind === 'docs' ? v.id : ''
+    return v.kind === 'docs' || v.kind === 'example' ? v.id : ''
   }
   const openDocs = (id: string = FIRST_DOC) => setView({ kind: 'docs', id })
   const openCmdk = () => {
@@ -98,8 +123,15 @@ export function App(): JSX.Element {
         openCmdk()
       }
     }
+    // Keep the view in sync with the URL hash so deep links, the browser
+    // back/forward buttons, and manual hash edits all work.
+    const onHash = () => setView(viewFromHash())
     window.addEventListener('keydown', onKey)
-    onCleanup(() => window.removeEventListener('keydown', onKey))
+    window.addEventListener('hashchange', onHash)
+    onCleanup(() => {
+      window.removeEventListener('keydown', onKey)
+      window.removeEventListener('hashchange', onHash)
+    })
   })
 
   const navVariant = (active: boolean) => (active ? 'secondary' : 'ghost')
@@ -125,6 +157,9 @@ export function App(): JSX.Element {
           </Button>
           <Button variant={navVariant(isDocs())} onClick={() => openDocs()}>
             Docs
+          </Button>
+          <Button variant={navVariant(inExamples())} onClick={() => setView({ kind: 'examples' })}>
+            Examples
           </Button>
         </nav>
       </div>
@@ -178,26 +213,34 @@ export function App(): JSX.Element {
   return (
     <>
       <AppShell topbar={topbar} background={<Scenery />}>
-        <Show when={isDocs()} fallback={<Home onExplore={() => openDocs()} />}>
-          <div class="flex gap-8">
-            {/* Desktop sidebar. On mobile it's hidden — the ☰ button opens a Drawer. */}
-            <aside class="hidden w-56 shrink-0 md:block">
-              <div class="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto pr-2">
-                <DocsNav selected={selectedId()} onSelect={(id) => setView({ kind: 'docs', id })} />
+        <Switch fallback={<Home onExplore={() => openDocs()} />}>
+          <Match when={view().kind === 'examples'}>
+            <ExamplesGallery onOpen={(id) => setView({ kind: 'example', id })} />
+          </Match>
+          <Match when={view().kind === 'example'}>
+            <ExampleView id={selectedId()} onBack={() => setView({ kind: 'examples' })} />
+          </Match>
+          <Match when={isDocs()}>
+            <div class="flex gap-8">
+              {/* Desktop sidebar. On mobile it's hidden — the ☰ button opens a Drawer. */}
+              <aside class="hidden w-56 shrink-0 md:block">
+                <div class="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto pr-2">
+                  <DocsNav selected={selectedId()} onSelect={(id) => setView({ kind: 'docs', id })} />
+                </div>
+              </aside>
+              <div class="min-w-0 flex-1">
+                <button
+                  type="button"
+                  class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground md:hidden"
+                  onClick={() => setNavOpen(true)}
+                >
+                  ☰ Components
+                </button>
+                <DocContent id={selectedId()} />
               </div>
-            </aside>
-            <div class="min-w-0 flex-1">
-              <button
-                type="button"
-                class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground md:hidden"
-                onClick={() => setNavOpen(true)}
-              >
-                ☰ Components
-              </button>
-              <DocContent id={selectedId()} />
             </div>
-          </div>
-        </Show>
+          </Match>
+        </Switch>
       </AppShell>
 
       {/* Mobile docs navigation (dogfoods the Drawer). */}
