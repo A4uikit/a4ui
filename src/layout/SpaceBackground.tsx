@@ -10,6 +10,7 @@ import { Satellite } from 'lucide-solid'
 
 import { motionReduced } from '../lib/motion'
 import { useTheme } from '../lib/theme'
+import { bindPointerFx } from './sceneEffects'
 
 const SHOOTER_DIRS = [
   { angle: 22, x: [0, 32], y: [-6, 18] },
@@ -319,36 +320,8 @@ export function SpaceBackground() {
       }
       timers.push(window.setTimeout(loopAmbient, 1500))
 
-      // Cursor glow + magnetic buttons + card edge-glow (single pointermove).
-      const glow = root.querySelector<HTMLElement>('#cursorGlow')
-      bind(document, 'pointermove', ((e: PointerEvent) => {
-        if (glow) {
-          glow.style.opacity = '1'
-          glow.style.left = `${e.clientX}px`
-          glow.style.top = `${e.clientY}px`
-        }
-        const el = e.target as Element | null
-        const magnetic = el?.closest?.('.magnetic') as HTMLElement | null
-        if (magnetic) {
-          const r = magnetic.getBoundingClientRect()
-          const mx = (e.clientX - (r.left + r.width / 2)) / r.width
-          const my = (e.clientY - (r.top + r.height / 2)) / r.height
-          magnetic.style.transform = `translate(${(mx * 7).toFixed(1)}px, ${(my * 7).toFixed(1)}px)`
-        }
-        const card = el?.closest?.('.glow-edge') as HTMLElement | null
-        if (card) {
-          const r = card.getBoundingClientRect()
-          card.style.setProperty('--mx', `${e.clientX - r.left}px`)
-          card.style.setProperty('--my', `${e.clientY - r.top}px`)
-        }
-      }) as EventListener)
-      bind(window, 'pointerleave', (() => {
-        if (glow) glow.style.opacity = '0'
-      }) as EventListener)
-      bind(document, 'pointerout', ((e: PointerEvent) => {
-        const magnetic = (e.target as Element | null)?.closest?.('.magnetic') as HTMLElement | null
-        if (magnetic) magnetic.style.transform = ''
-      }) as EventListener)
+      // Cursor glow + magnetic buttons + card edge-glow (shared across themes).
+      cleanups.push(bindPointerFx(root))
     }
 
     onCleanup(() => {

@@ -362,6 +362,7 @@
 #scenery .themed-sky {
   position: absolute;
   inset: 0;
+  animation: sceneryPulse 16s ease-in-out infinite;
   background:
     radial-gradient(1200px 700px at 82% -8%, hsl(var(--primary) / 0.34), transparent 60%),
     radial-gradient(900px 600px at 8% 12%, hsl(var(--accent) / 0.28), transparent 60%),
@@ -392,8 +393,19 @@
     transform: translateY(-16px) rotate(calc(var(--r, 0deg) + 5deg));
   }
 }
+/* Subtle nebula "breathing" so the themed backdrop isn't static. */
+@keyframes sceneryPulse {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.06);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  html:not(.force-motion) #scenery .motif {
+  html:not(.force-motion) #scenery .motif,
+  html:not(.force-motion) #scenery .themed-sky {
     animation: none !important;
   }
 }

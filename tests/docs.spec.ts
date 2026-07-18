@@ -303,6 +303,23 @@ test.describe('interactions', () => {
     await expect.poll(primary).not.toBe(before)
   })
 
+  test('cursor glow follows the pointer on space and themed backdrops', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile', 'pointer glow is hover-only')
+    const glowOpacity = () =>
+      page.evaluate(() => Number(getComputedStyle(document.querySelector('#cursorGlow')!).opacity))
+    await page.goto('/#/button')
+    await page.mouse.move(400, 300)
+    await page.mouse.move(620, 420)
+    await expect.poll(glowOpacity).toBeGreaterThan(0)
+    // Switch to a themed backdrop — the same live glow works there too.
+    await page.getByRole('button', { name: 'Choose theme' }).click()
+    await page.getByRole('menuitem', { name: /Dino/ }).click()
+    await expect(page.locator('#scenery #cursorGlow')).toBeAttached()
+    await page.mouse.move(500, 350)
+    await page.mouse.move(680, 500)
+    await expect.poll(glowOpacity).toBeGreaterThan(0)
+  })
+
   test('themed backdrop swaps with the theme', async ({ page }) => {
     await page.goto('/#/button')
     // A motif theme renders the lightweight ThemedScenery with floating glyphs.

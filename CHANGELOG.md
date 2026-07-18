@@ -6,6 +6,14 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `ThemedScenery` now carries the same live effects as `SpaceBackground` on every
+  theme — cursor glow, magnetic buttons (`.magnetic`), card edge-glow
+  (`.glow-edge`), a gently breathing nebula, and motif glyphs that streak across
+  ambiently and launch on a background click. The shared pointer effects were
+  factored into `bindPointerFx` (used by both backdrops).
+
 ## [0.4.0] — 2026-07-17
 
 ### Added
