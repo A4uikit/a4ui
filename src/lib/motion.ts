@@ -1,12 +1,18 @@
-// Shared motion helpers. CSS-driven transitions (solid-transition-group class
-// toggles, Kobalte's data-expanded/data-closed keyframes) get their
-// reduced-motion guard for free from the global
-// `@media (prefers-reduced-motion: reduce)` block in styles.css — this module is
-// for the JS-driven paths (solid-motionone `transition`/`initial` props, the KPI
-// count-up tween) that can't rely on a CSS media query alone.
+// Shared motion helpers. CSS-driven transitions (Tailwind classes, Kobalte's
+// data-expanded/data-closed keyframes) get their reduced-motion guard for free
+// from the global `@media (prefers-reduced-motion: reduce)` block in styles.css —
+// this module is for the JS-driven paths (Motion's `animate`, the KPI count-up)
+// that can't rely on a CSS media query alone. JS animation uses **Motion**
+// (motion.dev, the `motion` package) — `animate`/`scroll`/`inView`/`stagger` are
+// re-exported below so components (and consumers) share one motion engine.
+import { animate } from 'motion'
 import { createEffect, createSignal, onCleanup, untrack, type Accessor } from 'solid-js'
 
 import { isCalm } from './effects'
+
+// Re-export Motion's imperative API so the whole library shares one engine and
+// consumers can reach it without a second dependency.
+export { animate, inView, scroll, stagger, spring } from 'motion'
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)'
 
@@ -91,14 +97,9 @@ export function motionReduced(): boolean {
   return isCalm() || (prefersReducedMotion() && !motionForced())
 }
 
-const easeOutCubic = (t: number): number => 1 - (1 - t) ** 3
-
 /**
- * Tweens a numeric signal toward `target()` using requestAnimationFrame +
- * an ease-out curve (solid-motionone/@motionone don't expose spring easing
- * yet, and this needs to interpolate a plain number rather than a DOM
- * property, so it's a small hand-rolled WAAPI-adjacent tween for KPI count-up).
- * Jumps straight to the target under prefers-reduced-motion.
+ * Tweens a numeric signal toward `target()` with Motion's `animate` (ease-out),
+ * for KPI count-ups. Jumps straight to the target under reduced motion.
  *
  * @example
  * ```tsx
@@ -108,13 +109,13 @@ const easeOutCubic = (t: number): number => 1 - (1 - t) ** 3
  */
 export function createCountUp(target: Accessor<number>, durationMs = 600): Accessor<number> {
   const [value, setValue] = createSignal(0)
-  let frame: number | undefined
+  let controls: { stop: () => void } | undefined
 
   createEffect(() => {
     const to = target()
+    controls?.stop()
 
     if (motionReduced()) {
-      if (frame !== undefined) cancelAnimationFrame(frame)
       setValue(to)
       return
     }
@@ -122,21 +123,35 @@ export function createCountUp(target: Accessor<number>, durationMs = 600): Acces
     const from = untrack(value)
     if (from === to) return
 
-    if (frame !== undefined) cancelAnimationFrame(frame)
-    const start = performance.now()
-
-    const tick = (now: number): void => {
-      const elapsed = now - start
-      const t = Math.min(1, elapsed / durationMs)
-      setValue(from + (to - from) * easeOutCubic(t))
-      frame = t < 1 ? requestAnimationFrame(tick) : undefined
-    }
-    frame = requestAnimationFrame(tick)
+    controls = animate(from, to, {
+      duration: durationMs / 1000,
+      ease: 'easeOut',
+      onUpdate: (latest: number) => setValue(latest),
+    })
   })
 
-  onCleanup(() => {
-    if (frame !== undefined) cancelAnimationFrame(frame)
-  })
+  onCleanup(() => controls?.stop())
 
   return value
+}
+
+/**
+ * Fade + slide an element in on mount with Motion (ease-out), respecting
+ * reduced motion (a no-op then). Call it from a ref/onMount; use `delay` to
+ * stagger a row.
+ *
+ * @example
+ * ```tsx
+ * let el!: HTMLDivElement
+ * onMount(() => animateIn(el, { delay: 0.1 }))
+ * return <div ref={el}>…</div>
+ * ```
+ */
+export function animateIn(el: Element, opts: { y?: number; duration?: number; delay?: number } = {}): void {
+  if (motionReduced()) return
+  animate(
+    el,
+    { opacity: [0, 1], y: [opts.y ?? 8, 0] },
+    { duration: opts.duration ?? 0.32, delay: opts.delay ?? 0, ease: 'easeOut' },
+  )
 }

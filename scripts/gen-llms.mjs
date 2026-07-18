@@ -38,7 +38,7 @@ let out = `# @a4ui/core
 > A4ui — "Spatial Glass" design system & component library for SolidJS
 > (glassmorphism surfaces, starfield backdrop, light/dark themes). 90+ components
 > built on Kobalte (behavior/a11y), a Tailwind preset (visual), and
-> solid-transition-group + solid-motionone (motion).
+> Motion (motion.dev, the \`motion\` package) for JS animation.
 
 Docs: https://a4uikit.github.io/a4ui/  ·  Repo: https://github.com/A4uikit/a4ui
 

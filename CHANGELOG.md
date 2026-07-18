@@ -6,6 +6,24 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.11.0] — 2026-07-18
+
+### Changed
+
+- **Migrated the JS animation engine to [Motion](https://motion.dev)** (the
+  `motion` package, v12) from Motion One v10 (`solid-motionone`). `Stat`'s
+  entrance and count-up now run on Motion's `animate`. Removed `solid-motionone`
+  and the now-unused `solid-transition-group`; added `motion` as a dependency
+  (external in the main build — only bundled when you use an animated component;
+  the self-contained `elements` bundle includes it).
+
+### Added
+
+- Re-export Motion's imperative API from the package — **`animate`**, **`inView`**,
+  **`scroll`**, **`stagger`**, **`spring`** — plus **`animateIn(el, opts)`**, a
+  reduced-motion-aware fade/slide entrance helper. Build scroll-linked reveals,
+  staggered lists, and springs with the same engine the library uses.
+
 ## [0.10.2] — 2026-07-18
 
 ### Added

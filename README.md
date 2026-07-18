@@ -21,11 +21,11 @@ Components. Named after the 4 people in the Rivera family. 🙂
 
 Three layers, one identity:
 
-| Layer           | What it gives                           | Tech                                         |
-| --------------- | --------------------------------------- | -------------------------------------------- |
-| Behavior / a11y | focus, keyboard, ARIA, portals          | **Kobalte**                                  |
-| Motion          | transitions, count-up, calm mode        | **solid-transition-group + solid-motionone** |
-| Visual          | glass surfaces, tokens, glow, starfield | **Tailwind preset + `styles.css`**           |
+| Layer           | What it gives                           | Tech                               |
+| --------------- | --------------------------------------- | ---------------------------------- |
+| Behavior / a11y | focus, keyboard, ARIA, portals          | **Kobalte**                        |
+| Motion          | transitions, count-up, calm mode        | **Motion (motion.dev)**            |
+| Visual          | glass surfaces, tokens, glow, starfield | **Tailwind preset + `styles.css`** |
 
 ## Install
 

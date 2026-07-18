@@ -49,8 +49,7 @@ export default defineConfig({
         // every subpath — otherwise the whole headless lib bundles in.
         /^@kobalte\/core(\/.*)?$/,
         'lucide-solid',
-        'solid-transition-group',
-        'solid-motionone',
+        'motion',
         '@tanstack/solid-virtual',
         'clsx',
         'tailwind-merge',

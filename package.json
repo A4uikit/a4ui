@@ -1,6 +1,6 @@
 {
   "name": "@a4ui/core",
-  "version": "0.10.2",
+  "version": "0.11.0",
   "description": "A4ui — Spatial Glass design system & component library for SolidJS (Kobalte behavior + Tailwind glass tokens + motion).",
   "type": "module",
   "license": "MIT",
@@ -106,8 +106,7 @@
     "@tanstack/solid-virtual": "^3.13.33",
     "clsx": "^2.1.1",
     "lucide-solid": "^1.23.0",
-    "solid-motionone": "^1.0.4",
-    "solid-transition-group": "^0.3.0",
+    "motion": "^12.42.2",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {

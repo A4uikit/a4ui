@@ -8,7 +8,7 @@ this repo. Read this before making changes.
 **A4ui** (`@a4ui/core`) — a "Spatial Glass" design system & component library for
 **SolidJS**: glassmorphism surfaces, an animated starfield backdrop, light/dark
 themes, and ~60 components. Built on **Kobalte** (behavior / a11y), a **Tailwind
-preset** (visual), and **solid-transition-group + solid-motionone** (motion).
+preset** (visual), and **Motion** (motion.dev, the `motion` package — JS animation).
 Ships both as SolidJS components and as a **Web Components** bundle
 (`@a4ui/core/elements` + `elements.css`) for React/Next.js/Vue/vanilla.
 
