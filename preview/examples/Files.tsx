@@ -121,7 +121,7 @@ export default function Files(): JSX.Element {
   ]
 
   return (
-    <div class="mx-auto max-w-5xl space-y-4 py-8">
+    <div class="mx-auto max-w-7xl space-y-4 py-8">
       <header class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div class="flex flex-col gap-1">
           <h1 class="text-2xl font-bold tracking-tight">Files</h1>

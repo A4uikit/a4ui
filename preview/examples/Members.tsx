@@ -81,7 +81,7 @@ export default function Members(): JSX.Element {
   const [tab, setTab] = createSignal('members')
 
   return (
-    <div class="mx-auto max-w-5xl py-8">
+    <div class="mx-auto max-w-7xl py-8">
       <header class="mb-6 flex flex-col gap-1">
         <h1 class="text-2xl font-bold tracking-tight">Team</h1>
         <p class="text-sm text-muted-foreground">

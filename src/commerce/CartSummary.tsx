@@ -46,7 +46,7 @@ export function CartSummary(props: CartSummaryProps): JSX.Element {
     }).format(value)
 
   return (
-    <div class={cn('rounded-xl border border-border bg-card p-5', props.class)}>
+    <div class={cn('card glow-edge rounded-xl p-5 text-card-foreground', props.class)}>
       <For each={props.lines}>
         {(line) => (
           <div class="flex items-center justify-between py-1 text-sm">

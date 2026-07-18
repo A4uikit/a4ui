@@ -132,7 +132,7 @@ export function TreeSelect(props: TreeSelectProps): JSX.Element {
         aria-haspopup="tree"
         aria-expanded={open()}
         onClick={() => setOpen((v) => !v)}
-        class="flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30"
+        class="flex w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none transition-colors a4-field"
       >
         <Show when={selected()} fallback={<span class="text-muted-foreground">{props.placeholder}</span>}>
           <span class="truncate">{selected()!.label}</span>

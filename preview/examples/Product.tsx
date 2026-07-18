@@ -70,7 +70,7 @@ export default function Product(): JSX.Element {
   const [tab, setTab] = createSignal('description')
 
   return (
-    <div class="mx-auto max-w-5xl space-y-6 py-8">
+    <div class="mx-auto max-w-7xl space-y-6 py-8">
       <Breadcrumb
         items={[
           { label: 'Home', href: '/' },

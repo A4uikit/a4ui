@@ -106,7 +106,7 @@ export default function Admin(): JSX.Element {
   const [segments, setSegments] = createSignal<string[]>(['na', 'enterprise'])
 
   return (
-    <div class="mx-auto max-w-5xl space-y-6 py-8">
+    <div class="mx-auto max-w-7xl space-y-6 py-8">
       <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
         <div class="flex flex-col gap-1">
           <h1 class="text-2xl font-bold tracking-tight">Admin</h1>

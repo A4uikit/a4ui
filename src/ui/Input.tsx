@@ -5,7 +5,7 @@ import { splitProps } from 'solid-js'
 import { cn } from '../lib/cn'
 
 const INPUT_BASE =
-  'w-full rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground px-3 py-2 text-sm outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50'
+  'w-full rounded-md border border-input bg-background text-foreground placeholder:text-muted-foreground px-3 py-2 text-sm outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50'
 
 interface InputProps extends Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onInput'> {
   value: string

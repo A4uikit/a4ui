@@ -61,7 +61,7 @@ export default function Pricing(): JSX.Element {
   const [annual, setAnnual] = createSignal(false)
 
   return (
-    <div class="mx-auto max-w-5xl space-y-8 py-8">
+    <div class="mx-auto max-w-7xl space-y-8 py-8">
       <div class="mx-auto max-w-2xl text-center">
         <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Simple, transparent pricing</h1>
         <p class="mt-3 text-muted-foreground">

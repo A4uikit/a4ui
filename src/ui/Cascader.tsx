@@ -23,7 +23,7 @@ export interface CascaderProps {
 }
 
 const TRIGGER_BASE =
-  'flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background text-foreground px-3 py-2 text-sm outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30'
+  'flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background text-foreground px-3 py-2 text-sm outline-none transition-colors a4-field'
 
 // Walk the tree along `value`, collecting the matched options so we can resolve
 // their labels. Stops early if the path diverges from the current options.

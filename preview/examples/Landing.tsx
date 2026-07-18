@@ -101,7 +101,7 @@ export default function Landing(): JSX.Element {
   const [interests, setInterests] = createSignal<string[]>(['solid', 'design-systems'])
 
   return (
-    <div class="mx-auto max-w-5xl space-y-16 py-8">
+    <div class="mx-auto max-w-7xl space-y-16 py-8">
       {/* Hero */}
       <section class="mx-auto max-w-3xl text-center">
         <Badge tone="info">v0.4.0 now available</Badge>

@@ -52,7 +52,7 @@ export default function Profile(): JSX.Element {
   const [following, setFollowing] = createSignal(false)
 
   return (
-    <div class="mx-auto max-w-3xl space-y-6 py-8">
+    <div class="mx-auto max-w-5xl space-y-6 py-8">
       {/* Profile header */}
       <Card class="overflow-hidden">
         <div

@@ -66,7 +66,7 @@ export default function Checkout(): JSX.Element {
   ])
 
   return (
-    <div class="mx-auto max-w-5xl space-y-6 py-8">
+    <div class="mx-auto max-w-7xl space-y-6 py-8">
       <header class="flex flex-col gap-1">
         <h1 class="text-2xl font-bold tracking-tight">Checkout</h1>
         <p class="text-sm text-muted-foreground">Review your cart and enter your shipping details.</p>

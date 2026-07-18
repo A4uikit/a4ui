@@ -81,7 +81,7 @@ const domainInitials = (host: string): string =>
 
 export default function Analytics(): JSX.Element {
   return (
-    <div class="mx-auto max-w-5xl space-y-6 py-8">
+    <div class="mx-auto max-w-7xl space-y-6 py-8">
       <header class="flex flex-col gap-1">
         <h1 class="text-2xl font-bold tracking-tight">Analytics</h1>
         <p class="text-sm text-muted-foreground">

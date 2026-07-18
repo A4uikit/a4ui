@@ -39,7 +39,7 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
       <KNumberField.DecrementTrigger class={cn(TRIGGER_CLASS, 'rounded-l-md')} aria-label="Decrement">
         −
       </KNumberField.DecrementTrigger>
-      <KNumberField.Input class="w-16 border-y border-input bg-background px-3 py-2 text-center text-sm text-foreground outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30" />
+      <KNumberField.Input class="w-16 border-y border-input bg-background px-3 py-2 text-center text-sm text-foreground outline-none transition-colors a4-field" />
       <KNumberField.IncrementTrigger class={cn(TRIGGER_CLASS, 'rounded-r-md')} aria-label="Increment">
         +
       </KNumberField.IncrementTrigger>

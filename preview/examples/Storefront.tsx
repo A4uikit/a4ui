@@ -1,7 +1,7 @@
 // Example template — Storefront. Full-page composition dogfooding A4ui commerce components.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
 import { ShoppingCart } from 'lucide-solid'
-import { createSignal, For, Show, type JSX } from 'solid-js'
+import { createMemo, createSignal, For, Show, type JSX } from 'solid-js'
 
 import { Button } from '../../src'
 import { FilterGroup, ProductCard, ProductGrid } from '../../src/commerce'
@@ -14,6 +14,19 @@ interface Product {
   image: string
   rating?: number
   badge?: string
+  category: string
+  brand: string
+}
+
+const CATEGORY_LABELS: Record<string, string> = {
+  home: 'Home',
+  accessories: 'Accessories',
+  lighting: 'Lighting',
+}
+const BRAND_LABELS: Record<string, string> = {
+  atelier: 'Atelier Co.',
+  northfield: 'Northfield',
+  lumen: 'Lumen',
 }
 
 const products: Product[] = [
@@ -25,6 +38,8 @@ const products: Product[] = [
     image: 'https://picsum.photos/seed/storefront-bag/600/600',
     rating: 4,
     badge: 'Sale',
+    category: 'accessories',
+    brand: 'atelier',
   },
   {
     id: 'p2',
@@ -32,6 +47,8 @@ const products: Product[] = [
     price: 46,
     image: 'https://picsum.photos/seed/storefront-pourover/600/600',
     rating: 5,
+    category: 'home',
+    brand: 'atelier',
   },
   {
     id: 'p3',
@@ -40,6 +57,8 @@ const products: Product[] = [
     image: 'https://picsum.photos/seed/storefront-beanie/600/600',
     rating: 4,
     badge: 'New',
+    category: 'accessories',
+    brand: 'northfield',
   },
   {
     id: 'p4',
@@ -47,6 +66,8 @@ const products: Product[] = [
     price: 58,
     image: 'https://picsum.photos/seed/storefront-organizer/600/600',
     rating: 4,
+    category: 'home',
+    brand: 'northfield',
   },
   {
     id: 'p5',
@@ -56,6 +77,8 @@ const products: Product[] = [
     image: 'https://picsum.photos/seed/storefront-throw/600/600',
     rating: 5,
     badge: 'Sale',
+    category: 'home',
+    brand: 'atelier',
   },
   {
     id: 'p6',
@@ -63,6 +86,8 @@ const products: Product[] = [
     price: 110,
     image: 'https://picsum.photos/seed/storefront-lamp/600/600',
     rating: 3,
+    category: 'lighting',
+    brand: 'lumen',
   },
   {
     id: 'p7',
@@ -71,6 +96,8 @@ const products: Product[] = [
     image: 'https://picsum.photos/seed/storefront-mugs/600/600',
     rating: 4,
     badge: 'New',
+    category: 'home',
+    brand: 'northfield',
   },
   {
     id: 'p8',
@@ -79,30 +106,36 @@ const products: Product[] = [
     compareAt: 54,
     image: 'https://picsum.photos/seed/storefront-wallet/600/600',
     rating: 4,
+    badge: 'Sale',
+    category: 'accessories',
+    brand: 'atelier',
   },
 ]
 
-const categoryOptions = [
-  { value: 'home', label: 'Home', count: 5 },
-  { value: 'accessories', label: 'Accessories', count: 3 },
-  { value: 'lighting', label: 'Lighting', count: 1 },
-]
-
-const brandOptions = [
-  { value: 'atelier', label: 'Atelier Co.', count: 4 },
-  { value: 'northfield', label: 'Northfield', count: 3 },
-  { value: 'lumen', label: 'Lumen', count: 1 },
-]
+/** Facet options with live counts derived from the product data. */
+const facetOptions = (key: 'category' | 'brand', labels: Record<string, string>) =>
+  Object.keys(labels).map((value) => ({
+    value,
+    label: labels[value],
+    count: products.filter((p) => p[key] === value).length,
+  }))
 
 export default function Storefront(): JSX.Element {
   const [cartCount, setCartCount] = createSignal(0)
-  // Illustrative only: the selections drive the checkbox UI but don't filter
-  // the product grid below.
   const [categories, setCategories] = createSignal<string[]>([])
   const [brands, setBrands] = createSignal<string[]>([])
 
+  // Faceted filtering: OR within a facet, AND across facets; empty facet = all.
+  const filtered = createMemo(() =>
+    products.filter(
+      (p) =>
+        (categories().length === 0 || categories().includes(p.category)) &&
+        (brands().length === 0 || brands().includes(p.brand)),
+    ),
+  )
+
   return (
-    <div class="mx-auto max-w-5xl space-y-6 py-8">
+    <div class="mx-auto max-w-7xl space-y-6 py-8">
       <header class="flex items-center justify-between gap-4">
         <div class="flex flex-col gap-1">
           <h1 class="text-2xl font-bold tracking-tight">Storefront</h1>
@@ -124,28 +157,47 @@ export default function Storefront(): JSX.Element {
         <aside class="space-y-6">
           <FilterGroup
             title="Category"
-            options={categoryOptions}
+            options={facetOptions('category', CATEGORY_LABELS)}
             selected={categories()}
             onChange={setCategories}
           />
-          <FilterGroup title="Brand" options={brandOptions} selected={brands()} onChange={setBrands} />
+          <FilterGroup
+            title="Brand"
+            options={facetOptions('brand', BRAND_LABELS)}
+            selected={brands()}
+            onChange={setBrands}
+          />
+          <p class="text-xs text-muted-foreground">
+            Showing {filtered().length} of {products.length}
+          </p>
         </aside>
 
-        <ProductGrid class="sm:grid-cols-2 lg:grid-cols-3">
-          <For each={products}>
-            {(product) => (
-              <ProductCard
-                title={product.title}
-                price={product.price}
-                compareAt={product.compareAt}
-                image={product.image}
-                rating={product.rating}
-                badge={product.badge}
-                onAddToCart={() => setCartCount((count) => count + 1)}
-              />
-            )}
-          </For>
-        </ProductGrid>
+        <Show
+          when={filtered().length > 0}
+          fallback={
+            <div class="grid place-items-center rounded-xl border border-dashed border-border py-24 text-center text-sm text-muted-foreground">
+              No products match those filters.
+            </div>
+          }
+        >
+          <ProductGrid class="sm:grid-cols-2 lg:grid-cols-3">
+            <For each={filtered()}>
+              {(product) => (
+                <ProductCard
+                  title={product.title}
+                  brand={BRAND_LABELS[product.brand]}
+                  category={CATEGORY_LABELS[product.category]}
+                  price={product.price}
+                  compareAt={product.compareAt}
+                  image={product.image}
+                  rating={product.rating}
+                  badge={product.badge}
+                  onAddToCart={() => setCartCount((count) => count + 1)}
+                />
+              )}
+            </For>
+          </ProductGrid>
+        </Show>
       </div>
     </div>
   )

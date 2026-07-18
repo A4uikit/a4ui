@@ -3,9 +3,8 @@
 // <main>). Unlike the source app's AppShell, this is slot-based and unopinionated
 // about the sidebar — pass your own via the `sidebar` prop, and it manages its
 // own width/collapse (the flex layout reflows the content column automatically,
-// so no --sidebar-w padding coupling). The <main> keeps the ~160ms page
-// cross-fade, wrapped in Suspense + an ErrorBoundary so a route chunk failing
-// never blanks the shell.
+// so no --sidebar-w padding coupling). The <main> is wrapped in Suspense + an
+// ErrorBoundary so a route chunk failing or still loading never blanks the shell.
 import { ErrorBoundary, Show, Suspense, type JSX, type ParentProps } from 'solid-js'
 
 import { Button } from '../ui/Button'
@@ -51,8 +50,8 @@ function defaultErrorFallback(err: unknown, reset: () => void): JSX.Element {
  * an optional sidebar slot plus a content column (optional banner + topbar +
  * routed `<main>`). Slot-based and unopinionated about the sidebar — pass
  * your own component via `sidebar` and it manages its own width/collapse.
- * `<main>` is wrapped in `Suspense` + an `ErrorBoundary` (with a ~160ms page
- * cross-fade) so a route chunk failing or still loading never blanks the shell.
+ * `<main>` is wrapped in `Suspense` + an `ErrorBoundary` so a route chunk
+ * failing or still loading never blanks the shell.
  *
  * @example
  * ```tsx

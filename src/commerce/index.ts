@@ -3,7 +3,7 @@
 // same way as the core (`@a4ui/core/styles.css` or the Tailwind preset).
 export { PriceTag, type PriceTagProps } from './PriceTag'
 export { QuantityStepper, type QuantityStepperProps } from './QuantityStepper'
-export { ProductCard, type ProductCardProps } from './ProductCard'
+export { ProductCard, type ProductCardProps, type ProductBadgeTone } from './ProductCard'
 export { ProductGrid, type ProductGridProps } from './ProductGrid'
 export { CartLine, type CartLineProps } from './CartLine'
 export { CartSummary, type CartSummaryProps, type CartSummaryItem } from './CartSummary'

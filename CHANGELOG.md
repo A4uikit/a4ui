@@ -6,6 +6,32 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.10.2] — 2026-07-18
+
+### Added
+
+- Theme-aware **focus bloom** on text fields — `Input`, `Textarea`, `Select`,
+  `NumberInput`, `Combobox`, `TagInput`, `Mentions`, and the date/time pickers
+  glow in the active theme's `--ring` colour on focus (and `--destructive` when
+  invalid). New `.a4-field` preset class; the hue and intensity follow the theme.
+- **`ProductCard`** gains a brand eyebrow, a category tag, and a diagonal corner
+  ribbon (top-right) tinted by intent (`badgeTone`: sale → destructive, new →
+  primary, featured → accent; inferred from the badge text when omitted). It now
+  renders on a frosted glass surface with the edge glow.
+- **`CartSummary`** now uses the glass surface too.
+
+### Fixed
+
+- Storefront example: the Category/Brand facets now actually **filter** the
+  product grid (OR within a facet, AND across); counts derive from the data;
+  brand + category show on each card; added an empty state.
+
+### Changed
+
+- Docs example pages widen consistently on large screens (app pages to
+  `max-w-7xl`, matching the Examples gallery) so the layout doesn't feel narrow
+  on widescreens. (Preview only — the library `AppShell` default is unchanged.)
+
 ## [0.10.1] — 2026-07-18
 
 ### Fixed

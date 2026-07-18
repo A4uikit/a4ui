@@ -66,6 +66,31 @@ const glass = plugin(({ addComponents }) => {
         'radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), hsl(var(--primary) / 1), hsl(var(--accent) / 0.55) 42%, transparent 72%)',
     },
 
+    // ---- Field focus/error "bloom" ----
+    // Theme-aware glow for text fields: the colour comes from the theme's --ring
+    // (focus) or --destructive (invalid), so each theme blooms in its own hue.
+    // Applied via the `a4-field` class on inputs/triggers.
+    '.a4-field': {
+      transition: 'box-shadow .16s ease, border-color .16s ease',
+    },
+    '.a4-field:focus, .a4-field:focus-within': {
+      outline: 'none',
+      borderColor: 'hsl(var(--ring))',
+      boxShadow: '0 0 0 3px hsl(var(--ring) / 0.22), 0 0 16px -2px hsl(var(--ring) / 0.55)',
+    },
+    '.a4-field[aria-invalid="true"], .a4-field[data-invalid]': {
+      borderColor: 'hsl(var(--destructive))',
+      boxShadow: '0 0 0 2px hsl(var(--destructive) / 0.18)',
+    },
+    '.a4-field[aria-invalid="true"]:focus, .a4-field[data-invalid]:focus': {
+      outline: 'none',
+      boxShadow: '0 0 0 3px hsl(var(--destructive) / 0.3), 0 0 16px -2px hsl(var(--destructive) / 0.6)',
+    },
+    // Light backgrounds swallow soft glows — bloom a touch stronger there.
+    "[data-theme='light'] .a4-field:focus, [data-theme='light'] .a4-field:focus-within": {
+      boxShadow: '0 0 0 3px hsl(var(--ring) / 0.3), 0 0 18px -2px hsl(var(--ring) / 0.65)',
+    },
+
     // ---- Floating overlay glass (menus, modals, drawers, toasts) ----
     '.bg-glass': {
       background: 'hsl(var(--card) / 0.72)',

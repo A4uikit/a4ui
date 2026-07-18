@@ -45,7 +45,7 @@ export default function Settings(): JSX.Element {
   ])
 
   return (
-    <div class="mx-auto max-w-3xl space-y-6 py-8">
+    <div class="mx-auto max-w-5xl space-y-6 py-8">
       <div>
         <h1 class="text-2xl font-bold tracking-tight">Settings</h1>
         <p class="mt-1 text-sm text-muted-foreground">

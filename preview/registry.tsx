@@ -732,6 +732,8 @@ applyThemeDefinition(brand) // or add it to your own picker`,
       <div class="w-56">
         <Commerce.ProductCard
           title="Nebula Hoodie"
+          brand="Orbit"
+          category="Apparel"
           price={64}
           compareAt={80}
           badge="Sale"
@@ -741,7 +743,8 @@ applyThemeDefinition(brand) // or add it to your own picker`,
         />
       </div>
     ),
-    code: `<ProductCard title="Nebula Hoodie" price={64} compareAt={80} badge="Sale"
+    code: `<ProductCard title="Nebula Hoodie" brand="Orbit" category="Apparel"
+  price={64} compareAt={80} badge="Sale" badgeTone="sale"
   rating={4} image="/hoodie.jpg" onAddToCart={add} />`,
   },
   {

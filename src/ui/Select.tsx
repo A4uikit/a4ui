@@ -5,7 +5,7 @@ import { createEffect, splitProps } from 'solid-js'
 import { cn } from '../lib/cn'
 
 const SELECT_BASE =
-  'w-full rounded-md border border-input bg-background text-foreground px-3 py-2 text-sm outline-none transition-colors focus:border-ring focus:ring-2 focus:ring-ring/30'
+  'w-full rounded-md border border-input bg-background text-foreground px-3 py-2 text-sm outline-none transition-colors a4-field'
 
 interface SelectProps
   extends ParentProps, Omit<JSX.SelectHTMLAttributes<HTMLSelectElement>, 'value' | 'onChange'> {
