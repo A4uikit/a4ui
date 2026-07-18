@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.4.0'
+export const A4UI_VERSION = '0.4.1'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'

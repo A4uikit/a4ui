@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.4.1] — 2026-07-18
+
 ### Added
 
 - `ThemedScenery` now carries the same live effects as `SpaceBackground` on every
