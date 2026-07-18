@@ -269,4 +269,20 @@ test.describe('interactions', () => {
     await page.reload()
     await expect.poll(primary).toBe(dino)
   })
+
+  test('theme settings drawer edits a token live', async ({ page }) => {
+    await page.goto('/#/button')
+    await page.getByRole('button', { name: 'Theme settings' }).click()
+    const panel = page.getByRole('dialog', { name: 'Theme settings' })
+    await expect(panel).toBeVisible()
+    const primary = () =>
+      page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim())
+    const before = await primary()
+    // Moving a color picker recolors the whole site live (inline var on <html>).
+    await panel.locator('input[aria-label="Primary"]').evaluate((el) => {
+      ;(el as HTMLInputElement).value = '#e0219a'
+      el.dispatchEvent(new Event('input', { bubbles: true }))
+    })
+    await expect.poll(primary).not.toBe(before)
+  })
 })

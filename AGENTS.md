@@ -75,8 +75,8 @@ scenery required. `space` is the flagship default and matches `tokens.css`.
    should be a top-level named export).
 3. It shows up automatically in the docs topbar theme picker and the unit test in
    `src/themes/themes.test.ts` validates its token format. Apply at runtime with
-   `selectTheme('<name>')`; users can also design one in the docs **Theme Builder**
-   (`#/theme-builder`) and export CSS/JSON.
+   `selectTheme('<name>')`; users can also design one live in the docs **theme
+   settings drawer** (⚙︎ in the top bar) and export CSS/JSON.
 
 Themes only recolor. Per-theme **scenery** (a bespoke background like the
 `SpaceBackground` starfield) is a separate, optional component — future themes can

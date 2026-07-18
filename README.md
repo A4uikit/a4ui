@@ -82,10 +82,11 @@ initTheme() // once at startup — restores the saved theme (or Space)
 selectTheme('dino') // switch by name; also accepts a ThemeDefinition
 ```
 
-Build your own with the **[Theme Builder](https://a4uikit.github.io/a4ui/#/theme-builder)**
-(pick a color for every token, live-preview, export CSS or JSON), then apply the
-exported palette as a `ThemeDefinition`. This is separate from the light/dark
-`setTheme`/`toggleTheme` mode switch — a theme recolors underneath either mode.
+Build your own in the **[docs](https://a4uikit.github.io/a4ui/)** — open the ⚙︎
+theme-settings drawer (top bar), pick a color for any token and the whole site
+recolors live, then copy the exported CSS or JSON and apply it as a
+`ThemeDefinition`. This is separate from the light/dark `setTheme`/`toggleTheme`
+mode switch — a theme recolors underneath either mode.
 
 ## Server rendering
 
