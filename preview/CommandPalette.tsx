@@ -53,7 +53,10 @@ export default function CommandPalette(props: CommandPaletteProps): JSX.Element 
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-x-0 top-[14vh] z-50 mx-auto w-full max-w-lg px-4">
-          <Dialog.Content class="modal-content bg-glass overflow-hidden rounded-xl border border-border shadow-2xl">
+          <Dialog.Content
+            role="dialog"
+            class="modal-content bg-glass overflow-hidden rounded-xl border border-border shadow-2xl"
+          >
             <input
               autofocus
               type="text"
