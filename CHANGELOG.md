@@ -6,6 +6,20 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.10.1] — 2026-07-18
+
+### Fixed
+
+- Calendar day cells were `role="gridcell"` without a `role="row"` parent —
+  invalid ARIA that some engines honored, shadowing the cell's button role and
+  accessible name. They're now plain buttons (`aria-pressed` for the selected
+  day). Affects `Calendar`, `DateField`, `DateRangePicker`.
+- `ProductCard` pins "Add to cart" to the bottom (flex column), so cards with
+  differing content height line up in a grid row instead of leaving an empty gap
+  under the shorter ones.
+- Storefront example: the cart count badge only shows when the cart is non-empty
+  and uses a filled, higher-contrast bubble.
+
 ## [0.10.0] — 2026-07-18
 
 ### Added

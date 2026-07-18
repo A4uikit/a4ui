@@ -44,14 +44,16 @@ export interface ProductCardProps {
  */
 export function ProductCard(props: ProductCardProps): JSX.Element {
   return (
-    <Card class={cn('overflow-hidden p-4', props.class)}>
+    <Card class={cn('flex h-full flex-col overflow-hidden p-4', props.class)}>
       <div class="relative aspect-square overflow-hidden rounded-lg bg-muted">
         <img src={props.image} alt={props.title} loading="lazy" class="h-full w-full object-cover" />
         <Show when={props.badge}>
           <Badge class="absolute left-2 top-2">{props.badge}</Badge>
         </Show>
       </div>
-      <div class="mt-3 space-y-2">
+      {/* flex-1 + mt-auto on the button pins "Add to cart" to the bottom, so
+          cards of differing content height still line up in a grid row. */}
+      <div class="mt-3 flex flex-1 flex-col gap-2">
         <p class="line-clamp-1 font-medium text-foreground">{props.title}</p>
         <Show when={props.rating !== undefined}>
           <Rating value={props.rating as number} readonly max={5} />
@@ -63,7 +65,7 @@ export function ProductCard(props: ProductCardProps): JSX.Element {
           locale={props.locale}
         />
         <Show when={props.onAddToCart}>
-          <Button class="w-full" onClick={() => props.onAddToCart?.()}>
+          <Button class="mt-auto w-full" onClick={() => props.onAddToCart?.()}>
             Add to cart
           </Button>
         </Show>

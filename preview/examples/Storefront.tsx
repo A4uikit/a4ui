@@ -1,9 +1,9 @@
 // Example template — Storefront. Full-page composition dogfooding A4ui commerce components.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
 import { ShoppingCart } from 'lucide-solid'
-import { createSignal, For, type JSX } from 'solid-js'
+import { createSignal, For, Show, type JSX } from 'solid-js'
 
-import { Badge, Button } from '../../src'
+import { Button } from '../../src'
 import { FilterGroup, ProductCard, ProductGrid } from '../../src/commerce'
 
 interface Product {
@@ -111,9 +111,12 @@ export default function Storefront(): JSX.Element {
         <Button variant="outline" class="relative">
           <ShoppingCart class="h-4 w-4" />
           Cart
-          <Badge tone="info" class="absolute -right-2 -top-2">
-            {cartCount()}
-          </Badge>
+          {/* Count bubble — only when there are items, filled for contrast. */}
+          <Show when={cartCount() > 0}>
+            <span class="absolute -right-2 -top-2 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">
+              {cartCount()}
+            </span>
+          </Show>
         </Button>
       </header>
 

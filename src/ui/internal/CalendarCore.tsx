@@ -178,7 +178,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
         <div class="mb-1 grid grid-cols-7 gap-0.5 text-center text-[11px] font-medium text-muted-foreground">
           <For each={weekdays()}>{(w) => <span>{w}</span>}</For>
         </div>
-        <div role="grid" class="grid grid-cols-7 gap-0.5">
+        <div class="grid grid-cols-7 gap-0.5">
           <For each={cells()}>
             {(d) => {
               const inMonth = d.getMonth() === viewMonth()
@@ -194,13 +194,12 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
               // Endpoints and a single `selected` day both render as filled.
               const isSel = () => (props.selected ? sameDay(props.selected, d) : false) || isEndpoint()
               const isToday = sameDay(today, d)
-              const title = `${months()[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
+              // No `title` here: some engines promote it to the accessible name,
+              // which would shadow the day number the day cells are located by.
               return (
                 <button
                   type="button"
-                  role="gridcell"
-                  title={title}
-                  aria-selected={isSel()}
+                  aria-pressed={isSel()}
                   onClick={() => props.onPick(d)}
                   class={cn(
                     'flex h-8 items-center justify-center rounded-md text-sm transition-colors',
