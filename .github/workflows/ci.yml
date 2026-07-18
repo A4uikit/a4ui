@@ -31,8 +31,14 @@ jobs:
       - run: npm run build
 
   e2e:
-    name: Playwright (docs)
+    # Sharded across parallel runners — each runs 1/N of the specs, so the wall
+    # clock is ~total/N instead of the whole suite serially.
+    name: Playwright ${{ matrix.shard }}/3
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -41,10 +47,10 @@ jobs:
           cache: npm
       - run: npm ci
       - uses: browser-actions/setup-chrome@v2 # provides the `chrome` channel Playwright uses
-      - run: npm test
+      - run: npm test -- --shard=${{ matrix.shard }}/3
       - uses: actions/upload-artifact@v4
         if: failure() # only keep the report when the suite fails
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.shard }}
           path: playwright-report/
           retention-days: 7

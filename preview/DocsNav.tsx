@@ -30,14 +30,14 @@ function Item(props: { id: string; title: string; selected: string; onSelect: (i
 }
 
 function Section(props: { title: string; open: boolean; children: JSX.Element; level?: 'top' | 'sub' }) {
-  const summary =
+  const summary = () =>
     props.level === 'sub'
       ? 'text-[11px] font-semibold uppercase tracking-wide text-muted-foreground'
       : 'text-xs font-bold uppercase tracking-wide text-foreground'
   return (
     <details class="group" open={props.open}>
       <summary
-        class={`flex cursor-pointer list-none items-center justify-between rounded-md px-2 py-1.5 hover:bg-muted [&::-webkit-details-marker]:hidden ${summary}`}
+        class={`flex cursor-pointer list-none items-center justify-between rounded-md px-2 py-1.5 hover:bg-muted [&::-webkit-details-marker]:hidden ${summary()}`}
       >
         <span>{props.title}</span>
         <ChevronRight class="h-3.5 w-3.5 shrink-0 transition-transform group-open:rotate-90" />
