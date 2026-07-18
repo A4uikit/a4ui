@@ -17,14 +17,44 @@ import {
   type BadgeTone,
 } from '../../src'
 
-type Member = { name: string; role: string; status: string; tone: BadgeTone }
+type Member = { name: string; role: string; status: string; tone: BadgeTone; avatar: string }
 
 const members: Member[] = [
-  { name: 'Marina Vega', role: 'Engineering Lead', status: 'Active', tone: 'success' },
-  { name: 'Theo Nakamura', role: 'Product Designer', status: 'Active', tone: 'success' },
-  { name: 'Priya Anand', role: 'Backend Engineer', status: 'Away', tone: 'warning' },
-  { name: 'Lucas Moreau', role: 'QA Analyst', status: 'Invited', tone: 'info' },
-  { name: 'Sofia Rossi', role: 'Data Scientist', status: 'Offline', tone: 'neutral' },
+  {
+    name: 'Marina Vega',
+    role: 'Engineering Lead',
+    status: 'Active',
+    tone: 'success',
+    avatar: 'https://placedog.net/100/100?id=1',
+  },
+  {
+    name: 'Theo Nakamura',
+    role: 'Product Designer',
+    status: 'Active',
+    tone: 'success',
+    avatar: 'https://placedog.net/100/100?id=2',
+  },
+  {
+    name: 'Priya Anand',
+    role: 'Backend Engineer',
+    status: 'Away',
+    tone: 'warning',
+    avatar: 'https://placedog.net/100/100?id=3',
+  },
+  {
+    name: 'Lucas Moreau',
+    role: 'QA Analyst',
+    status: 'Invited',
+    tone: 'info',
+    avatar: 'https://placedog.net/100/100?id=4',
+  },
+  {
+    name: 'Sofia Rossi',
+    role: 'Data Scientist',
+    status: 'Offline',
+    tone: 'neutral',
+    avatar: 'https://placedog.net/100/100?id=5',
+  },
 ]
 
 const people = [
@@ -67,14 +97,14 @@ export default function Members(): JSX.Element {
               <h2 class="text-lg font-semibold">Members</h2>
               <AvatarGroup
                 max={4}
-                avatars={members.map((m) => ({ fallback: initials(m.name), alt: m.name }))}
+                avatars={members.map((m) => ({ src: m.avatar, fallback: initials(m.name), alt: m.name }))}
               />
             </div>
             <List
               items={members.map((m) => ({
                 title: m.name,
                 description: m.role,
-                avatar: <Avatar fallback={initials(m.name)} alt={m.name} />,
+                avatar: <Avatar src={m.avatar} fallback={initials(m.name)} alt={m.name} />,
                 meta: <Badge tone={m.tone}>{m.status}</Badge>,
                 actions: (
                   <Button variant="outline" class="px-2 py-1 text-xs">

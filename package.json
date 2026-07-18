@@ -1,6 +1,6 @@
 {
   "name": "@a4ui/core",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "A4ui — Spatial Glass design system & component library for SolidJS (Kobalte behavior + Tailwind glass tokens + motion).",
   "type": "module",
   "license": "MIT",
@@ -37,14 +37,23 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
-    "./preset": "./preset.js",
+    "./preset": {
+      "import": "./preset.js",
+      "default": "./preset.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./elements": {
-      "import": "./dist/elements.js"
+      "import": "./dist/elements.js",
+      "default": "./dist/elements.js"
     },
-    "./elements.css": "./dist/elements.css"
+    "./elements.css": "./dist/elements.css",
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
@@ -65,7 +74,9 @@
     "test:ui": "playwright test --ui",
     "test:a11y": "playwright test a11y --project=desktop",
     "test:report": "playwright show-report",
-    "prepublishOnly": "npm run build",
+    "test:package": "node scripts/test-package.mjs",
+    "validate": "npm run typecheck && npm run lint && npm run test:unit && npm run build",
+    "prepublishOnly": "npm run validate",
     "prepare": "husky"
   },
   "lint-staged": {

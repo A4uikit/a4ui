@@ -6,6 +6,40 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.8.1] — 2026-07-18
+
+### Added
+
+- **`TimeField`** (hour/minute picker, 12/24h) and **`DateTimeField`** (date + time).
+- Date pickers now have **fast navigation**: click the month or year in the header
+  to jump to a month/year picker, and double chevrons step a whole year. `Calendar`
+  and `DateField` share a new internal `CalendarCore`.
+- Docs sidebar is now **collapsible accordions** by category (a "Components"
+  section with per-category sub-accordions + a "Get started" section), so the long
+  list no longer buries the categories.
+- `scripts/test-package.mjs` (`npm run test:package`) — installs the packed
+  tarball into a clean project and checks the entry points resolve. `prepublishOnly`
+  now runs `validate` (typecheck + lint + unit + build).
+- `engines.node >= 20`; `exports` gained `default` conditions and `./package.json`.
+
+### Fixed
+
+- **`Progress`** fill ignored `max` — a bare fill div filled the whole track, so
+  every bar read 100% (visible in the Analytics example). Same fix as `Meter`.
+- **Mobile phantom scroll**: the page cross-fade left the outgoing (lazy) page
+  mounted, stacking its height below the new page — navigating from the tall Home
+  to a short doc produced a huge empty scroll region. Removed the transition.
+- The **Examples** nav button was hidden on mobile; it's now reachable.
+- Example pages use real (free) images (`Product`, `Profile`, `Members`); the
+  `Profile` cover banner was also trimmed.
+
+### Changed
+
+- README rewritten: 75+ component count, a per-category table, an honest
+  comparison, and Tailwind shown as optional (styles work without it).
+- `COMPONENT-ROADMAP.md` rewritten as Stable / Beta / Planned (it wrongly listed
+  shipped components as "missing"). `AGENTS.md` updated with the recent additions.
+
 ## [0.8.0] — 2026-07-18
 
 ### Added

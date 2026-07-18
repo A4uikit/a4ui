@@ -55,12 +55,20 @@ export default function Profile(): JSX.Element {
     <div class="mx-auto max-w-3xl space-y-6 py-8">
       {/* Profile header */}
       <Card class="overflow-hidden">
-        <div class="h-32 w-full bg-muted" />
+        <div
+          class="h-20 w-full bg-muted bg-cover bg-center"
+          style={{ 'background-image': 'url(https://picsum.photos/seed/a4ui-profile-cover/1200/300)' }}
+        />
         <CardContent class="p-6">
-          <div class="-mt-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+          <div class="-mt-12 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div class="flex flex-col gap-3 sm:flex-row sm:items-end">
               <div class="h-24 w-24 shrink-0 overflow-hidden rounded-full ring-4 ring-card">
-                <Avatar fallback="AR" class="h-24 w-24 text-xl" />
+                <Avatar
+                  src="https://placedog.net/200/200?id=7"
+                  fallback="AR"
+                  alt="Alfredo Rivera"
+                  class="h-24 w-24 text-xl"
+                />
               </div>
               <div class="space-y-1 pb-1">
                 <div class="flex items-center gap-2">

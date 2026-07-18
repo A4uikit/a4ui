@@ -7,7 +7,6 @@
 // cross-fade, wrapped in Suspense + an ErrorBoundary so a route chunk failing
 // never blanks the shell.
 import { ErrorBoundary, Show, Suspense, type JSX, type ParentProps } from 'solid-js'
-import { Transition } from 'solid-transition-group'
 
 import { Button } from '../ui/Button'
 import { Spinner } from '../ui/Spinner'
@@ -76,7 +75,7 @@ export function AppShell(props: ParentProps<AppShellProps>): JSX.Element {
           {props.banner}
           {props.topbar}
           <main
-            class="mx-auto w-full min-w-0 flex-1 px-4 py-6 sm:px-6"
+            class="relative mx-auto w-full min-w-0 flex-1 px-4 py-6 sm:px-6"
             style={{ 'max-width': props.maxWidth ?? '1400px' }}
           >
             {/* Never blank the content column: Suspense shows a spinner while a
@@ -90,7 +89,10 @@ export function AppShell(props: ParentProps<AppShellProps>): JSX.Element {
                   </div>
                 }
               >
-                <Transition name="page">{props.children}</Transition>
+                {/* Routed content. No page cross-fade transition: solid-transition-group
+                    left the outgoing (lazy) page mounted, which stacked its height
+                    below the new page and created a huge phantom scroll region. */}
+                {props.children}
               </Suspense>
             </ErrorBoundary>
           </main>

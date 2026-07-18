@@ -603,7 +603,7 @@ applyThemeDefinition(brand) // or add it to your own picker`,
     id: 'date-field',
     title: 'DateField',
     group: 'Forms',
-    blurb: 'Date picker with a monthly calendar. Value in YYYY-MM-DD format (local).',
+    blurb: 'Date picker with a calendar. Click the month or year to jump; « » step a year. YYYY-MM-DD.',
     demo: () => {
       const [date, setDate] = createSignal('')
       return (
@@ -614,6 +614,38 @@ applyThemeDefinition(brand) // or add it to your own picker`,
     },
     code: `const [date, setDate] = createSignal('')
 <DateField value={date()} onChange={setDate} label="Due date" />`,
+  },
+  {
+    id: 'time-field',
+    title: 'TimeField',
+    group: 'Forms',
+    blurb: 'Time picker with hour/minute columns. Value in 24h "HH:MM"; optional 12h AM/PM display.',
+    demo: () => {
+      const [time, setTime] = createSignal('')
+      return (
+        <div class="max-w-xs">
+          <UI.TimeField value={time()} onChange={setTime} label="Start time" hour12 />
+        </div>
+      )
+    },
+    code: `const [time, setTime] = createSignal('')
+<TimeField value={time()} onChange={setTime} label="Start time" hour12 />`,
+  },
+  {
+    id: 'date-time-field',
+    title: 'DateTimeField',
+    group: 'Forms',
+    blurb: 'Combined date + time picker. Value in "YYYY-MM-DD HH:MM" (local); each half fills independently.',
+    demo: () => {
+      const [when, setWhen] = createSignal('')
+      return (
+        <div class="max-w-md">
+          <UI.DateTimeField value={when()} onChange={setWhen} hour12 />
+        </div>
+      )
+    },
+    code: `const [when, setWhen] = createSignal('')
+<DateTimeField value={when()} onChange={setWhen} hour12 />`,
   },
   {
     id: 'dropzone',

@@ -16,11 +16,11 @@ import {
   Tabs,
 } from '../../src'
 
-const gallery: { alt: string }[] = [
-  { alt: 'Aurora headphones — front view' },
-  { alt: 'Aurora headphones — side profile' },
-  { alt: 'Aurora headphones — folded flat' },
-  { alt: 'Aurora headphones — in carrying case' },
+const gallery: { alt: string; src: string }[] = [
+  { alt: 'Aurora headphones — front view', src: 'https://picsum.photos/seed/a4ui-prod-1/600/600' },
+  { alt: 'Aurora headphones — side profile', src: 'https://picsum.photos/seed/a4ui-prod-2/600/600' },
+  { alt: 'Aurora headphones — folded flat', src: 'https://picsum.photos/seed/a4ui-prod-3/600/600' },
+  { alt: 'Aurora headphones — in carrying case', src: 'https://picsum.photos/seed/a4ui-prod-4/600/600' },
 ]
 
 const specs: { label: string; value: JSX.Element }[] = [
@@ -83,7 +83,7 @@ export default function Product(): JSX.Element {
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
         <Carousel
           slides={gallery.map((slide) => (
-            <Image src="/og.png" alt={slide.alt} class="aspect-video w-full" />
+            <Image src={slide.src} alt={slide.alt} class="aspect-video w-full object-cover" />
           ))}
         />
 

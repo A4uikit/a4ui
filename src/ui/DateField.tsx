@@ -4,12 +4,13 @@
 // and torn down via onCleanup; the popover is absolutely positioned under the
 // trigger. Value/onChange speak `YYYY-MM-DD` (local, never toISOString which
 // shifts by timezone).
-import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-solid'
+import { CalendarDays } from 'lucide-solid'
 import type { JSX } from 'solid-js'
-import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
+import { Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import { Portal } from 'solid-js/web'
 
 import { cn } from '../lib/cn'
+import { CalendarCore } from './internal/CalendarCore'
 
 const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTHS = [
@@ -49,10 +50,6 @@ function displayLabel(value: string, months: string[]): string | null {
   return `${d.getDate()} ${months[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`
 }
 
-function sameDay(a: Date, b: Date): boolean {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate()
-}
-
 interface DateFieldProps {
   /** Selected date as `YYYY-MM-DD` (local, no timezone shift), or `''` for none. */
   value: string
@@ -81,13 +78,6 @@ interface DateFieldProps {
  */
 export function DateField(props: DateFieldProps): JSX.Element {
   const [open, setOpen] = createSignal(false)
-  // Month currently shown in the grid — seeded ONCE from the value (or today).
-  // Intentional untracked read: the popover mounts fresh per use and the user
-  // navigates months manually, so it need not track later value changes.
-  // eslint-disable-next-line solid/reactivity
-  const initial = parse(props.value) ?? new Date()
-  const [viewYear, setViewYear] = createSignal(initial.getFullYear())
-  const [viewMonth, setViewMonth] = createSignal(initial.getMonth())
 
   let rootRef: HTMLDivElement | undefined
   let btnRef: HTMLButtonElement | undefined
@@ -108,9 +98,6 @@ export function DateField(props: DateFieldProps): JSX.Element {
 
   const openPopover = () => {
     if (props.disabled) return
-    const seed = parse(props.value) ?? new Date()
-    setViewYear(seed.getFullYear())
-    setViewMonth(seed.getMonth())
     place()
     setOpen(true)
   }
@@ -145,40 +132,7 @@ export function DateField(props: DateFieldProps): JSX.Element {
   createEffect(() => toggleListeners(open()))
   onCleanup(() => toggleListeners(false))
 
-  const prevMonth = () => {
-    const m = viewMonth()
-    if (m === 0) {
-      setViewMonth(11)
-      setViewYear(viewYear() - 1)
-    } else {
-      setViewMonth(m - 1)
-    }
-  }
-  const nextMonth = () => {
-    const m = viewMonth()
-    if (m === 11) {
-      setViewMonth(0)
-      setViewYear(viewYear() + 1)
-    } else {
-      setViewMonth(m + 1)
-    }
-  }
-
-  // 6×7 grid of dates starting on the Monday on/before the 1st of the month.
-  const cells = createMemo(() => {
-    const first = new Date(viewYear(), viewMonth(), 1)
-    // Monday-first offset: JS getDay() is 0=Sun..6=Sat.
-    const offset = (first.getDay() + 6) % 7
-    const start = new Date(viewYear(), viewMonth(), 1 - offset)
-    const out: Date[] = []
-    for (let i = 0; i < 42; i++) {
-      out.push(new Date(start.getFullYear(), start.getMonth(), start.getDate() + i))
-    }
-    return out
-  })
-
   const selected = createMemo(() => parse(props.value))
-  const today = new Date()
 
   const pick = (d: Date) => {
     props.onChange(fmt(d))
@@ -207,59 +161,14 @@ export function DateField(props: DateFieldProps): JSX.Element {
             style={{ position: 'fixed', top: `${pos().top}px`, left: `${pos().left}px` }}
             class="z-50 w-72 rounded-lg border border-border bg-card p-3 text-card-foreground shadow-lg"
           >
-            <div class="mb-2 flex items-center justify-between">
-              <button
-                type="button"
-                onClick={prevMonth}
-                aria-label="Previous month"
-                class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
-              >
-                <ChevronLeft class="h-4 w-4" />
-              </button>
-              <span class="text-sm font-medium capitalize text-foreground">
-                {(props.months ?? MONTHS)[viewMonth()]} {viewYear()}
-              </span>
-              <button
-                type="button"
-                onClick={nextMonth}
-                aria-label="Next month"
-                class="rounded-md p-1 text-foreground transition-colors hover:bg-muted"
-              >
-                <ChevronRight class="h-4 w-4" />
-              </button>
-            </div>
-
-            <div class="mb-1 grid grid-cols-7 gap-0.5 text-center text-[11px] font-medium text-muted-foreground">
-              <For each={props.weekdays ?? WEEKDAYS}>{(w) => <span>{w}</span>}</For>
-            </div>
-
-            <div class="grid grid-cols-7 gap-0.5">
-              <For each={cells()}>
-                {(d) => {
-                  const inMonth = d.getMonth() === viewMonth()
-                  const isSel = () => {
-                    const s = selected()
-                    return s ? sameDay(s, d) : false
-                  }
-                  const isToday = sameDay(today, d)
-                  return (
-                    <button
-                      type="button"
-                      onClick={() => pick(d)}
-                      class={cn(
-                        'flex h-8 items-center justify-center rounded-md text-sm transition-colors',
-                        isSel() ? 'bg-primary font-semibold text-primary-foreground' : 'hover:bg-muted',
-                        !isSel() && !inMonth && 'text-muted-foreground/50',
-                        !isSel() && inMonth && 'text-foreground',
-                        !isSel() && isToday && 'ring-1 ring-inset ring-ring',
-                      )}
-                    >
-                      {d.getDate()}
-                    </button>
-                  )
-                }}
-              </For>
-            </div>
+            <CalendarCore
+              selected={selected() ?? undefined}
+              initialView={selected() ?? undefined}
+              onPick={pick}
+              weekStart={1}
+              months={props.months}
+              weekdays={props.weekdays ?? WEEKDAYS}
+            />
           </div>
         </Portal>
       </Show>

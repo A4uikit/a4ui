@@ -7,25 +7,36 @@ this repo. Read this before making changes.
 
 **A4ui** (`@a4ui/core`) — a "Spatial Glass" design system & component library for
 **SolidJS**: glassmorphism surfaces, an animated starfield backdrop, light/dark
-themes, and ~40 components. Built on **Kobalte** (behavior / a11y), a **Tailwind
+themes, and ~60 components. Built on **Kobalte** (behavior / a11y), a **Tailwind
 preset** (visual), and **solid-transition-group + solid-motionone** (motion).
+Ships both as SolidJS components and as a **Web Components** bundle
+(`@a4ui/core/elements` + `elements.css`) for React/Next.js/Vue/vanilla.
 
 ## Repo layout
 
 - `src/` — the published library:
-  - `src/ui/*` — components. `src/layout/*` — `AppShell`, `SpaceBackground`, toggles.
+  - `src/ui/*` — ~60 components (Button, Card, DateField, Calendar, Combobox,
+    DataGrid, Tree/TreeSelect/Cascader, ColorPicker, Comment, Tour,
+    NotificationCenter, Command, Sortable, Clock, CalendarHeatmap, and more).
+    `Calendar`/`DateField` share `src/ui/internal/CalendarCore.tsx` (day/month/year
+    drill-down + year jumps). `src/layout/*` — `AppShell`, `SpaceBackground`, toggles.
     `src/lib/*` — helpers (`cn`, `theme`, `motion`, `effects`, `media`, `virtual`).
     `src/themes/*` — swappable color palettes (`palettes.ts` = the theme data;
     `index.ts` = `selectTheme`/`applyThemeDefinition`/`initTheme` runtime).
     `src/styles/*` — `tokens.css` (CSS vars + motion `@keyframes`) and `space.css`
     (starfield). `src/index.ts` — public entry (re-exports everything).
+  - `src/elements.tsx` — Web Components bridge; `vite.elements.config.ts` +
+    `scripts/build-elements-css.mjs` build a self-contained bundle (`elements.js` +
+    `elements.css`) that registers `<a4-*>` custom elements for React/Next.js/Vue/vanilla.
 - `preset.js` — the Tailwind preset: semantic colors → CSS vars, fonts, radius, and
   the **glass surface plugin** (`.card` / `.bg-glass` / `.glow-edge` / calm mode).
   Shipped in the package.
 - `preview/` — the **docs site** (dev-only, NOT published). Vite SPA with hash
   routing; **`preview/registry.tsx` is the single source of truth** for the docs.
-- `tests/` — Playwright suite (`docs.spec.ts`): every doc renders + key behaviors,
-  on desktop **and** mobile.
+- `tests/` — Playwright suite: `docs.spec.ts` (every doc renders + behaviors,
+  desktop & mobile) and `_*.spec.ts` (screenshot QA harness via
+  `playwright.shots.config.ts`). PNGs land in `tests/__shots__/` (gitignored);
+  run `npm test` to compare or update visuals before release.
 - `.github/workflows/` — `pages.yml` (deploy docs to GitHub Pages on push to `main`)
   and `publish.yml` (publish to npm on GitHub Release, via **OIDC trusted publishing**).
 
@@ -40,9 +51,11 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
 
 ## Conventions
 
+- **Language:** prose/replies to users are in **Spanish**; all **code**, comments,
+  and **commit messages** stay in **English**. Commits carry **NO AI attribution**
+  — never add `Co-Authored-By:` or "Generated with …" trailers.
 - **Commits:** atomic, in **English**, Conventional-Commits style
-  (`feat:` `fix:` `docs:` `chore:` `ci:` `test:`). **No AI attribution** — never
-  add `Co-Authored-By:` or "Generated with …" trailers.
+  (`feat:` `fix:` `docs:` `chore:` `ci:` `test:`).
 - **CSS doctrine (blocked):** anything Tailwind can express → Tailwind utilities in
   JSX. Glass surfaces → the plugin in `preset.js`. CSS variables + motion
   `@keyframes` → `src/styles/tokens.css`. Starfield → `src/styles/space.css`.
@@ -61,7 +74,9 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
 3. Add a `DocEntry` to `preview/registry.tsx` (id = kebab-case; blurb + live demo +
    code; optional `controls`). The render test is auto-generated from the registry;
    add a behavior test to `tests/docs.spec.ts` if it's interactive.
-4. `npm run typecheck && npm run build && npm test` must stay green.
+4. Consider wrapping leaf/primitive components as Web Components (register in
+   `src/elements.tsx`) and include them in at least one example page.
+5. `npm run typecheck && npm run build && npm test` must stay green.
 
 ## Adding a theme — the recipe
 

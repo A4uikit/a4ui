@@ -24,6 +24,13 @@ interface ProgressProps {
  * ```
  */
 export function Progress(props: ProgressProps): JSX.Element {
+  // Kobalte's Progress.Fill has no intrinsic width, so a bare block div fills the
+  // whole track (every bar reads 100%). Set the width from value/max ourselves.
+  const percent = () => {
+    const max = props.max ?? 100
+    if (max <= 0) return 0
+    return Math.max(0, Math.min(100, (props.value / max) * 100))
+  }
   return (
     <KProgress
       value={props.value}
@@ -38,7 +45,10 @@ export function Progress(props: ProgressProps): JSX.Element {
         </div>
       </Show>
       <KProgress.Track class="h-2 overflow-hidden rounded-full bg-muted">
-        <KProgress.Fill class="h-full rounded-full bg-primary transition-all" />
+        <KProgress.Fill
+          class="h-full rounded-full bg-primary transition-all duration-500"
+          style={{ width: `${percent()}%` }}
+        />
       </KProgress.Track>
     </KProgress>
   )

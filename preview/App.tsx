@@ -167,11 +167,7 @@ export function App(): JSX.Element {
           <Button variant={navVariant(isDocs())} onClick={() => openDocs()}>
             Docs
           </Button>
-          <Button
-            class="hidden sm:inline-flex"
-            variant={navVariant(inExamples())}
-            onClick={() => setView({ kind: 'examples' })}
-          >
+          <Button variant={navVariant(inExamples())} onClick={() => setView({ kind: 'examples' })}>
             Examples
           </Button>
         </nav>
