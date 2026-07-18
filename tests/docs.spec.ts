@@ -285,4 +285,18 @@ test.describe('interactions', () => {
     })
     await expect.poll(primary).not.toBe(before)
   })
+
+  test('themed backdrop swaps with the theme', async ({ page }) => {
+    await page.goto('/#/button')
+    // A motif theme renders the lightweight ThemedScenery with floating glyphs.
+    await page.getByRole('button', { name: 'Choose theme' }).click()
+    await page.getByRole('menuitem', { name: /Dino/ }).click()
+    await expect(page.locator('#scenery .motif').first()).toBeAttached()
+    await expect(page.locator('#space')).toHaveCount(0)
+    // Space falls back to its bespoke starfield backdrop.
+    await page.getByRole('button', { name: 'Choose theme' }).click()
+    await page.getByRole('menuitem', { name: /Space/ }).click()
+    await expect(page.locator('#space')).toHaveCount(1)
+    await expect(page.locator('#scenery')).toHaveCount(0)
+  })
 })
