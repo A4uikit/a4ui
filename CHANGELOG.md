@@ -6,6 +6,19 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.10.0] — 2026-07-18
+
+### Added
+
+- **Charts** in a new subpath entry **`@a4ui/core/charts`** — `Sparkline`,
+  `BarChart`, and `DonutChart`, all native SVG (no chart-library dependency) and
+  theme-tinted (they recolor with the palette).
+- **`FileUpload`** — a drag-and-drop uploader with a per-file list: progress bar
+  while uploading, done state, error + retry, image preview, and remove. Controlled
+  (the consumer owns the list and the actual upload).
+- **`MultiSelect`** — a searchable multi-select dropdown with removable chips.
+- An **Admin** example template that dogfoods the charts, `MultiSelect`, and `Stat`.
+
 ## [0.9.0] — 2026-07-18
 
 ### Added

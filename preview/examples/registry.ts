@@ -95,4 +95,10 @@ export const EXAMPLES: ExampleEntry[] = [
     blurb: 'Cart lines with quantity steppers, a shipping form, and an order summary.',
     component: lazy(() => import('./Checkout')),
   },
+  {
+    id: 'admin',
+    title: 'Admin',
+    blurb: 'Admin dashboard with charts, metric sparklines, a filter, and a users table.',
+    component: lazy(() => import('./Admin')),
+  },
 ]

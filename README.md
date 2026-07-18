@@ -111,7 +111,7 @@ mode switch — a theme recolors underneath either mode.
 
 ## Components
 
-75+ components across six categories (this is a sample — see the
+90+ components across eight categories (this is a sample — see the
 **[docs site](https://a4uikit.github.io/a4ui/)** or `src/index.ts` for the
 full list):
 
@@ -124,12 +124,14 @@ full list):
 | Feedback       | `Alert`, `Toast`, `Progress`, `Skeleton`, `Empty`, `Result`, `NotificationCenter`                     |
 | Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`               |
 | Commerce       | `ProductCard`, `ProductGrid`, `PriceTag`, `QuantityStepper`, `CartLine`, `CartSummary`, `FilterGroup` |
+| Charts         | `Sparkline`, `BarChart`, `DonutChart` (native SVG, theme-tinted)                                      |
 
 Domain-specific sets ship as **subpath entries** so the base package stays lean —
-e.g. commerce components import from `@a4ui/core/commerce`:
+e.g. commerce and chart components import from their own paths:
 
 ```tsx
 import { ProductCard, CartSummary } from '@a4ui/core/commerce'
+import { DonutChart, Sparkline } from '@a4ui/core/charts'
 ```
 
 ## Why A4ui

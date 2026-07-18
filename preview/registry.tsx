@@ -7,6 +7,7 @@ import { createSignal, For, type JSX } from 'solid-js'
 
 import * as UI from '../src'
 import * as Commerce from '../src/commerce'
+import * as Charts from '../src/charts'
 
 // Live prop control ("knob"). Entries opt in via `controls`; the docs render a
 // panel and pass the current values to `demo`/`code`.
@@ -39,6 +40,7 @@ export const DOC_GROUPS = [
   'Forms',
   'Data',
   'Commerce',
+  'Charts',
   'Overlays',
   'Feedback',
   'Navigation',
@@ -843,6 +845,114 @@ applyThemeDefinition(brand) // or add it to your own picker`,
     },
     code: `const [sel, setSel] = createSignal<string[]>([])
 <FilterGroup title="Category" selected={sel()} onChange={setSel} options={facets} />`,
+  },
+  {
+    id: 'multi-select',
+    title: 'MultiSelect',
+    group: 'Forms',
+    blurb: 'Multi-select dropdown with search and removable chips.',
+    demo: () => {
+      const [val, setVal] = createSignal<string[]>(['solid', 'vite'])
+      return (
+        <div class="max-w-xs">
+          <UI.MultiSelect
+            value={val()}
+            onChange={setVal}
+            placeholder="Pick your stack"
+            options={[
+              { value: 'solid', label: 'SolidJS' },
+              { value: 'vite', label: 'Vite' },
+              { value: 'ts', label: 'TypeScript' },
+              { value: 'tailwind', label: 'Tailwind CSS' },
+              { value: 'kobalte', label: 'Kobalte' },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [val, setVal] = createSignal<string[]>([])
+<MultiSelect value={val()} onChange={setVal} options={options} />`,
+  },
+  {
+    id: 'file-upload',
+    title: 'FileUpload',
+    group: 'Forms',
+    blurb: 'Drag-and-drop uploader with per-file progress, error/retry and remove.',
+    demo: () => {
+      const [files, setFiles] = createSignal<UI.UploadFile[]>([
+        { id: '1', name: 'contract.pdf', size: 1_400_000, progress: 100, status: 'done' },
+        { id: '2', name: 'cover-photo.jpg', size: 3_200_000, progress: 62, status: 'uploading' },
+        { id: '3', name: 'export.csv', size: 240_000, progress: 0, status: 'error', error: 'Upload failed' },
+      ])
+      return (
+        <div class="w-full max-w-md">
+          <UI.FileUpload
+            files={files()}
+            onAdd={() => {}}
+            onRemove={(id) => setFiles(files().filter((f) => f.id !== id))}
+            onRetry={() => {}}
+          />
+        </div>
+      )
+    },
+    code: `<FileUpload files={files()} onAdd={upload} onRemove={remove} onRetry={retry} />`,
+  },
+  {
+    id: 'sparkline',
+    title: 'Sparkline',
+    group: 'Charts',
+    blurb: 'Tiny inline trend line (SVG, theme-tinted).',
+    demo: () => (
+      <div class="flex items-center gap-6">
+        <Charts.Sparkline data={[4, 8, 5, 9, 7, 12, 10, 14, 11, 16]} width={160} height={40} area />
+        <Charts.Sparkline
+          data={[16, 11, 13, 9, 10, 6, 8, 5, 7, 3]}
+          width={160}
+          height={40}
+          tone="destructive"
+        />
+      </div>
+    ),
+    code: `<Sparkline data={[4, 8, 5, 9, 7, 12, 10, 14]} area />`,
+  },
+  {
+    id: 'bar-chart',
+    title: 'BarChart',
+    group: 'Charts',
+    blurb: 'Simple labelled vertical bars.',
+    demo: () => (
+      <div class="w-full max-w-md">
+        <Charts.BarChart
+          data={[
+            { label: 'Mon', value: 12 },
+            { label: 'Tue', value: 19 },
+            { label: 'Wed', value: 8 },
+            { label: 'Thu', value: 22 },
+            { label: 'Fri', value: 16 },
+            { label: 'Sat', value: 6 },
+            { label: 'Sun', value: 10 },
+          ]}
+        />
+      </div>
+    ),
+    code: `<BarChart data={[{ label: 'Mon', value: 12 }, …]} />`,
+  },
+  {
+    id: 'donut-chart',
+    title: 'DonutChart',
+    group: 'Charts',
+    blurb: 'SVG donut with theme-tinted segments and a center total.',
+    demo: () => (
+      <Charts.DonutChart
+        data={[
+          { label: 'Direct', value: 42, tone: 'primary' },
+          { label: 'Social', value: 28, tone: 'accent' },
+          { label: 'Referral', value: 18, tone: 'emit' },
+          { label: 'Other', value: 12, tone: 'received' },
+        ]}
+      />
+    ),
+    code: `<DonutChart data={[{ label: 'Direct', value: 42, tone: 'primary' }, …]} />`,
   },
   {
     id: 'dropzone',
