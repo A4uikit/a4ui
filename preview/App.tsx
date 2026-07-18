@@ -5,9 +5,30 @@
 import { Settings as SettingsIcon, Search as SearchIcon } from 'lucide-solid'
 import { createEffect, createSignal, lazy, onCleanup, onMount, Show, Suspense, type JSX } from 'solid-js'
 
-import { AppShell, Button, Drawer, EffectsToggle, initTheme, ThemeToggle, Toaster } from '../src'
+import {
+  activeTheme,
+  AppShell,
+  Button,
+  Drawer,
+  EffectsToggle,
+  initTheme,
+  SpaceBackground,
+  ThemedScenery,
+  ThemeToggle,
+  Toaster,
+} from '../src'
 import { Home } from './Home'
 import { ThemeSelect } from './ThemeSelect'
+
+// Backdrop follows the active theme: Space keeps its bespoke starfield; every
+// other theme gets the lightweight token-tinted ThemedScenery with its motifs.
+function Scenery(): JSX.Element {
+  return (
+    <Show when={activeTheme().motifs} fallback={<SpaceBackground />}>
+      {(motifs) => <ThemedScenery motifs={motifs()} />}
+    </Show>
+  )
+}
 
 const DocContent = lazy(() => import('./Docs').then((m) => ({ default: m.DocContent })))
 const DocsNav = lazy(() => import('./DocsNav').then((m) => ({ default: m.DocsNav })))
@@ -121,7 +142,7 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <AppShell topbar={topbar}>
+      <AppShell topbar={topbar} background={<Scenery />}>
         <Show when={isDocs()} fallback={<Home onExplore={() => openDocs()} />}>
           <div class="flex gap-8">
             {/* Desktop sidebar. On mobile it's hidden — the ☰ button opens a Drawer. */}

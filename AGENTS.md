@@ -78,9 +78,11 @@ scenery required. `space` is the flagship default and matches `tokens.css`.
    `selectTheme('<name>')`; users can also design one live in the docs **theme
    settings drawer** (⚙︎ in the top bar) and export CSS/JSON.
 
-Themes only recolor. Per-theme **scenery** (a bespoke background like the
-`SpaceBackground` starfield) is a separate, optional component — future themes can
-ship their own and pass it to `AppShell`'s `background` slot.
+Themes only recolor the palette. For a distinct **backdrop**, give the theme a
+`motifs` array — the docs render `ThemedScenery` (token-tinted nebula + floating
+motif glyphs) for any non-`space` theme via `AppShell`'s `background` slot; `space`
+keeps its bespoke `SpaceBackground`. A theme can still ship a fully custom
+background component instead and pass it to `background` directly.
 
 ## Workflow — how to push & release
 

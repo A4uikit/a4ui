@@ -71,6 +71,7 @@ export { Combobox } from './ui/Combobox'
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
 export { AppShell } from './layout/AppShell'
 export { SpaceBackground } from './layout/SpaceBackground'
+export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'
 export { ThemeToggle } from './layout/ThemeToggle'
 export { EffectsToggle } from './layout/EffectsToggle'
 export { NavGroup } from './layout/NavGroup'

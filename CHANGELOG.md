@@ -19,6 +19,10 @@ changes, `patch` for fixes).
 - The `SpaceBackground` starfield (nebula, aurora, planets, glow, constellations)
   now tints from the active theme's `--primary`/`--accent`/`--destructive` tokens,
   so switching themes recolors the whole backdrop.
+- `ThemedScenery` — a lightweight, token-tinted backdrop for non-`space` themes
+  (themed nebula + a field of slowly floating motif glyphs). Each theme carries a
+  small optional `motifs` array (e.g. dino 🦕🌿🦴, soccer ⚽🥅), so a distinct
+  scene per theme costs almost nothing instead of bundling a bespoke background.
 - ESLint (flat config) + Prettier + a Vitest unit-test suite for the helpers.
 - Continuous integration (`ci.yml`) running typecheck, lint, unit tests, build,
   and the Playwright E2E suite on every push/PR.

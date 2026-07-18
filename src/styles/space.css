@@ -347,3 +347,53 @@
     display: none;
   }
 }
+
+/* ---- Generic themed scenery (non-space themes) --------------------------
+   A themed nebula (same token-tinted gradients as the starfield) plus a field
+   of slowly floating motif glyphs — <ThemedScenery motifs={[...]} />. Lighter
+   than the bespoke SpaceBackground so every extra theme costs almost nothing. */
+#scenery {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+#scenery .themed-sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(1200px 700px at 82% -8%, hsl(var(--primary) / 0.34), transparent 60%),
+    radial-gradient(900px 600px at 8% 12%, hsl(var(--accent) / 0.28), transparent 60%),
+    radial-gradient(1000px 800px at 50% 120%, hsl(var(--accent) / 0.22), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(var(--destructive) / 0.12), transparent 60%),
+    hsl(var(--background));
+}
+[data-theme='light'] #scenery .themed-sky {
+  background:
+    radial-gradient(1100px 680px at 84% -10%, hsl(var(--primary) / 0.22), transparent 60%),
+    radial-gradient(900px 600px at 6% 8%, hsl(var(--accent) / 0.2), transparent 60%),
+    radial-gradient(1000px 820px at 50% 120%, hsl(var(--accent) / 0.16), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(var(--destructive) / 0.1), transparent 60%),
+    hsl(var(--background));
+}
+#scenery .motif {
+  position: absolute;
+  user-select: none;
+  will-change: transform;
+  animation: motifFloat var(--dur, 9s) ease-in-out var(--delay, 0s) infinite;
+}
+@keyframes motifFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-16px) rotate(calc(var(--r, 0deg) + 5deg));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  html:not(.force-motion) #scenery .motif {
+    animation: none !important;
+  }
+}

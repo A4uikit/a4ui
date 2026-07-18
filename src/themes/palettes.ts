@@ -40,6 +40,9 @@ export interface ThemeDefinition {
   icon: string
   dark: Palette
   light: Palette
+  /** Motif glyphs for the generic `ThemedScenery` backdrop. Omit for themes that
+      ship their own bespoke scenery (e.g. `space` uses `SpaceBackground`). */
+  motifs?: string[]
 }
 
 // The token order used when serializing a palette to CSS/JSON.
@@ -109,6 +112,7 @@ export const dino: ThemeDefinition = {
   label: 'Dino',
   description: 'Jurassic jungle: mossy greens with a warm amber accent.',
   icon: '🦖',
+  motifs: ['🦕', '🦖', '🌿', '🍃', '🦴', '🌋', '🥚', '🌴'],
   dark: {
     background: '160 30% 8%',
     foreground: '140 18% 90%',
@@ -151,6 +155,7 @@ export const doctor: ThemeDefinition = {
   label: 'Doctor',
   description: 'Clinical and calm: teal and clean blues on crisp white.',
   icon: '🩺',
+  motifs: ['🩺', '💊', '🩹', '🧬', '➕', '🫀', '🌡️', '💉'],
   dark: {
     background: '205 40% 9%',
     foreground: '200 24% 92%',
@@ -193,6 +198,7 @@ export const scientist: ThemeDefinition = {
   label: 'Scientist',
   description: 'Lab-grade violet with a bright cyan reaction accent.',
   icon: '🔬',
+  motifs: ['🔬', '🧪', '⚗️', '🧫', '🧠', '🔭', '🧬', '⚛️'],
   dark: {
     background: '250 30% 9%',
     foreground: '250 18% 92%',
@@ -235,6 +241,7 @@ export const soccer: ThemeDefinition = {
   label: 'Soccer',
   description: 'Match-day pitch: vivid grass green and fresh lime.',
   icon: '⚽',
+  motifs: ['⚽', '🥅', '🏆', '🚩', '👟', '🧤', '🟨', '🟥'],
   dark: {
     background: '140 35% 8%',
     foreground: '120 14% 92%',
