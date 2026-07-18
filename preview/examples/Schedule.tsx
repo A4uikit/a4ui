@@ -12,6 +12,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  Clock,
   Countdown,
   FloatingActionButton,
   List,
@@ -117,11 +118,17 @@ export default function Schedule(): JSX.Element {
 
   return (
     <div class="mx-auto max-w-5xl space-y-6 py-8">
-      <header class="flex flex-col gap-1">
-        <h1 class="text-2xl font-bold tracking-tight">Schedule</h1>
-        <p class="text-sm text-muted-foreground">
-          Pick a day to see its agenda, and keep an eye on what's coming up next.
-        </p>
+      <header class="flex flex-wrap items-start justify-between gap-4">
+        <div class="flex flex-col gap-1">
+          <h1 class="text-2xl font-bold tracking-tight">Schedule</h1>
+          <p class="text-sm text-muted-foreground">
+            Pick a day to see its agenda, and keep an eye on what's coming up next.
+          </p>
+        </div>
+        <div class="text-right">
+          <Clock hour12 seconds={false} class="text-2xl" />
+          <p class="text-xs uppercase tracking-wide text-muted-foreground">Local time</p>
+        </div>
       </header>
 
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">

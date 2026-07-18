@@ -14,5 +14,8 @@ playwright/.cache/
 # stray Playwright QA scripts
 pw-*.mjs
 
+# screenshot-harness output (tests/_*.spec.ts write here); keep the specs, not the PNGs
+tests/__shots__/*.png
+
 # generated docs artifact (built by scripts/gen-llms.mjs on preview build)
 preview/public/llms.txt

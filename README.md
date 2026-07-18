@@ -88,6 +88,22 @@ recolors live, then copy the exported CSS or JSON and apply it as a
 `ThemeDefinition`. This is separate from the light/dark `setTheme`/`toggleTheme`
 mode switch — a theme recolors underneath either mode.
 
+## Framework integration
+
+A4ui is a **SolidJS** library. It works natively in **Vite + Solid**,
+**SolidStart** (SSR), and **Astro** (as Solid islands). For **React / Next.js**,
+**Vue**, or plain HTML, ship the self-contained **Web Components** bundle
+(`@a4ui/core/elements` — Solid is compiled in, no Solid toolchain needed):
+
+```html
+<link rel="stylesheet" href="…/@a4ui/core/dist/elements.css" />
+<script type="module" src="…/@a4ui/core/dist/elements.js"></script>
+<a4-button variant="primary" label="Save"></a4-button>
+```
+
+Full setup for each stack — including the honest React/Next caveat and the SSR
+notes — is in **[INTEGRATIONS.md](./INTEGRATIONS.md)**.
+
 ## Server rendering
 
 A4ui is **client-first** — the components render in the browser (the glass,

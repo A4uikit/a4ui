@@ -12,6 +12,7 @@ import {
   Input,
   RadioGroup,
   Select,
+  Sortable,
   Switch,
   Tabs,
   Textarea,
@@ -36,6 +37,12 @@ export default function Settings(): JSX.Element {
   const [emailNotif, setEmailNotif] = createSignal(true)
   const [pushNotif, setPushNotif] = createSignal(false)
   const [marketingNotif, setMarketingNotif] = createSignal(false)
+  const [channels, setChannels] = createSignal([
+    { id: 'email', label: 'Email' },
+    { id: 'push', label: 'Push' },
+    { id: 'sms', label: 'SMS' },
+    { id: 'slack', label: 'Slack' },
+  ])
 
   return (
     <div class="mx-auto max-w-3xl space-y-6 py-8">
@@ -152,10 +159,19 @@ export default function Settings(): JSX.Element {
           <CardHeader>
             <CardTitle>Notifications</CardTitle>
           </CardHeader>
-          <CardContent class="space-y-4">
-            <Switch label="Email notifications" checked={emailNotif()} onChange={setEmailNotif} />
-            <Switch label="Push notifications" checked={pushNotif()} onChange={setPushNotif} />
-            <Switch label="Marketing emails" checked={marketingNotif()} onChange={setMarketingNotif} />
+          <CardContent class="space-y-6">
+            <div class="space-y-4">
+              <Switch label="Email notifications" checked={emailNotif()} onChange={setEmailNotif} />
+              <Switch label="Push notifications" checked={pushNotif()} onChange={setPushNotif} />
+              <Switch label="Marketing emails" checked={marketingNotif()} onChange={setMarketingNotif} />
+            </div>
+            <div class="space-y-2">
+              <p class="text-sm font-medium text-foreground">Channel priority</p>
+              <p class="text-xs text-muted-foreground">Drag to set which channels we try first.</p>
+              <Sortable items={channels()} itemKey={(c) => c.id} onReorder={setChannels}>
+                {(channel) => <span class="text-sm text-foreground">{channel.label}</span>}
+              </Sortable>
+            </div>
           </CardContent>
         </Card>
       )}

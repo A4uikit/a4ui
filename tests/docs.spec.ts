@@ -201,6 +201,22 @@ test.describe('interactions', () => {
     await expect.poll(() => input.inputValue().then(Number)).toBeGreaterThan(before)
   })
 
+  test('sortable reorders rows by dragging the grip', async ({ page }, testInfo) => {
+    test.skip(testInfo.project.name === 'mobile', 'pointer-drag is exercised on desktop')
+    await page.goto('/#/sortable')
+    const rows = page.locator('[data-sortable-item]')
+    await expect(rows.first()).toContainText('Design review')
+    const grip = page.getByRole('button', { name: 'Drag to reorder' }).first()
+    const gb = (await grip.boundingBox())!
+    const third = (await rows.nth(2).boundingBox())!
+    await page.mouse.move(gb.x + gb.width / 2, gb.y + gb.height / 2)
+    await page.mouse.down()
+    await page.mouse.move(gb.x + gb.width / 2, gb.y + 20, { steps: 3 })
+    await page.mouse.move(gb.x + gb.width / 2, third.y + third.height / 2 + 4, { steps: 8 })
+    await page.mouse.up()
+    await expect(rows.first()).not.toContainText('Design review')
+  })
+
   test('drawer opens with content', async ({ page }) => {
     await page.goto('/#/drawer')
     await page.getByRole('button', { name: 'Open panel' }).click()

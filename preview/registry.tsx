@@ -1675,10 +1675,10 @@ toast.error('Failed to save')`,
     blurb: 'Highlights every match of a query within a string.',
     demo: () => (
       <div class="text-sm text-foreground">
-        <UI.Highlight text="The quick brown fox jumps over the lazy dog" query="o" />
+        <UI.Highlight text="The quick brown fox jumps over the lazy dog" query="the" />
       </div>
     ),
-    code: `<Highlight text="…the lazy dog" query="o" />`,
+    code: `<Highlight text="…the lazy dog" query="the" />`,
   },
   {
     id: 'list',
@@ -1716,6 +1716,45 @@ toast.error('Failed to save')`,
     blurb: 'Live countdown to a target date — days, hours, minutes, seconds.',
     demo: () => <UI.Countdown to={new Date(Date.now() + (3 * 24 * 60 + 15) * 60 * 1000)} />,
     code: `<Countdown to={new Date('2026-12-31T00:00:00')} />`,
+  },
+  {
+    id: 'clock',
+    title: 'Clock',
+    group: 'Data',
+    blurb: 'Live clock — analog dial or digital readout, with an optional time zone.',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-8">
+        <UI.Clock variant="analog" size={140} />
+        <UI.Clock hour12 />
+      </div>
+    ),
+    code: `<Clock variant="analog" size={140} />
+<Clock hour12 />`,
+  },
+  {
+    id: 'sortable',
+    title: 'Sortable',
+    group: 'Data',
+    blurb: 'Drag rows by the grip handle to reorder them (pointer-based, touch-friendly).',
+    demo: () => {
+      const [rows, setRows] = createSignal([
+        { id: 'a', label: 'Design review' },
+        { id: 'b', label: 'Write the RFC' },
+        { id: 'c', label: 'Ship the release' },
+        { id: 'd', label: 'Update the changelog' },
+      ])
+      return (
+        <div class="w-full max-w-sm">
+          <UI.Sortable items={rows()} itemKey={(r) => r.id} onReorder={setRows}>
+            {(row) => <span class="text-sm text-foreground">{row.label}</span>}
+          </UI.Sortable>
+        </div>
+      )
+    },
+    code: `const [rows, setRows] = createSignal(items)
+<Sortable items={rows()} itemKey={(r) => r.id} onReorder={setRows}>
+  {(row) => <span>{row.label}</span>}
+</Sortable>`,
   },
   {
     id: 'affix',
@@ -1760,7 +1799,8 @@ toast.error('Failed to save')`,
     title: 'Image',
     group: 'Data',
     blurb: 'Lazy image with a click-to-zoom lightbox.',
-    demo: () => <UI.Image src="/og.png" alt="A4ui preview" class="h-32 w-56" />,
+    // Base-aware src so the asset resolves under a deployed subpath (e.g. /a4ui/).
+    demo: () => <UI.Image src={`${import.meta.env.BASE_URL}og.png`} alt="A4ui preview" class="h-32 w-56" />,
     code: `<Image src="/hero.png" alt="Hero" />`,
   },
   {

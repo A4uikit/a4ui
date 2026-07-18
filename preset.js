@@ -14,7 +14,9 @@
 //     content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 //   }
 
-import plugin from 'tailwindcss/plugin'
+// Explicit .js extension so the preset resolves under strict Node ESM (used by
+// our elements-css build), not just bundlers.
+import plugin from 'tailwindcss/plugin.js'
 
 // Frosted "space glass" surfaces. addComponents so they tree-shake like any
 // utility (emitted only when the class is found in scanned content — a4ui's own

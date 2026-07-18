@@ -1,0 +1,56 @@
+<!doctype html>
+<html data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../../dist/elements.css" />
+    <style>
+      body {
+        margin: 0;
+        padding: 32px;
+        background: hsl(var(--background));
+        color: hsl(var(--foreground));
+        font-family: system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+      }
+      .row {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="row">
+      <a4-button label="Primary"></a4-button>
+      <a4-button variant="secondary" label="Secondary"></a4-button>
+      <a4-button variant="ghost" label="Ghost"></a4-button>
+      <a4-badge tone="success" label="Success"></a4-badge>
+      <a4-badge tone="danger" label="Danger"></a4-badge>
+      <a4-spinner></a4-spinner>
+      <a4-avatar fallback="LR"></a4-avatar>
+      <a4-kbd label="⌘K"></a4-kbd>
+    </div>
+    <a4-alert tone="info" heading="Heads up" text="This is an A4ui alert as a web component."></a4-alert>
+    <div class="row">
+      <a4-progress value="64" label="Upload"></a4-progress>
+      <a4-meter value="38" max="50" label="Storage"></a4-meter>
+    </div>
+    <div class="row">
+      <a4-ring-progress value="72"></a4-ring-progress>
+      <a4-stat label="Revenue" value="1280"></a4-stat>
+      <a4-rating value="3"></a4-rating>
+    </div>
+    <div class="row">
+      <a4-clock variant="analog" size="140"></a4-clock>
+      <a4-clock hour12="true"></a4-clock>
+      <a4-countdown></a4-countdown>
+    </div>
+    <!-- iife build self-registers the custom elements on load -->
+    <script src="../../dist/elements.iife.js"></script>
+  </body>
+</html>

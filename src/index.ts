@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.7.0'
+export const A4UI_VERSION = '0.8.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -112,6 +112,8 @@ export { ColorPicker, type ColorPickerProps } from './ui/ColorPicker'
 export { Comment, type CommentData, type CommentProps } from './ui/Comment'
 export { CalendarHeatmap, type HeatmapValue, type CalendarHeatmapProps } from './ui/CalendarHeatmap'
 export { Portal, type PortalProps } from './ui/Portal'
+export { Sortable, type SortableProps } from './ui/Sortable'
+export { Clock, type ClockProps } from './ui/Clock'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.

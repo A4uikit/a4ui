@@ -6,6 +6,42 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.8.0] — 2026-07-18
+
+### Added
+
+- **Web Components build** (`@a4ui/core/elements`) — a curated set of
+  presentational components registered as framework-agnostic custom elements
+  (`<a4-button>`, `<a4-badge>`, `<a4-alert>`, `<a4-spinner>`, `<a4-avatar>`,
+  `<a4-progress>`, `<a4-meter>`, `<a4-ring-progress>`, `<a4-stat>`, `<a4-kbd>`,
+  `<a4-separator>`, `<a4-rating>`, `<a4-countdown>`, `<a4-clock>`). The bundle is
+  self-contained (Solid compiled in) and ships a precompiled `elements.css`, so
+  it works in **React/Next.js, Vue, or plain HTML** with no Solid toolchain.
+- **`Sortable`** — a generic drag-to-reorder list (pointer-based, touch-friendly;
+  grip handle, floating clone, dashed placeholder).
+- **`Clock`** — a live clock with digital and analog variants, optional seconds,
+  12/24-hour, and IANA time zone.
+- **`INTEGRATIONS.md`** — setup guides for Vite+Solid, SolidStart (with SSR
+  notes), Astro, and the Web Components path for React/Next.js/Vue/vanilla.
+
+### Fixed
+
+- **`Countdown`** no longer freezes. A parent expression like
+  `to={new Date(Date.now() + X)}` compiles to a getter Solid re-reads every tick,
+  which pinned the remaining time at `X`; the target is now captured once. Digits
+  also animate with an odometer-style roll.
+- **`Meter`** fill now respects `max` — it derived its width from the raw value,
+  so e.g. `value=38 max=50` read "76%" but filled only ~38%.
+- **`Separator`** vertical variant is now visible: Kobalte renders an `<hr>` whose
+  default margins/zero-height defeated `self-stretch`; it now resets those and
+  fills its container height.
+- **`CalendarHeatmap`** now shows month labels across the top and weekday labels
+  (Mon/Wed/Fri) down the side.
+- Docs `Image` demo uses a base-aware asset path, so it loads on the deployed
+  subpath (`/a4ui/`) instead of 404-ing.
+- `preset.js` imports `tailwindcss/plugin.js` with an explicit extension, so it
+  resolves under strict Node ESM tooling (not just bundlers).
+
 ## [0.7.0] — 2026-07-18
 
 ### Added

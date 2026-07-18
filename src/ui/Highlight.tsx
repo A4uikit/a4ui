@@ -42,7 +42,7 @@ export function Highlight(props: HighlightProps): JSX.Element {
       <For each={segments()}>
         {(segment) =>
           segment.match ? (
-            <mark class="rounded bg-primary/20 text-foreground">{segment.text}</mark>
+            <mark class="rounded bg-primary/30 px-0.5 text-foreground">{segment.text}</mark>
           ) : (
             segment.text
           )

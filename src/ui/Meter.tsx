@@ -25,6 +25,14 @@ interface MeterProps {
  * ```
  */
 export function Meter(props: MeterProps): JSX.Element {
+  // Kobalte's Meter.Fill has no intrinsic width — we set it ourselves from the
+  // value as a fraction of the range, clamped to 0–100%. (Without this the bar
+  // ignored `max`, so e.g. value 38 of max 50 read "76%" but filled only ~38%.)
+  const percent = () => {
+    const max = props.max ?? 100
+    if (max <= 0) return 0
+    return Math.max(0, Math.min(100, (props.value / max) * 100))
+  }
   return (
     <KMeter
       value={props.value}
@@ -39,7 +47,10 @@ export function Meter(props: MeterProps): JSX.Element {
         </div>
       </Show>
       <KMeter.Track class="h-2 overflow-hidden rounded-full bg-muted">
-        <KMeter.Fill class="h-full rounded-full bg-primary transition-all" />
+        <KMeter.Fill
+          class="h-full rounded-full bg-primary transition-all duration-500"
+          style={{ width: `${percent()}%` }}
+        />
       </KMeter.Track>
     </KMeter>
   )

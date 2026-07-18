@@ -84,30 +84,33 @@ export default function Dashboard(): JSX.Element {
             <CardTitle>Recent orders</CardTitle>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableHeadCell>Order</TableHeadCell>
-                  <TableHeadCell>Customer</TableHeadCell>
-                  <TableHeadCell>Status</TableHeadCell>
-                  <TableHeadCell>Amount</TableHeadCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <For each={orders}>
-                  {(order) => (
-                    <TableRow>
-                      <TableCell class="font-medium">{order.id}</TableCell>
-                      <TableCell>{order.customer}</TableCell>
-                      <TableCell>
-                        <Badge tone={order.tone}>{order.status}</Badge>
-                      </TableCell>
-                      <TableCell class="font-medium">{order.amount}</TableCell>
-                    </TableRow>
-                  )}
-                </For>
-              </TableBody>
-            </Table>
+            {/* Scroll the table horizontally on narrow viewports instead of clipping. */}
+            <div class="overflow-x-auto">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableHeadCell>Order</TableHeadCell>
+                    <TableHeadCell>Customer</TableHeadCell>
+                    <TableHeadCell>Status</TableHeadCell>
+                    <TableHeadCell>Amount</TableHeadCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <For each={orders}>
+                    {(order) => (
+                      <TableRow>
+                        <TableCell class="font-medium">{order.id}</TableCell>
+                        <TableCell>{order.customer}</TableCell>
+                        <TableCell>
+                          <Badge tone={order.tone}>{order.status}</Badge>
+                        </TableCell>
+                        <TableCell class="font-medium">{order.amount}</TableCell>
+                      </TableRow>
+                    )}
+                  </For>
+                </TableBody>
+              </Table>
+            </div>
           </CardContent>
         </Card>
 

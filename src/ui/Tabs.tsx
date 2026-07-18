@@ -41,7 +41,10 @@ interface TabsProps {
 export function Tabs(props: TabsProps): JSX.Element {
   return (
     <KTabs value={props.value} onChange={props.onChange} class={props.class}>
-      <KTabs.List class="flex gap-1 border-b border-border">
+      {/* `relative` anchors the absolutely-positioned Indicator to the list's
+          bottom border — without it the indicator escapes to the nearest
+          positioned ancestor and strands itself at the bottom of the page. */}
+      <KTabs.List class="relative flex gap-1 border-b border-border">
         <For each={props.items}>
           {(item) => (
             <KTabs.Trigger

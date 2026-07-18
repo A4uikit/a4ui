@@ -8,6 +8,8 @@ import { defineConfig } from '@playwright/test'
 // Run: `npm test`  ·  headed/interactive: `npm run test:ui`
 export default defineConfig({
   testDir: './tests',
+  // Screenshot/probe harnesses (tests/_*.spec.ts) are run on demand, not in CI.
+  testIgnore: ['**/_*.spec.ts'],
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
