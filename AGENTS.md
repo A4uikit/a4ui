@@ -66,20 +66,24 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
 Two separate flows. **Pushing code ≠ publishing a version.**
 
 **1. Everyday changes** — push to `main`; the docs site redeploys automatically.
+
 ```bash
 # make changes, then:
 git add -A
 git commit -m "type: short description"   # atomic, English, Conventional Commits, NO AI attribution
 git push origin main                       # → GitHub Actions redeploys the docs (pages.yml)
 ```
+
 Keep `npm run typecheck` / `npm run build` / `npm test` green before pushing.
 
 **2. Publishing a new npm version** — cut a release; CI publishes via OIDC (no token).
+
 ```bash
 npm version patch     # 0.1.1 → 0.1.2  (fix) · minor = feature · major = breaking
 git push && git push --tags
 gh release create vX.Y.Z --generate-notes
 ```
+
 `npm version` bumps `package.json` + creates the `vX.Y.Z` tag. Creating the GitHub
 Release triggers `.github/workflows/publish.yml`, which runs
 `npm publish --provenance --access public` via **OIDC trusted publishing** — no

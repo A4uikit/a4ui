@@ -6,6 +6,8 @@
 [![Lighthouse: Accessibility 100](https://img.shields.io/badge/A11y-100-success)](https://a4uikit.github.io/a4ui/)
 [![Lighthouse: Best Practices 100](https://img.shields.io/badge/Best_Practices-100-success)](https://a4uikit.github.io/a4ui/)
 [![Lighthouse: SEO 100](https://img.shields.io/badge/SEO-100-success)](https://a4uikit.github.io/a4ui/)
+[![npm downloads](https://img.shields.io/npm/dm/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
+[![minzipped size](https://img.shields.io/bundlephobia/minzip/@a4ui/core.svg)](https://bundlephobia.com/package/@a4ui/core)
 
 **Spatial Glass** — a design system & component library for **SolidJS**
 (glassmorphism + starfield backdrop + light/dark themes). Named after the 4
@@ -15,11 +17,11 @@ people in the Rivera family. 🙂
 
 Three layers, one identity:
 
-| Layer | What it gives | Tech |
-|-------|---------------|------|
-| Behavior / a11y | focus, keyboard, ARIA, portals | **Kobalte** |
-| Motion | transitions, count-up, calm mode | **solid-transition-group + solid-motionone** |
-| Visual | glass surfaces, tokens, glow, starfield | **Tailwind preset + `styles.css`** |
+| Layer           | What it gives                           | Tech                                         |
+| --------------- | --------------------------------------- | -------------------------------------------- |
+| Behavior / a11y | focus, keyboard, ARIA, portals          | **Kobalte**                                  |
+| Motion          | transitions, count-up, calm mode        | **solid-transition-group + solid-motionone** |
+| Visual          | glass surfaces, tokens, glow, starfield | **Tailwind preset + `styles.css`**           |
 
 ## Install
 
@@ -47,6 +49,31 @@ import '@a4ui/core/styles.css'
 // anywhere
 import { Button, Card, Modal } from '@a4ui/core'
 ```
+
+## Customization
+
+Colors, radius and fonts are driven by CSS variables (the `@a4ui/core/preset`
+maps Tailwind's semantic names to them). Override any token in your own CSS —
+scope it to `:root` (or `:root[data-theme='light']`) after importing the styles:
+
+```css
+@import '@a4ui/core/styles.css';
+
+:root {
+  --primary: 262 83% 58%; /* HSL channels — makes everything primary purple */
+  --radius-xl: 0.75rem;
+}
+```
+
+Dark is the default; add `data-theme="light"` on `<html>` (or use the exported
+`toggleTheme()` / `<ThemeToggle />`) for the light palette.
+
+## Server rendering
+
+A4ui is **client-first** — the components render in the browser (the glass,
+starfield and theme rely on the DOM/`localStorage`). Importing the package is
+SSR-safe (no crash at import), but for **SolidStart** render the components on the
+client, e.g. via `clientOnly(() => import('...'))`.
 
 ## What's inside
 
@@ -78,11 +105,15 @@ Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
 
 ```bash
 npm install
-npm run build        # library build (ESM + .d.ts)
 npm run preview      # docs site (dev server)
 npm run typecheck
-npm test             # Playwright suite (render + behavior, desktop + mobile)
+npm run lint         # ESLint  ·  npm run format to auto-format
+npm run test:unit    # Vitest — helper unit tests
+npm test             # Playwright — docs render + behavior (desktop + mobile)
+npm run build        # library build (ESM + .d.ts + styles.css)
 ```
+
+See **[CONTRIBUTING.md](./CONTRIBUTING.md)** and **[AGENTS.md](./AGENTS.md)**.
 
 ## License
 
