@@ -90,9 +90,7 @@ export function AppShell(props: ParentProps<AppShellProps>): JSX.Element {
                   </div>
                 }
               >
-                <Transition name="page" mode="outin">
-                  {props.children}
-                </Transition>
+                <Transition name="page">{props.children}</Transition>
               </Suspense>
             </ErrorBoundary>
           </main>
