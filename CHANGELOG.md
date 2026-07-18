@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.4.2] — 2026-07-18
+
 ### Fixed
 
 - The card edge-glow (`.glow-edge`) was hardcoded cyan/blue, so it stayed blue on
