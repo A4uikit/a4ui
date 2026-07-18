@@ -6,6 +6,28 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.5.0] — 2026-07-18
+
+### Added
+
+- **28 new components** (all theme-agnostic, accessible, documented):
+  - Data & display: `Carousel`, `Timeline`, `List`, `Descriptions`, `AvatarGroup`,
+    `Tree`, `Image` (lightbox), `Highlight`, `Countdown`, `RingProgress`, `Marquee`.
+  - Inputs & forms: `Rating`, `TagInput`, `Transfer`, `Calendar`.
+  - Navigation & actions: `Stepper`, `Anchor` (scroll-spy TOC), `BottomNavigation`,
+    `Command` (⌘K palette), `FloatingActionButton`, `SpeedDial`, `BackToTop`.
+  - Layout & feedback: `Splitter` (resizable panes), `Collapse`, `Affix`, `Result`,
+    `Empty`, `Kbd`.
+- **Two festive themes**: `snow` (falling snowflakes, a snow bank, a frosted cap
+  on cards) and `christmas` (night sky, snow, a light garland, a pine tree, and
+  Santa's sleigh crossing the sky). New bespoke scenery components `SnowScenery`
+  and `ChristmasBackground`; palettes verified WCAG AA. There are now **7 themes**.
+
+### Fixed
+
+- `Checkbox` now uses `accent-primary`, so its check follows the active theme
+  (it was a hardcoded browser blue).
+
 ### Changed
 
 - Lighthouse report + badges now reflect the **live deployed site** (desktop):
