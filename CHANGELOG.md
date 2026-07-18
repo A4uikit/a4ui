@@ -6,6 +6,16 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.6.0] — 2026-07-18
+
+### Added
+
+- **6 more components** (all theme-agnostic, accessible, documented):
+  `DataGrid` (sortable / filterable / paginated table), `TreeSelect`,
+  `Cascader` (cascading columns), `Mentions` (@-autocomplete textarea),
+  `Tour` (spotlight coachmarks), and `NotificationCenter` (bell + dismissible
+  feed). That's ~34 of the roadmap's missing components now shipped.
+
 ## [0.5.0] — 2026-07-18
 
 ### Added
