@@ -40,7 +40,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - uses: browser-actions/setup-chrome@v1 # provides the `chrome` channel Playwright uses
+      - uses: browser-actions/setup-chrome@v2 # provides the `chrome` channel Playwright uses
       - run: npm test
       - uses: actions/upload-artifact@v4
         if: failure() # only keep the report when the suite fails

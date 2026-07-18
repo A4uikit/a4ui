@@ -277,16 +277,12 @@ test.describe('interactions', () => {
     await page.getByRole('button', { name: 'Toggle theme' }).click() // dark → light
     await page.reload()
     // Both choices survive — they use different localStorage keys.
-    await expect
-      .poll(() => page.evaluate(() => localStorage.getItem('a4ui-theme-name')))
-      .toBe('doctor')
+    await expect.poll(() => page.evaluate(() => localStorage.getItem('a4ui-theme-name'))).toBe('doctor')
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
     // Doctor's teal (hue 190) is applied, not reset to Space's blue (217).
     await expect
       .poll(() =>
-        page.evaluate(() =>
-          getComputedStyle(document.documentElement).getPropertyValue('--primary').trim(),
-        ),
+        page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--primary').trim()),
       )
       .toMatch(/^190 /)
   })
