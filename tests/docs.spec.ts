@@ -4,9 +4,11 @@ import path from 'node:path'
 import { expect, test } from '@playwright/test'
 
 // Derive the component list from the docs registry (single source of truth) so
-// adding a component to registry.tsx automatically adds it to this suite.
+// adding a component to registry.tsx automatically adds it to this suite. Match
+// only DocEntry ids — the ones immediately followed by `title:` — so `id`s used
+// inside demo data (e.g. Tree node ids) aren't picked up as doc pages.
 const registry = readFileSync(path.resolve('preview/registry.tsx'), 'utf8')
-const IDS = [...registry.matchAll(/id: '([^']+)'/g)].map((m) => m[1])
+const IDS = [...registry.matchAll(/id: '([^']+)',\s*title:/g)].map((m) => m[1])
 
 // --- Every doc page renders (heading + live example) with no runtime errors ---
 test.describe('docs render', () => {

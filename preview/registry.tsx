@@ -1389,4 +1389,193 @@ toast.error('Failed to save')`,
   action={<Button>New invoice</Button>}
 />`,
   },
+  {
+    id: 'calendar',
+    title: 'Calendar',
+    group: 'Forms',
+    blurb: 'Full month grid — navigate months and pick a day. Selected day highlighted; today ringed.',
+    demo: () => {
+      const [d, setD] = createSignal<Date>(new Date())
+      return (
+        <div class="max-w-xs">
+          <UI.Calendar value={d()} onChange={setD} />
+        </div>
+      )
+    },
+    code: `const [d, setD] = createSignal(new Date())
+<Calendar value={d()} onChange={setD} />`,
+  },
+  {
+    id: 'tree',
+    title: 'Tree',
+    group: 'Data',
+    blurb: 'Hierarchical, expandable node tree with rotating chevrons and keyboard-friendly rows.',
+    demo: () => (
+      <div class="max-w-xs">
+        <UI.Tree
+          defaultExpanded={['src', 'ui']}
+          nodes={[
+            {
+              id: 'src',
+              label: 'src',
+              children: [
+                {
+                  id: 'ui',
+                  label: 'ui',
+                  children: [
+                    { id: 'button', label: 'Button.tsx' },
+                    { id: 'card', label: 'Card.tsx' },
+                  ],
+                },
+                { id: 'index', label: 'index.ts' },
+              ],
+            },
+            { id: 'pkg', label: 'package.json' },
+          ]}
+        />
+      </div>
+    ),
+    code: `<Tree defaultExpanded={['src']} nodes={[
+  { id: 'src', label: 'src', children: [
+    { id: 'index', label: 'index.ts' },
+  ]},
+  { id: 'pkg', label: 'package.json' },
+]} />`,
+  },
+  {
+    id: 'kbd',
+    title: 'Kbd',
+    group: 'Layout',
+    blurb: 'Inline keyboard-key indicator for shortcuts.',
+    demo: () => (
+      <div class="flex items-center gap-1 text-sm text-muted-foreground">
+        Press <UI.Kbd>⌘</UI.Kbd> <UI.Kbd>K</UI.Kbd> to search
+      </div>
+    ),
+    code: `Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to search`,
+  },
+  {
+    id: 'avatar-group',
+    title: 'AvatarGroup',
+    group: 'Data',
+    blurb: 'Overlapping stack of avatars with an overflow "+N" count.',
+    demo: () => (
+      <UI.AvatarGroup
+        max={4}
+        avatars={[
+          { fallback: 'AR' },
+          { fallback: 'TN' },
+          { fallback: 'PA' },
+          { fallback: 'LM' },
+          { fallback: 'SR' },
+          { fallback: 'JK' },
+        ]}
+      />
+    ),
+    code: `<AvatarGroup max={4} avatars={[
+  { fallback: 'AR' }, { fallback: 'TN' }, { fallback: 'PA' },
+  { fallback: 'LM' }, { fallback: 'SR' }, { fallback: 'JK' },
+]} />`,
+  },
+  {
+    id: 'descriptions',
+    title: 'Descriptions',
+    group: 'Data',
+    blurb: 'Read-only key/value layout for record details, in 1–3 responsive columns.',
+    demo: () => (
+      <div class="w-full max-w-lg">
+        <UI.Descriptions
+          columns={2}
+          items={[
+            { label: 'Name', value: 'Luis Rivera' },
+            { label: 'Email', value: 'luis@example.com' },
+            { label: 'Role', value: <UI.Badge tone="info">Admin</UI.Badge> },
+            { label: 'Status', value: 'Active' },
+          ]}
+        />
+      </div>
+    ),
+    code: `<Descriptions columns={2} items={[
+  { label: 'Name', value: 'Luis Rivera' },
+  { label: 'Role', value: <Badge tone="info">Admin</Badge> },
+]} />`,
+  },
+  {
+    id: 'result',
+    title: 'Result',
+    group: 'Feedback',
+    blurb: 'Full-status screen for success/error/404/500 outcomes, with an actions slot.',
+    controls: {
+      status: {
+        type: 'select',
+        label: 'status',
+        options: ['success', 'error', 'info', 'warning', '404', '500'],
+        default: 'success',
+      },
+    },
+    demo: (c) => (
+      <div class="w-full">
+        <UI.Result
+          status={c.status as UI.ResultStatus}
+          title="Payment successful"
+          description="Your order has been confirmed and is on its way."
+          actions={<UI.Button>Continue</UI.Button>}
+        />
+      </div>
+    ),
+    code: (c) => `<Result
+  status="${c.status}"
+  title="Payment successful"
+  description="Your order has been confirmed."
+  actions={<Button>Continue</Button>}
+/>`,
+  },
+  {
+    id: 'splitter',
+    title: 'Splitter',
+    group: 'Layout',
+    blurb: 'Two resizable panes with a draggable divider (keyboard-resizable too).',
+    demo: () => (
+      <div class="w-full">
+        <UI.Splitter
+          class="h-56 rounded-lg border border-border"
+          start={<div class="p-4 text-sm text-muted-foreground">Drag the divider →</div>}
+          end={<div class="p-4 text-sm text-muted-foreground">← Resize me</div>}
+        />
+      </div>
+    ),
+    code: `<Splitter
+  start={<Sidebar />}
+  end={<Content />}
+/>`,
+  },
+  {
+    id: 'command',
+    title: 'Command',
+    group: 'Overlays',
+    blurb: 'Reusable ⌘K command palette — fuzzy filter, keyboard nav, grouped items.',
+    demo: () => {
+      const [open, setOpen] = createSignal(false)
+      return (
+        <>
+          <UI.Button onClick={() => setOpen(true)}>Open command palette</UI.Button>
+          <UI.Command
+            open={open()}
+            onOpenChange={setOpen}
+            items={[
+              { label: 'New file', hint: '⌘N', group: 'Actions', onSelect: () => {} },
+              { label: 'Search', hint: '⌘K', group: 'Actions', onSelect: () => {} },
+              { label: 'Open settings', group: 'App', onSelect: () => {} },
+              { label: 'Toggle theme', group: 'App', onSelect: () => {} },
+            ]}
+          />
+        </>
+      )
+    },
+    code: `const [open, setOpen] = createSignal(false)
+<Command open={open()} onOpenChange={setOpen} items={[
+  { label: 'New file', hint: '⌘N', onSelect: createFile },
+  { label: 'Search', hint: '⌘K', onSelect: openSearch },
+]} />`,
+  },
 ]

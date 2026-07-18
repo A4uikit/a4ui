@@ -71,6 +71,14 @@ export { Stepper, type StepItem, type StepperProps } from './ui/Stepper'
 export { Timeline, type TimelineItem, type TimelineTone, type TimelineProps } from './ui/Timeline'
 export { Rating, type RatingProps } from './ui/Rating'
 export { Empty, type EmptyProps } from './ui/Empty'
+export { Calendar, type CalendarProps } from './ui/Calendar'
+export { Tree, type TreeNode, type TreeProps } from './ui/Tree'
+export { Kbd } from './ui/Kbd'
+export { AvatarGroup, type AvatarGroupProps } from './ui/AvatarGroup'
+export { Descriptions, type DescriptionItem, type DescriptionsProps } from './ui/Descriptions'
+export { Result, type ResultStatus, type ResultProps } from './ui/Result'
+export { Splitter, type SplitterProps } from './ui/Splitter'
+export { Command, type CommandItem, type CommandProps } from './ui/Command'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
