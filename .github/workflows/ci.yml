@@ -43,7 +43,7 @@ jobs:
       - uses: browser-actions/setup-chrome@v1 # provides the `chrome` channel Playwright uses
       - run: npm test
       - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
+        if: failure() # only keep the report when the suite fails
         with:
           name: playwright-report
           path: playwright-report/
