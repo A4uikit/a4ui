@@ -58,6 +58,7 @@
     "test:unit": "vitest run",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
+    "test:a11y": "playwright test a11y --project=desktop",
     "test:report": "playwright show-report",
     "prepublishOnly": "npm run build"
   },
@@ -74,10 +75,12 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.12.1",
     "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.61.1",
     "@solidjs/testing-library": "^0.8.10",
     "@testing-library/jest-dom": "^6.9.1",
+    "axe-core": "^4.12.1",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-solid": "^0.14.5",
