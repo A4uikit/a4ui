@@ -33,8 +33,21 @@ const result = await postcss([
   }),
 ]).process(input, { from: undefined })
 
-const header = '/* @a4ui/core/elements.css — precompiled styles for the Web Components bundle. */\n'
 mkdirSync(r('dist'), { recursive: true })
-writeFileSync(r('dist/elements.css'), `${header}${rawCss}\n${result.css}`)
+// Same precompiled CSS serves two audiences:
+//  - dist/elements.css → the Web Components bundle.
+//  - dist/full.css     → the Solid package used WITHOUT Tailwind (import it
+//    instead of styles.css to get every utility the components need, no build).
+const body = `${rawCss}\n${result.css}`
+writeFileSync(
+  r('dist/elements.css'),
+  `/* @a4ui/core/elements.css — precompiled styles for the Web Components bundle. */\n${body}`,
+)
+writeFileSync(
+  r('dist/full.css'),
+  `/* @a4ui/core/full.css — fully precompiled styles (tokens + every utility the components use). Import instead of styles.css when NOT using Tailwind. */\n${body}`,
+)
 
-console.log(`elements.css written (${(result.css.length / 1024).toFixed(1)} kB utilities + raw tokens)`)
+console.log(
+  `elements.css + full.css written (${(result.css.length / 1024).toFixed(1)} kB utilities + raw tokens)`,
+)

@@ -1,6 +1,6 @@
 {
   "name": "@a4ui/core",
-  "version": "0.11.1",
+  "version": "0.12.0",
   "description": "A4ui — Spatial Glass design system & component library for SolidJS (Kobalte behavior + Tailwind glass tokens + motion).",
   "type": "module",
   "license": "MIT",
@@ -29,6 +29,9 @@
   ],
   "files": [
     "dist",
+    "src",
+    "!src/**/*.test.ts",
+    "!src/**/*.test.tsx",
     "preset.js"
   ],
   "main": "./dist/index.js",
@@ -37,16 +40,19 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "solid": "./src/index.ts",
       "import": "./dist/index.js",
       "default": "./dist/index.js"
     },
     "./commerce": {
       "types": "./dist/commerce/index.d.ts",
+      "solid": "./src/commerce/index.ts",
       "import": "./dist/commerce.js",
       "default": "./dist/commerce.js"
     },
     "./charts": {
       "types": "./dist/charts/index.d.ts",
+      "solid": "./src/charts/index.ts",
       "import": "./dist/charts.js",
       "default": "./dist/charts.js"
     },
@@ -55,6 +61,7 @@
       "default": "./preset.js"
     },
     "./styles.css": "./dist/styles.css",
+    "./full.css": "./dist/full.css",
     "./elements": {
       "import": "./dist/elements.js",
       "default": "./dist/elements.js"

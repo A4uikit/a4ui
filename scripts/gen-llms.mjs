@@ -72,15 +72,17 @@ import { Button, Card, Modal } from '@a4ui/core'
 
 ## Entry points
 
-Components render fully styled from \`styles.css\` alone — **Tailwind is optional**
-(add the preset only if you also want A4ui tokens as utilities in your own markup).
+Styling has two paths: **with Tailwind**, add the \`@a4ui/core/preset\` and import
+\`styles.css\` (tokens + motion); **without Tailwind**, import \`@a4ui/core/full.css\`
+(fully precompiled — tokens + every utility the components use).
 
 - \`@a4ui/core\` — all the components listed below (named exports).
-- \`@a4ui/core/styles.css\` — precompiled styles (import once).
+- \`@a4ui/core/styles.css\` — tokens + motion + starfield (needs the Tailwind preset for utilities).
+- \`@a4ui/core/full.css\` — self-contained precompiled CSS for use WITHOUT Tailwind.
+- \`@a4ui/core/preset\` — the Tailwind preset (semantic tokens + glass plugin).
 - \`@a4ui/core/commerce\` — commerce set: ProductCard, ProductGrid, PriceTag, QuantityStepper, CartLine, CartSummary, FilterGroup.
 - \`@a4ui/core/charts\` — charts: Sparkline, BarChart, DonutChart (native SVG).
 - \`@a4ui/core/elements\` + \`@a4ui/core/elements.css\` — framework-agnostic Web Components (\`<a4-button>\`, \`<a4-clock>\`, …) for React/Next.js, Vue, or plain HTML.
-- \`@a4ui/core/preset\` — the optional Tailwind preset.
 
 The **Commerce** and **Charts** groups below import from \`@a4ui/core/commerce\` and
 \`@a4ui/core/charts\` respectively; everything else from \`@a4ui/core\`.

@@ -2,12 +2,12 @@
 
 A4ui ships **SolidJS** components. There are two ways to use it, depending on your stack:
 
-| Your stack                                               | How                                                            | Notes                                                                                              |
-| -------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| **Vite + Solid**                                         | Native components                                              | The default. Everything works.                                                                     |
-| **SolidStart** (SSR)                                     | Native components                                              | Works; DOM‑heavy components render on the client (see [SSR](#server-side-rendering-ssr)).          |
-| **Astro**                                                | Native components as Solid islands                             | Via `@astrojs/solid-js`.                                                                           |
-| **React / Next.js**, **Vue**, **Svelte**, **plain HTML** | [**Web Components**](#web-components-react-nextjs-vue-vanilla) | Solid components can't run inside React/Vue directly — use the framework‑agnostic custom elements. |
+| Your stack                                               | How                                                            | Notes                                                                                                                  |
+| -------------------------------------------------------- | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Vite + Solid**                                         | Native components                                              | The default. Everything works.                                                                                         |
+| **SolidStart** (SSR)                                     | Native components                                              | Server-rendered via the `solid` export condition; a few client-only backdrops (see [SSR](#server-side-rendering-ssr)). |
+| **Astro**                                                | Native components as Solid islands                             | Via `@astrojs/solid-js`.                                                                                               |
+| **React / Next.js**, **Vue**, **Svelte**, **plain HTML** | [**Web Components**](#web-components-react-nextjs-vue-vanilla) | Solid components can't run inside React/Vue directly — use the framework‑agnostic custom elements.                     |
 
 > **Honest heads‑up:** a Solid component (`<Button />` from `@a4ui/core`) cannot be dropped into a React or Next.js tree — they are different runtimes. For React‑based frameworks, use the **Web Components** build below, which is a self‑contained bundle that works anywhere.
 
@@ -59,9 +59,18 @@ Then use the components anywhere. The design tokens and layout render on the ser
 
 ### Server-side rendering (SSR)
 
-- A4ui's helpers (`theme`, `effects`, motion) **do not touch the DOM at module load**, so importing the package on the server won't throw.
-- Components are **client‑rendered** — anything using Kobalte, portals, `onMount`, `IntersectionObserver`, or `matchMedia` runs after hydration. That's automatic in Solid; you don't need to do anything for most components.
-- For a component you want to skip on the server entirely (e.g. a heavy virtualized list or a starfield backdrop), wrap it with SolidStart's `clientOnly`:
+A4ui ships a **`solid` export condition** pointing at its source, so Solid's
+compiler (SolidStart, or any `vite-plugin-solid` app) compiles the components for
+**both server and client** — the components **render on the server**, then
+hydrate. (Non-Solid tooling falls back to the precompiled `import`/`default`
+browser build.) Importing the package on the server is safe: `theme`, `effects`
+and motion **don't touch the DOM at module load**.
+
+- Most components SSR fine — Kobalte is SSR-safe, and anything using `onMount`,
+  `IntersectionObserver`, `matchMedia`, or rAF simply runs after hydration.
+- A few are inherently **client-only** — the starfield/scenery backdrops
+  (`SpaceBackground`, `ThemedScenery`, `SnowScenery`, `ChristmasBackground`) build
+  their DOM imperatively. Wrap those with SolidStart's `clientOnly`:
 
 ```tsx
 import { clientOnly } from '@solidjs/start'

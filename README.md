@@ -35,29 +35,17 @@ npm install @a4ui/core
 
 Peer dependency: `solid-js` (>= 1.9).
 
-## Use
+**Starting fresh?** Scaffold a preconfigured Solid + Vite + Tailwind + A4ui app:
 
-A4ui works **out of the box, with no Tailwind required** — the styles ship
-precompiled in `styles.css`:
-
-```tsx
-// entry (once)
-import '@a4ui/core/styles.css'
-
-// anywhere
-import { Button } from '@a4ui/core'
-
-export default () => <Button variant="primary">Save</Button>
+```bash
+npx degit A4uikit/a4ui/starter my-app && cd my-app && npm install && npm run dev
 ```
 
-Dark is the default; add `data-theme="light"` on `<html>` (or use the
-exported `toggleTheme()` / `<ThemeToggle />`) for the light palette.
+## Use
 
-### Optional: Tailwind preset
-
-If your app already uses Tailwind, add the A4ui preset so utilities like
-`bg-primary/90` and the `.card` / `.glow-edge` glass surface classes resolve
-against A4ui's tokens instead of your own config:
+**With Tailwind** (recommended) — add the A4ui preset so the components'
+utilities and glass classes (`bg-primary/90`, `.card`, `.glow-edge`) resolve
+against A4ui's tokens, and import the token stylesheet once:
 
 ```js
 // tailwind.config.js
@@ -69,9 +57,29 @@ export default {
 }
 ```
 
-This is purely additive — components render fully styled with just
-`styles.css`; the preset only matters if you also want A4ui's tokens
-available as Tailwind utilities in _your own_ markup.
+```tsx
+import '@a4ui/core/styles.css' // tokens + motion + starfield
+import { Button } from '@a4ui/core'
+
+export default () => <Button variant="primary">Save</Button>
+```
+
+**Without Tailwind** — import **`@a4ui/core/full.css`** instead of `styles.css`.
+It's fully precompiled (the tokens **plus** every utility the components use), so
+components render styled with no Tailwind build:
+
+```tsx
+import '@a4ui/core/full.css'
+import { Button } from '@a4ui/core'
+```
+
+(`styles.css` ships only the CSS variables + motion keyframes — it needs the
+Tailwind preset to generate the component utilities; `full.css` is the
+self-contained alternative. The framework-agnostic `elements` bundle ships its
+own precompiled CSS too.)
+
+Dark is the default; add `data-theme="light"` on `<html>` (or use the exported
+`toggleTheme()` / `<ThemeToggle />`) for the light palette.
 
 ## Customization
 
@@ -167,10 +175,12 @@ notes — is in **[INTEGRATIONS.md](./INTEGRATIONS.md)**.
 
 ## Server rendering
 
-A4ui is **client-first** — the components render in the browser (the glass,
-starfield and theme rely on the DOM/`localStorage`). Importing the package is
-SSR-safe (no crash at import), but for **SolidStart** render the components on the
-client, e.g. via `clientOnly(() => import('...'))`.
+A4ui ships a **`solid` export condition** (its source), so **SolidStart** and any
+`vite-plugin-solid` app compile the components for the server — they
+**server-render**, then hydrate. Importing the package server-side is safe (no DOM
+at module load). The starfield/scenery backdrops are the exception (they build
+DOM imperatively) — wrap those in `clientOnly()`. See
+**[INTEGRATIONS.md](./INTEGRATIONS.md#server-side-rendering-ssr)**.
 
 ## Using with AI agents
 

@@ -6,6 +6,29 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.12.0] — 2026-07-18
+
+### Added
+
+- **SSR support** — the package now ships a `solid` export condition (its source),
+  so **SolidStart** (and any `vite-plugin-solid` app) compiles the components for
+  the server: they **server-render**, then hydrate. Only the imperative
+  starfield/scenery backdrops stay client-only (`clientOnly()`). Addresses the
+  SSR goal of [#1](https://github.com/A4uikit/a4ui/issues/1). (`src` is now
+  published for this; test files are excluded.)
+- **`@a4ui/core/full.css`** — a fully precompiled stylesheet (tokens + every
+  utility the components use) for consumers **not** using Tailwind: import it
+  instead of `styles.css`, no Tailwind build required.
+- A **starter template**: `npx degit A4uikit/a4ui/starter my-app` scaffolds a
+  preconfigured Solid + Vite + Tailwind + A4ui app.
+
+### Fixed
+
+- Docs corrected: the main package needs the **Tailwind preset** (or the new
+  `full.css`) to style components — `styles.css` alone ships only CSS variables +
+  motion keyframes. (The README/llms previously implied `styles.css` was
+  self-sufficient.)
+
 ## [0.11.1] — 2026-07-18
 
 ### Added
