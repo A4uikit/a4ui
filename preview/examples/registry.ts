@@ -41,4 +41,46 @@ export const EXAMPLES: ExampleEntry[] = [
     blurb: 'User profile with avatar, stats, and tabbed content.',
     component: lazy(() => import('./Profile')),
   },
+  {
+    id: 'product',
+    title: 'Product',
+    blurb: 'Commerce detail — image carousel, rating, specs, and reviews.',
+    component: lazy(() => import('./Product')),
+  },
+  {
+    id: 'analytics',
+    title: 'Analytics',
+    blurb: 'Metrics with progress rings, a timeline, lists, and a speed dial.',
+    component: lazy(() => import('./Analytics')),
+  },
+  {
+    id: 'onboarding',
+    title: 'Onboarding',
+    blurb: 'A multi-step wizard (stepper) that ends on a success result.',
+    component: lazy(() => import('./Onboarding')),
+  },
+  {
+    id: 'files',
+    title: 'File manager',
+    blurb: 'Resizable panes with a folder tree, file list, and ⌘K command palette.',
+    component: lazy(() => import('./Files')),
+  },
+  {
+    id: 'schedule',
+    title: 'Schedule',
+    blurb: 'A month calendar, a countdown, and the selected day’s agenda.',
+    component: lazy(() => import('./Schedule')),
+  },
+  {
+    id: 'landing',
+    title: 'Landing',
+    blurb: 'Marketing page — hero, marquee, features, FAQ, and back-to-top.',
+    component: lazy(() => import('./Landing')),
+  },
+  {
+    id: 'members',
+    title: 'Members',
+    blurb: 'Team admin — member list, role tags, a transfer picker, and a sticky TOC.',
+    component: lazy(() => import('./Members')),
+  },
 ]
