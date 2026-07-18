@@ -23,7 +23,7 @@
   --accent: 199 89% 55%;
   --accent-foreground: 0 0% 100%;
   --ring: 217 91% 52%;
-  --destructive: 0 72% 55%;
+  --destructive: 0 72% 52%;
   --destructive-foreground: 0 0% 100%;
 
   /* Semantic data colors (financial direction) — constant across themes. */
@@ -59,7 +59,7 @@
   --accent: 199 89% 48%;
   --accent-foreground: 0 0% 100%;
   --ring: 217 91% 52%;
-  --destructive: 0 72% 51%;
+  --destructive: 0 72% 50%;
   --destructive-foreground: 0 0% 100%;
 }
 

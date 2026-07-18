@@ -24,12 +24,22 @@ changes, `patch` for fixes).
   small optional `motifs` array (e.g. dino 🦕🌿🦴, soccer ⚽🥅), so a distinct
   scene per theme costs almost nothing instead of bundling a bespoke background.
 - ESLint (flat config) + Prettier + a Vitest unit-test suite for the helpers.
+- An automated accessibility gate (`@axe-core/playwright`): a WCAG 2 A/AA scan
+  plus a color-contrast pass across every theme × light/dark (`npm run test:a11y`).
 - Continuous integration (`ci.yml`) running typecheck, lint, unit tests, build,
   and the Playwright E2E suite on every push/PR.
 - `CONTRIBUTING.md`, this changelog, and issue/PR templates.
 
 ### Fixed
 
+- Every built-in theme now clears WCAG AA text contrast on solid surfaces
+  (primary/accent/destructive buttons and badges) in both light and dark — the
+  green/teal/red tokens were darkened and the warm accents use dark foreground
+  text. The default `destructive` was nudged darker for the same reason.
+- Fixed a `localStorage` key clash: the theme (palette) and the light/dark mode
+  were both stored under `a4ui-theme` and overwrote each other; the palette now
+  uses `a4ui-theme-name`, so the two persist independently.
+- The docs `Select` example carries an `aria-label` (accessible name).
 - `AppShell` page transitions no longer deadlock with lazy (suspending) routes —
   dropping the `outin` mode fixed the content column occasionally staying blank
   when navigating between views.

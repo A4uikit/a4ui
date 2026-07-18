@@ -415,7 +415,7 @@ export function Example() {
     demo: () => {
       const [status, setStatus] = createSignal('active')
       return (
-        <UI.Select value={status()} onChange={setStatus} class="max-w-xs">
+        <UI.Select value={status()} onChange={setStatus} aria-label="Status" class="max-w-xs">
           <option value="active">Active</option>
           <option value="paused">Paused</option>
           <option value="archived">Archived</option>
@@ -423,7 +423,7 @@ export function Example() {
       )
     },
     code: `const [status, setStatus] = createSignal('active')
-<Select value={status()} onChange={setStatus}>
+<Select value={status()} onChange={setStatus} aria-label="Status">
   <option value="active">Active</option>
   <option value="paused">Paused</option>
 </Select>`,
