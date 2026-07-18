@@ -2,7 +2,7 @@
 // glass surfaces. Rendered inside App's AppShell (starfield + page transition).
 import { For, type JSX } from 'solid-js'
 
-import { Badge, Button, Card } from '../src'
+import { Badge, Button, Card, themes } from '../src'
 
 const LAYERS = [
   {
@@ -28,7 +28,7 @@ const LAYERS = [
 const STATS = [
   { n: '40+', label: 'components' },
   { n: '6', label: 'helpers' },
-  { n: '2', label: 'themes' },
+  { n: String(themes.length), label: 'themes' },
   { n: '10k+', label: 'virtualized rows' },
 ]
 

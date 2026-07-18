@@ -13,21 +13,25 @@
   overflow: hidden;
 }
 
+/* Nebula tinted from the active theme (--primary / --accent / --destructive), so
+   switching palettes recolors the whole backdrop. Space's tokens keep it blue. */
 #space .sky {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(1200px 700px at 82% -8%, hsl(217 91% 60% / 0.34), transparent 60%),
-    radial-gradient(900px 600px at 8% 12%, hsl(275 80% 55% / 0.28), transparent 60%),
-    radial-gradient(1000px 800px at 50% 120%, hsl(199 89% 55% / 0.24), transparent 55%),
-    radial-gradient(700px 500px at 30% 55%, hsl(330 80% 55% / 0.14), transparent 60%), hsl(var(--background));
+    radial-gradient(1200px 700px at 82% -8%, hsl(var(--primary) / 0.34), transparent 60%),
+    radial-gradient(900px 600px at 8% 12%, hsl(var(--accent) / 0.28), transparent 60%),
+    radial-gradient(1000px 800px at 50% 120%, hsl(var(--accent) / 0.22), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(var(--destructive) / 0.12), transparent 60%),
+    hsl(var(--background));
 }
 [data-theme='light'] #space .sky {
   background:
-    radial-gradient(1100px 680px at 84% -10%, hsl(38 95% 70% / 0.38), transparent 60%),
-    radial-gradient(900px 600px at 6% 8%, hsl(217 91% 70% / 0.32), transparent 60%),
-    radial-gradient(1000px 820px at 50% 120%, hsl(275 70% 75% / 0.26), transparent 55%),
-    radial-gradient(700px 500px at 30% 55%, hsl(340 85% 70% / 0.18), transparent 60%), hsl(var(--background));
+    radial-gradient(1100px 680px at 84% -10%, hsl(var(--primary) / 0.22), transparent 60%),
+    radial-gradient(900px 600px at 6% 8%, hsl(var(--accent) / 0.2), transparent 60%),
+    radial-gradient(1000px 820px at 50% 120%, hsl(var(--accent) / 0.16), transparent 55%),
+    radial-gradient(700px 500px at 30% 55%, hsl(var(--destructive) / 0.1), transparent 60%),
+    hsl(var(--background));
 }
 @keyframes nebulaShift {
   0%,
@@ -46,7 +50,12 @@
   left: -10%;
   right: -10%;
   height: 46%;
-  background: linear-gradient(180deg, hsl(160 84% 45% / 0.16), hsl(199 89% 55% / 0.1) 45%, transparent 80%);
+  background: linear-gradient(
+    180deg,
+    hsl(var(--accent) / 0.16),
+    hsl(var(--primary) / 0.1) 45%,
+    transparent 80%
+  );
   filter: blur(40px);
   opacity: 0.55;
   mix-blend-mode: screen;

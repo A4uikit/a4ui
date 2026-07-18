@@ -368,7 +368,12 @@ export function SpaceBackground() {
         style={{ position: 'absolute', top: '6%', left: '58%', width: '260px', height: '170px' }}
         viewBox="0 0 260 170"
       >
-        <g class="cline" fill="none" stroke="hsl(199 89% 75%)" stroke-width="2">
+        <g
+          class="cline"
+          fill="none"
+          stroke="color-mix(in srgb, hsl(var(--accent)) 65%, white)"
+          stroke-width="2"
+        >
           <line x1="12" y1="120" x2="70" y2="60" />
           <line x1="70" y1="60" x2="140" y2="80" />
           <line x1="140" y1="80" x2="205" y2="30" />
@@ -387,7 +392,12 @@ export function SpaceBackground() {
         style={{ position: 'absolute', bottom: '8%', left: '10%', width: '200px', height: '130px' }}
         viewBox="0 0 200 130"
       >
-        <g class="cline" fill="none" stroke="hsl(199 89% 75%)" stroke-width="2">
+        <g
+          class="cline"
+          fill="none"
+          stroke="color-mix(in srgb, hsl(var(--accent)) 65%, white)"
+          stroke-width="2"
+        >
           <line x1="10" y1="20" x2="60" y2="55" />
           <line x1="60" y1="55" x2="120" y2="40" />
           <line x1="120" y1="40" x2="180" y2="90" />
@@ -407,9 +417,9 @@ export function SpaceBackground() {
             width: '120px',
             height: '120px',
             background:
-              'radial-gradient(circle at 32% 28%, hsl(217 91% 68%), hsl(217 80% 42%) 70%, hsl(222 60% 24%))',
+              'radial-gradient(circle at 32% 28%, color-mix(in srgb, hsl(var(--primary)) 78%, white), hsl(var(--primary)) 70%, color-mix(in srgb, hsl(var(--primary)) 68%, black))',
             opacity: '.7',
-            'box-shadow': '0 0 60px hsl(217 91% 60% / .35)',
+            'box-shadow': '0 0 60px hsl(var(--primary) / .35)',
           }}
         />
       </div>
@@ -421,9 +431,9 @@ export function SpaceBackground() {
             width: '72px',
             height: '72px',
             background:
-              'radial-gradient(circle at 36% 30%, hsl(38 95% 70%), hsl(24 85% 48%) 72%, hsl(14 70% 30%))',
+              'radial-gradient(circle at 36% 30%, color-mix(in srgb, hsl(var(--accent)) 75%, white), hsl(var(--accent)) 72%, color-mix(in srgb, hsl(var(--accent)) 66%, black))',
             opacity: '.6',
-            'box-shadow': '0 0 44px hsl(38 92% 55% / .4)',
+            'box-shadow': '0 0 44px hsl(var(--accent) / .4)',
           }}
         />
       </div>
@@ -446,7 +456,7 @@ export function SpaceBackground() {
           width: '520px',
           height: '520px',
           'border-radius': '50%',
-          background: 'radial-gradient(circle, hsl(217 91% 60% / .10), transparent 70%)',
+          background: 'radial-gradient(circle, hsl(var(--primary) / .10), transparent 70%)',
           transform: 'translate(-50%,-50%)',
           opacity: '0',
           transition: 'opacity .4s ease',
@@ -459,10 +469,17 @@ export function SpaceBackground() {
           top: '14%',
           left: '-6%',
           transform: 'rotate(-18deg)',
-          filter: 'drop-shadow(0 0 4px hsl(199 89% 70% / .8))',
+          filter: 'drop-shadow(0 0 4px hsl(var(--accent) / .8))',
         }}
       >
-        <Satellite style={{ width: '28px', height: '28px', color: 'hsl(199 60% 88%)', opacity: '.85' }} />
+        <Satellite
+          style={{
+            width: '28px',
+            height: '28px',
+            color: 'color-mix(in srgb, hsl(var(--accent)) 55%, white)',
+            opacity: '.85',
+          }}
+        />
       </div>
     </div>
   )
