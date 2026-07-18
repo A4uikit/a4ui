@@ -34,9 +34,9 @@ const STATS = [
 
 const REPO_URL = 'https://github.com/A4uikit/a4ui'
 
-// Google Lighthouse scores for this docs site.
+// Google Lighthouse scores, measured live on the deployed site (desktop).
 const SCORES = [
-  { n: '100', label: 'Performance' },
+  { n: '97', label: 'Performance' },
   { n: '100', label: 'Accessibility' },
   { n: '100', label: 'Best Practices' },
   { n: '100', label: 'SEO' },
@@ -85,10 +85,10 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         </For>
       </section>
 
-      {/* Lighthouse — perfect scores */}
+      {/* Lighthouse scores (measured live) */}
       <section class="space-y-4">
         <h2 class="text-center text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-          Perfect Lighthouse scores
+          Lighthouse scores
         </h2>
         <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
           <For each={SCORES}>
@@ -104,7 +104,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
           </For>
         </div>
         <p class="text-center text-xs text-muted-foreground">
-          Measured with Google Lighthouse on this site — a perfect 100 across the board.{' '}
+          Measured live on this deployed site with Google Lighthouse (desktop).{' '}
           <a
             href="https://a4uikit.github.io/a4ui/lighthouse.html"
             target="_blank"

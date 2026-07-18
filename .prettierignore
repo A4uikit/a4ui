@@ -7,3 +7,4 @@ package-lock.json
 
 .claude/
 preview/public/og.png
+preview/public/lighthouse.html

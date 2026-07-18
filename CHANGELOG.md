@@ -6,6 +6,13 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Changed
+
+- Lighthouse report + badges now reflect the **live deployed site** (desktop):
+  Performance **97**, Accessibility/Best-Practices/SEO **100**. (The earlier 100
+  Performance was a localhost/lab run; over the real GitHub Pages CDN the TTFB
+  adds ~120 ms.) The published report is measured against the live URL.
+
 ## [0.4.3] — 2026-07-18
 
 ### Changed
