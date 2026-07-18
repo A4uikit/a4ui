@@ -83,4 +83,16 @@ export const EXAMPLES: ExampleEntry[] = [
     blurb: 'Team admin — member list, role tags, a transfer picker, and a sticky TOC.',
     component: lazy(() => import('./Members')),
   },
+  {
+    id: 'storefront',
+    title: 'Storefront',
+    blurb: 'E-commerce catalog — faceted filters and a product grid (dogfoods @a4ui/core/commerce).',
+    component: lazy(() => import('./Storefront')),
+  },
+  {
+    id: 'checkout',
+    title: 'Checkout',
+    blurb: 'Cart lines with quantity steppers, a shipping form, and an order summary.',
+    component: lazy(() => import('./Checkout')),
+  },
 ]

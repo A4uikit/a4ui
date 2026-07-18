@@ -31,6 +31,10 @@ const YEARS_PER_PAGE = 12
 export interface CalendarCoreProps {
   /** Currently selected day (for highlight); undefined = none. */
   selected?: Date
+  /** Range start — endpoints fill, days strictly between get a soft band. */
+  rangeStart?: Date
+  /** Range end (see `rangeStart`). */
+  rangeEnd?: Date
   /** Called with the newly picked day. */
   onPick: (date: Date) => void
   /** 0 = Sunday-first, 1 = Monday-first. @default 0 */
@@ -178,7 +182,17 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
           <For each={cells()}>
             {(d) => {
               const inMonth = d.getMonth() === viewMonth()
-              const isSel = () => (props.selected ? sameDay(props.selected, d) : false)
+              const isEndpoint = () =>
+                (props.rangeStart ? sameDay(props.rangeStart, d) : false) ||
+                (props.rangeEnd ? sameDay(props.rangeEnd, d) : false)
+              const isBetween = () =>
+                !!props.rangeStart &&
+                !!props.rangeEnd &&
+                d > props.rangeStart &&
+                d < props.rangeEnd &&
+                !isEndpoint()
+              // Endpoints and a single `selected` day both render as filled.
+              const isSel = () => (props.selected ? sameDay(props.selected, d) : false) || isEndpoint()
               const isToday = sameDay(today, d)
               const title = `${months()[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
               return (
@@ -191,8 +205,9 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
                   class={cn(
                     'flex h-8 items-center justify-center rounded-md text-sm transition-colors',
                     isSel() ? 'bg-primary font-semibold text-primary-foreground' : 'hover:bg-muted',
-                    !isSel() && !inMonth && 'text-muted-foreground/50',
-                    !isSel() && inMonth && 'text-foreground',
+                    !isSel() && isBetween() && 'bg-primary/20 text-foreground',
+                    !isSel() && !isBetween() && !inMonth && 'text-muted-foreground/50',
+                    !isSel() && !isBetween() && inMonth && 'text-foreground',
                     !isSel() && isToday && 'ring-1 ring-inset ring-primary',
                   )}
                 >

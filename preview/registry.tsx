@@ -6,6 +6,7 @@ import { Home, Plus, Search, User } from 'lucide-solid'
 import { createSignal, For, type JSX } from 'solid-js'
 
 import * as UI from '../src'
+import * as Commerce from '../src/commerce'
 
 // Live prop control ("knob"). Entries opt in via `controls`; the docs render a
 // panel and pass the current values to `demo`/`code`.
@@ -37,6 +38,7 @@ export const DOC_GROUPS = [
   'Actions',
   'Forms',
   'Data',
+  'Commerce',
   'Overlays',
   'Feedback',
   'Navigation',
@@ -646,6 +648,201 @@ applyThemeDefinition(brand) // or add it to your own picker`,
     },
     code: `const [when, setWhen] = createSignal('')
 <DateTimeField value={when()} onChange={setWhen} hour12 />`,
+  },
+  {
+    id: 'date-range-picker',
+    title: 'DateRangePicker',
+    group: 'Forms',
+    blurb: 'Pick a start and end date on one calendar; the range fills in between.',
+    demo: () => {
+      const [range, setRange] = createSignal({ start: '', end: '' })
+      return (
+        <div class="max-w-xs">
+          <UI.DateRangePicker value={range()} onChange={setRange} label="Trip dates" />
+        </div>
+      )
+    },
+    code: `const [range, setRange] = createSignal({ start: '', end: '' })
+<DateRangePicker value={range()} onChange={setRange} label="Trip dates" />`,
+  },
+  {
+    id: 'form-field',
+    title: 'FormField',
+    group: 'Forms',
+    blurb: 'Accessible field wrapper — label, control, description and error share one id.',
+    demo: () => (
+      <div class="max-w-xs">
+        <UI.FormField>
+          <UI.FormLabel>Email</UI.FormLabel>
+          <UI.FormControl>
+            {(f) => (
+              <input
+                id={f.id}
+                aria-describedby={f['aria-describedby']}
+                placeholder="you@example.com"
+                class="w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+              />
+            )}
+          </UI.FormControl>
+          <UI.FormDescription>We'll never share it.</UI.FormDescription>
+          <UI.FormError>Enter a valid email address.</UI.FormError>
+        </UI.FormField>
+      </div>
+    ),
+    code: `<FormField>
+  <FormLabel>Email</FormLabel>
+  <FormControl>{(f) => <input {...f} />}</FormControl>
+  <FormDescription>We'll never share it.</FormDescription>
+  <FormError>{errors().email}</FormError>
+</FormField>`,
+  },
+  {
+    id: 'price-tag',
+    title: 'PriceTag',
+    group: 'Commerce',
+    blurb: 'Formatted price with an optional strikethrough compare-at and a discount badge.',
+    demo: () => (
+      <div class="flex items-center gap-8">
+        <Commerce.PriceTag amount={64} />
+        <Commerce.PriceTag amount={129} compareAt={169} size="lg" />
+      </div>
+    ),
+    code: `<PriceTag amount={129} compareAt={169} />`,
+  },
+  {
+    id: 'quantity-stepper',
+    title: 'QuantityStepper',
+    group: 'Commerce',
+    blurb: 'Increment/decrement control with min/max clamping.',
+    demo: () => {
+      const [qty, setQty] = createSignal(1)
+      return <Commerce.QuantityStepper value={qty()} onChange={setQty} min={1} max={10} />
+    },
+    code: `const [qty, setQty] = createSignal(1)
+<QuantityStepper value={qty()} onChange={setQty} min={1} max={10} />`,
+  },
+  {
+    id: 'product-card',
+    title: 'ProductCard',
+    group: 'Commerce',
+    blurb: 'Product tile — image, badge, title, rating, price, add-to-cart.',
+    demo: () => (
+      <div class="w-56">
+        <Commerce.ProductCard
+          title="Nebula Hoodie"
+          price={64}
+          compareAt={80}
+          badge="Sale"
+          rating={4}
+          image="https://picsum.photos/seed/a4ui-hoodie/400/400"
+          onAddToCart={() => {}}
+        />
+      </div>
+    ),
+    code: `<ProductCard title="Nebula Hoodie" price={64} compareAt={80} badge="Sale"
+  rating={4} image="/hoodie.jpg" onAddToCart={add} />`,
+  },
+  {
+    id: 'product-grid',
+    title: 'ProductGrid',
+    group: 'Commerce',
+    blurb: 'Responsive grid wrapper for ProductCards (2 / 3 / 4 columns).',
+    demo: () => (
+      <Commerce.ProductGrid class="max-w-2xl">
+        <Commerce.ProductCard
+          title="Nebula Hoodie"
+          price={64}
+          rating={4}
+          image="https://picsum.photos/seed/a4ui-p1/300/300"
+        />
+        <Commerce.ProductCard
+          title="Aurora Tee"
+          price={28}
+          compareAt={36}
+          badge="Sale"
+          rating={5}
+          image="https://picsum.photos/seed/a4ui-p2/300/300"
+        />
+        <Commerce.ProductCard
+          title="Comet Cap"
+          price={22}
+          image="https://picsum.photos/seed/a4ui-p3/300/300"
+        />
+      </Commerce.ProductGrid>
+    ),
+    code: `<ProductGrid>
+  <ProductCard … />
+  <ProductCard … />
+</ProductGrid>`,
+  },
+  {
+    id: 'cart-line',
+    title: 'CartLine',
+    group: 'Commerce',
+    blurb: 'A cart row — thumbnail, title, quantity stepper, line total, remove.',
+    demo: () => {
+      const [qty, setQty] = createSignal(2)
+      return (
+        <div class="max-w-md">
+          <Commerce.CartLine
+            title="Nebula Hoodie"
+            price={64}
+            quantity={qty()}
+            image="https://picsum.photos/seed/a4ui-hoodie/120/120"
+            onQuantityChange={setQty}
+            onRemove={() => {}}
+          />
+        </div>
+      )
+    },
+    code: `<CartLine title="Nebula Hoodie" price={64} quantity={qty()}
+  onQuantityChange={setQty} onRemove={remove} />`,
+  },
+  {
+    id: 'cart-summary',
+    title: 'CartSummary',
+    group: 'Commerce',
+    blurb: 'Itemized totals panel with a checkout button.',
+    demo: () => (
+      <div class="max-w-xs">
+        <Commerce.CartSummary
+          lines={[
+            { label: 'Subtotal', amount: 128 },
+            { label: 'Shipping', amount: 8 },
+            { label: 'Tax', amount: 10.24 },
+          ]}
+          total={146.24}
+          onCheckout={() => {}}
+        />
+      </div>
+    ),
+    code: `<CartSummary lines={[{ label: 'Subtotal', amount: 128 }, …]}
+  total={146.24} onCheckout={checkout} />`,
+  },
+  {
+    id: 'filter-group',
+    title: 'FilterGroup',
+    group: 'Commerce',
+    blurb: 'A titled facet group of checkboxes with optional counts.',
+    demo: () => {
+      const [sel, setSel] = createSignal<string[]>(['tops'])
+      return (
+        <div class="max-w-xs">
+          <Commerce.FilterGroup
+            title="Category"
+            selected={sel()}
+            onChange={setSel}
+            options={[
+              { value: 'tops', label: 'Tops', count: 12 },
+              { value: 'bottoms', label: 'Bottoms', count: 8 },
+              { value: 'shoes', label: 'Shoes', count: 5 },
+            ]}
+          />
+        </div>
+      )
+    },
+    code: `const [sel, setSel] = createSignal<string[]>([])
+<FilterGroup title="Category" selected={sel()} onChange={setSel} options={facets} />`,
   },
   {
     id: 'dropzone',

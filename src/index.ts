@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.8.1'
+export const A4UI_VERSION = '0.9.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -33,6 +33,8 @@ export { Checkbox } from './ui/Checkbox'
 export { DateField } from './ui/DateField'
 export { TimeField, type TimeFieldProps } from './ui/TimeField'
 export { DateTimeField, type DateTimeFieldProps } from './ui/DateTimeField'
+export { DateRangePicker, type DateRange, type DateRangePickerProps } from './ui/DateRangePicker'
+export { FormField, FormLabel, FormControl, FormDescription, FormError, type FormFieldProps } from './ui/Form'
 export { Drawer } from './ui/Drawer'
 export { Dropdown, type DropdownItem } from './ui/Dropdown'
 export { Dropzone } from './ui/Dropzone'

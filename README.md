@@ -115,14 +115,22 @@ mode switch — a theme recolors underneath either mode.
 **[docs site](https://a4uikit.github.io/a4ui/)** or `src/index.ts` for the
 full list):
 
-| Category       | Representative components                                                                      |
-| -------------- | ---------------------------------------------------------------------------------------------- |
-| Forms          | `Input`, `Select`, `Checkbox`, `DateField`, `Combobox`, `TagInput`, `Slider`, `NumberInput`    |
-| Overlays       | `Modal`, `Drawer`, `Popover`, `Tooltip`, `AlertDialog`, `ContextMenu`, `HoverCard`             |
-| Data & display | `Table`, `DataGrid`, `Tree`, `Calendar`, `Timeline`, `Stat`, `Descriptions`, `CalendarHeatmap` |
-| Navigation     | `Tabs`, `Breadcrumb`, `Pagination`, `Command`, `Anchor`, `Stepper`, `BottomNavigation`         |
-| Feedback       | `Alert`, `Toast`, `Progress`, `Skeleton`, `Empty`, `Result`, `NotificationCenter`              |
-| Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`        |
+| Category       | Representative components                                                                             |
+| -------------- | ----------------------------------------------------------------------------------------------------- |
+| Forms          | `Input`, `Select`, `Checkbox`, `DateField`, `Combobox`, `TagInput`, `Slider`, `NumberInput`           |
+| Overlays       | `Modal`, `Drawer`, `Popover`, `Tooltip`, `AlertDialog`, `ContextMenu`, `HoverCard`                    |
+| Data & display | `Table`, `DataGrid`, `Tree`, `Calendar`, `Timeline`, `Stat`, `Descriptions`, `CalendarHeatmap`        |
+| Navigation     | `Tabs`, `Breadcrumb`, `Pagination`, `Command`, `Anchor`, `Stepper`, `BottomNavigation`                |
+| Feedback       | `Alert`, `Toast`, `Progress`, `Skeleton`, `Empty`, `Result`, `NotificationCenter`                     |
+| Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`               |
+| Commerce       | `ProductCard`, `ProductGrid`, `PriceTag`, `QuantityStepper`, `CartLine`, `CartSummary`, `FilterGroup` |
+
+Domain-specific sets ship as **subpath entries** so the base package stays lean —
+e.g. commerce components import from `@a4ui/core/commerce`:
+
+```tsx
+import { ProductCard, CartSummary } from '@a4ui/core/commerce'
+```
 
 ## Why A4ui
 

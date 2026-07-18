@@ -31,7 +31,7 @@ export default defineConfig({
   plugins: [solid(), dts({ include: ['src'], exclude: ['**/*.test.ts', '**/*.test.tsx'] }), emitStyles()],
   build: {
     lib: {
-      entry: { index: 'src/index.ts' },
+      entry: { index: 'src/index.ts', commerce: 'src/commerce/index.ts' },
       formats: ['es'],
       fileName: (_format, name) => `${name}.js`,
     },

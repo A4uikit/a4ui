@@ -28,6 +28,10 @@ Ships both as SolidJS components and as a **Web Components** bundle
   - `src/elements.tsx` — Web Components bridge; `vite.elements.config.ts` +
     `scripts/build-elements-css.mjs` build a self-contained bundle (`elements.js` +
     `elements.css`) that registers `<a4-*>` custom elements for React/Next.js/Vue/vanilla.
+  - `src/commerce/` — domain set shipped as the subpath entry `@a4ui/core/commerce`
+    (its own `index.ts` barrel + a `commerce` entry in `vite.config.ts` + a
+    `./commerce` export). New category sets (e.g. charts) follow the same pattern so
+    the base package stays lean.
 - `preset.js` — the Tailwind preset: semantic colors → CSS vars, fonts, radius, and
   the **glass surface plugin** (`.card` / `.bg-glass` / `.glow-edge` / calm mode).
   Shipped in the package.

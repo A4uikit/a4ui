@@ -6,6 +6,21 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.9.0] — 2026-07-18
+
+### Added
+
+- **Commerce components** in a new subpath entry **`@a4ui/core/commerce`** (keeps
+  the base package lean): `PriceTag`, `QuantityStepper`, `ProductCard`,
+  `ProductGrid`, `CartLine`, `CartSummary`, and `FilterGroup`.
+- **Form / Field primitives**: `FormField`, `FormLabel`, `FormControl`,
+  `FormDescription`, `FormError` — a label/control/description/error share one
+  auto-generated id for accessibility (pairs with any schema validator).
+- **`DateRangePicker`** — start/end selection on one calendar with a highlighted
+  band (built on the shared `CalendarCore`).
+- Two example templates that dogfood the above: **Storefront** (faceted filters +
+  product grid) and **Checkout** (cart lines + shipping form + order summary).
+
 ## [0.8.1] — 2026-07-18
 
 ### Added
