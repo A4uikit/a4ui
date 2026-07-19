@@ -63,6 +63,7 @@ function Scenery(): JSX.Element {
   )
 }
 
+const HeroShowcase = lazy(() => import('./HeroShowcase').then((m) => ({ default: m.HeroShowcase })))
 const DocContent = lazy(() => import('./Docs').then((m) => ({ default: m.DocContent })))
 
 // Shown while the docs/registry chunk streams in on the first navigation to a
@@ -123,14 +124,19 @@ const NpmIcon = () => (
 const FIRST_DOC = 'instalacion'
 
 type View =
-  { kind: 'home' } | { kind: 'docs'; id: string } | { kind: 'examples' } | { kind: 'example'; id: string }
+  | { kind: 'home' }
+  | { kind: 'docs'; id: string }
+  | { kind: 'examples' }
+  | { kind: 'example'; id: string }
+  | { kind: 'hero' } // hidden capture route for the README hero banner
 
 // Deep-link support: #/examples = gallery, #/examples/<id> = one example,
-// #/<id> = that doc, empty = Home.
+// #/hero = the hero showcase (capture target), #/<id> = that doc, empty = Home.
 function viewFromHash(): View {
   const raw = decodeURIComponent(location.hash.replace(/^#\/?/, '')).trim()
   if (raw === 'examples') return { kind: 'examples' }
   if (raw.startsWith('examples/')) return { kind: 'example', id: raw.slice('examples/'.length) }
+  if (raw === 'hero') return { kind: 'hero' }
   return raw ? { kind: 'docs', id: raw } : { kind: 'home' }
 }
 
@@ -151,7 +157,9 @@ export function App(): JSX.Element {
           ? '#/examples'
           : v.kind === 'example'
             ? `#/examples/${v.id}`
-            : ''
+            : v.kind === 'hero'
+              ? '#/hero'
+              : ''
     if (location.hash !== next) location.hash = next
   })
 
@@ -277,6 +285,11 @@ export function App(): JSX.Element {
     <>
       <AppShell topbar={topbar} background={<Scenery />} maxWidth="1600px">
         <Switch fallback={<Home onExplore={() => openDocs()} />}>
+          <Match when={view().kind === 'hero'}>
+            <Suspense>
+              <HeroShowcase />
+            </Suspense>
+          </Match>
           <Match when={view().kind === 'examples'}>
             <Suspense fallback={<GridSkeleton />}>
               <ExamplesGallery onOpen={(id) => setView({ kind: 'example', id })} />
