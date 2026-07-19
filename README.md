@@ -36,13 +36,13 @@ npm install @a4ui/core
 
 Peer dependency: `solid-js` (>= 1.9).
 
-**Starting fresh?** Scaffold a preconfigured Solid + Vite + A4ui app (with or
-without Tailwind):
+**Starting fresh?** Scaffold a preconfigured Solid + Vite + Tailwind + A4ui app:
 
 ```bash
-npm create a4ui@latest my-app
-# then: cd my-app && npm install && npm run dev
+npx degit A4uikit/a4ui/starter my-app && cd my-app && npm install && npm run dev
 ```
+
+<sub>An `npm create a4ui` scaffolder lives in [`create-a4ui/`](./create-a4ui) and will replace this once it's published to npm.</sub>
 
 ## Use
 

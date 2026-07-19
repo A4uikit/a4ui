@@ -1,0 +1,29 @@
+name: Publish create-a4ui
+
+# Publishes the `create-a4ui` scaffolder (a separate package from @a4ui/core).
+# @a4ui/core uses OIDC trusted publishing, but a brand-new package can't until it
+# exists on npm + a trusted publisher is configured — so this uses an NPM_TOKEN.
+# One-time setup: create an npm automation/granular token (with publish rights)
+# and add it as the `NPM_TOKEN` repo secret, then run this workflow.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # for provenance
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: create-a4ui
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+      - run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
