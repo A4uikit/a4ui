@@ -118,17 +118,20 @@ complete" — stable. Remaining work:
 - [ ] Resolve every current Experimental entry: promote it to Stable (API has
       settled, used in production, no open shape questions) or intentionally
       drop/rework it before it can accrue more consumers.
-- [ ] Add real SSR/React/Astro consumer tests to CI (today SSR is documented
-      in [INTEGRATIONS.md](./INTEGRATIONS.md) but not exercised by an actual
-      SolidStart/Next/Astro app in the pipeline).
+- [x] Add real SSR/React consumer tests to CI — `examples/solidstart-ssr`
+      (exercises the `solid` condition + server render) and
+      `examples/react-webcomponents` build in the CI `examples` matrix. _(Astro
+      still pending.)_
 - [ ] Write a migration guide covering every breaking change accumulated
       across the `0.x` line, so a `0.1` → `1.0` jump is a single document.
-- [ ] Audit the published npm files (`files` in `package.json` + the actual
-      tarball contents) so nothing Internal ships by accident and nothing
-      Stable is missing.
-- [ ] Establish visual-regression baselines (building on the existing
-      Playwright screenshot harness in `tests/`) so `1.0` and beyond have a
-      pixel-level guard against accidental visual breaks.
+- [x] Audit the published npm files — `scripts/test-package.mjs` packs, installs
+      and verifies the tarball (dist files + `exports` keys + version) on every
+      `validate`/publish; `files` was tightened to just what the `solid`
+      condition needs.
+- [x] Establish visual-regression baselines — `playwright.visual.config.ts` +
+      `tests/_visual.spec.ts` screenshot static-primitive demos, compared in the
+      `Visual regression` workflow. _(Baselines seed on the first Linux
+      `workflow_dispatch` run.)_
 
 ## 6. How to depend on A4ui today
 

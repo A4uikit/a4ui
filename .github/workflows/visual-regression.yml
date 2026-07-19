@@ -1,0 +1,52 @@
+name: Visual regression
+
+# Screenshots each static-primitive demo region and compares against committed
+# baselines (see playwright.visual.config.ts + tests/_visual.spec.ts). Baselines
+# are OS-specific, so SEED them on the Linux runner first:
+#   Actions -> "Visual regression" -> Run workflow -> update = true
+# That run generates the baselines and commits them. After that, every PR
+# compares against them and uploads a diff artifact on failure.
+on:
+  pull_request:
+    branches: [main]
+    paths: ['src/**', 'preview/**', 'preset.js', 'tests/_visual.spec.ts']
+  workflow_dispatch:
+    inputs:
+      update:
+        description: 'Regenerate baselines and commit them'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # to commit regenerated baselines on dispatch
+
+env:
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+jobs:
+  visual:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: browser-actions/setup-chrome@v2
+      - name: Compare (or --update-snapshots on dispatch)
+        run: npm run test:visual ${{ (github.event_name == 'workflow_dispatch' && inputs.update) && '-- --update-snapshots' || '' }}
+      - name: Commit regenerated baselines
+        if: github.event_name == 'workflow_dispatch' && inputs.update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add 'tests/**/*.png'
+          git commit -m "chore: update visual-regression baselines" || echo "no baseline changes"
+          git push
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: visual-diff
+          path: test-results/
+          retention-days: 7

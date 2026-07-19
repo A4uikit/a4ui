@@ -60,7 +60,9 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
       <section class="space-y-3">
         <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Example</h2>
         <Card glass class="p-6">
-          <div class="flex flex-wrap items-start gap-4">{props.entry.demo(values as never)}</div>
+          <div data-testid="demo" class="flex flex-wrap items-start gap-4">
+            {props.entry.demo(values as never)}
+          </div>
         </Card>
         <Show when={entries.length}>
           <div class="rounded-lg border border-border bg-card/40 p-4">
