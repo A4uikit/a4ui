@@ -17,8 +17,8 @@ Components. Named after the 4 people in the Rivera family. 🙂
 
 [![A4ui analytics example — stats, ring progress, meters, timeline and glass cards on the starfield backdrop](https://a4ui.pages.dev/showcase-analytics.png)](https://a4ui.pages.dev/#/examples/analytics)
 
-**📚 Docs & live examples:** https://a4ui.pages.dev/ · **🔒 API stability &
-versioning:** [STABILITY.md](./STABILITY.md) (what's stable vs experimental pre‑1.0)
+**📚 Docs & live examples:** https://a4ui.pages.dev/ · **🔒 Stability:**
+[STABILITY.md](./STABILITY.md) · **⬆️ Upgrading:** [MIGRATION.md](./MIGRATION.md)
 
 Three layers, one identity:
 

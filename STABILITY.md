@@ -122,8 +122,9 @@ complete" — stable. Remaining work:
       (exercises the `solid` condition + server render) and
       `examples/react-webcomponents` build in the CI `examples` matrix. _(Astro
       still pending.)_
-- [ ] Write a migration guide covering every breaking change accumulated
-      across the `0.x` line, so a `0.1` → `1.0` jump is a single document.
+- [x] Start a migration guide — **[MIGRATION.md](./MIGRATION.md)** covers the
+      `0.x` line (mostly additive; the Motion-engine change in 0.11.0 is the only
+      one needing action). The `0.x` → `1.0` breaking pass gets appended there.
 - [x] Audit the published npm files — `scripts/test-package.mjs` packs, installs
       and verifies the tarball (dist files + `exports` keys + version) on every
       `validate`/publish; `files` was tightened to just what the `solid`

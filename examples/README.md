@@ -6,7 +6,7 @@ the workspace build, and exist purely to catch "the docs lied" regressions —
 e.g. an export condition that stops resolving, or a bundle that stops
 typechecking in a consuming app.
 
-Both apps depend on the package via `"@a4ui/core": "file:../.."` — the local
+All apps depend on the package via `"@a4ui/core": "file:../.."` — the local
 `dist/` (and, for the `solid` export condition, `src/`) of this repo, not a
 published npm version.
 
@@ -35,6 +35,9 @@ npm run build
   (`Button`, `Card`, `Badge`, `Stat`) directly. Exercises the package's
   `solid` export condition, which points SolidStart's compiler at `src/` so
   components compile — and server-render — for both server and client.
+- **`astro-solid/`** — an Astro app rendering a native Solid component
+  (`Button`) as a `client:only="solid-js"` island via `@astrojs/solid-js`.
+  Exercises the Astro integration path documented in `INTEGRATIONS.md`.
 
 ## CI
 
