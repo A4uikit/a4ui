@@ -2,14 +2,14 @@
 
 <!-- TODO: hero screenshot / GIF (dark+light, components, SpaceBackground, theme switch) -->
 
-![A4ui](https://a4uikit.github.io/a4ui/og.png)
+![A4ui](https://a4ui.pages.dev/og.png)
 
 [![npm](https://img.shields.io/npm/v/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![license](https://img.shields.io/npm/l/@a4ui/core.svg)](./LICENSE)
-[![Lighthouse: Performance 97](https://img.shields.io/badge/Lighthouse-Perf_97-success)](https://a4uikit.github.io/a4ui/lighthouse.html)
-[![Lighthouse: Accessibility 100](https://img.shields.io/badge/A11y-100-success)](https://a4uikit.github.io/a4ui/lighthouse.html)
-[![Lighthouse: Best Practices 100](https://img.shields.io/badge/Best_Practices-100-success)](https://a4uikit.github.io/a4ui/lighthouse.html)
-[![Lighthouse: SEO 100](https://img.shields.io/badge/SEO-100-success)](https://a4uikit.github.io/a4ui/lighthouse.html)
+[![Lighthouse: Performance 97](https://img.shields.io/badge/Lighthouse-Perf_97-success)](https://a4ui.pages.dev/lighthouse.html)
+[![Lighthouse: Accessibility 100](https://img.shields.io/badge/A11y-100-success)](https://a4ui.pages.dev/lighthouse.html)
+[![Lighthouse: Best Practices 100](https://img.shields.io/badge/Best_Practices-100-success)](https://a4ui.pages.dev/lighthouse.html)
+[![Lighthouse: SEO 100](https://img.shields.io/badge/SEO-100-success)](https://a4ui.pages.dev/lighthouse.html)
 [![npm downloads](https://img.shields.io/npm/dm/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@a4ui/core.svg)](https://bundlephobia.com/package/@a4ui/core)
 
@@ -17,7 +17,7 @@ Accessible SolidJS **Spatial Glass** component library — 75+ components,
 layouts, runtime themes, a motion system, and framework-agnostic Web
 Components. Named after the 4 people in the Rivera family. 🙂
 
-**📚 Docs & live examples:** https://a4uikit.github.io/a4ui/
+**📚 Docs & live examples:** https://a4ui.pages.dev/
 
 Three layers, one identity:
 
@@ -143,7 +143,7 @@ initTheme() // once at startup — restores the saved theme (or Space)
 selectTheme('dino') // switch by name; also accepts a ThemeDefinition
 ```
 
-Build your own in the **[docs](https://a4uikit.github.io/a4ui/)** — open the ⚙︎
+Build your own in the **[docs](https://a4ui.pages.dev/)** — open the ⚙︎
 theme-settings drawer (top bar), pick a color for any token and the whole site
 recolors live, then copy the exported CSS or JSON and apply it as a
 `ThemeDefinition`. This is separate from the light/dark `setTheme`/`toggleTheme`
@@ -152,7 +152,7 @@ mode switch — a theme recolors underneath either mode.
 ## Components
 
 75+ components across nine categories (this is a sample — see the
-**[docs site](https://a4uikit.github.io/a4ui/)** or `src/index.ts` for the
+**[docs site](https://a4ui.pages.dev/)** or `src/index.ts` for the
 full list):
 
 | Category       | Representative components                                                                                                                                                        |
@@ -224,7 +224,7 @@ ships **in the package**, so it works from `node_modules` without visiting the d
   shipped `.d.ts` (`node_modules/@a4ui/core/dist/index.d.ts`), so editor
   autocomplete and agents get the props and usage inline.
 - **`llms.txt`** — a machine-readable summary of every component:
-  https://a4uikit.github.io/a4ui/llms.txt
+  https://a4ui.pages.dev/llms.txt
 
 Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
 
@@ -232,7 +232,7 @@ Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
 > named exports from `@a4ui/core`; import `@a4ui/core/styles.css` once in the app
 > entry; add `@a4ui/core/preset` to `tailwind.config` (optional). Props are typed
 > with JSDoc/`@example` in the package's `.d.ts`. Full component list:
-> https://a4uikit.github.io/a4ui/llms.txt
+> https://a4ui.pages.dev/llms.txt
 
 ## Develop
 

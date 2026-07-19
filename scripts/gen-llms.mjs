@@ -42,7 +42,7 @@ let out = `# @a4ui/core
 > built on Kobalte (behavior/a11y), a Tailwind preset (visual), and
 > Motion (motion.dev, the \`motion\` package) for JS animation.
 
-Docs: https://a4uikit.github.io/a4ui/  ·  Repo: https://github.com/A4uikit/a4ui
+Docs: https://a4ui.pages.dev/  ·  Repo: https://github.com/A4uikit/a4ui
 
 ## Install
 
@@ -98,7 +98,7 @@ for (const [group, list] of byGroup) {
   for (const e of list) out += `- **${e.title}** — ${e.blurb}\n`
 }
 
-out += `\nSee https://a4uikit.github.io/a4ui/#/<component-id> for a live example and
+out += `\nSee https://a4ui.pages.dev/#/<component-id> for a live example and
 copyable code for each component (e.g. #/button, #/modal, #/data-field).
 `
 

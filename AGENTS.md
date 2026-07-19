@@ -163,5 +163,5 @@ tokens, no passkey, no 2FA prompt.
 ## Links
 
 - npm — https://www.npmjs.com/package/@a4ui/core
-- Docs — https://a4uikit.github.io/a4ui/
+- Docs — https://a4ui.pages.dev/
 - Repo — https://github.com/A4uikit/a4ui

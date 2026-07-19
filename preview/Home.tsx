@@ -106,7 +106,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
         <p class="text-center text-xs text-muted-foreground">
           Measured live on this deployed site with Google Lighthouse (desktop).{' '}
           <a
-            href="https://a4uikit.github.io/a4ui/lighthouse.html"
+            href="https://a4ui.pages.dev/lighthouse.html"
             target="_blank"
             rel="noopener noreferrer"
             class="font-medium text-foreground underline underline-offset-2 hover:text-primary"
