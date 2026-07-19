@@ -1,18 +1,15 @@
 name: Publish create-a4ui
 
-# Publishes the `create-a4ui` scaffolder (separate package from @a4ui/core).
-# @a4ui/core uses OIDC trusted publishing, but a brand-new package can't (npm
-# has no trusted publisher for it yet, and OIDC can't bootstrap one → 404). So
-# the FIRST publish uses an npm **Automation** token (the type that bypasses 2FA
-# — a plain "Publish" token errors with EOTP in CI). One-time setup: create an
-# Automation token on npmjs.com and add it as the `NPM_TOKEN` repo secret, then
-# run this workflow. (Once the package exists, you can switch to OIDC like core.)
+# Publishes the `create-a4ui` scaffolder (separate package from @a4ui/core) via
+# npm "trusted publishing" (OIDC) — no token, no OTP, same as publish.yml. This
+# requires a Trusted Publisher configured for `create-a4ui` on npmjs.com pointing
+# at this repo + this exact workflow filename (publish-create-a4ui.yml).
 on:
   workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write # for --provenance
+  id-token: write # required for npm trusted publishing (OIDC)
 
 jobs:
   publish:
@@ -26,6 +23,5 @@ jobs:
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
+      - run: npm install -g npm@latest # OIDC trusted publishing needs npm 11.5+
       - run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
