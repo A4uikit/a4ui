@@ -98,7 +98,7 @@ export function DocContent(props: { id: string }): JSX.Element {
         <p class="mt-2 break-words text-muted-foreground">{entry().blurb}</p>
       </header>
       <Show when={entry()} keyed>
-        {(e) => <ControlledDemo entry={e} />}
+        {(e) => (e.guide ? e.demo({}) : <ControlledDemo entry={e} />)}
       </Show>
     </article>
   )

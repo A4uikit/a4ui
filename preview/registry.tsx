@@ -21,6 +21,12 @@ import { createSignal, For, onMount, type JSX } from 'solid-js'
 import * as UI from '../src'
 import * as Commerce from '../src/commerce'
 import * as Charts from '../src/charts'
+import { MarkdownGuide } from './MarkdownGuide'
+// Long-form guides render the actual repo markdown (single-source, never drift).
+import integrationsMd from '../INTEGRATIONS.md?raw'
+import stabilityMd from '../STABILITY.md?raw'
+import migrationMd from '../MIGRATION.md?raw'
+import changelogMd from '../CHANGELOG.md?raw'
 
 // Live prop control ("knob"). Entries opt in via `controls`; the docs render a
 // panel and pass the current values to `demo`/`code`.
@@ -43,7 +49,10 @@ export interface DocEntry {
       written as `() => (...)` still satisfy this (extra param is ignored). */
   demo: (c: ControlValues) => JSX.Element
   /** Code block: a static string, or a function of the control values. */
-  code: string | ((c: ControlValues) => string)
+  code?: string | ((c: ControlValues) => string)
+  /** Long-form markdown guide (not a component demo): render just the prose,
+      no Example/Controls/Code chrome. */
+  guide?: boolean
 }
 
 // Sidebar group order.
@@ -59,6 +68,7 @@ export const DOC_GROUPS = [
   'Navigation',
   'Layout',
   'Motion',
+  'Guides',
 ]
 
 export const DOCS: DocEntry[] = [
@@ -735,6 +745,82 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `import { Ripple } from '@a4ui/core'
 
 <Ripple><button class="btn">Click me</button></Ripple>`,
+  },
+  {
+    id: 'motion-magnetic',
+    title: 'Magnetic',
+    group: 'Motion',
+    blurb:
+      'Wrap anything in <Magnetic> and it springs toward the cursor as you hover near it. Hover the button ↓',
+    demo: () => (
+      <UI.Magnetic strength={16}>
+        <UI.Button variant="primary">Magnetic</UI.Button>
+      </UI.Magnetic>
+    ),
+    code: `import { Magnetic } from '@a4ui/core'
+
+<Magnetic strength={16}><Button>Hover me</Button></Magnetic>`,
+  },
+  {
+    id: 'motion-tilt',
+    title: 'Tilt card',
+    group: 'Motion',
+    blurb: 'A 3D tilt that follows the cursor — the <TiltCard> component. Move your cursor over the card ↓',
+    demo: () => (
+      <UI.TiltCard>
+        <div class="card grid h-36 w-60 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium">
+          Tilt me
+        </div>
+      </UI.TiltCard>
+    ),
+    code: `import { TiltCard } from '@a4ui/core'
+
+<TiltCard><Card>Tilt me</Card></TiltCard>`,
+  },
+  {
+    id: 'motion-spotlight',
+    title: 'Spotlight',
+    group: 'Motion',
+    blurb:
+      'A soft glow that follows the cursor across the surface — the <Spotlight> component. Move over it ↓',
+    demo: () => (
+      <UI.Spotlight class="rounded-2xl">
+        <div class="grid h-36 w-72 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium text-foreground">
+          Move your cursor here
+        </div>
+      </UI.Spotlight>
+    ),
+    code: `import { Spotlight } from '@a4ui/core'
+
+<Spotlight><Card>Move your cursor here</Card></Spotlight>`,
+  },
+  {
+    id: 'motion-scroll-progress',
+    title: 'Scroll progress',
+    group: 'Motion',
+    blurb:
+      'A reading-progress bar pinned to the top of the viewport that fills as the page scrolls — the <ScrollProgress> component. Scroll this page and watch the very top ↑',
+    demo: () => (
+      <div class="space-y-2">
+        <UI.ScrollProgress />
+        <p class="text-sm text-muted-foreground">
+          The bar at the very top of the window fills as you scroll. Add it once near your app root.
+        </p>
+      </div>
+    ),
+    code: `import { ScrollProgress } from '@a4ui/core'
+
+<ScrollProgress /> // fixed top-of-viewport bar tied to page scroll`,
+  },
+  {
+    id: 'motion-gradient-text',
+    title: 'Gradient text',
+    group: 'Motion',
+    blurb: 'Text with a smoothly animated multi-color gradient — the <GradientText> component.',
+    demo: () => <UI.GradientText class="text-4xl">Spatial Glass for SolidJS</UI.GradientText>,
+    code: `import { GradientText } from '@a4ui/core'
+
+<GradientText class="text-4xl">Spatial Glass</GradientText>`,
   },
 
   // ---- Actions --------------------------------------------------------------
@@ -3098,5 +3184,41 @@ toast.error('Failed to save')`,
     code: `<Portal>
   <div class="fixed inset-0 grid place-items-center">Floating layer</div>
 </Portal>`,
+  },
+
+  // ---- Guides ---------------------------------------------------------------
+  // Long-form docs rendered from the repo markdown (single-source).
+  {
+    id: 'guide-integrations',
+    title: 'Integrations',
+    group: 'Guides',
+    blurb: 'Use A4ui in Vite + Solid, SolidStart (SSR), Astro, or React/Next/Vue/vanilla via Web Components.',
+    demo: () => <MarkdownGuide src={integrationsMd} />,
+    guide: true,
+  },
+  {
+    id: 'guide-stability',
+    title: 'Stability',
+    group: 'Guides',
+    blurb:
+      'Versioning policy and the Stable / Experimental / Internal tiers — what is safe to build on before 1.0.',
+    demo: () => <MarkdownGuide src={stabilityMd} />,
+    guide: true,
+  },
+  {
+    id: 'guide-migration',
+    title: 'Upgrading',
+    group: 'Guides',
+    blurb: 'Upgrade notes across the 0.x line — what changed and what (if anything) you need to do.',
+    demo: () => <MarkdownGuide src={migrationMd} />,
+    guide: true,
+  },
+  {
+    id: 'guide-changelog',
+    title: 'Changelog',
+    group: 'Guides',
+    blurb: 'Every release of @a4ui/core, newest first.',
+    demo: () => <MarkdownGuide src={changelogMd} />,
+    guide: true,
   },
 ]

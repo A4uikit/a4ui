@@ -6,6 +6,26 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.15.0] — 2026-07-19
+
+### Added
+
+- **Motion components** — five more interaction/scroll animations, all
+  tree-shakeable and reduced-motion aware: `Magnetic` (springs toward the
+  cursor), `TiltCard` (3D tilt on hover), `Spotlight` (cursor-following glow,
+  CSS-only), `ScrollProgress` (reading-progress bar tied to page scroll), and
+  `GradientText` (animated multi-color gradient text).
+- **Icons** are a documented feature (from 0.14.1): a4ui ships lucide-solid, so
+  1500+ icons are ready to use, tree-shaken to only what you import.
+
+### Docs
+
+- The docs site gains a **Guides** section that renders the repo's long-form
+  markdown (`INTEGRATIONS`, `STABILITY`, `MIGRATION`/Upgrading, `CHANGELOG`)
+  directly — single-source, so the on-site guides never drift from the files.
+- Removed `COMPONENT-ROADMAP.md`; **STABILITY.md** is now the single source for
+  component maturity.
+
 ## [0.14.1] — 2026-07-19
 
 ### Docs

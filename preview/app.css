@@ -4,3 +4,123 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Prose styling for the rendered markdown guides (MarkdownGuide.tsx). Uses the
+   a4ui design tokens so guides match the rest of the site in any theme. */
+.a4-prose {
+  color: hsl(var(--foreground));
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+.a4-prose > :first-child {
+  margin-top: 0;
+}
+.a4-prose h1,
+.a4-prose h2,
+.a4-prose h3,
+.a4-prose h4 {
+  color: hsl(var(--foreground));
+  font-weight: 700;
+  line-height: 1.25;
+  scroll-margin-top: 5rem;
+}
+.a4-prose h1 {
+  font-size: 1.9rem;
+  margin: 0 0 1rem;
+}
+.a4-prose h2 {
+  font-size: 1.4rem;
+  margin: 2rem 0 0.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid hsl(var(--border));
+}
+.a4-prose h3 {
+  font-size: 1.15rem;
+  margin: 1.5rem 0 0.5rem;
+}
+.a4-prose h4 {
+  font-size: 1rem;
+  margin: 1.25rem 0 0.5rem;
+}
+.a4-prose p,
+.a4-prose ul,
+.a4-prose ol,
+.a4-prose blockquote,
+.a4-prose table {
+  margin: 0.75rem 0;
+}
+.a4-prose a {
+  color: hsl(var(--primary));
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.a4-prose strong {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+.a4-prose ul,
+.a4-prose ol {
+  padding-left: 1.5rem;
+}
+.a4-prose ul {
+  list-style: disc;
+}
+.a4-prose ol {
+  list-style: decimal;
+}
+.a4-prose li {
+  margin: 0.3rem 0;
+}
+.a4-prose code {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.85em;
+  background: hsl(var(--muted));
+  color: hsl(var(--foreground));
+  padding: 0.12em 0.4em;
+  border-radius: 0.35rem;
+}
+.a4-prose pre {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: 0.6rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+.a4-prose pre code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.85rem;
+  color: hsl(var(--foreground));
+}
+.a4-prose blockquote {
+  border-left: 3px solid hsl(var(--primary));
+  padding-left: 1rem;
+  color: hsl(var(--muted-foreground));
+}
+.a4-prose hr {
+  border: 0;
+  border-top: 1px solid hsl(var(--border));
+  margin: 2rem 0;
+}
+.a4-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  display: block;
+  overflow-x: auto;
+}
+.a4-prose th,
+.a4-prose td {
+  border: 1px solid hsl(var(--border));
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+.a4-prose th {
+  background: hsl(var(--muted));
+  font-weight: 600;
+}
+.a4-prose img {
+  max-width: 100%;
+  border-radius: 0.6rem;
+}

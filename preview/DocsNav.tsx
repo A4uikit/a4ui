@@ -11,6 +11,7 @@ import { DOC_GROUPS, DOCS } from './registry'
 
 const GET_STARTED = 'Get started'
 const MOTION = 'Motion'
+const GUIDES = 'Guides'
 
 function Item(props: { id: string; title: string; selected: string; onSelect: (id: string) => void }) {
   return (
@@ -51,8 +52,9 @@ function Section(props: { title: string; open: boolean; children: JSX.Element; l
 export function DocsNav(props: { selected: string; onSelect: (id: string) => void }): JSX.Element {
   const getStarted = () => DOCS.filter((d) => d.group === GET_STARTED)
   const motionDocs = () => DOCS.filter((d) => d.group === MOTION)
-  // Components = every group except the two top-level sections.
-  const componentGroups = () => DOC_GROUPS.filter((g) => g !== GET_STARTED && g !== MOTION)
+  const guideDocs = () => DOCS.filter((d) => d.group === GUIDES)
+  // Components = every group except the top-level sections.
+  const componentGroups = () => DOC_GROUPS.filter((g) => g !== GET_STARTED && g !== MOTION && g !== GUIDES)
   const groupHasSelected = (group: string) => DOCS.some((d) => d.group === group && d.id === props.selected)
   const selectionIsComponent = () => componentGroups().some((g) => groupHasSelected(g))
 
@@ -100,6 +102,16 @@ export function DocsNav(props: { selected: string; onSelect: (id: string) => voi
         <Section title={MOTION} open={groupHasSelected(MOTION)}>
           <ul class="space-y-0.5">
             <For each={motionDocs()}>
+              {(d) => <Item id={d.id} title={d.title} selected={props.selected} onSelect={props.onSelect} />}
+            </For>
+          </ul>
+        </Section>
+      </Show>
+
+      <Show when={guideDocs().length}>
+        <Section title={GUIDES} open={groupHasSelected(GUIDES)}>
+          <ul class="space-y-0.5">
+            <For each={guideDocs()}>
               {(d) => <Item id={d.id} title={d.title} selected={props.selected} onSelect={props.onSelect} />}
             </For>
           </ul>
