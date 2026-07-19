@@ -18,8 +18,8 @@ jobs:
     name: typecheck · lint · unit · build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -42,8 +42,8 @@ jobs:
       matrix:
         app: [react-webcomponents, solidstart-ssr, astro-solid]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -64,15 +64,15 @@ jobs:
       matrix:
         shard: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - uses: browser-actions/setup-chrome@v2 # provides the `chrome` channel Playwright uses
       - run: npm test -- --shard=${{ matrix.shard }}/3
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure() # only keep the report when the suite fails
         with:
           name: playwright-report-${{ matrix.shard }}
