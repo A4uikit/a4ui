@@ -46,8 +46,11 @@ Ships both as SolidJS components and as a **Web Components** bundle
   desktop & mobile) and `_*.spec.ts` (screenshot QA harness via
   `playwright.shots.config.ts`). PNGs land in `tests/__shots__/` (gitignored);
   run `npm test` to compare or update visuals before release.
-- `.github/workflows/` — `pages.yml` (deploy docs to GitHub Pages on push to `main`)
-  and `publish.yml` (publish to npm on GitHub Release, via **OIDC trusted publishing**).
+- `.github/workflows/` — `pages.yml` (deploy docs to GitHub Pages on push to `main`),
+  `cloudflare-pages.yml` (mirror the docs to **Cloudflare Pages** `a4ui.pages.dev` —
+  reachable on mobile carriers that block GitHub's Fastly IPs; builds with `--base=/`,
+  needs the `CLOUDFLARE_API_TOKEN` secret), and `publish.yml` (publish to npm on
+  GitHub Release, via **OIDC trusted publishing**).
 
 ## Commands
 

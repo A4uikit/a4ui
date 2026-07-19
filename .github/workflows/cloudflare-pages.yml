@@ -1,0 +1,42 @@
+name: Deploy docs to Cloudflare Pages
+
+# Builds the a4ui docs site (preview/) and deploys it to Cloudflare Pages
+# (a4ui.pages.dev). Cloudflare's anycast network is reachable on mobile carriers
+# that mis-route/block GitHub Pages' Fastly IPs, so this is the mobile-friendly
+# mirror. Served at the domain ROOT, so it builds with --base=/ (GitHub Pages
+# uses /a4ui/). Needs ONE repo secret: CLOUDFLARE_API_TOKEN (a token with the
+# "Cloudflare Pages: Edit" permission). The account ID is not a credential, so
+# it's inlined below.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-pages
+  cancel-in-progress: true
+
+env:
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Build docs site (root base)
+        run: npm run preview:build -- --base=/
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 8a55c3731a0e22381c117f96268b5c2b
+          command: pages deploy preview/dist --project-name=a4ui --branch=main
