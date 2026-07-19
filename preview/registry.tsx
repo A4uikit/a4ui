@@ -2,7 +2,20 @@
 // entry renders a live demo (dogfooding the real components) plus the code you'd
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
-import { Bell, Home, Plus, Search, ShoppingCart, User } from 'lucide-solid'
+import {
+  Bell,
+  Cloud,
+  Heart,
+  Home,
+  Plus,
+  Rocket,
+  Search,
+  ShoppingCart,
+  Sparkles,
+  Star,
+  User,
+  Zap,
+} from 'lucide-solid'
 import { createSignal, For, onMount, type JSX } from 'solid-js'
 
 import * as UI from '../src'
@@ -148,6 +161,44 @@ const brand: ThemeDefinition = {
   light: { background: '0 0% 100%',  foreground: '222 47% 11%', primary: '160 84% 34%', /* … */ },
 }
 applyThemeDefinition(brand) // or add it to your own picker`,
+  },
+  {
+    id: 'icons',
+    title: 'Icons',
+    group: 'Get started',
+    blurb:
+      'A4ui already ships lucide-solid — 1500+ crisp, consistent icons, no extra install. Tree-shakeable too: import one icon and ONLY that icon ships (~0.3 kB), never the whole set. Size with h-/w-, color with text-*.',
+    demo: () => (
+      <div class="space-y-5">
+        <div class="flex flex-wrap items-center gap-5 text-foreground">
+          <Heart class="h-6 w-6" />
+          <Star class="h-6 w-6" />
+          <Rocket class="h-6 w-6" />
+          <Cloud class="h-6 w-6" />
+          <Zap class="h-6 w-6" />
+          <Sparkles class="h-6 w-6" />
+          <Bell class="h-6 w-6" />
+        </div>
+        <div class="flex flex-wrap items-center gap-4">
+          <Star class="h-4 w-4 text-muted-foreground" />
+          <Star class="h-6 w-6 text-primary" />
+          <Star class="h-8 w-8 text-accent" />
+          <Star class="h-10 w-10 text-destructive" />
+        </div>
+        <UI.Button>
+          <Rocket class="h-4 w-4" /> Launch
+        </UI.Button>
+      </div>
+    ),
+    code: `// A4ui depends on lucide-solid, so its 1500+ icons are ready — no extra install.
+// Tree-shaking: importing one icon ships ONLY that icon (~0.3 kB), not the 1500+.
+import { Heart, Star, Rocket } from 'lucide-solid'
+import { Button } from '@a4ui/core'
+
+<Star class="h-5 w-5 text-primary" />              {/* size via h-/w-, color via text-* */}
+<Button><Rocket class="h-4 w-4" /> Launch</Button>
+
+// Browse every icon at https://lucide.dev/icons`,
   },
   {
     id: 'motion-stagger',

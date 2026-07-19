@@ -4,7 +4,20 @@
 // as components stabilise; avoid animated demos (Spinner, Stat count-up, Motion*).
 import { expect, test } from '@playwright/test'
 
-const IDS = ['badge', 'alert', 'avatar', 'kbd', 'separator', 'progress', 'empty']
+const IDS = [
+  'badge',
+  'alert',
+  'avatar',
+  'kbd',
+  'separator',
+  'progress',
+  'empty',
+  'card',
+  'breadcrumb',
+  'descriptions',
+  'list',
+  'pagination',
+]
 
 for (const id of IDS) {
   test(`visual: ${id}`, async ({ page }) => {

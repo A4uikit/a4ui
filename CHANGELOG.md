@@ -6,6 +6,19 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.14.1] — 2026-07-19
+
+### Docs
+
+- **Icons** are now documented and promoted: a new _Icons_ page in the docs and an
+  _Icons_ section in the README. A4ui already depends on **lucide-solid**, so its
+  **1500+ icons** are ready to use with no extra install — and it's tree-shakeable
+  (importing one icon ships only that icon). The install-footprint note is reframed
+  to present lucide as a perk, not just a cost.
+- Refresh the published README (analytics showcase image, `MIGRATION.md` link, and
+  `npm create a4ui@latest` now that the scaffolder is published).
+- Expanded the visual-regression baselines to more static primitives.
+
 ## [0.14.0] — 2026-07-19
 
 ### Added

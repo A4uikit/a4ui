@@ -12,8 +12,9 @@
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@a4ui/core.svg)](https://bundlephobia.com/package/@a4ui/core)
 
 Accessible SolidJS **Spatial Glass** component library — 75+ components,
-layouts, runtime themes, a motion system, and framework-agnostic Web
-Components. Named after the 4 people in the Rivera family. 🙂
+layouts, runtime themes, a motion system, **1500+ icons** (lucide), and
+framework-agnostic Web Components. Named after the 4 people in the Rivera
+family. 🙂
 
 [![A4ui analytics example — stats, ring progress, meters, timeline and glass cards on the starfield backdrop](https://a4ui.pages.dev/showcase-analytics.png)](https://a4ui.pages.dev/#/examples/analytics)
 
@@ -84,6 +85,25 @@ own precompiled CSS too.)
 Dark is the default; add `data-theme="light"` on `<html>` (or use the exported
 `toggleTheme()` / `<ThemeToggle />`) for the light palette.
 
+## Icons
+
+A4ui depends on **[lucide-solid](https://lucide.dev)**, so its **1500+ icons**
+are ready to use — no extra install. Import any icon and drop it in; size it with
+`h-`/`w-` and color it with `text-*`. It's **tree-shakeable**: importing one icon
+ships **only that icon** (~0.3 kB), never the whole set.
+
+```tsx
+import { Heart, Star, Rocket } from 'lucide-solid'
+import { Button } from '@a4ui/core'
+
+;<Star class="h-5 w-5 text-primary" />
+;<Button>
+  <Rocket class="h-4 w-4" /> Launch
+</Button>
+```
+
+Browse the full set at [lucide.dev/icons](https://lucide.dev/icons).
+
 ## Bundle size & mounting (partial vs full)
 
 A4ui is **tree-shakeable** — `sideEffects` is `["**/*.css"]`, so the only thing
@@ -118,10 +138,11 @@ path (or behind `motionReduced`) and the design system stays Lighthouse-friendly
 
 **Install footprint (dev-time, not your bundle):** `npm i @a4ui/core solid-js`
 in an empty project pulls ~36 packages, **~105 MB** on disk, **0 vulnerabilities**.
-Most of that (~76 MB) is **`lucide-solid`**, which ships every icon as its own
-module — but your **shipped bundle** only ever includes the handful of icons a
-component you import actually uses (tree-shaking). The disk size is `node_modules`
-only; it does not reach your users.
+Most of that (~76 MB) is **`lucide-solid`** — which is also a **perk**: A4ui
+bundles it, so **1500+ icons are ready to use** with no extra install (see
+[Icons](#icons)). It ships every icon as its own module, but tree-shaking means
+only the icons you actually use reach your bundle — the disk size is
+`node_modules` only and never reaches your users.
 
 ## Customization
 
