@@ -18,8 +18,8 @@ changes, `patch` for fixes).
   - `HoldToConfirm` — press-and-hold button; a fill sweeps and only fires at 100%.
   - `LoadingDots` — three dots bouncing in a staggered wave (CSS-driven).
   - `FillText` — a highlight band sweeping through text, for loading states.
-  - `Curtain` — full-screen page/route transition with five variants
-    (`fade` · `doors` · `blinds` · `shutter` · `iris`).
+  - `Curtain` — full-screen page/route transition with seven variants
+    (`fade` · `doors` · `blinds` · `shutter` · `iris` · `clip` · `pixels`).
   - `Parallax` — wraps children and drifts them at a fraction of scroll speed.
   - `NotificationStack` — stacked notifications that peek behind one another and
     re-flow as they're dismissed.
@@ -36,6 +36,11 @@ changes, `patch` for fixes).
 - **README** now documents **partial vs full mounting** and per-part **gzip
   weights** (tree-shaking, `motion` as an opt-in external), with a
   Lighthouse/Cloudflare performance note.
+
+### Changed
+
+- `SpeedDial` actions now fan out with a staggered spring entrance (reduced-motion
+  aware) instead of a plain CSS fade.
 
 ### Fixed
 

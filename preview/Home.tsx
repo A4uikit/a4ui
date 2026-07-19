@@ -109,7 +109,7 @@ export function Home(props: { onExplore: () => void }): JSX.Element {
             href="https://a4uikit.github.io/a4ui/lighthouse.html"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-primary underline underline-offset-2"
+            class="font-medium text-foreground underline underline-offset-2 hover:text-primary"
           >
             View the report
           </a>

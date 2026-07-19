@@ -1,6 +1,6 @@
 // Curtain — a controlled, full-screen cover→uncover transition primitive for
 // page/route transitions. It collapses motion.dev's "curtains" example family
-// (fade, sliding doors, blinds, shutter, iris) into one component driven by a
+// (fade, sliding doors, blinds, shutter, iris, clip-wipe, pixels) into one component driven by a
 // single `show` boolean: `true` plays the "cover" animation (the curtain
 // closes over the screen), `false` plays "uncover" (the curtain opens,
 // revealing whatever's behind it). Swap your route content while covered —
@@ -11,7 +11,7 @@ import { createEffect, createSignal, For, Index, on, onCleanup, onMount, type JS
 import { cn } from '../lib/cn'
 import { animate, motionReduced, stagger } from '../lib/motion'
 
-export type CurtainVariant = 'fade' | 'doors' | 'blinds' | 'iris' | 'shutter'
+export type CurtainVariant = 'fade' | 'doors' | 'blinds' | 'iris' | 'shutter' | 'clip' | 'pixels'
 
 export interface CurtainProps {
   /** true = cover the screen; false = uncover (reveal content). */
@@ -39,6 +39,12 @@ type CurtainPhase = 'covered' | 'uncovered' | 'covering' | 'uncovering'
 const STRIP_COUNT = 8
 const STRIP_INDICES = Array.from({ length: STRIP_COUNT }, (_, i) => i)
 
+// `pixels` variant: a grid of tiles that pop in/out in a diagonal cascade.
+const PIXEL_COLS = 10
+const PIXEL_ROWS = 6
+const PIXEL_COUNT = PIXEL_COLS * PIXEL_ROWS
+const PIXEL_INDICES = Array.from({ length: PIXEL_COUNT }, (_, i) => i)
+
 function combine(controls: CurtainControls[]): CurtainControls {
   return {
     finished: Promise.all(controls.map((c) => c.finished)),
@@ -52,7 +58,8 @@ function combine(controls: CurtainControls[]): CurtainControls {
  * A controlled full-screen curtain for page/route transitions. Set `show` to
  * `true` to cover the viewport, `false` to uncover it, and swap your route
  * content while covered. `variant` picks the wipe style — fade, sliding
- * doors, blinds, shutter (vertical blinds), or an iris/circle wipe —
+ * doors, blinds, shutter (vertical blinds), iris/circle wipe, a left-to-right
+ * clip wipe, or a pixel-grid cascade —
  * `onCovered` / `onRevealed` fire once each transition finishes so you can
  * swap content at exactly the right moment. Skips the animation (and still
  * fires the callback on the next microtask) under reduced motion.
@@ -94,13 +101,21 @@ export function Curtain(props: CurtainProps): JSX.Element {
         if (panelB) panelB.style.transform = show ? 'translateX(0%)' : 'translateX(100%)'
         break
       case 'blinds':
-        for (const el of strips) if (el) el.style.transform = show ? 'scaleY(1)' : 'scaleY(0)'
+        for (const el of strips.slice(0, STRIP_COUNT))
+          if (el) el.style.transform = show ? 'scaleY(1)' : 'scaleY(0)'
         break
       case 'shutter':
-        for (const el of strips) if (el) el.style.transform = show ? 'scaleX(1)' : 'scaleX(0)'
+        for (const el of strips.slice(0, STRIP_COUNT))
+          if (el) el.style.transform = show ? 'scaleX(1)' : 'scaleX(0)'
         break
       case 'iris':
         if (panelA) panelA.style.clipPath = show ? 'circle(150% at 50% 50%)' : 'circle(0% at 50% 50%)'
+        break
+      case 'clip':
+        if (panelA) panelA.style.clipPath = show ? 'inset(0 0 0 0)' : 'inset(0 100% 0 0)'
+        break
+      case 'pixels':
+        for (const el of strips.slice(0, PIXEL_COUNT)) if (el) el.style.opacity = show ? '1' : '0'
         break
     }
   }
@@ -120,12 +135,12 @@ export function Curtain(props: CurtainProps): JSX.Element {
         return combine([left, right])
       }
       case 'blinds': {
-        const els = strips.filter((el): el is HTMLDivElement => el !== undefined)
+        const els = strips.slice(0, STRIP_COUNT).filter((el): el is HTMLDivElement => el !== undefined)
         if (els.length === 0) return undefined
         return animate(els, { scaleY: show ? [0, 1] : [1, 0] }, { duration, delay: stagger(0.05), ease })
       }
       case 'shutter': {
-        const els = strips.filter((el): el is HTMLDivElement => el !== undefined)
+        const els = strips.slice(0, STRIP_COUNT).filter((el): el is HTMLDivElement => el !== undefined)
         if (els.length === 0) return undefined
         return animate(els, { scaleX: show ? [0, 1] : [1, 0] }, { duration, delay: stagger(0.05), ease })
       }
@@ -139,6 +154,27 @@ export function Curtain(props: CurtainProps): JSX.Element {
               : ['circle(150% at 50% 50%)', 'circle(0% at 50% 50%)'],
           },
           { duration, ease },
+        )
+      }
+      case 'clip': {
+        if (!panelA) return undefined
+        return animate(
+          panelA,
+          {
+            clipPath: show
+              ? ['inset(0 100% 0 0)', 'inset(0 0 0 0)']
+              : ['inset(0 0 0 0)', 'inset(0 100% 0 0)'],
+          },
+          { duration, ease },
+        )
+      }
+      case 'pixels': {
+        const els = strips.slice(0, PIXEL_COUNT).filter((el): el is HTMLDivElement => el !== undefined)
+        if (els.length === 0) return undefined
+        return animate(
+          els,
+          { opacity: show ? [0, 1] : [1, 0] },
+          { duration: duration * 0.5, delay: stagger(0.01, { from: 'first' }), ease },
         )
       }
       default:
@@ -275,6 +311,37 @@ export function Curtain(props: CurtainProps): JSX.Element {
             panelA = el
           }}
         />
+      )}
+
+      {(props.variant ?? 'fade') === 'clip' && (
+        <div
+          class="absolute inset-0"
+          style={{ position: 'absolute', 'clip-path': 'inset(0 100% 0 0)', background: color() }}
+          ref={(el) => {
+            panelA = el
+          }}
+        />
+      )}
+
+      {(props.variant ?? 'fade') === 'pixels' && (
+        <div
+          class="absolute inset-0 grid"
+          style={{
+            'grid-template-columns': `repeat(${PIXEL_COLS}, 1fr)`,
+            'grid-template-rows': `repeat(${PIXEL_ROWS}, 1fr)`,
+          }}
+        >
+          <Index each={PIXEL_INDICES}>
+            {(_, index) => (
+              <div
+                style={{ opacity: 0, background: color() }}
+                ref={(el) => {
+                  strips[index] = el
+                }}
+              />
+            )}
+          </Index>
+        </div>
       )}
     </div>
   )

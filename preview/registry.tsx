@@ -383,9 +383,9 @@ onMount(() => revealOnScroll(sectionEl, { amount: 0.2 })) // reveal once on scro
     title: 'Curtain transition',
     group: 'Motion',
     blurb:
-      'Full-screen page/route wipe with five variants (fade · doors · blinds · shutter · iris) — one <Curtain> component. Pick a style and play it.',
+      'Full-screen page/route wipe with seven variants (fade · doors · blinds · shutter · iris · clip · pixels) — one <Curtain> component. Pick a style and play it.',
     demo: () => {
-      const variants: UI.CurtainVariant[] = ['fade', 'doors', 'blinds', 'shutter', 'iris']
+      const variants: UI.CurtainVariant[] = ['fade', 'doors', 'blinds', 'shutter', 'iris', 'clip', 'pixels']
       const [variant, setVariant] = createSignal<UI.CurtainVariant>('doors')
       const [show, setShow] = createSignal(false)
       // Cover the screen, then immediately uncover — a full transition preview.

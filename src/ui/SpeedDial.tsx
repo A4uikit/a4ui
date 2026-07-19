@@ -4,6 +4,7 @@ import type { JSX } from 'solid-js'
 import { createSignal, For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { animate, motionReduced } from '../lib/motion'
 
 /** A single action in a {@link SpeedDial} — an icon button with an accessible label. */
 export interface SpeedDialAction {
@@ -42,8 +43,17 @@ export function SpeedDial(props: SpeedDialProps): JSX.Element {
       <Show when={open()}>
         <div class="flex flex-col items-center gap-3">
           <For each={props.actions}>
-            {(action) => (
+            {(action, i) => (
               <button
+                ref={(el) => {
+                  // Fan out with a staggered spring as the dial opens.
+                  if (!motionReduced())
+                    animate(
+                      el,
+                      { opacity: [0, 1], y: [12, 0], scale: [0.8, 1] },
+                      { type: 'spring', stiffness: 500, damping: 24, delay: i() * 0.05 },
+                    )
+                }}
                 type="button"
                 aria-label={action.label}
                 title={action.label}
@@ -51,7 +61,7 @@ export function SpeedDial(props: SpeedDialProps): JSX.Element {
                   action.onClick()
                   setOpen(false)
                 }}
-                class="flex h-11 w-11 translate-y-0 items-center justify-center rounded-full border border-border bg-card text-foreground opacity-100 shadow transition-[opacity,transform] duration-150 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
+                class="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 {action.icon}
               </button>
