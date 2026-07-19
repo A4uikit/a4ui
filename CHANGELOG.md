@@ -6,6 +6,27 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.16.0] — 2026-07-19
+
+### Added
+
+- **Motion baked into the primitives** (opt-in props, additive):
+  - **`<Button ripple>`** — Material-style click ripple from the press position.
+  - **`<Card tilt>`** — 3D hover tilt; **`<Card spotlight>`** — cursor-following
+    glow. Combine freely with `glass`/`glow`.
+  - The imperative primitives behind them are exported too: `spawnRipple`,
+    `attachTilt`, `attachSpotlight` — attach the same flourishes to any element.
+- A curated **hero showcase** at the hidden `#/hero` docs route (capture target
+  for the README banner, `hero.png`).
+
+### Changed
+
+- `Ripple`, `TiltCard` re-implemented on the **Web Animations API / CSS**
+  (previously Motion springs) so baking them into `Button`/`Card` adds zero
+  bundle cost — the `motion` engine is no longer pulled by these three
+  (`Spotlight` was already CSS-only). Same look; the tilt eases instead of
+  springing. (Experimental tier, per [STABILITY.md](./STABILITY.md).)
+
 ## [0.15.0] — 2026-07-19
 
 ### Added

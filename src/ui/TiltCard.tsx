@@ -1,12 +1,12 @@
 // TiltCard — tilts its wrapped content in 3D toward the cursor on hover, like
-// a card catching the light. The outer element sets the CSS perspective; the
-// inner element (which actually rotates) gets `transform-style: preserve-3d`
-// so nested content keeps its own depth. Motion's `animate` drives the
-// rotate/scale as a spring. No-op (static) under reduced motion.
+// a card catching the light. The tilt is a direct transform smoothed by a CSS
+// transition (engine-free — no `motion` dependency), which keeps it cheap
+// enough for <Card tilt> to bake in without growing every Card consumer's
+// bundle. No-op (static) under reduced motion.
 import { onCleanup, onMount, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
-import { animate, motionReduced } from '../lib/motion'
+import { motionReduced } from '../lib/motion'
 
 export interface TiltCardProps {
   children: JSX.Element
@@ -16,10 +16,52 @@ export interface TiltCardProps {
 }
 
 /**
+ * Binds a cursor-following 3D tilt: pointer moves over `listenEl` rotate
+ * `animEl` toward the cursor (clamped to `max` degrees) with a slight lift,
+ * easing back flat on pointerleave. Returns a cleanup that unbinds and clears
+ * the transform. Engine-free (CSS transitions); no-op under reduced motion.
+ * This is the primitive behind {@link TiltCard} and `<Card tilt>` — pass the
+ * same element twice to tilt the element the pointer is over.
+ */
+export function attachTilt(
+  listenEl: HTMLElement,
+  animEl: HTMLElement,
+  opts: { max?: number } = {},
+): () => void {
+  if (motionReduced()) return () => {}
+  animEl.style.willChange = 'transform'
+
+  const move = (event: PointerEvent): void => {
+    const rect = listenEl.getBoundingClientRect()
+    const nx = (event.clientX - rect.left) / rect.width - 0.5
+    const ny = (event.clientY - rect.top) / rect.height - 0.5
+    const max = opts.max ?? 10
+    animEl.style.transition = 'transform 0.15s ease-out'
+    animEl.style.transform = `perspective(800px) rotateX(${(ny * -2 * max).toFixed(2)}deg) rotateY(${(nx * 2 * max).toFixed(2)}deg) scale(1.02)`
+  }
+  const leave = (): void => {
+    animEl.style.transition = 'transform 0.4s ease'
+    animEl.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale(1)'
+  }
+
+  listenEl.addEventListener('pointermove', move)
+  listenEl.addEventListener('pointerleave', leave)
+  return () => {
+    listenEl.removeEventListener('pointermove', move)
+    listenEl.removeEventListener('pointerleave', leave)
+    animEl.style.transform = ''
+    animEl.style.transition = ''
+    animEl.style.willChange = ''
+  }
+}
+
+/**
  * Wraps `children` in a card that tilts in 3D toward the cursor: as the
  * pointer moves within its bounds, the card rotates on both axes (clamped to
- * `max` degrees) and lifts slightly, springing back flat on pointerleave.
+ * `max` degrees) and lifts slightly, easing back flat on pointerleave.
  * Respects `prefers-reduced-motion` (renders static).
+ *
+ * A4ui's own `Card` can do this without the wrapper — `<Card tilt>`.
  *
  * @example
  * ```tsx
@@ -33,46 +75,13 @@ export function TiltCard(props: TiltCardProps): JSX.Element {
   let inner!: HTMLDivElement
 
   onMount(() => {
-    if (motionReduced()) return
-
-    let controls: ReturnType<typeof animate> | undefined
-
-    const handlePointerMove = (event: PointerEvent): void => {
-      const rect = root.getBoundingClientRect()
-      const nx = (event.clientX - rect.left) / rect.width - 0.5
-      const ny = (event.clientY - rect.top) / rect.height - 0.5
-      const max = props.max ?? 10
-
-      controls?.stop()
-      controls = animate(
-        inner,
-        { rotateX: ny * -2 * max, rotateY: nx * 2 * max, scale: 1.02 },
-        { type: 'spring', stiffness: 300, damping: 20 },
-      )
-    }
-
-    const handlePointerLeave = (): void => {
-      controls?.stop()
-      controls = animate(
-        inner,
-        { rotateX: 0, rotateY: 0, scale: 1 },
-        { type: 'spring', stiffness: 300, damping: 20 },
-      )
-    }
-
-    root.addEventListener('pointermove', handlePointerMove)
-    root.addEventListener('pointerleave', handlePointerLeave)
-
-    onCleanup(() => {
-      root.removeEventListener('pointermove', handlePointerMove)
-      root.removeEventListener('pointerleave', handlePointerLeave)
-      controls?.stop()
-    })
+    const cleanup = attachTilt(root, inner, { max: props.max })
+    onCleanup(cleanup)
   })
 
   return (
     <div ref={root} class={cn('inline-block', props.class)} style={{ perspective: '800px' }}>
-      <div ref={inner} class="will-change-transform" style={{ 'transform-style': 'preserve-3d' }}>
+      <div ref={inner} style={{ 'transform-style': 'preserve-3d' }}>
         {props.children}
       </div>
     </div>

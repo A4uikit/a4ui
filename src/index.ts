@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.15.0'
+export const A4UI_VERSION = '0.16.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -150,10 +150,10 @@ export { MultiStateBadge, type MultiStateBadgeProps, type BadgeState } from './u
 export { NowPlaying, type NowPlayingProps } from './ui/NowPlaying'
 export { Expandable, type ExpandableProps } from './ui/Expandable'
 export { Typewriter, type TypewriterProps } from './ui/Typewriter'
-export { Ripple, type RippleProps } from './ui/Ripple'
+export { Ripple, spawnRipple, type RippleProps } from './ui/Ripple'
 export { Magnetic, type MagneticProps } from './ui/Magnetic'
-export { TiltCard, type TiltCardProps } from './ui/TiltCard'
-export { Spotlight, type SpotlightProps } from './ui/Spotlight'
+export { TiltCard, attachTilt, type TiltCardProps } from './ui/TiltCard'
+export { Spotlight, attachSpotlight, type SpotlightProps } from './ui/Spotlight'
 export { ScrollProgress, type ScrollProgressProps } from './ui/ScrollProgress'
 export { GradientText, type GradientTextProps } from './ui/GradientText'
 export { flyToCart, type FlyToCartOptions } from './lib/flyToCart'

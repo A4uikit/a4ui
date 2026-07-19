@@ -734,7 +734,8 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'motion-ripple',
     title: 'Ripple',
     group: 'Motion',
-    blurb: 'Material-style click ripple you wrap around anything — the <Ripple> component. Click the tile ↓',
+    blurb:
+      'Material-style click ripple you wrap around anything — the <Ripple> component. Buttons have it baked in: <Button ripple>. Click the tile ↓',
     demo: () => (
       <UI.Ripple class="inline-block cursor-pointer rounded-xl">
         <div class="grid h-24 w-48 place-items-center rounded-xl bg-primary/80 text-sm font-medium text-primary-foreground">
@@ -765,7 +766,8 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'motion-tilt',
     title: 'Tilt card',
     group: 'Motion',
-    blurb: 'A 3D tilt that follows the cursor — the <TiltCard> component. Move your cursor over the card ↓',
+    blurb:
+      'A 3D tilt that follows the cursor — the <TiltCard> component. Cards have it baked in: <Card tilt>. Move your cursor over the card ↓',
     demo: () => (
       <UI.TiltCard>
         <div class="card grid h-36 w-60 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium">
@@ -782,7 +784,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Spotlight',
     group: 'Motion',
     blurb:
-      'A soft glow that follows the cursor across the surface — the <Spotlight> component. Move over it ↓',
+      'A soft glow that follows the cursor across the surface — the <Spotlight> component. Cards have it baked in: <Card spotlight>. Move over it ↓',
     demo: () => (
       <UI.Spotlight class="rounded-2xl">
         <div class="grid h-36 w-72 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium text-foreground">
@@ -829,7 +831,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Button',
     group: 'Actions',
     blurb:
-      'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. Try the controls ↓',
+      'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. `ripple` bakes in a Material click ripple (engine-free). Try the controls ↓',
     controls: {
       variant: {
         type: 'select',
@@ -838,14 +840,20 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         default: 'primary',
       },
       disabled: { type: 'boolean', label: 'disabled', default: false },
+      ripple: { type: 'boolean', label: 'ripple', default: true },
       label: { type: 'text', label: 'text', default: 'Save' },
     },
     demo: (c) => (
-      <UI.Button variant={c.variant as UI.ButtonVariant} disabled={c.disabled as boolean}>
+      <UI.Button
+        variant={c.variant as UI.ButtonVariant}
+        disabled={c.disabled as boolean}
+        ripple={c.ripple as boolean}
+      >
         {c.label as string}
       </UI.Button>
     ),
-    code: (c) => `<Button variant="${c.variant}"${c.disabled ? ' disabled' : ''}>${c.label}</Button>`,
+    code: (c) =>
+      `<Button variant="${c.variant}"${c.disabled ? ' disabled' : ''}${c.ripple ? ' ripple' : ''}>${c.label}</Button>${c.ripple ? '\n\n// ripple spawns a Material-style press ripple — no wrapper, no motion dep' : ''}`,
   },
 
   // ---- Feedback -------------------------------------------------------------
@@ -1681,13 +1689,22 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'card',
     title: 'Card',
     group: 'Data',
-    blurb: 'Container surface with sub-parts (Header/Title/Content). With glass, a frosted surface + glow.',
+    blurb:
+      'Container surface with sub-parts (Header/Title/Content). With glass, a frosted surface + glow. `tilt` and `spotlight` bake in the cursor interactions from the Motion category — hover the card with them on ↓',
     controls: {
       glass: { type: 'boolean', label: 'glass', default: true },
       glow: { type: 'boolean', label: 'glow', default: true },
+      tilt: { type: 'boolean', label: 'tilt', default: true },
+      spotlight: { type: 'boolean', label: 'spotlight', default: true },
     },
     demo: (c) => (
-      <UI.Card glass={c.glass as boolean} glow={c.glow as boolean} class="w-full max-w-sm">
+      <UI.Card
+        glass={c.glass as boolean}
+        glow={c.glow as boolean}
+        tilt={c.tilt as boolean}
+        spotlight={c.spotlight as boolean}
+        class="w-full max-w-sm"
+      >
         <UI.CardHeader>
           <UI.CardTitle>Invoice #A4-1024</UI.CardTitle>
         </UI.CardHeader>
@@ -1696,12 +1713,16 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         </UI.CardContent>
       </UI.Card>
     ),
-    code: (c) => `<Card${c.glass ? ' glass' : ''}${c.glow ? ' glow' : ' glow={false}'}>
+    code: (
+      c,
+    ) => `<Card${c.glass ? ' glass' : ''}${c.glow ? ' glow' : ' glow={false}'}${c.tilt ? ' tilt' : ''}${
+      c.spotlight ? ' spotlight' : ''
+    }>
   <CardHeader>
     <CardTitle>Invoice #A4-1024</CardTitle>
   </CardHeader>
   <CardContent>Issued Jul 12, 2026 · Total $12,400 MXN.</CardContent>
-</Card>`,
+</Card>${c.tilt || c.spotlight ? '\n\n// tilt = 3D hover tilt · spotlight = cursor-following glow (engine-free, reduced-motion aware)' : ''}`,
   },
   {
     id: 'table',

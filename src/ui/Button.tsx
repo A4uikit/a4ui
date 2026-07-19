@@ -2,6 +2,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { spawnRipple } from './Ripple'
 
 /** Visual style of a {@link Button}. Defaults to `'primary'`. */
 export type ButtonVariant = 'primary' | 'secondary' | 'outline' | 'ghost'
@@ -24,6 +25,12 @@ interface ButtonProps extends ParentProps, Omit<JSX.ButtonHTMLAttributes<HTMLBut
   class?: string
   /** Defaults to "button" so action buttons inside a form never submit it by accident. */
   type?: 'button' | 'submit' | 'reset'
+  /**
+   * Material-style click ripple from the press position. Engine-free (Web
+   * Animations API, shared with {@link spawnRipple}) and reduced-motion aware —
+   * costs nothing when off.
+   */
+  ripple?: boolean
 }
 
 /**
@@ -33,14 +40,29 @@ interface ButtonProps extends ParentProps, Omit<JSX.ButtonHTMLAttributes<HTMLBut
  * @example
  * ```tsx
  * <Button variant="outline" onClick={() => save()}>Save</Button>
+ * <Button ripple onClick={() => save()}>Save</Button> // with a click ripple
  * ```
  */
 export function Button(props: ButtonProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['variant', 'class', 'type', 'children'])
+  const [local, rest] = splitProps(props, ['variant', 'class', 'type', 'children', 'ripple', 'onPointerDown'])
+
+  const handlePointerDown: JSX.EventHandler<HTMLButtonElement, PointerEvent> = (event) => {
+    if (local.ripple) spawnRipple(event.currentTarget, event, { opacity: 0.35 })
+    const user = local.onPointerDown
+    if (typeof user === 'function') user(event)
+    else if (user) user[0](user[1], event)
+  }
+
   return (
     <button
       type={local.type ?? 'button'}
-      class={cn(BUTTON_BASE, VARIANT_CLASSES[local.variant ?? 'primary'], local.class)}
+      class={cn(
+        BUTTON_BASE,
+        VARIANT_CLASSES[local.variant ?? 'primary'],
+        local.ripple && 'relative overflow-hidden',
+        local.class,
+      )}
+      onPointerDown={handlePointerDown}
       {...rest}
     >
       {local.children}
