@@ -22,8 +22,14 @@ test.describe('docs render', () => {
       // The doc title is the first h1 (a demo like PageHeader may render its own).
       await expect(page.locator('h1').first()).toBeVisible()
       await expect(page.locator('h1').first()).not.toBeEmpty()
-      await expect(page.getByRole('heading', { name: 'Example' })).toBeVisible()
-      await expect(page.getByRole('heading', { name: 'Code' })).toBeVisible()
+      if (id.startsWith('guide-')) {
+        // Guides render the repo markdown as prose — no Example/Code sections.
+        await expect(page.locator('.a4-prose')).toBeVisible()
+        await expect(page.locator('.a4-prose h2').first()).toBeVisible()
+      } else {
+        await expect(page.getByRole('heading', { name: 'Example' })).toBeVisible()
+        await expect(page.getByRole('heading', { name: 'Code' })).toBeVisible()
+      }
 
       expect(errors, `runtime errors on #/${id}`).toEqual([])
     })
