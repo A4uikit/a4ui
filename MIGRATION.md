@@ -14,9 +14,8 @@ straight through. Read this before jumping more than one minor.
 
 ## → 0.14.0
 
-Additive. New `Typewriter` / `Ripple` components. No consumer action. (An
-`npm create a4ui` scaffolder now lives in the repo; until it's published to npm,
-keep using `npx degit A4uikit/a4ui/starter my-app`.)
+Additive. New `Typewriter` / `Ripple` components, and the **`create-a4ui`**
+scaffolder — `npm create a4ui@latest my-app`. No consumer action.
 
 ## → 0.12.0
 
