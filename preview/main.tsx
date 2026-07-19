@@ -8,8 +8,16 @@ import './app.css'
 
 import { App } from './App'
 
-render(() => <App />, document.getElementById('root')!)
+const root = document.getElementById('root')!
 
-// The eager shell (AppShell + Home) has mounted synchronously by now — drop the
-// zero-JS splash so it doesn't sit on top of the real UI.
-document.getElementById('app-splash')?.remove()
+// Let the browser actually PAINT the zero-JS splash (in index.html) before the
+// heavy first render runs. A synchronous render() clears #root and mounts the
+// app in the same task — wiping the splash before it ever shows, so the SPA
+// still felt blank on slow mobile. Double rAF = "after the next paint": frame 1
+// paints the splash (that's FCP), frame 2 mounts the app and drops the splash.
+requestAnimationFrame(() =>
+  requestAnimationFrame(() => {
+    render(() => <App />, root)
+    document.getElementById('app-splash')?.remove()
+  }),
+)

@@ -6,6 +6,7 @@ import { Settings as SettingsIcon, Search as SearchIcon } from 'lucide-solid'
 import {
   createEffect,
   createSignal,
+  For,
   lazy,
   Match,
   onCleanup,
@@ -23,6 +24,7 @@ import {
   Drawer,
   EffectsToggle,
   initTheme,
+  Skeleton,
   SpaceBackground,
   ThemeToggle,
   Toaster,
@@ -62,6 +64,44 @@ function Scenery(): JSX.Element {
 }
 
 const DocContent = lazy(() => import('./Docs').then((m) => ({ default: m.DocContent })))
+
+// Shown while the docs/registry chunk streams in on the first navigation to a
+// component — a skeleton of the doc page (title · blurb · demo · code) so it
+// never flashes blank. Uses the real <Skeleton> since the app JS is already up.
+function DocSkeleton(): JSX.Element {
+  return (
+    <div class="space-y-4">
+      <Skeleton class="h-8 w-56" />
+      <Skeleton class="h-4 w-full max-w-2xl" />
+      <Skeleton class="h-4 w-2/3 max-w-xl" />
+      <Skeleton class="mt-3 h-64 w-full rounded-xl" />
+      <Skeleton class="h-40 w-full rounded-xl" />
+    </div>
+  )
+}
+
+// Grid of placeholder cards for the examples gallery's first load.
+function GridSkeleton(): JSX.Element {
+  return (
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <For each={Array.from({ length: 6 })}>{() => <Skeleton class="h-40 w-full rounded-xl" />}</For>
+    </div>
+  )
+}
+
+// Full docs page (sidebar + content) while the shared registry chunk loads.
+function DocsPageSkeleton(): JSX.Element {
+  return (
+    <div class="flex gap-8">
+      <aside class="hidden w-56 shrink-0 space-y-2 md:block">
+        <For each={Array.from({ length: 10 })}>{() => <Skeleton class="h-6 w-full" />}</For>
+      </aside>
+      <div class="min-w-0 flex-1">
+        <DocSkeleton />
+      </div>
+    </div>
+  )
+}
 const DocsNav = lazy(() => import('./DocsNav').then((m) => ({ default: m.DocsNav })))
 const CommandPalette = lazy(() => import('./CommandPalette'))
 const SettingsDrawer = lazy(() => import('./SettingsDrawer').then((m) => ({ default: m.SettingsDrawer })))
@@ -238,30 +278,39 @@ export function App(): JSX.Element {
       <AppShell topbar={topbar} background={<Scenery />} maxWidth="1600px">
         <Switch fallback={<Home onExplore={() => openDocs()} />}>
           <Match when={view().kind === 'examples'}>
-            <ExamplesGallery onOpen={(id) => setView({ kind: 'example', id })} />
+            <Suspense fallback={<GridSkeleton />}>
+              <ExamplesGallery onOpen={(id) => setView({ kind: 'example', id })} />
+            </Suspense>
           </Match>
           <Match when={view().kind === 'example'}>
-            <ExampleView id={selectedId()} onBack={() => setView({ kind: 'examples' })} />
+            <Suspense fallback={<DocSkeleton />}>
+              <ExampleView id={selectedId()} onBack={() => setView({ kind: 'examples' })} />
+            </Suspense>
           </Match>
           <Match when={isDocs()}>
-            <div class="flex gap-8">
-              {/* Desktop sidebar. On mobile it's hidden — the ☰ button opens a Drawer. */}
-              <aside class="hidden w-56 shrink-0 md:block">
-                <div class="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto pr-2">
-                  <DocsNav selected={selectedId()} onSelect={(id) => setView({ kind: 'docs', id })} />
+            {/* One boundary for the whole docs page: on the first visit BOTH the
+                sidebar nav and the content are lazy (they share the registry
+                chunk), so a single skeleton covers them instead of a bare spinner. */}
+            <Suspense fallback={<DocsPageSkeleton />}>
+              <div class="flex gap-8">
+                {/* Desktop sidebar. On mobile it's hidden — the ☰ button opens a Drawer. */}
+                <aside class="hidden w-56 shrink-0 md:block">
+                  <div class="sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto pr-2">
+                    <DocsNav selected={selectedId()} onSelect={(id) => setView({ kind: 'docs', id })} />
+                  </div>
+                </aside>
+                <div class="min-w-0 flex-1">
+                  <button
+                    type="button"
+                    class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground md:hidden"
+                    onClick={() => setNavOpen(true)}
+                  >
+                    ☰ Components
+                  </button>
+                  <DocContent id={selectedId()} />
                 </div>
-              </aside>
-              <div class="min-w-0 flex-1">
-                <button
-                  type="button"
-                  class="mb-4 inline-flex items-center gap-2 rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground md:hidden"
-                  onClick={() => setNavOpen(true)}
-                >
-                  ☰ Components
-                </button>
-                <DocContent id={selectedId()} />
               </div>
-            </div>
+            </Suspense>
           </Match>
         </Switch>
       </AppShell>

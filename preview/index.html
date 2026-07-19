@@ -46,46 +46,105 @@
   </head>
   <body>
     <div id="root">
-      <!-- Instant splash: painted with zero JS so an SPA cold-load (slow mobile /
-           cellular) shows the brand immediately instead of a blank page. main.tsx
-           removes #app-splash the moment the app mounts. -->
-      <div
-        id="app-splash"
-        style="position: fixed; inset: 0; display: grid; place-items: center; background: #0a0e17"
-      >
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px">
-          <div
-            style="
-              width: 46px;
-              height: 46px;
-              border-radius: 11px;
-              background: #156bf4;
-              display: grid;
-              place-items: center;
-              font:
-                700 20px/1 system-ui,
-                sans-serif;
-              color: #fff;
-            "
-          >
-            A4
+      <!-- Instant splash: a zero-JS SKELETON of the real layout so an SPA
+           cold-load (slow mobile / cellular) previews the page immediately
+           instead of a blank screen. Mirrors the look of our <Skeleton>
+           (pulsing muted blocks). main.tsx removes #app-splash once the app
+           mounts. -->
+      <div id="app-splash" style="position: fixed; inset: 0; background: #0a0e17; overflow: hidden">
+        <!-- topbar -->
+        <div class="sk-bar">
+          <div class="sk sk-logo"></div>
+          <div class="sk sk-nav"></div>
+          <div class="sk sk-nav"></div>
+          <div style="flex: 1"></div>
+          <div class="sk sk-ctl"></div>
+          <div class="sk sk-ctl"></div>
+        </div>
+        <!-- hero -->
+        <div class="sk-hero">
+          <div class="sk" style="width: 150px; height: 22px; border-radius: 999px"></div>
+          <div class="sk" style="width: 220px; height: 52px"></div>
+          <div class="sk" style="width: min(90%, 460px); height: 14px"></div>
+          <div class="sk" style="width: min(75%, 380px); height: 14px"></div>
+          <div style="display: flex; gap: 12px; margin-top: 10px">
+            <div class="sk" style="width: 170px; height: 44px"></div>
+            <div class="sk" style="width: 110px; height: 44px"></div>
           </div>
-          <div
-            style="
-              width: 26px;
-              height: 26px;
-              border: 3px solid rgba(255, 255, 255, 0.18);
-              border-top-color: #156bf4;
-              border-radius: 50%;
-              animation: a4splin 0.7s linear infinite;
-            "
-          ></div>
+        </div>
+        <!-- stat cards -->
+        <div class="sk-cards">
+          <div class="sk sk-card"></div>
+          <div class="sk sk-card"></div>
+          <div class="sk sk-card"></div>
+          <div class="sk sk-card"></div>
         </div>
       </div>
       <style>
-        @keyframes a4splin {
-          to {
-            transform: rotate(360deg);
+        #app-splash .sk {
+          background: rgba(255, 255, 255, 0.06);
+          border-radius: 8px;
+          animation: a4pulse 1.6s ease-in-out infinite;
+        }
+        #app-splash .sk-bar {
+          height: 56px;
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          padding: 0 20px;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        #app-splash .sk-logo {
+          width: 58px;
+          height: 24px;
+        }
+        #app-splash .sk-nav {
+          width: 48px;
+          height: 16px;
+        }
+        #app-splash .sk-ctl {
+          width: 90px;
+          height: 30px;
+        }
+        #app-splash .sk-hero {
+          max-width: 640px;
+          margin: 72px auto 0;
+          padding: 0 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 16px;
+        }
+        #app-splash .sk-cards {
+          max-width: 940px;
+          margin: 48px auto 0;
+          padding: 0 20px;
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 16px;
+        }
+        #app-splash .sk-card {
+          height: 104px;
+          border-radius: 14px;
+        }
+        @media (min-width: 640px) {
+          #app-splash .sk-cards {
+            grid-template-columns: repeat(4, 1fr);
+          }
+        }
+        @media (max-width: 480px) {
+          #app-splash .sk-nav,
+          #app-splash .sk-ctl:first-of-type {
+            display: none;
+          }
+        }
+        @keyframes a4pulse {
+          0%,
+          100% {
+            opacity: 1;
+          }
+          50% {
+            opacity: 0.45;
           }
         }
       </style>
