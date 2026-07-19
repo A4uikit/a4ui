@@ -1,8 +1,6 @@
 # A4ui
 
-<!-- TODO: hero screenshot / GIF (dark+light, components, SpaceBackground, theme switch) -->
-
-![A4ui](https://a4ui.pages.dev/og.png)
+[![A4ui](https://a4ui.pages.dev/og.png)](https://a4ui.pages.dev/)
 
 [![npm](https://img.shields.io/npm/v/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![license](https://img.shields.io/npm/l/@a4ui/core.svg)](./LICENSE)
@@ -198,8 +196,8 @@ A4ui is a **SolidJS** library. It works natively in **Vite + Solid**,
 (`@a4ui/core/elements` — Solid is compiled in, no Solid toolchain needed):
 
 ```html
-<link rel="stylesheet" href="…/@a4ui/core/dist/elements.css" />
-<script type="module" src="…/@a4ui/core/dist/elements.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@a4ui/core/dist/elements.css" />
+<script type="module" src="https://unpkg.com/@a4ui/core/dist/elements.js"></script>
 <a4-button variant="primary" label="Save"></a4-button>
 ```
 
