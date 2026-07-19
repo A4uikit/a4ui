@@ -83,6 +83,7 @@
     "access": "public"
   },
   "scripts": {
+    "prebuild": "node scripts/sync-version.mjs",
     "build": "vite build && npm run build:elements",
     "build:elements": "vite build --config vite.elements.config.ts && node scripts/build-elements-css.mjs",
     "dev": "vite build --watch",
