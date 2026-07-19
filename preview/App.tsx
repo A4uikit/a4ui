@@ -20,13 +20,10 @@ import {
   activeTheme,
   AppShell,
   Button,
-  ChristmasBackground,
   Drawer,
   EffectsToggle,
   initTheme,
-  SnowScenery,
   SpaceBackground,
-  ThemedScenery,
   ThemeToggle,
   Toaster,
 } from '../src'
@@ -34,20 +31,33 @@ import { Home } from './Home'
 import { ThemeSelect } from './ThemeSelect'
 import { applyOverrides } from './themeStore'
 
+// The default space starfield is eager (it's what most visitors see first). The
+// bespoke, theme-specific backdrops are lazy — they only render for snow /
+// christmas / motif themes, so they stay out of the initial bundle.
+const SnowScenery = lazy(() => import('../src/layout/SnowScenery').then((m) => ({ default: m.SnowScenery })))
+const ChristmasBackground = lazy(() =>
+  import('../src/layout/ChristmasBackground').then((m) => ({ default: m.ChristmasBackground })),
+)
+const ThemedScenery = lazy(() =>
+  import('../src/layout/ThemedScenery').then((m) => ({ default: m.ThemedScenery })),
+)
+
 // Backdrop follows the active theme: space keeps its starfield; snow and
 // christmas have bespoke scenery; every other theme gets the token-tinted
 // ThemedScenery with its motifs.
 function Scenery(): JSX.Element {
   return (
-    <Switch fallback={<SpaceBackground />}>
-      <Match when={activeTheme().name === 'snow'}>
-        <SnowScenery />
-      </Match>
-      <Match when={activeTheme().name === 'christmas'}>
-        <ChristmasBackground />
-      </Match>
-      <Match when={activeTheme().motifs}>{(motifs) => <ThemedScenery motifs={motifs()} />}</Match>
-    </Switch>
+    <Suspense fallback={<div class="fixed inset-0 -z-10 bg-background" />}>
+      <Switch fallback={<SpaceBackground />}>
+        <Match when={activeTheme().name === 'snow'}>
+          <SnowScenery />
+        </Match>
+        <Match when={activeTheme().name === 'christmas'}>
+          <ChristmasBackground />
+        </Match>
+        <Match when={activeTheme().motifs}>{(motifs) => <ThemedScenery motifs={motifs()} />}</Match>
+      </Switch>
+    </Suspense>
   )
 }
 

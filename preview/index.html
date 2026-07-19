@@ -45,7 +45,51 @@
     </noscript>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Instant splash: painted with zero JS so an SPA cold-load (slow mobile /
+           cellular) shows the brand immediately instead of a blank page. main.tsx
+           removes #app-splash the moment the app mounts. -->
+      <div
+        id="app-splash"
+        style="position: fixed; inset: 0; display: grid; place-items: center; background: #0a0e17"
+      >
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 16px">
+          <div
+            style="
+              width: 46px;
+              height: 46px;
+              border-radius: 11px;
+              background: #156bf4;
+              display: grid;
+              place-items: center;
+              font:
+                700 20px/1 system-ui,
+                sans-serif;
+              color: #fff;
+            "
+          >
+            A4
+          </div>
+          <div
+            style="
+              width: 26px;
+              height: 26px;
+              border: 3px solid rgba(255, 255, 255, 0.18);
+              border-top-color: #156bf4;
+              border-radius: 50%;
+              animation: a4splin 0.7s linear infinite;
+            "
+          ></div>
+        </div>
+      </div>
+      <style>
+        @keyframes a4splin {
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+    </div>
     <script type="module" src="/main.tsx"></script>
   </body>
 </html>

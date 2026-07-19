@@ -9,3 +9,7 @@ import './app.css'
 import { App } from './App'
 
 render(() => <App />, document.getElementById('root')!)
+
+// The eager shell (AppShell + Home) has mounted synchronously by now — drop the
+// zero-JS splash so it doesn't sit on top of the real UI.
+document.getElementById('app-splash')?.remove()
