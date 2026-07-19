@@ -31,6 +31,29 @@ jobs:
       - run: npm run build
       - run: npm run test:package # packs, installs the tarball in a temp project, verifies exports/files/version
 
+  examples:
+    # Build the consumer example apps against the LOCAL package (file:../..) so
+    # the integration claims stay honest: the elements bundle in a React app, and
+    # the `solid` export condition server-rendering in a real SolidStart app.
+    name: consumer example — ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [react-webcomponents, solidstart-ssr]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build # produce dist/ so the example's file:../.. link resolves
+      - run: npm install --no-audit --no-fund
+        working-directory: examples/${{ matrix.app }}
+      - run: npm run build
+        working-directory: examples/${{ matrix.app }}
+
   e2e:
     # Sharded across parallel runners — each runs 1/N of the specs, so the wall
     # clock is ~total/N instead of the whole suite serially.

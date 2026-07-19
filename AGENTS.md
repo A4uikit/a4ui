@@ -86,9 +86,35 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
 3. Add a `DocEntry` to `preview/registry.tsx` (id = kebab-case; blurb + live demo +
    code; optional `controls`). The render test is auto-generated from the registry;
    add a behavior test to `tests/docs.spec.ts` if it's interactive.
-4. Consider wrapping leaf/primitive components as Web Components (register in
-   `src/elements.tsx`) and include them in at least one example page.
-5. `npm run typecheck && npm run build && npm test` must stay green.
+4. Update the docs that list components: `README.md` (category table + the "75+"/
+   category counts), `AGENTS.md` (the `src/ui/*` list above), `CHANGELOG.md`
+   (an entry), and `STABILITY.md` (classify it Stable/Experimental).
+5. Consider wrapping leaf/primitive components as Web Components (register in
+   `src/elements.tsx` + note them in `INTEGRATIONS.md`) and include them in at
+   least one example page.
+6. `npm run validate && npm test` must stay green.
+
+## Keeping things in sync — what each change touches
+
+**One source of truth cascades.** Editing `preview/registry.tsx` (the docs SSOT)
+automatically updates the docs site, the auto-generated render tests, and
+`llms.txt` (via `scripts/gen-llms.mjs`, run by `preview`/`preview:build`) — don't
+hand-edit `llms.txt`. `A4UI_VERSION` auto-syncs from `package.json` on `prebuild`
+(`scripts/sync-version.mjs`) — don't hand-edit it. The docs site auto-deploys on
+push (GitHub Pages + Cloudflare Pages `a4ui.pages.dev`).
+
+By change type, update:
+
+- **Component** → see the checklist above.
+- **Exports / packaging** (`package.json` `exports`/`files`) → also
+  `scripts/test-package.mjs` (`REQUIRED_DIST_FILES` / `REQUIRED_EXPORT_KEYS`) and
+  the README bundle-size table. Run `npm run test:package`.
+- **A public integration path** (SSR, Web Components, subpaths) → `INTEGRATIONS.md`
+  and, if it's a build-time claim, the `examples/*` consumer apps (CI builds them).
+- **Release** → bump `package.json` `version` (source auto-syncs), move the
+  `CHANGELOG.md` `Unreleased` items under the new version, then cut a GitHub
+  Release (fires `publish.yml`). `prepublishOnly` runs `validate` (typecheck ·
+  lint · format:check · unit · build · test:package) as the gate.
 
 ## Adding a theme — the recipe
 

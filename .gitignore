@@ -6,6 +6,8 @@ dist/
 .env.*
 !.env.example
 .vite/
+.output/
+.vinxi/
 coverage/
 test-results/
 playwright-report/
