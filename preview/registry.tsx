@@ -451,7 +451,7 @@ const [show, setShow] = createSignal(false)
     title: 'Notification stack',
     group: 'Motion',
     blurb:
-      'Stacked notifications that peek behind one another and re-flow as you dismiss them — the <NotificationStack> component. Add a few ↓',
+      'Stacked notifications that peek behind one another — click the stack (or "Show all") to expand the full list, "Show less" to collapse. The <NotificationStack> component. Add a few ↓',
     demo: () => {
       let seq = 0
       const SAMPLES = [

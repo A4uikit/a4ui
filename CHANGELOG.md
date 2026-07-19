@@ -6,6 +6,22 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.13.1] — 2026-07-19
+
+### Fixed
+
+- **`NotificationStack`** now expands: clicking the stack (or the "Show all N"
+  control) opens every notification as a scrollable list, and "Show less"
+  collapses it back to the peek stack. Previously it only rendered the collapsed
+  stack, so the list could never be read in full.
+
+### Docs
+
+- The docs site paints an instant, zero-JS **skeleton** on cold load (previewing
+  the layout instead of a blank screen), and shows **skeleton loading states**
+  for the docs and examples pages while their chunk streams in — replacing the
+  bare spinner. Improves perceived load on slow mobile connections.
+
 ## [0.13.0] — 2026-07-18
 
 ### Added
