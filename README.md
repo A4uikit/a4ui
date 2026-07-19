@@ -15,7 +15,8 @@ Accessible SolidJS **Spatial Glass** component library — 75+ components,
 layouts, runtime themes, a motion system, and framework-agnostic Web
 Components. Named after the 4 people in the Rivera family. 🙂
 
-**📚 Docs & live examples:** https://a4ui.pages.dev/
+**📚 Docs & live examples:** https://a4ui.pages.dev/ · **🔒 API stability &
+versioning:** [STABILITY.md](./STABILITY.md) (what's stable vs experimental pre‑1.0)
 
 Three layers, one identity:
 
@@ -33,10 +34,12 @@ npm install @a4ui/core
 
 Peer dependency: `solid-js` (>= 1.9).
 
-**Starting fresh?** Scaffold a preconfigured Solid + Vite + Tailwind + A4ui app:
+**Starting fresh?** Scaffold a preconfigured Solid + Vite + A4ui app (with or
+without Tailwind):
 
 ```bash
-npx degit A4uikit/a4ui/starter my-app && cd my-app && npm install && npm run dev
+npm create a4ui@latest my-app
+# then: cd my-app && npm install && npm run dev
 ```
 
 ## Use
@@ -110,6 +113,13 @@ everything is tree-shaken, a page that uses only static components ships ~10–1
 of A4ui JS + your purged CSS — the animation engine is loaded lazily and shared
 only when an animated component is on the page. Keep animations off the critical
 path (or behind `motionReduced`) and the design system stays Lighthouse-friendly.
+
+**Install footprint (dev-time, not your bundle):** `npm i @a4ui/core solid-js`
+in an empty project pulls ~36 packages, **~105 MB** on disk, **0 vulnerabilities**.
+Most of that (~76 MB) is **`lucide-solid`**, which ships every icon as its own
+module — but your **shipped bundle** only ever includes the handful of icons a
+component you import actually uses (tree-shaking). The disk size is `node_modules`
+only; it does not reach your users.
 
 ## Customization
 
