@@ -1,0 +1,42 @@
+version: 2
+
+updates:
+  # Actualiza package.json y package-lock.json.
+  - package-ecosystem: "npm"
+    directory: "/"
+
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Hermosillo"
+
+    open-pull-requests-limit: 5
+
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "minor"
+          - "patch"
+
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # Actualiza las versiones usadas dentro de GitHub Actions.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "America/Hermosillo"
+
+    groups:
+      github-actions:
+        patterns:
+          - "*"
