@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.12.0'
+export const A4UI_VERSION = '0.13.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -130,6 +130,17 @@ export { CalendarHeatmap, type HeatmapValue, type CalendarHeatmapProps } from '.
 export { Portal, type PortalProps } from './ui/Portal'
 export { Sortable, type SortableProps } from './ui/Sortable'
 export { Clock, type ClockProps } from './ui/Clock'
+
+// Motion components (src/ui) — animation primitives built on the `motion` engine
+// (adapted from motion.dev examples). All tree-shakeable and reduced-motion aware;
+// `motion` is external, so importing one of these is the only thing that pulls it.
+export { ScrambleText, type ScrambleTextProps } from './ui/ScrambleText'
+export { TextReveal, type TextRevealProps } from './ui/TextReveal'
+export { HoldToConfirm, type HoldToConfirmProps } from './ui/HoldToConfirm'
+export { LoadingDots, type LoadingDotsProps } from './ui/LoadingDots'
+export { Curtain, type CurtainProps, type CurtainVariant } from './ui/Curtain'
+export { Parallax, type ParallaxProps } from './ui/Parallax'
+export { FillText, type FillTextProps } from './ui/FillText'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.

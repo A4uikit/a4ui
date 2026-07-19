@@ -45,6 +45,7 @@ export const DOC_GROUPS = [
   'Feedback',
   'Navigation',
   'Layout',
+  'Motion',
 ]
 
 export const DOCS: DocEntry[] = [
@@ -149,11 +150,11 @@ const brand: ThemeDefinition = {
 applyThemeDefinition(brand) // or add it to your own picker`,
   },
   {
-    id: 'motion',
-    title: 'Motion',
-    group: 'Get started',
+    id: 'motion-stagger',
+    title: 'Stagger',
+    group: 'Motion',
     blurb:
-      'Animate with Motion (motion.dev) — the same engine A4ui uses. The package re-exports animate / inView / scroll / stagger / spring, plus the animateIn and revealOnScroll helpers.',
+      'Cascade a group in with a per-item delay (stagger) and a spring. Motion (motion.dev) is the engine A4ui uses — the package re-exports animate / inView / scroll / stagger / spring, plus animateIn / revealOnScroll.',
     demo: () => {
       const boxes: HTMLDivElement[] = []
       const play = () => {
@@ -190,6 +191,260 @@ animate(boxes, { opacity: [0, 1], y: [16, 0] }, { delay: stagger(0.08), type: 's
 // The one-liners the library uses internally (both reduced-motion aware):
 onMount(() => animateIn(cardEl, { delay: 0.1 }))          // fade/slide in on mount
 onMount(() => revealOnScroll(sectionEl, { amount: 0.2 })) // reveal once on scroll`,
+  },
+  {
+    id: 'motion-spring',
+    title: 'Spring',
+    group: 'Motion',
+    blurb: 'Physics-based spring — fling the ball and it settles with a natural bounce.',
+    demo: () => {
+      let ball!: HTMLDivElement
+      const [right, setRight] = createSignal(false)
+      const fling = () => {
+        const next = !right()
+        setRight(next)
+        UI.animate(ball, { x: next ? 220 : 0 }, { type: 'spring', stiffness: 300, damping: 14 })
+      }
+      return (
+        <div class="space-y-4">
+          <div class="h-14 w-full max-w-md">
+            <div ref={ball} class="h-12 w-12 rounded-full bg-accent" />
+          </div>
+          <UI.Button onClick={fling}>Fling</UI.Button>
+        </div>
+      )
+    },
+    code: `animate(ball, { x: 220 }, { type: 'spring', stiffness: 300, damping: 14 })`,
+  },
+  {
+    id: 'motion-reveal',
+    title: 'Scroll reveal',
+    group: 'Motion',
+    blurb: 'Reveal items the first time they scroll into view (Motion inView). Scroll the list ↓',
+    demo: () => {
+      let container!: HTMLDivElement
+      onMount(() => {
+        container
+          .querySelectorAll<HTMLElement>('[data-reveal]')
+          .forEach((el) => UI.revealOnScroll(el, { amount: 0.6 }))
+      })
+      return (
+        <div
+          ref={container}
+          class="h-56 w-full max-w-sm space-y-2 overflow-y-auto rounded-lg border border-border p-3"
+        >
+          <For each={Array.from({ length: 9 }, (_, i) => i)}>
+            {(i) => (
+              <div data-reveal class="rounded-md bg-muted px-3 py-4 text-sm text-foreground">
+                Item {i + 1}
+              </div>
+            )}
+          </For>
+        </div>
+      )
+    },
+    code: `onMount(() => items.forEach((el) => revealOnScroll(el, { amount: 0.6 })))`,
+  },
+  {
+    id: 'motion-hover',
+    title: 'Hover & press',
+    group: 'Motion',
+    blurb: 'Springy scale on hover and a dip on press, driven by Motion animate.',
+    demo: () => {
+      const spring = { type: 'spring', stiffness: 400, damping: 15 } as const
+      return (
+        <div
+          onMouseEnter={(e) => UI.animate(e.currentTarget, { scale: 1.1 }, spring)}
+          onMouseLeave={(e) => UI.animate(e.currentTarget, { scale: 1 }, spring)}
+          onPointerDown={(e) => UI.animate(e.currentTarget, { scale: 0.94 }, spring)}
+          onPointerUp={(e) => UI.animate(e.currentTarget, { scale: 1.1 }, spring)}
+          class="grid h-24 w-24 cursor-pointer select-none place-items-center rounded-xl bg-primary/80 text-sm font-medium text-primary-foreground"
+        >
+          Hover me
+        </div>
+      )
+    },
+    code: `<div onMouseEnter={(e) => animate(e.currentTarget, { scale: 1.1 }, { type: 'spring' })} … />`,
+  },
+  {
+    id: 'motion-count',
+    title: 'Count up',
+    group: 'Motion',
+    blurb: 'Tween a number up with createCountUp (Motion under the hood). Replay to run it again.',
+    demo: () => {
+      const [target, setTarget] = createSignal(1280)
+      const n = UI.createCountUp(target, 900)
+      const replay = () => {
+        setTarget(0)
+        setTimeout(() => setTarget(900 + Math.floor(Math.random() * 800)), 40)
+      }
+      return (
+        <div class="space-y-3">
+          <p class="text-4xl font-bold tabular-nums text-foreground">{Math.round(n()).toLocaleString()}</p>
+          <UI.Button onClick={replay}>Replay</UI.Button>
+        </div>
+      )
+    },
+    code: `const n = createCountUp(() => value(), 900)
+<span>{Math.round(n()).toLocaleString()}</span>`,
+  },
+  {
+    id: 'motion-scramble',
+    title: 'Scramble text',
+    group: 'Motion',
+    blurb:
+      'Text that decodes from random glyphs — reusable as the <ScrambleText> component. Run on mount or on hover.',
+    demo: () => {
+      const [seed, setSeed] = createSignal(0)
+      return (
+        <div class="space-y-4">
+          <div class="text-2xl font-bold text-foreground">
+            {/* keyed by seed so "Replay" remounts and re-scrambles */}
+            <For each={[seed()]}>{() => <UI.ScrambleText text="Spatial Glass" duration={900} />}</For>
+          </div>
+          <p class="text-sm text-muted-foreground">
+            Hover: <UI.ScrambleText text="decode on hover" trigger="hover" class="text-foreground" />
+          </p>
+          <UI.Button onClick={() => setSeed((s) => s + 1)}>Replay</UI.Button>
+        </div>
+      )
+    },
+    code: `import { ScrambleText } from '@a4ui/core'
+
+<ScrambleText text="Spatial Glass" />                    // decodes on mount
+<ScrambleText text="decode on hover" trigger="hover" />  // re-runs on mouseenter`,
+  },
+  {
+    id: 'motion-text-reveal',
+    title: 'Text reveal',
+    group: 'Motion',
+    blurb: 'Reveal a line word-by-word (or char-by-char) with a staggered fade — the <TextReveal> component.',
+    demo: () => {
+      const [seed, setSeed] = createSignal(0)
+      return (
+        <div class="space-y-4">
+          <div class="text-xl font-semibold text-foreground">
+            <For each={[seed()]}>
+              {() => <UI.TextReveal text="Design systems that feel alive." by="word" />}
+            </For>
+          </div>
+          <UI.Button onClick={() => setSeed((s) => s + 1)}>Replay</UI.Button>
+        </div>
+      )
+    },
+    code: `import { TextReveal } from '@a4ui/core'
+
+<TextReveal text="Design systems that feel alive." by="word" />
+<TextReveal text="reveal on scroll" onView />  // triggers the first time it enters view`,
+  },
+  {
+    id: 'motion-hold',
+    title: 'Hold to confirm',
+    group: 'Motion',
+    blurb:
+      'Press and hold to confirm a weighty action — a fill sweeps and only fires at 100%. The <HoldToConfirm> component.',
+    demo: () => {
+      const [done, setDone] = createSignal(0)
+      return (
+        <div class="space-y-3">
+          <UI.HoldToConfirm label="Hold to delete" holdMs={1200} onConfirm={() => setDone((n) => n + 1)} />
+          <p class="text-sm text-muted-foreground">
+            Confirmed <span class="font-semibold text-foreground">{done()}</span> time(s).
+          </p>
+        </div>
+      )
+    },
+    code: `import { HoldToConfirm } from '@a4ui/core'
+
+<HoldToConfirm label="Hold to delete" holdMs={1200} onConfirm={() => remove()} />`,
+  },
+  {
+    id: 'motion-loaders',
+    title: 'Loaders',
+    group: 'Motion',
+    blurb:
+      'Loading indicators: <LoadingDots> (staggered bounce) and <FillText> (a band sweeping through text).',
+    demo: () => (
+      <div class="space-y-5">
+        <div class="flex items-center gap-6 text-foreground">
+          <UI.LoadingDots />
+          <UI.LoadingDots size={12} class="text-primary" />
+        </div>
+        <UI.FillText text="Loading your workspace…" class="text-lg" />
+      </div>
+    ),
+    code: `import { LoadingDots, FillText } from '@a4ui/core'
+
+<LoadingDots />                         // three dots bouncing in a wave
+<FillText text="Loading your workspace…" />  // a highlight sweeps through the text`,
+  },
+  {
+    id: 'motion-curtain',
+    title: 'Curtain transition',
+    group: 'Motion',
+    blurb:
+      'Full-screen page/route wipe with five variants (fade · doors · blinds · shutter · iris) — one <Curtain> component. Pick a style and play it.',
+    demo: () => {
+      const variants: UI.CurtainVariant[] = ['fade', 'doors', 'blinds', 'shutter', 'iris']
+      const [variant, setVariant] = createSignal<UI.CurtainVariant>('doors')
+      const [show, setShow] = createSignal(false)
+      // Cover the screen, then immediately uncover — a full transition preview.
+      const play = () => {
+        setShow(true)
+      }
+      return (
+        <div class="space-y-4">
+          <div class="flex flex-wrap gap-2">
+            <For each={variants}>
+              {(v) => (
+                <UI.Button variant={variant() === v ? 'primary' : 'outline'} onClick={() => setVariant(v)}>
+                  {v}
+                </UI.Button>
+              )}
+            </For>
+          </div>
+          <UI.Button onClick={play}>Play transition</UI.Button>
+          <UI.Curtain
+            show={show()}
+            variant={variant()}
+            color="hsl(var(--primary))"
+            onCovered={() => setShow(false)}
+          />
+        </div>
+      )
+    },
+    code: `import { Curtain } from '@a4ui/core'
+
+// Controlled cover -> uncover; great for route transitions.
+const [show, setShow] = createSignal(false)
+<Curtain show={show()} variant="doors" onCovered={() => setShow(false)} />`,
+  },
+  {
+    id: 'motion-parallax',
+    title: 'Parallax',
+    group: 'Motion',
+    blurb:
+      'Wrap anything in <Parallax> and it drifts at a fraction of scroll speed for depth. Scroll the panel ↓',
+    demo: () => (
+      <div class="h-64 w-full max-w-md space-y-6 overflow-y-auto rounded-lg border border-border p-4">
+        <div class="h-24 rounded-md bg-muted" />
+        <UI.Parallax amount={60}>
+          <div class="grid h-28 place-items-center rounded-xl bg-primary/80 text-sm font-medium text-primary-foreground">
+            I drift on scroll
+          </div>
+        </UI.Parallax>
+        <div class="h-24 rounded-md bg-muted" />
+        <UI.Parallax amount={-40}>
+          <div class="grid h-28 place-items-center rounded-xl bg-accent/80 text-sm font-medium">
+            so do I (opposite)
+          </div>
+        </UI.Parallax>
+        <div class="h-40 rounded-md bg-muted" />
+      </div>
+    ),
+    code: `import { Parallax } from '@a4ui/core'
+
+<Parallax amount={60}><img src="hero.jpg" /></Parallax>  // drifts as it scrolls through view`,
   },
 
   // ---- Actions --------------------------------------------------------------

@@ -14,7 +14,9 @@ const src = readFileSync(resolve(root, 'preview/registry.tsx'), 'utf8')
 // `{ title: 'Marina Vega', … }` adds stray `title:`/`id:` matches that desync
 // the arrays and misassign blurbs.) Blurb strings may contain escaped quotes.
 const grab = (re) => [...src.matchAll(re)].map((m) => m[1])
-const ENTRY_RE = /id: '([^']+)',\s*title: '([^']*)',\s*group: '([^']*)',\s*blurb: '((?:[^'\\]|\\.)*)'/g
+// Note the `\s*` after `blurb:` — Prettier wraps long blurbs onto their own line
+// (`blurb:\n      '…'`); without it those entries would silently drop out.
+const ENTRY_RE = /id: '([^']+)',\s*title: '([^']*)',\s*group: '([^']*)',\s*blurb:\s*'((?:[^'\\]|\\.)*)'/g
 const entries = [...src.matchAll(ENTRY_RE)].map((m) => ({
   id: m[1],
   title: m[2],

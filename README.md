@@ -81,6 +81,38 @@ own precompiled CSS too.)
 Dark is the default; add `data-theme="light"` on `<html>` (or use the exported
 `toggleTheme()` / `<ThemeToggle />`) for the light palette.
 
+## Bundle size & mounting (partial vs full)
+
+A4ui is **tree-shakeable** — `sideEffects` is `["**/*.css"]`, so the only thing
+that lands in your bundle is what you actually `import`. You never pay for the
+75+ components you don't use, and adding components to the library **doesn't grow
+your app**. Import à la carte:
+
+```tsx
+import { Button, Card } from '@a4ui/core' // just these two
+```
+
+Approximate **gzipped** weights (measured on 0.13.0; JS excludes the `solid-js`,
+`@kobalte/core`, `lucide-solid` and `motion` externals your app already has):
+
+| Part                                                  | gzip                     | Notes                                                                                                                                                                                                                                          |
+| ----------------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **First component** (e.g. `Button` + the `cn` helper) | ~10–11 kB                | One-time baseline (includes `tailwind-merge`). Shared by every component.                                                                                                                                                                      |
+| **Each additional component**                         | ~0.1–0.5 kB              | `Button` alone 10.7 kB → `Button + Card + Badge + Input` 11.1 kB.                                                                                                                                                                              |
+| **Whole barrel** (`@a4ui/core`, all 75+ used)         | ~49.7 kB                 | Only if you literally import everything — the realistic ceiling.                                                                                                                                                                               |
+| `@a4ui/core/commerce`                                 | ~3.0 kB                  | ProductCard, CartSummary, PriceTag…                                                                                                                                                                                                            |
+| `@a4ui/core/charts`                                   | ~2.5 kB                  | Sparkline, BarChart, DonutChart (native SVG).                                                                                                                                                                                                  |
+| `@a4ui/core/styles.css`                               | ~5.3 kB                  | Tokens + motion keyframes (needs the Tailwind preset for utilities).                                                                                                                                                                           |
+| `@a4ui/core/full.css`                                 | ~14.1 kB                 | Every utility precompiled — for **no-Tailwind** apps. With Tailwind, your own purge ships far less.                                                                                                                                            |
+| `@a4ui/core/elements` (Web Components)                | ~63.9 kB JS + ~14 kB CSS | Self-contained (Solid + motion compiled in). For React/Vue/vanilla.                                                                                                                                                                            |
+| `motion` (the animation engine)                       | ~45 kB                   | **External / opt-in** — pulled in **only** if you import an animated component (`Stat`, `HoldToConfirm`, `Curtain`, `Parallax`, `ScrambleText`, `FillText`, `TextReveal`, or the `animate`/`createCountUp` helpers). Static UIs never load it. |
+
+**Performance note (Lighthouse / Cloudflare):** because `motion` is external and
+everything is tree-shaken, a page that uses only static components ships ~10–15 kB
+of A4ui JS + your purged CSS — the animation engine is loaded lazily and shared
+only when an animated component is on the page. Keep animations off the critical
+path (or behind `motionReduced`) and the design system stays Lighthouse-friendly.
+
 ## Customization
 
 Colors, radius and fonts are driven by CSS variables (the `@a4ui/core/preset`
@@ -119,7 +151,7 @@ mode switch — a theme recolors underneath either mode.
 
 ## Components
 
-90+ components across eight categories (this is a sample — see the
+75+ components across nine categories (this is a sample — see the
 **[docs site](https://a4uikit.github.io/a4ui/)** or `src/index.ts` for the
 full list):
 
@@ -133,6 +165,7 @@ full list):
 | Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`               |
 | Commerce       | `ProductCard`, `ProductGrid`, `PriceTag`, `QuantityStepper`, `CartLine`, `CartSummary`, `FilterGroup` |
 | Charts         | `Sparkline`, `BarChart`, `DonutChart` (native SVG, theme-tinted)                                      |
+| Motion         | `ScrambleText`, `TextReveal`, `HoldToConfirm`, `LoadingDots`, `FillText`, `Curtain`, `Parallax`       |
 
 Domain-specific sets ship as **subpath entries** so the base package stays lean —
 e.g. commerce and chart components import from their own paths:

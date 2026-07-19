@@ -6,6 +6,33 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.13.0] — 2026-07-18
+
+### Added
+
+- **Motion components** — reusable animation primitives adapted from motion.dev
+  examples, all tree-shakeable and reduced-motion aware (the `motion` engine is
+  external, so importing one is the only thing that pulls it):
+  - `ScrambleText` — text that decodes from random glyphs (on mount or hover).
+  - `TextReveal` — reveal a line word/char-by-char with a staggered fade.
+  - `HoldToConfirm` — press-and-hold button; a fill sweeps and only fires at 100%.
+  - `LoadingDots` — three dots bouncing in a staggered wave (CSS-driven).
+  - `FillText` — a highlight band sweeping through text, for loading states.
+  - `Curtain` — full-screen page/route transition with five variants
+    (`fade` · `doors` · `blinds` · `shutter` · `iris`).
+  - `Parallax` — wraps children and drifts them at a fraction of scroll speed.
+- **Motion** docs category gains six new demos for the above (11 total).
+- **README** now documents **partial vs full mounting** and per-part **gzip
+  weights** (tree-shaking, `motion` as an opt-in external), with a
+  Lighthouse/Cloudflare performance note.
+
+### Fixed
+
+- `gen-llms` no longer silently drops entries whose `blurb` Prettier wrapped onto
+  its own line (`blurb:\n  '…'`) — the extractor now tolerates the newline. This
+  recovered ~13 components (and the `Stagger` demo) that were missing from
+  `llms.txt`; it now lists 116 entries.
+
 ## [0.12.0] — 2026-07-18
 
 ### Added
