@@ -7,6 +7,19 @@
   "bin": {
     "create-a4ui": "index.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/A4uikit/a4ui.git",
+    "directory": "create-a4ui"
+  },
+  "homepage": "https://a4ui.pages.dev/",
+  "keywords": [
+    "a4ui",
+    "solid-js",
+    "create",
+    "scaffold",
+    "starter"
+  ],
   "files": [
     "index.mjs",
     "templates"
