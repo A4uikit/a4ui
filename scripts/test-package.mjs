@@ -6,8 +6,12 @@
  *   1. Packs the repo with `npm pack` to produce the exact tarball npm would publish.
  *   2. Installs that tarball (plus solid-js) into a throwaway temp project.
  *   3. Asserts the expected dist files exist in the installed package.
- *   4. Asserts the package.json `exports` map exposes the expected subpaths.
- *   5. Actually imports the package from Node (ESM) to catch resolution/runtime errors.
+ *   4. Asserts the package.json `exports` map exposes the expected subpaths
+ *      (core, commerce, charts, preset, styles.css, full.css, elements, package.json).
+ *   5. Asserts A4UI_VERSION (in the published src/index.ts) === package.json version.
+ *   6. Resolves core + /commerce + /charts from a real Node importer (catches a
+ *      broken exports map). It RESOLVES, not executes — the components are client
+ *      Solid code that can't run in bare Node; SSR consumers use the `solid` condition.
  *
  * It cleans up the temp dir and the generated tarball on exit, whether it
  * succeeds or fails.
@@ -17,19 +21,37 @@ import { execSync } from 'node:child_process'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 
-const repoRoot = path.resolve(new URL('.', import.meta.url).pathname, '..')
+// fileURLToPath (not `new URL(...).pathname`) so repo paths containing spaces or
+// other URL-escaped characters resolve to a real filesystem path.
+const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
 const REQUIRED_DIST_FILES = [
   'dist/index.js',
   'dist/index.d.ts',
   'dist/styles.css',
+  'dist/full.css',
   'dist/elements.js',
   'dist/elements.css',
+  'dist/commerce.js',
+  'dist/commerce/index.d.ts',
+  'dist/charts.js',
+  'dist/charts/index.d.ts',
   'preset.js',
 ]
 
-const REQUIRED_EXPORT_KEYS = ['.', './preset', './styles.css', './elements', './elements.css']
+const REQUIRED_EXPORT_KEYS = [
+  '.',
+  './commerce',
+  './charts',
+  './preset',
+  './styles.css',
+  './full.css',
+  './elements',
+  './elements.css',
+  './package.json',
+]
 
 /** @type {string[]} */
 const checks = []
@@ -112,32 +134,47 @@ function main() {
       pass(`exports entry "${key}" present`)
     }
 
-    // 6. Write and run a test module that imports the main + preset entries.
+    // 6. Version sync: A4UI_VERSION (hand-written in the entry) must match
+    //    package.json. Read the PUBLISHED src/index.ts — this also proves the
+    //    `files` allowlist actually ships the source the `solid` SSR condition needs.
+    const srcIndexPath = path.join(pkgDir, 'src', 'index.ts')
+    if (!fs.existsSync(srcIndexPath)) {
+      fail('published package is missing src/index.ts (needed for the `solid` SSR condition)', srcIndexPath)
+    }
+    const versionMatch = fs.readFileSync(srcIndexPath, 'utf8').match(/A4UI_VERSION\s*=\s*'([^']+)'/)
+    if (!versionMatch) {
+      fail('could not find A4UI_VERSION in published src/index.ts')
+    }
+    if (versionMatch[1] !== installedPkgJson.version) {
+      fail('A4UI_VERSION out of sync with package.json', `${versionMatch[1]} !== ${installedPkgJson.version}`)
+    }
+    pass(`A4UI_VERSION (${versionMatch[1]}) matches package.json`)
+
+    // 7. Resolve each public JS entry from a real Node importer — catches broken
+    //    exports maps / wrong condition order / missing targets. We RESOLVE rather
+    //    than execute: A4ui components are client Solid code and executing the barrel
+    //    in bare Node (server-solid resolution) throws in lucide-solid at import
+    //    time; SSR consumers use the `solid` condition + Solid's compiler instead.
     const testModulePath = path.join(tmpDir, 'test-import.mjs')
     fs.writeFileSync(
       testModulePath,
       [
-        "import { Button, A4UI_VERSION } from '@a4ui/core';",
-        "import '@a4ui/core/preset';",
-        '',
-        "if (typeof Button === 'undefined') {",
-        "  throw new Error('Button export is undefined');",
+        "for (const spec of ['@a4ui/core', '@a4ui/core/commerce', '@a4ui/core/charts']) {",
+        '  const url = import.meta.resolve(spec);',
+        "  if (!url) throw new Error('could not resolve ' + spec);",
+        "  console.log('resolved', spec, '->', url);",
         '}',
-        "if (typeof A4UI_VERSION === 'undefined') {",
-        "  throw new Error('A4UI_VERSION export is undefined');",
-        '}',
-        "console.log('import ok, A4UI_VERSION =', A4UI_VERSION);",
         '',
       ].join('\n'),
     )
 
-    console.log('Running ESM import smoke test...')
+    console.log('Resolving public entry points from Node...')
     execSync(`node ${JSON.stringify(testModulePath)}`, {
       cwd: tmpDir,
       encoding: 'utf8',
       stdio: 'pipe',
     })
-    pass("imported '@a4ui/core' and '@a4ui/core/preset' without throwing")
+    pass("resolved '@a4ui/core' (+ /commerce, /charts) from a real Node importer")
 
     console.log('\nPackage validation summary:')
     console.log(checks.join('\n'))
