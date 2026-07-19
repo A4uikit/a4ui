@@ -22,7 +22,7 @@ Ships both as SolidJS components and as a **Web Components** bundle
     examples, all tree-shakeable + reduced-motion aware): `ScrambleText`,
     `TextReveal`, `HoldToConfirm`, `LoadingDots`, `FillText`, `Curtain`, `Parallax`,
     `NotificationStack`, `MultiStateBadge`, `NowPlaying`, `Expandable` (shared-element
-    FLIP), plus the `flyToCart` helper.
+    FLIP), `Typewriter`, `Ripple`, plus the `flyToCart` helper.
     `Calendar`/`DateField` share `src/ui/internal/CalendarCore.tsx` (day/month/year
     drill-down + year jumps). `src/layout/*` — `AppShell`, `SpaceBackground`, toggles.
     `src/lib/*` — helpers (`cn`, `theme`, `motion`, `effects`, `media`, `virtual`).

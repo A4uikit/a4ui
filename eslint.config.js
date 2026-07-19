@@ -15,8 +15,13 @@ export default tseslint.config(
     ...solid,
   },
   {
-    files: ['scripts/**/*.{js,mjs,cjs}'],
+    files: ['scripts/**/*.{js,mjs,cjs}', 'create-a4ui/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
+  },
+  // The scaffolder's templates are standalone app files (they import the
+  // published `@a4ui/core`), not part of this repo's source — don't lint them.
+  {
+    ignores: ['create-a4ui/templates'],
   },
   prettier,
 )

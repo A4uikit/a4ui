@@ -652,6 +652,39 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
   <div class="p-6">Full details — the card morphs into this panel</div>
 </Expandable>`,
   },
+  {
+    id: 'motion-typewriter',
+    title: 'Typewriter',
+    group: 'Motion',
+    blurb:
+      'Types a string out char-by-char (with a blinking caret), cycling through several — the <Typewriter> component.',
+    demo: () => (
+      <div class="text-2xl font-semibold text-foreground">
+        <UI.Typewriter
+          text={['Spatial Glass.', 'For SolidJS.', 'Accessible by default.', 'Themeable at runtime.']}
+        />
+      </div>
+    ),
+    code: `import { Typewriter } from '@a4ui/core'
+
+<Typewriter text={['Spatial Glass.', 'For SolidJS.']} />  // single string or an array to cycle`,
+  },
+  {
+    id: 'motion-ripple',
+    title: 'Ripple',
+    group: 'Motion',
+    blurb: 'Material-style click ripple you wrap around anything — the <Ripple> component. Click the tile ↓',
+    demo: () => (
+      <UI.Ripple class="inline-block cursor-pointer rounded-xl">
+        <div class="grid h-24 w-48 place-items-center rounded-xl bg-primary/80 text-sm font-medium text-primary-foreground">
+          Click anywhere
+        </div>
+      </UI.Ripple>
+    ),
+    code: `import { Ripple } from '@a4ui/core'
+
+<Ripple><button class="btn">Click me</button></Ripple>`,
+  },
 
   // ---- Actions --------------------------------------------------------------
   {

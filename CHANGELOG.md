@@ -6,6 +6,36 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.14.0] — 2026-07-19
+
+### Added
+
+- **Motion components:** `Typewriter` (types a string — or cycles an array —
+  char-by-char with a blinking caret; CSS-driven, no `motion` dep) and `Ripple`
+  (Material-style click ripple you wrap around anything). Motion docs category:
+  18 demos.
+- **`NotificationStack` expand** (from 0.13.1) plus this release's components are
+  classified in the new **[STABILITY.md](./STABILITY.md)** (Stable / Experimental
+  / Internal tiers + a road-to-1.0 checklist).
+- **`create-a4ui`** scaffolder (`npm create a4ui@latest`) — a separate,
+  dependency-free package that scaffolds a Solid + Vite + A4ui app (with or
+  without Tailwind).
+
+### Changed
+
+- **Packaging hardened:** `validate`/`prepublishOnly` now also run `format:check`
+  and `test:package`, and `test:package` covers the `commerce`/`charts`/`full.css`
+  subpaths + asserts `A4UI_VERSION` matches `package.json`. `A4UI_VERSION` is now
+  auto-synced from `package.json` on `prebuild`. `files` publishes only the source
+  the `solid` SSR condition needs (dropped `src/styles` + `src/elements.tsx`).
+  Added `packageManager`.
+
+### Fixed
+
+- `test:package` had 3 latent bugs (broke on paths with spaces; imported the
+  Tailwind `preset` which needs `tailwindcss`; executed the client-Solid barrel in
+  bare Node) — it now resolves entries instead of executing them and runs green.
+
 ## [0.13.1] — 2026-07-19
 
 ### Fixed
