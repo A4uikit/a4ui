@@ -141,6 +141,15 @@ export { LoadingDots, type LoadingDotsProps } from './ui/LoadingDots'
 export { Curtain, type CurtainProps, type CurtainVariant } from './ui/Curtain'
 export { Parallax, type ParallaxProps } from './ui/Parallax'
 export { FillText, type FillTextProps } from './ui/FillText'
+export {
+  NotificationStack,
+  type NotificationStackProps,
+  type StackNotification,
+} from './ui/NotificationStack'
+export { MultiStateBadge, type MultiStateBadgeProps, type BadgeState } from './ui/MultiStateBadge'
+export { NowPlaying, type NowPlayingProps } from './ui/NowPlaying'
+export { Expandable, type ExpandableProps } from './ui/Expandable'
+export { flyToCart, type FlyToCartOptions } from './lib/flyToCart'
 
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.

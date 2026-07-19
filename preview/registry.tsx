@@ -2,7 +2,7 @@
 // entry renders a live demo (dogfooding the real components) plus the code you'd
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
-import { Home, Plus, Search, User } from 'lucide-solid'
+import { Bell, Home, Plus, Search, ShoppingCart, User } from 'lucide-solid'
 import { createSignal, For, onMount, type JSX } from 'solid-js'
 
 import * as UI from '../src'
@@ -445,6 +445,212 @@ const [show, setShow] = createSignal(false)
     code: `import { Parallax } from '@a4ui/core'
 
 <Parallax amount={60}><img src="hero.jpg" /></Parallax>  // drifts as it scrolls through view`,
+  },
+  {
+    id: 'motion-notifications',
+    title: 'Notification stack',
+    group: 'Motion',
+    blurb:
+      'Stacked notifications that peek behind one another and re-flow as you dismiss them — the <NotificationStack> component. Add a few ↓',
+    demo: () => {
+      let seq = 0
+      const SAMPLES = [
+        { title: 'New follower', description: 'Marina started following you.' },
+        { title: 'Payment received', description: '$49.00 from Acme Inc.' },
+        { title: 'Build passed', description: 'main is green — 359 tests.' },
+        { title: 'Reminder', description: 'Standup in 10 minutes.' },
+      ]
+      const [items, setItems] = createSignal<UI.StackNotification[]>([])
+      const add = () => {
+        const s = SAMPLES[seq % SAMPLES.length]
+        seq += 1
+        setItems((xs) => [{ id: seq, icon: <Bell class="h-4 w-4" />, ...s }, ...xs])
+      }
+      return (
+        <div class="space-y-4">
+          <UI.Button onClick={add}>Add notification</UI.Button>
+          <UI.NotificationStack
+            items={items()}
+            onDismiss={(id) => setItems((xs) => xs.filter((x) => x.id !== id))}
+          />
+        </div>
+      )
+    },
+    code: `import { NotificationStack, type StackNotification } from '@a4ui/core'
+
+const [items, setItems] = createSignal<StackNotification[]>([])
+<NotificationStack items={items()} onDismiss={(id) => setItems((xs) => xs.filter((x) => x.id !== id))} />`,
+  },
+  {
+    id: 'motion-badge-state',
+    title: 'Multi-state badge',
+    group: 'Motion',
+    blurb:
+      'A status pill that morphs color and swaps its icon as state changes (idle · loading · success · error) — the <MultiStateBadge> component.',
+    demo: () => {
+      const [state, setState] = createSignal<UI.BadgeState>('idle')
+      const run = () => {
+        setState('loading')
+        setTimeout(() => setState('success'), 1400)
+      }
+      return (
+        <div class="space-y-4">
+          <UI.MultiStateBadge state={state()} />
+          <div class="flex flex-wrap gap-2">
+            <UI.Button onClick={run}>Run task</UI.Button>
+            <UI.Button variant="outline" onClick={() => setState('error')}>
+              Fail
+            </UI.Button>
+            <UI.Button variant="ghost" onClick={() => setState('idle')}>
+              Reset
+            </UI.Button>
+          </div>
+        </div>
+      )
+    },
+    code: `import { MultiStateBadge, type BadgeState } from '@a4ui/core'
+
+const [state, setState] = createSignal<BadgeState>('idle')
+<MultiStateBadge state={state()} />  // idle · loading · success · error`,
+  },
+  {
+    id: 'motion-fly-cart',
+    title: 'Add to cart',
+    group: 'Motion',
+    blurb:
+      'The classic "fly to basket" — a ghost arcs from the product to the cart, which bumps. The flyToCart() helper.',
+    demo: () => {
+      let product!: HTMLDivElement
+      let cart!: HTMLButtonElement
+      const [count, setCount] = createSignal(0)
+      const add = () => {
+        UI.flyToCart(product, cart, {
+          image:
+            'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48"><rect width="48" height="48" rx="10" fill="%237c3aed"/></svg>',
+          onArrive: () => setCount((n) => n + 1),
+        })
+      }
+      return (
+        <div class="flex items-center justify-between gap-8">
+          <div class="space-y-3">
+            <div
+              ref={product}
+              class="grid h-24 w-24 place-items-center rounded-xl bg-primary/80 text-sm font-medium text-primary-foreground"
+            >
+              Product
+            </div>
+            <UI.Button onClick={add}>Add to cart</UI.Button>
+          </div>
+          <button
+            ref={cart}
+            type="button"
+            class="relative grid h-12 w-12 place-items-center rounded-full border border-border bg-card text-foreground"
+            aria-label={`Cart, ${count()} items`}
+          >
+            <ShoppingCart class="h-5 w-5" />
+            <span class="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1 text-xs font-semibold text-primary-foreground">
+              {count()}
+            </span>
+          </button>
+        </div>
+      )
+    },
+    code: `import { flyToCart } from '@a4ui/core'
+
+flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCart(product) })`,
+  },
+  {
+    id: 'motion-now-playing',
+    title: 'Now playing',
+    group: 'Motion',
+    blurb:
+      'A compact media widget with a live equalizer that dances while playing — the <NowPlaying> component.',
+    demo: () => {
+      const [playing, setPlaying] = createSignal(true)
+      return (
+        <div class="space-y-4">
+          <UI.NowPlaying
+            title="Interstellar Drift"
+            artist="The Riveras"
+            playing={playing()}
+            class="max-w-sm"
+          />
+          <UI.Button onClick={() => setPlaying((p) => !p)}>{playing() ? 'Pause' : 'Play'}</UI.Button>
+        </div>
+      )
+    },
+    code: `import { NowPlaying } from '@a4ui/core'
+
+<NowPlaying title="Interstellar Drift" artist="The Riveras" playing cover="/art.jpg" />`,
+  },
+  {
+    id: 'motion-expandable',
+    title: 'Expandable (shared layout)',
+    group: 'Motion',
+    blurb:
+      'A card that morphs into a dialog and back with a shared-element (FLIP) transition — the <Expandable> component. "dialog" mimics a family-photo modal, "full" the App-Store card expand. Click a card ↓',
+    demo: () => {
+      const CARDS = [
+        { title: 'Deep Work', tag: 'Focus', body: 'Block distractions and enter flow with a single tap.' },
+        {
+          title: 'Stargazer',
+          tag: 'Astronomy',
+          body: 'Identify constellations in real time from your camera.',
+        },
+      ]
+      return (
+        <div class="flex flex-wrap gap-4">
+          <For each={CARDS}>
+            {(c) => (
+              <UI.Expandable
+                size="dialog"
+                maxWidth={520}
+                trigger={
+                  <div class="card w-52 rounded-2xl border border-border bg-card p-4">
+                    <div class="mb-2 h-24 rounded-xl bg-primary/70" />
+                    <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">{c.tag}</p>
+                    <p class="text-base font-semibold text-foreground">{c.title}</p>
+                  </div>
+                }
+              >
+                <div class="p-6">
+                  <div class="mb-4 h-40 rounded-xl bg-primary/70" />
+                  <p class="text-xs font-medium uppercase tracking-wide text-muted-foreground">{c.tag}</p>
+                  <h3 class="text-2xl font-bold text-foreground">{c.title}</h3>
+                  <p class="mt-2 text-muted-foreground">{c.body}</p>
+                  <p class="mt-4 text-sm text-muted-foreground">
+                    The card you tapped grows into this panel — same element, animated position and size, so
+                    nothing stretches. Press Escape, click the backdrop, or the ✕ to shrink it back.
+                  </p>
+                </div>
+              </UI.Expandable>
+            )}
+          </For>
+          <UI.Expandable
+            size="full"
+            trigger={
+              <div class="card grid w-52 place-items-center rounded-2xl border border-border bg-accent/70 p-4 text-center text-sm font-semibold">
+                Open full-screen
+                <span class="text-xs font-normal opacity-80">(App-Store style)</span>
+              </div>
+            }
+          >
+            <div class="p-8">
+              <h3 class="text-3xl font-bold text-foreground">Featured</h3>
+              <p class="mt-2 max-w-prose text-muted-foreground">
+                size=&quot;full&quot; expands the card to nearly the whole viewport — the App-Store “tap a
+                card, it takes over the screen” pattern, same FLIP transition.
+              </p>
+            </div>
+          </UI.Expandable>
+        </div>
+      )
+    },
+    code: `import { Expandable } from '@a4ui/core'
+
+<Expandable size="dialog" trigger={<Card>Tap to expand</Card>}>
+  <div class="p-6">Full details — the card morphs into this panel</div>
+</Expandable>`,
   },
 
   // ---- Actions --------------------------------------------------------------

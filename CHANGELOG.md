@@ -21,7 +21,18 @@ changes, `patch` for fixes).
   - `Curtain` — full-screen page/route transition with five variants
     (`fade` · `doors` · `blinds` · `shutter` · `iris`).
   - `Parallax` — wraps children and drifts them at a fraction of scroll speed.
-- **Motion** docs category gains six new demos for the above (11 total).
+  - `NotificationStack` — stacked notifications that peek behind one another and
+    re-flow as they're dismissed.
+  - `MultiStateBadge` — status pill that morphs color and swaps its icon across
+    `idle` · `loading` · `success` · `error`.
+  - `NowPlaying` — compact media widget with a live equalizer.
+  - `flyToCart(source, target, opts)` — the "fly to basket" helper: a ghost arcs
+    from the product to the cart icon, which then bumps.
+  - `Expandable` — shared-element (FLIP) transition: a card morphs into an
+    overlay panel and back, animating position + size (never scale, so content
+    stays crisp). `size="dialog"` (family-photo modal) or `size="full"`
+    (App-Store card expand).
+- **Motion** docs category gains eleven new demos for the above (16 total).
 - **README** now documents **partial vs full mounting** and per-part **gzip
   weights** (tree-shaking, `motion` as an opt-in external), with a
   Lighthouse/Cloudflare performance note.
