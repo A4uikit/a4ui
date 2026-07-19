@@ -13,8 +13,8 @@ const LAYERS = [
   },
   {
     tag: 'Motion',
-    tech: 'solid-transition-group + motionone',
-    desc: 'Short, functional transitions, count-up, and calm mode. Respects reduced-motion.',
+    tech: 'Motion (motion.dev)',
+    desc: 'Springs, scroll reveals, count-up, and calm mode. Respects reduced-motion.',
     icon: '🎞️',
   },
   {
@@ -26,8 +26,8 @@ const LAYERS = [
 ]
 
 const STATS = [
-  { n: '40+', label: 'components' },
-  { n: '6', label: 'helpers' },
+  { n: '75+', label: 'components' },
+  { n: '9', label: 'categories' },
   { n: String(themes.length), label: 'themes' },
   { n: '10k+', label: 'virtualized rows' },
 ]
@@ -49,6 +49,9 @@ const CATEGORIES = [
   { title: 'Overlays', items: 'Modal · Drawer · Toast' },
   { title: 'Navigation', items: 'Tabs · Accordion · PageHeader' },
   { title: 'Layout', items: 'AppShell · SpaceBackground · NavGroup' },
+  { title: 'Commerce', items: 'ProductCard · CartSummary · PriceTag' },
+  { title: 'Charts', items: 'Sparkline · BarChart · DonutChart' },
+  { title: 'Motion', items: 'ScrambleText · Curtain · Expandable' },
 ]
 
 export function Home(props: { onExplore: () => void }): JSX.Element {
