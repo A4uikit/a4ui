@@ -29,6 +29,7 @@ jobs:
       - run: npm run format:check
       - run: npm run test:unit
       - run: npm run build
+      - run: npm run test:package # packs, installs the tarball in a temp project, verifies exports/files/version
 
   e2e:
     # Sharded across parallel runners — each runs 1/N of the specs, so the wall
