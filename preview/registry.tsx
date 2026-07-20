@@ -3,14 +3,20 @@
 // write to use it. Add one object per component; the sidebar and content area
 // are generated from this array.
 import {
+  Apple,
+  Beef,
   Bell,
   Cloud,
+  Croissant,
   Heart,
   Home,
+  Milk,
+  Package,
   Plus,
   Rocket,
   Search,
   ShoppingCart,
+  Snowflake,
   Sparkles,
   Star,
   User,
@@ -4075,5 +4081,126 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     },
     code: `const [status, setStatus] = createSignal('doing')
 <InlineSelect value={status()} onChange={setStatus} options={statusOptions} />`,
+  },
+
+  // ---- Phase 2 — code, search, navigation, master-detail ---------------------
+  {
+    id: 'code-tabs',
+    title: 'CodeTabs',
+    group: 'Data',
+    blurb: 'Tabbed code blocks with a per-tab copy button — for install snippets or multiple languages.',
+    demo: () => (
+      <UI.CodeTabs
+        tabs={[
+          { label: 'npm', code: 'npm install @acme/widgets' },
+          { label: 'pnpm', code: 'pnpm add @acme/widgets' },
+          { label: 'yarn', code: 'yarn add @acme/widgets' },
+        ]}
+      />
+    ),
+    code: `<CodeTabs tabs={[
+  { label: 'npm', code: 'npm install @acme/widgets' },
+  { label: 'pnpm', code: 'pnpm add @acme/widgets' },
+]} />`,
+  },
+  {
+    id: 'pill-search',
+    title: 'PillSearch',
+    group: 'Forms',
+    blurb: 'A rounded-full bar compressing several search fields into segments, with a round search button.',
+    demo: () => (
+      <UI.PillSearch
+        fields={[
+          { key: 'location', label: 'Location', value: 'Lisbon, PT' },
+          { key: 'dates', label: 'Dates', placeholder: 'Add dates' },
+          { key: 'guests', label: 'Guests', placeholder: 'Add guests' },
+        ]}
+        onFieldClick={() => {}}
+        onSearch={() => {}}
+      />
+    ),
+    code: `<PillSearch
+  fields={[
+    { key: 'location', label: 'Location', value: 'Lisbon' },
+    { key: 'dates', label: 'Dates', placeholder: 'Add dates' },
+  ]}
+  onSearch={search}
+/>`,
+  },
+  {
+    id: 'category-strip',
+    title: 'CategoryStrip',
+    group: 'Navigation',
+    blurb: 'Horizontally-scrollable icon + label category filters with an active-underline indicator.',
+    demo: () => {
+      const [category, setCategory] = createSignal('fresh')
+      return (
+        <UI.CategoryStrip
+          class="max-w-md"
+          value={category()}
+          onChange={setCategory}
+          items={[
+            { value: 'fresh', label: 'Fresh', icon: <Apple class="h-5 w-5" /> },
+            { value: 'bakery', label: 'Bakery', icon: <Croissant class="h-5 w-5" /> },
+            { value: 'dairy', label: 'Dairy', icon: <Milk class="h-5 w-5" /> },
+            { value: 'meat', label: 'Meat', icon: <Beef class="h-5 w-5" /> },
+            { value: 'frozen', label: 'Frozen', icon: <Snowflake class="h-5 w-5" /> },
+            { value: 'pantry', label: 'Pantry', icon: <Package class="h-5 w-5" /> },
+          ]}
+        />
+      )
+    },
+    code: `<CategoryStrip value={cat()} onChange={setCat} items={categories} />`,
+  },
+  {
+    id: 'master-detail',
+    title: 'MasterDetail',
+    group: 'Layout',
+    blurb: 'List + detail-pane layout with keyboard navigation — like an inbox. Controlled or uncontrolled.',
+    demo: () => (
+      <UI.MasterDetail
+        class="h-64"
+        items={[
+          {
+            id: 'm1',
+            label: 'Q3 roadmap review',
+            meta: <UI.Badge tone="info">Eng</UI.Badge>,
+            detail: (
+              <div class="space-y-2">
+                <h3 class="font-semibold text-foreground">Q3 roadmap review</h3>
+                <p class="text-sm text-muted-foreground">
+                  Priorities for next quarter and open questions for infra.
+                </p>
+              </div>
+            ),
+          },
+          {
+            id: 'm2',
+            label: 'Invoice #4021 paid',
+            meta: <UI.Badge tone="success">Billing</UI.Badge>,
+            detail: (
+              <div class="space-y-2">
+                <h3 class="font-semibold text-foreground">Invoice #4021 paid</h3>
+                <p class="text-sm text-muted-foreground">Payment of $1,240.00 received.</p>
+              </div>
+            ),
+          },
+          {
+            id: 'm3',
+            label: 'Server alert: high latency',
+            meta: <UI.Badge tone="danger">Alert</UI.Badge>,
+            detail: (
+              <div class="space-y-2">
+                <h3 class="font-semibold text-foreground">High latency</h3>
+                <p class="text-sm text-muted-foreground">p95 exceeded 800ms on checkout-api.</p>
+              </div>
+            ),
+          },
+        ]}
+      />
+    ),
+    code: `<MasterDetail items={messages.map((m) => ({
+  id: m.id, label: m.subject, detail: <Body m={m} />,
+}))} />`,
   },
 ]

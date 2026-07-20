@@ -28,6 +28,26 @@ const glass = plugin(({ addComponents, addVariant }) => {
   // and a darker one on light to keep WCAG AA in both.
   addVariant('light', "[data-theme='light'] &")
   addComponents({
+    // ---- Elevation scale ----
+    // A layered depth system: `.elevation-1..4` for raised surfaces (rising
+    // shadow), `.pressed` for an inset/recessed look. Uses the same `--shadow`
+    // token as the glass surfaces, so it recolors per theme.
+    '.elevation-1': {
+      boxShadow: '0 1px 2px hsl(var(--shadow) / 0.06), 0 1px 3px hsl(var(--shadow) / 0.1)',
+    },
+    '.elevation-2': {
+      boxShadow: '0 2px 4px hsl(var(--shadow) / 0.06), 0 4px 12px hsl(var(--shadow) / 0.12)',
+    },
+    '.elevation-3': {
+      boxShadow: '0 2px 6px hsl(var(--shadow) / 0.08), 0 8px 24px hsl(var(--shadow) / 0.14)',
+    },
+    '.elevation-4': {
+      boxShadow: '0 4px 12px hsl(var(--shadow) / 0.1), 0 16px 40px hsl(var(--shadow) / 0.18)',
+    },
+    '.pressed': {
+      boxShadow: 'inset 0 1px 2px hsl(var(--shadow) / 0.18)',
+    },
+
     // ---- Primary glass surface ----
     '.card': {
       position: 'relative',
