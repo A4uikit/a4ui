@@ -1004,6 +1004,32 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </div>
     ),
     code: (c) => `<Alert tone="${c.tone}" title="${c.title}">This is the alert content.</Alert>`,
+    variants: [
+      {
+        label: 'Success',
+        demo: () => (
+          <UI.Alert tone="success" title="Payment received">
+            Your invoice was paid in full.
+          </UI.Alert>
+        ),
+      },
+      {
+        label: 'Warning',
+        demo: () => (
+          <UI.Alert tone="warning" title="Storage almost full">
+            You're at 92% of your plan quota.
+          </UI.Alert>
+        ),
+      },
+      {
+        label: 'Danger',
+        demo: () => (
+          <UI.Alert tone="danger" title="Sync failed">
+            Check your connection and try again.
+          </UI.Alert>
+        ),
+      },
+    ],
   },
 
   // ---- Forms ----------------------------------------------------------------
@@ -1060,6 +1086,11 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     ),
     code: (c) => `<Stat label="${c.label}" value={${c.value}} tone="${c.tone}"
   format={(n) => \`$\${Math.round(n).toLocaleString()}\`} />`,
+    variants: [
+      { label: 'Success', demo: () => <UI.Stat label="Renewals" value={2840} tone="success" /> },
+      { label: 'Danger', demo: () => <UI.Stat label="Churn" value={312} tone="danger" /> },
+      { label: 'Neutral', demo: () => <UI.Stat label="Open tickets" value={57} tone="neutral" /> },
+    ],
   },
 
   // ---- Overlays -------------------------------------------------------------
@@ -1562,6 +1593,56 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
   rating={4} image="/hoodie.jpg"${c.tilt ? ' tilt' : ''}${c.spotlight ? ' spotlight' : ''} onAddToCart={add} />${
     c.tilt || c.spotlight ? '\n\n// tilt/spotlight forward to Card — engine-free, reduced-motion aware' : ''
   }`,
+    variants: [
+      {
+        label: 'No badge',
+        demo: () => (
+          <div class="w-56">
+            <Commerce.ProductCard
+              title="Comet Cap"
+              brand="Orbit"
+              category="Accessories"
+              price={22}
+              rating={5}
+              image="https://picsum.photos/seed/a4ui-cap/400/400"
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'New, featured tone',
+        demo: () => (
+          <div class="w-56">
+            <Commerce.ProductCard
+              title="Aurora Tee"
+              brand="Orbit"
+              category="Apparel"
+              price={28}
+              badge="New"
+              badgeTone="new"
+              rating={5}
+              image="https://picsum.photos/seed/a4ui-tee/400/400"
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Featured, no discount',
+        demo: () => (
+          <div class="w-56">
+            <Commerce.ProductCard
+              title="Nova Jacket"
+              brand="Orbit"
+              category="Outerwear"
+              price={120}
+              badge="Featured"
+              badgeTone="featured"
+              image="https://picsum.photos/seed/a4ui-jacket/400/400"
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'product-grid',
@@ -1984,6 +2065,14 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       c.src
         ? `<Avatar src="${c.src}" alt="User" fallback="${c.fallback}" />`
         : `<Avatar fallback="${c.fallback}" />`,
+    variants: [
+      {
+        label: 'With image',
+        demo: () => <UI.Avatar src="https://picsum.photos/seed/a4ui-avatar/80/80" fallback="JD" />,
+      },
+      { label: 'Initials fallback', demo: () => <UI.Avatar fallback="AR" /> },
+      { label: 'Larger size', demo: () => <UI.Avatar fallback="MK" class="h-14 w-14 text-base" /> },
+    ],
   },
   {
     id: 'progress',
@@ -2000,6 +2089,11 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </div>
     ),
     code: (c) => `<Progress value={${c.value}} label="${c.label}" />`,
+    variants: [
+      { label: 'Just started', demo: () => <UI.Progress value={0} label="Uploading files" /> },
+      { label: 'Halfway', demo: () => <UI.Progress value={40} label="Uploading files" /> },
+      { label: 'Complete', demo: () => <UI.Progress value={100} label="Uploading files" /> },
+    ],
   },
   {
     id: 'meter',
@@ -2016,6 +2110,11 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </div>
     ),
     code: (c) => `<Meter value={${c.value}} max={50} label="${c.label}" />`,
+    variants: [
+      { label: 'Low usage', demo: () => <UI.Meter value={8} max={50} label="Storage" /> },
+      { label: 'Near limit', demo: () => <UI.Meter value={46} max={50} label="Storage" /> },
+      { label: 'Different scale', demo: () => <UI.Meter value={180} max={200} label="API calls" /> },
+    ],
   },
   {
     id: 'separator',
@@ -2243,6 +2342,11 @@ toast.error('Failed to save')`,
     ),
     code: `<Spinner />
 <Spinner class="h-8 w-8 text-primary" label="Processing" />`,
+    variants: [
+      { label: 'Small', demo: () => <UI.Spinner class="h-3 w-3" /> },
+      { label: 'Large, tinted', demo: () => <UI.Spinner class="h-10 w-10 text-primary" /> },
+      { label: 'Custom label', demo: () => <UI.Spinner label="Saving" /> },
+    ],
   },
 
   // ---- Navigation -----------------------------------------------------------
@@ -2797,6 +2901,47 @@ toast.error('Failed to save')`,
   { title: 'Order placed', time: '09:24', tone: 'primary' },
   { title: 'Shipped', time: '15:40', tone: 'success' },
 ]} />`,
+    variants: [
+      {
+        label: 'All success',
+        demo: () => (
+          <div class="w-full max-w-md">
+            <UI.Timeline
+              items={[
+                { title: 'Build passed', time: '08:10', tone: 'success' },
+                { title: 'Tests passed', time: '08:14', tone: 'success' },
+                { title: 'Deployed', time: '08:20', tone: 'success', description: 'v2.4.0 is live.' },
+              ]}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Compact, no descriptions',
+        demo: () => (
+          <div class="w-full max-w-md">
+            <UI.Timeline
+              items={[
+                { title: 'Submitted', time: '10:00' },
+                { title: 'Approved', time: '10:42', tone: 'primary' },
+              ]}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Single failure',
+        demo: () => (
+          <div class="w-full max-w-md">
+            <UI.Timeline
+              items={[
+                { title: 'Payment attempted', time: '13:05', tone: 'danger', description: 'Card declined.' },
+              ]}
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'rating',
@@ -2813,6 +2958,11 @@ toast.error('Failed to save')`,
     },
     code: (c) => `const [value, setValue] = createSignal(3)
 <Rating value={value()} onChange={setValue}${c.readonly ? ' readonly' : ''} />`,
+    variants: [
+      { label: 'Fully filled', demo: () => <UI.Rating value={5} readonly /> },
+      { label: 'Partial', demo: () => <UI.Rating value={2} readonly /> },
+      { label: 'Out of 10', demo: () => <UI.Rating value={7} max={10} readonly /> },
+    ],
   },
   {
     id: 'empty',
@@ -3064,6 +3214,11 @@ toast.error('Failed to save')`,
     blurb: 'Circular percentage progress ring.',
     demo: () => <UI.RingProgress value={68} />,
     code: `<RingProgress value={68} />`,
+    variants: [
+      { label: 'Low', demo: () => <UI.RingProgress value={24} /> },
+      { label: 'Complete', demo: () => <UI.RingProgress value={100} /> },
+      { label: 'Large, thicker', demo: () => <UI.RingProgress value={55} size={140} thickness={12} /> },
+    ],
   },
   {
     id: 'back-to-top',
@@ -3180,6 +3335,16 @@ toast.error('Failed to save')`,
     blurb: 'Live countdown to a target date — days, hours, minutes, seconds.',
     demo: () => <UI.Countdown to={new Date(Date.now() + (3 * 24 * 60 + 15) * 60 * 1000)} />,
     code: `<Countdown to={new Date('2026-12-31T00:00:00')} />`,
+    variants: [
+      {
+        label: 'Weeks away',
+        demo: () => <UI.Countdown to={new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)} />,
+      },
+      {
+        label: 'Minutes away',
+        demo: () => <UI.Countdown to={new Date(Date.now() + 10 * 60 * 1000)} />,
+      },
+    ],
   },
   {
     id: 'clock',
