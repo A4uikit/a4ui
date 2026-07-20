@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.24.0] — 2026-07-20
+
 ### Added
 
 - **Web Components** — `<a4-condition-scale>` and `<a4-announcement-bar>` join
