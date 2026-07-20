@@ -6,6 +6,27 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.26.0] — 2026-07-20
+
+### Added
+
+Roadmap phase 2 (first wave) plus the shared-token part of phase 1.
+
+- **`CodeTabs`** — tabbed code blocks with a per-tab copy button.
+- **`PillSearch`** — a rounded-full bar compressing several search fields into
+  segments, with a round search button.
+- **`CategoryStrip`** — horizontally-scrollable icon + label category filters
+  with an active-underline indicator and arrow-key navigation.
+- **`MasterDetail`** — a list + detail-pane layout with keyboard navigation
+  (controlled or uncontrolled selection).
+- **Elevation utilities** — `.elevation-1` … `.elevation-4` (raised) and
+  `.pressed` (inset) depth classes in the Tailwind preset, tied to the `--shadow`
+  token so they recolor per theme.
+- **Motion presets** — `EASE` (named cubic-bezier curves) and `SPRING` (spring
+  option presets for the `spring` helper), exported from `@a4ui/core`.
+
+All reduced-motion aware where relevant; classified Experimental.
+
 ## [0.25.0] — 2026-07-20
 
 ### Added

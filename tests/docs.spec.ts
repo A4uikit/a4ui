@@ -27,8 +27,10 @@ test.describe('docs render', () => {
         await expect(page.locator('.a4-prose')).toBeVisible()
         await expect(page.locator('.a4-prose h2').first()).toBeVisible()
       } else {
-        await expect(page.getByRole('heading', { name: 'Example' })).toBeVisible()
-        await expect(page.getByRole('heading', { name: 'Code' })).toBeVisible()
+        await expect(page.getByRole('heading', { name: 'Example', exact: true })).toBeVisible()
+        // `exact` so a component whose title contains the word (e.g. "CodeTabs")
+        // doesn't collide with the "Code" section heading.
+        await expect(page.getByRole('heading', { name: 'Code', exact: true })).toBeVisible()
       }
 
       expect(errors, `runtime errors on #/${id}`).toEqual([])
@@ -132,6 +134,27 @@ test.describe('interactions', () => {
     await expect(panel).toHaveAttribute('aria-hidden', 'true')
     await page.getByRole('button', { name: 'Show artifact' }).click()
     await expect(panel).toHaveAttribute('aria-hidden', 'false')
+  })
+
+  test('code tabs switch the shown snippet', async ({ page }) => {
+    await page.goto('/#/code-tabs')
+    const demoPre = page.getByTestId('demo').locator('pre')
+    await expect(demoPre).toContainText('npm install')
+    await page.getByRole('tab', { name: 'pnpm', exact: true }).click()
+    await expect(demoPre).toContainText('pnpm add')
+  })
+
+  test('category strip selects a category', async ({ page }) => {
+    await page.goto('/#/category-strip')
+    const bakery = page.getByRole('tab', { name: 'Bakery' })
+    await bakery.click()
+    await expect(bakery).toHaveAttribute('aria-selected', 'true')
+  })
+
+  test('master detail switches the detail pane', async ({ page }) => {
+    await page.goto('/#/master-detail')
+    await page.getByRole('option', { name: /Invoice #4021/ }).click()
+    await expect(page.locator('main')).toContainText('Payment of $1,240.00 received')
   })
 
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
