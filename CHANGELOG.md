@@ -6,6 +6,20 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.19.0] — 2026-07-20
+
+### Added
+
+- **`<Button href>`** — a Button with `href` (plus `target`/`rel`) now renders as
+  an `<a>` link, keeping the variant look, focus ring, and ripple. For router
+  links and `tel:`/`mailto:` CTAs — no more hand-rolled anchors that mirror
+  Button's classes.
+
+### Fixed
+
+- **`Carousel`** dots now have a 24×24px hit area (a11y `target-size`) around the
+  small visual dot, and expose `aria-current` on the active dot.
+
 ## [0.18.0] — 2026-07-20
 
 Components distilled from repeated patterns while building the templates repo.

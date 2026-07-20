@@ -1,5 +1,5 @@
 import type { JSX, ParentProps } from 'solid-js'
-import { splitProps } from 'solid-js'
+import { Show, splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { spawnRipple } from './Ripple'
@@ -31,6 +31,16 @@ interface ButtonProps extends ParentProps, Omit<JSX.ButtonHTMLAttributes<HTMLBut
    * costs nothing when off.
    */
   ripple?: boolean
+  /**
+   * When set, the button renders as an `<a href>` (a link) instead of a
+   * `<button>`, keeping the variant look, focus ring, and ripple. Use for
+   * navigation / router links and `tel:`/`mailto:` CTAs.
+   */
+  href?: string
+  /** Anchor `target` — only used when `href` is set. */
+  target?: string
+  /** Anchor `rel` — only used when `href` is set. */
+  rel?: string
 }
 
 /**
@@ -44,28 +54,52 @@ interface ButtonProps extends ParentProps, Omit<JSX.ButtonHTMLAttributes<HTMLBut
  * ```
  */
 export function Button(props: ButtonProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['variant', 'class', 'type', 'children', 'ripple', 'onPointerDown'])
+  const [local, rest] = splitProps(props, [
+    'variant',
+    'class',
+    'type',
+    'children',
+    'ripple',
+    'onPointerDown',
+    'href',
+    'target',
+    'rel',
+  ])
 
-  const handlePointerDown: JSX.EventHandler<HTMLButtonElement, PointerEvent> = (event) => {
+  const classes = (): string =>
+    cn(
+      BUTTON_BASE,
+      VARIANT_CLASSES[local.variant ?? 'primary'],
+      local.ripple && 'relative overflow-hidden',
+      local.class,
+    )
+
+  const handlePointerDown = (event: PointerEvent & { currentTarget: HTMLElement }): void => {
     if (local.ripple) spawnRipple(event.currentTarget, event, { opacity: 0.35 })
     const user = local.onPointerDown
-    if (typeof user === 'function') user(event)
-    else if (user) user[0](user[1], event)
+    if (typeof user === 'function') user(event as never)
+    else if (user) user[0](user[1], event as never)
   }
 
   return (
-    <button
-      type={local.type ?? 'button'}
-      class={cn(
-        BUTTON_BASE,
-        VARIANT_CLASSES[local.variant ?? 'primary'],
-        local.ripple && 'relative overflow-hidden',
-        local.class,
-      )}
-      onPointerDown={handlePointerDown}
-      {...rest}
+    <Show
+      when={local.href !== undefined}
+      fallback={
+        <button type={local.type ?? 'button'} class={classes()} onPointerDown={handlePointerDown} {...rest}>
+          {local.children}
+        </button>
+      }
     >
-      {local.children}
-    </button>
+      <a
+        href={local.href}
+        target={local.target}
+        rel={local.rel}
+        class={classes()}
+        onPointerDown={handlePointerDown}
+        {...(rest as JSX.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {local.children}
+      </a>
+    </Show>
   )
 }

@@ -146,18 +146,24 @@ export function Carousel(props: CarouselProps): JSX.Element {
         </button>
       </div>
 
-      <div class="flex items-center justify-center gap-2">
+      <div class="flex items-center justify-center gap-1">
         <For each={props.slides}>
           {(_, i) => (
+            // 24×24 hit target (a11y target-size) around a small visual dot.
             <button
               type="button"
               aria-label={`Go to slide ${i() + 1}`}
+              aria-current={index() === i() ? 'true' : undefined}
               onClick={() => go(i())}
-              class={cn(
-                'h-2 w-2 rounded-full transition-colors',
-                index() === i() ? 'bg-primary' : 'bg-muted',
-              )}
-            />
+              class="grid h-6 w-6 place-items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <span
+                class={cn(
+                  'h-2 w-2 rounded-full transition-colors',
+                  index() === i() ? 'bg-primary' : 'bg-muted',
+                )}
+              />
+            </button>
           )}
         </For>
       </div>

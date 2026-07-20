@@ -883,7 +883,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Button',
     group: 'Actions',
     blurb:
-      'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. `ripple` bakes in a Material click ripple (engine-free). Try the controls ↓',
+      'Button with 4 variants. Defaults to type="button" so it never submits forms by accident. `ripple` bakes in a Material click ripple (engine-free). Pass `href` to render as an <a> link (keeps the look + ripple). Try the controls ↓',
     controls: {
       variant: {
         type: 'select',
@@ -905,7 +905,10 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </UI.Button>
     ),
     code: (c) =>
-      `<Button variant="${c.variant}"${c.disabled ? ' disabled' : ''}${c.ripple ? ' ripple' : ''}>${c.label}</Button>${c.ripple ? '\n\n// ripple spawns a Material-style press ripple — no wrapper, no motion dep' : ''}`,
+      `<Button variant="${c.variant}"${c.disabled ? ' disabled' : ''}${c.ripple ? ' ripple' : ''}>${c.label}</Button>
+
+// href renders it as an <a> (router link / tel: CTA), same look + ripple:
+<Button ripple href="tel:+525512345678">Llama ahora</Button>${c.ripple ? '\n\n// ripple spawns a Material-style press ripple — no wrapper, no motion dep' : ''}`,
   },
 
   // ---- Feedback -------------------------------------------------------------
