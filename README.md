@@ -206,6 +206,16 @@ import { ProductCard, CartSummary } from '@a4ui/core/commerce'
 import { DonutChart, Sparkline } from '@a4ui/core/charts'
 ```
 
+## Example pages
+
+Full-page templates built entirely with the components above — browse the whole
+gallery at **[a4ui.pages.dev/#/examples](https://a4ui.pages.dev/#/examples)**. Each
+one reskins under every theme.
+
+[![Boutique — a faceted product catalog with a filter sidebar, three switchable product-card styles, and a cart drawer](https://a4ui.pages.dev/showcase-boutique.png)](https://a4ui.pages.dev/#/examples/boutique)
+
+[![Showpiece — a product detail page with a gallery lightbox, price/coupon/financing block, a condition meter, and a spec sheet](https://a4ui.pages.dev/showcase-showpiece.png)](https://a4ui.pages.dev/#/examples/showpiece)
+
 ## Why A4ui
 
 |                         | **A4ui**                                           | Kobalte                | shadcn-solid                      | Hope UI                |

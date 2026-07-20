@@ -6,6 +6,17 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.24.2] — 2026-07-20
+
+### Fixed
+
+- **Color contrast (a11y)** — the `space` theme's `accent-foreground` is now dark,
+  so text on accent surfaces (`AnnouncementBar tone="accent"`, `ProductCard`
+  featured badge, `ActionBar`, `TreeSelect`) meets WCAG AA. `SegmentedControl` now
+  actually applies its selected-item text color (it was keyed to `data-selected`
+  but Kobalte sets `data-checked`). The `PriceBlock` coupon chip uses a
+  higher-contrast text color.
+
 ## [0.24.1] — 2026-07-20
 
 ### Fixed
