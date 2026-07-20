@@ -80,6 +80,24 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
         </Show>
       </section>
 
+      <Show when={props.entry.variants?.length}>
+        <section class="space-y-3">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Variations</h2>
+          <div class="grid gap-4 sm:grid-cols-2">
+            <For each={props.entry.variants}>
+              {(v) => (
+                <div class="space-y-2">
+                  <p class="text-xs font-medium text-muted-foreground">{v.label}</p>
+                  <Card glass class="flex flex-wrap items-start gap-4 p-6">
+                    {v.demo()}
+                  </Card>
+                </div>
+              )}
+            </For>
+          </div>
+        </section>
+      </Show>
+
       <section class="space-y-3">
         <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Code</h2>
         <CodeBlock code={code()} />

@@ -188,6 +188,13 @@ test.describe('interactions', () => {
     await expect(work).toHaveAttribute('aria-selected', 'true')
   })
 
+  test('block editor adds a block via the slash menu', async ({ page }) => {
+    await page.goto('/#/block-editor')
+    await page.getByRole('button', { name: /Add block/ }).click()
+    await page.getByRole('option', { name: /Quote/ }).click()
+    await expect(page.getByTestId('demo')).toContainText('New quote block')
+  })
+
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
     await page.goto('/#/date-field')
     await page.getByRole('button', { name: 'Due date' }).click()

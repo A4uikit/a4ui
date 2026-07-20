@@ -1,6 +1,6 @@
 {
   "name": "@a4ui/core",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "A4ui — Spatial Glass design system & component library for SolidJS (Kobalte behavior + Tailwind glass tokens + motion).",
   "type": "module",
   "license": "MIT",

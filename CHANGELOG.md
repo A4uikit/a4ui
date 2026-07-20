@@ -6,6 +6,23 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.29.0] — 2026-07-20
+
+### Added
+
+- **`BlockEditor`** — a reorderable block stack (drag-handle reordering via
+  `Sortable`), hover-delete, and a slash-menu "+ Add block" picker. Block content
+  is supplied by the caller. Completes the roadmap's block-editor item.
+
+### Docs
+
+- Component/utility names in the rendered guides — including the **changelog** —
+  now link to their docs page (so `BalanceCard`, `.glass-refractive`, etc. are
+  clickable).
+- Component pages can show a **Variations** section: the same component rendered
+  with different props side by side, so you can see how each prop changes it.
+  Added to `BalanceCard` and `Refractive glass` (more to follow).
+
 ## [0.28.0] — 2026-07-20
 
 ### Added
