@@ -35,7 +35,9 @@ const glass = plugin(({ addComponents }) => {
       transition: 'transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s ease, border-color .2s ease',
     },
     "[data-theme='light'] .card": {
-      background: 'hsl(var(--card) / 0.72)',
+      // A touch more transparent than fully opaque so the frosted blur reads on
+      // light themes (over an Aurora/scenery backdrop) — text stays legible.
+      background: 'hsl(var(--card) / 0.6)',
       border: '1px solid hsl(var(--border))',
     },
 

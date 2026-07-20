@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.19.0'
+export const A4UI_VERSION = '0.20.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -172,6 +172,7 @@ export { flyToCart, type FlyToCartOptions } from './lib/flyToCart'
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
 export { AppShell } from './layout/AppShell'
 export { SpaceBackground } from './layout/SpaceBackground'
+export { Aurora, type AuroraProps } from './layout/Aurora'
 export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'
 export { SnowScenery } from './layout/SnowScenery'
 export { ChristmasBackground } from './layout/ChristmasBackground'

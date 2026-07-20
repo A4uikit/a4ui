@@ -228,6 +228,21 @@ body {
   animation: list-row-in 0.35s both ease-out;
 }
 
+/* Aurora — slow ambient drift for the blurred backdrop blobs (opt-in via
+   <Aurora animated>). Held still under reduced motion by the global rule below. */
+@keyframes aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3%, -3%, 0) scale(1.08);
+  }
+}
+.aurora-drift {
+  animation: aurora-drift 18s ease-in-out infinite;
+}
+
 /* Table row enter/exit fade. */
 .row-enter-active,
 .row-exit-active {

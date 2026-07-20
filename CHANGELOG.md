@@ -6,6 +6,21 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.21.0] — 2026-07-20
+
+### Added
+
+- **`Aurora`** — an ambient backdrop of soft, blurred color blobs tinted with the
+  theme tokens, so glass surfaces read as glass as content scrolls over it. The
+  lightweight, no-starfield alternative to `SpaceBackground`/`ThemedScenery`;
+  `intensity` + optional reduced-motion-aware `animated` drift.
+
+### Changed
+
+- Light-theme glass (`.card`) is a touch more transparent (`--card`/0.72 →
+  /0.6) so the frosted blur reads over a backdrop (e.g. `Aurora`) on light
+  themes. Text stays legible; dark themes unchanged.
+
 ## [0.20.0] — 2026-07-20
 
 ### Added

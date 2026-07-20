@@ -2427,6 +2427,44 @@ toast.error('Failed to save')`,
 </div>`,
   },
   {
+    id: 'aurora',
+    title: 'Aurora',
+    group: 'Layout',
+    blurb:
+      'Ambient theme-tinted blurred-blob backdrop so glass surfaces read as glass. Fixed behind the page; keep the root transparent. The no-starfield alternative to SpaceBackground.',
+    // Illustration: a `relative` box mimics the real (fixed) Aurora so it stays
+    // inside the demo — the code shows the real usage.
+    demo: () => (
+      <div class="relative h-64 w-full overflow-hidden rounded-xl border border-border bg-background">
+        <div class="pointer-events-none absolute inset-0 overflow-hidden">
+          <div
+            class="absolute -left-16 -top-16 h-64 w-64 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.45), transparent 70%)' }}
+          />
+          <div
+            class="absolute -right-12 top-1/4 h-56 w-56 rounded-full blur-3xl"
+            style={{ background: 'radial-gradient(circle, hsl(var(--accent) / 0.4), transparent 70%)' }}
+          />
+        </div>
+        <div class="relative grid h-full place-items-center p-6">
+          <UI.Card glass class="max-w-xs p-6 text-center">
+            <p class="font-medium text-foreground">Superficie glass</p>
+            <p class="mt-1 text-sm text-muted-foreground">
+              El color del aurora se ve a través del frosted blur.
+            </p>
+          </UI.Card>
+        </div>
+      </div>
+    ),
+    code: `// at the top of your layout — root must NOT set its own bg:
+<div class="relative min-h-screen text-foreground">
+  <Aurora />
+  <YourPage />   {/* glass cards now read over the tinted backdrop */}
+</div>
+
+<Aurora intensity={0.6} animated />   // stronger + slow drift`,
+  },
+  {
     id: 'pricing-table',
     title: 'PricingTable',
     group: 'Layout',
