@@ -21,7 +21,12 @@ import plugin from 'tailwindcss/plugin.js'
 // Frosted "space glass" surfaces. addComponents so they tree-shake like any
 // utility (emitted only when the class is found in scanned content — a4ui's own
 // components use them, so scanning ./node_modules/@a4ui/core/dist covers it).
-const glass = plugin(({ addComponents }) => {
+const glass = plugin(({ addComponents, addVariant }) => {
+  // `light:` applies when an ancestor is in the light theme (`[data-theme='light']`),
+  // mirroring how dark is the base and light is the override throughout A4ui. Used
+  // for theme-aware tints (e.g. Badge tones) that need a lighter foreground on dark
+  // and a darker one on light to keep WCAG AA in both.
+  addVariant('light', "[data-theme='light'] &")
   addComponents({
     // ---- Primary glass surface ----
     '.card': {

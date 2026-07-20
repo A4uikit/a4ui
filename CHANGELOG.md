@@ -6,6 +6,16 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.24.3] — 2026-07-20
+
+### Fixed
+
+- **Badge contrast (a11y)** — the tinted tones (`success` / `warning` / `danger` /
+  `info`) now carry a lighter foreground on dark themes and a darker one under
+  `[data-theme='light']`, so the text meets WCAG AA over the translucent tint in
+  both (a single fixed shade cleared neither). Adds a `light:` variant to the
+  Tailwind preset for theme-aware overrides.
+
 ## [0.24.2] — 2026-07-20
 
 ### Fixed

@@ -9,12 +9,15 @@ import { cn } from '../lib/cn'
 /** Semantic tone of a {@link Badge}; drives its background/text/ring color. */
 export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 
+// Tinted tones carry a lighter foreground for the dark (base) theme and a darker
+// one under `[data-theme='light']`, so the text meets WCAG AA over the translucent
+// tint in both — a single fixed shade can't clear 4.5:1 on both backgrounds.
 const TONE_CLASSES: Record<BadgeTone, string> = {
   neutral: 'bg-muted text-muted-foreground ring-border',
-  success: 'bg-emerald-500/15 text-emerald-600 ring-emerald-500/30',
-  warning: 'bg-amber-500/15 text-amber-600 ring-amber-500/30',
-  danger: 'bg-rose-500/15 text-rose-600 ring-rose-500/30',
-  info: 'bg-sky-500/15 text-sky-600 ring-sky-500/30',
+  success: 'bg-emerald-500/15 text-emerald-300 ring-emerald-500/30 light:text-emerald-700',
+  warning: 'bg-amber-500/15 text-amber-300 ring-amber-500/30 light:text-amber-700',
+  danger: 'bg-rose-500/15 text-rose-300 ring-rose-500/30 light:text-rose-700',
+  info: 'bg-sky-500/15 text-sky-300 ring-sky-500/30 light:text-sky-700',
 }
 
 const BADGE_BASE =
