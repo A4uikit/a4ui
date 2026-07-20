@@ -6,16 +6,22 @@ import {
   Apple,
   Beef,
   Bell,
+  Briefcase,
+  Calendar as CalendarIcon,
   Cloud,
   Croissant,
+  Folder,
   Heading,
   Heart,
   Home,
   Image as ImageIcon,
+  Inbox,
   Milk,
   Minus,
   Package,
+  Plane,
   Plus,
+  Settings,
   Table as TableIcon,
   Type,
   Rocket,
@@ -4335,5 +4341,223 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     ),
     code: `<Aurora variant="mesh" animated />
 <div class="glass-refractive p-6">…</div>`,
+  },
+
+  // ---- Phase 3 — scroll storytelling, finance, spaces/rail -------------------
+  {
+    id: 'scroll-scene',
+    title: 'ScrollScene',
+    group: 'Motion',
+    blurb: 'Binds a render to the element’s scroll progress (0→1) — for scroll-driven storytelling.',
+    demo: () => (
+      <UI.ScrollScene class="block h-64">
+        {(progress) => (
+          <div class="flex h-full flex-col items-center justify-center gap-2">
+            <div
+              class="rounded-xl border border-border bg-card p-6 text-center"
+              style={{
+                transform: `translateY(${(1 - progress()) * 24}px) scale(${0.9 + progress() * 0.1})`,
+                opacity: 0.4 + progress() * 0.6,
+              }}
+            >
+              <p class="font-semibold text-foreground">Comet Freight Co.</p>
+              <p class="text-sm text-muted-foreground">Scroll to reveal</p>
+            </div>
+            <p class="text-xs text-muted-foreground">{Math.round(progress() * 100)}%</p>
+          </div>
+        )}
+      </UI.ScrollScene>
+    ),
+    code: `<ScrollScene>
+  {(progress) => <div style={{ opacity: progress() }}>…</div>}
+</ScrollScene>`,
+  },
+  {
+    id: 'sticky-reveal',
+    title: 'StickyReveal',
+    group: 'Motion',
+    blurb:
+      'Pins its content while scrolling through a tall section, fading it in — scroll inside the preview to see it.',
+    demo: () => (
+      <div class="h-[280px] overflow-y-auto rounded-lg ring-1 ring-border">
+        <UI.StickyReveal height="150vh">
+          <UI.Card class="w-72 p-8 text-center">
+            <h3 class="text-xl font-bold text-foreground">Pinned moment</h3>
+            <p class="mt-2 text-sm text-muted-foreground">Fades and rises in as you scroll.</p>
+          </UI.Card>
+        </UI.StickyReveal>
+      </div>
+    ),
+    code: `<StickyReveal height="180vh">
+  <Card class="p-8">Pinned content…</Card>
+</StickyReveal>`,
+  },
+  {
+    id: 'balance-card',
+    title: 'BalanceCard',
+    group: 'Data',
+    blurb: 'Balance-first summary card with a formatted amount and an up/down delta chip.',
+    demo: () => (
+      <UI.BalanceCard
+        label="Total balance"
+        amount={128430.52}
+        delta={0.042}
+        sub={<span class="text-xs text-muted-foreground">Available · •••• 4821</span>}
+      />
+    ),
+    code: `<BalanceCard label="Total balance" amount={128430.52} delta={0.042} />`,
+  },
+  {
+    id: 'transaction-feed',
+    title: 'TransactionFeed',
+    group: 'Data',
+    blurb: 'Dense transaction/activity list with success-toned incoming amounts and optional date grouping.',
+    demo: () => (
+      <UI.TransactionFeed
+        class="w-full max-w-sm"
+        groupByDate
+        transactions={[
+          { id: '1', title: 'Acme Corp', subtitle: 'Invoice #1042', amount: 1200, date: '2026-07-18' },
+          { id: '2', title: 'Cloud Hosting', subtitle: 'Monthly plan', amount: -49.99, date: '2026-07-18' },
+          { id: '3', title: 'Nova Design Studio', subtitle: 'Retainer', amount: 850, date: '2026-07-17' },
+          {
+            id: '4',
+            title: 'Office Supplies Co',
+            subtitle: 'Order #88213',
+            amount: -132.4,
+            date: '2026-07-17',
+          },
+          { id: '5', title: 'Jane Whitfield', subtitle: 'Refund', amount: 26.5, date: '2026-07-16' },
+        ]}
+      />
+    ),
+    code: `<TransactionFeed groupByDate transactions={txns} />`,
+  },
+  {
+    id: 'kpi-block',
+    title: 'KpiBlock',
+    group: 'Data',
+    blurb: 'A labelled metric with a signed delta chip and an optional inline chart slot.',
+    demo: () => (
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <UI.KpiBlock label="Monthly revenue" value="$48,204" delta={0.128} />
+        <UI.KpiBlock
+          label="Active subscriptions"
+          value="1,092"
+          delta={0.041}
+          chart={
+            <svg viewBox="0 0 100 24" class="h-6 w-full text-primary/70" aria-hidden="true">
+              <polyline
+                points="0,18 15,15 30,17 45,10 60,12 75,5 90,7 100,3"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          }
+        />
+        <UI.KpiBlock label="Churn rate" value="2.3%" delta={-0.017} />
+      </div>
+    ),
+    code: `<KpiBlock label="Monthly revenue" value="$48,204" delta={0.128} />
+<KpiBlock label="Subscriptions" value="1,092" delta={0.041} chart={<Sparkline data={data} />} />`,
+  },
+  {
+    id: 'money-action-button',
+    title: 'MoneyActionButton',
+    group: 'Actions',
+    blurb:
+      'A prominent CTA reserved for value-moving actions — one accent, tightly scoped to money movement.',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-3">
+        <UI.MoneyActionButton kind="send" onClick={() => {}}>
+          Send
+        </UI.MoneyActionButton>
+        <UI.MoneyActionButton kind="pay" onClick={() => {}}>
+          Pay invoice
+        </UI.MoneyActionButton>
+        <UI.MoneyActionButton kind="withdraw" onClick={() => {}}>
+          Withdraw
+        </UI.MoneyActionButton>
+      </div>
+    ),
+    code: `<MoneyActionButton kind="send" onClick={send}>Send</MoneyActionButton>`,
+  },
+  {
+    id: 'spaces',
+    title: 'Spaces',
+    group: 'Navigation',
+    blurb:
+      'Switchable, swipeable context containers — one space at a time, with a pill rail and drag-to-swipe.',
+    demo: () => (
+      <UI.Spaces
+        spaces={[
+          {
+            id: 'personal',
+            label: 'Personal',
+            icon: <Home class="h-4 w-4" />,
+            content: (
+              <div class="p-6 text-sm text-muted-foreground">
+                Weekend plans, reading list, and the family calendar.
+              </div>
+            ),
+          },
+          {
+            id: 'work',
+            label: 'Work',
+            icon: <Briefcase class="h-4 w-4" />,
+            content: (
+              <div class="p-6 text-sm text-muted-foreground">
+                Sprint board, standup notes, and open review requests.
+              </div>
+            ),
+          },
+          {
+            id: 'travel',
+            label: 'Travel',
+            icon: <Plane class="h-4 w-4" />,
+            content: (
+              <div class="p-6 text-sm text-muted-foreground">
+                Lisbon itinerary, boarding passes, and packing list.
+              </div>
+            ),
+          },
+        ]}
+      />
+    ),
+    code: `<Spaces spaces={[
+  { id: 'personal', label: 'Personal', icon: <Home />, content: <PersonalPane /> },
+  { id: 'work', label: 'Work', icon: <Briefcase />, content: <WorkPane /> },
+]} />`,
+  },
+  {
+    id: 'side-rail',
+    title: 'SideRail',
+    group: 'Navigation',
+    blurb:
+      'A vertical icon + label navigation rail — the vertical alternative to top tabs or a compact sidebar.',
+    demo: () => {
+      const [section, setSection] = createSignal('inbox')
+      return (
+        <UI.SideRail
+          value={section()}
+          onChange={setSection}
+          items={[
+            { value: 'home', label: 'Home', icon: <Home class="h-5 w-5" /> },
+            {
+              value: 'inbox',
+              label: 'Inbox',
+              icon: <Inbox class="h-5 w-5" />,
+              badge: <UI.Badge tone="info">3</UI.Badge>,
+            },
+            { value: 'calendar', label: 'Calendar', icon: <CalendarIcon class="h-5 w-5" /> },
+            { value: 'files', label: 'Files', icon: <Folder class="h-5 w-5" /> },
+            { value: 'settings', label: 'Settings', icon: <Settings class="h-5 w-5" /> },
+          ]}
+        />
+      )
+    },
+    code: `const [tab, setTab] = createSignal('inbox')
+<SideRail value={tab()} onChange={setTab} items={navItems} />`,
   },
 ]

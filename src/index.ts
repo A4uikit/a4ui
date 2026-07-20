@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.27.0'
+export const A4UI_VERSION = '0.28.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -167,6 +167,16 @@ export { CategoryStrip, type CategoryStripProps, type CategoryItem } from './ui/
 export { MasterDetail, type MasterDetailProps, type MasterDetailItem } from './ui/MasterDetail'
 export { SlashMenu, type SlashMenuProps, type SlashItem } from './ui/SlashMenu'
 export { DataView, type DataViewProps, type DataViewColumn, type DataViewMode } from './ui/DataView'
+
+// Phase 3 — scroll storytelling, finance, spaces/rail.
+export { ScrollScene, type ScrollSceneProps } from './ui/ScrollScene'
+export { StickyReveal, type StickyRevealProps } from './ui/StickyReveal'
+export { BalanceCard, type BalanceCardProps } from './ui/BalanceCard'
+export { TransactionFeed, type TransactionFeedProps, type Transaction } from './ui/TransactionFeed'
+export { KpiBlock, type KpiBlockProps } from './ui/KpiBlock'
+export { MoneyActionButton, type MoneyActionButtonProps, type MoneyActionKind } from './ui/MoneyActionButton'
+export { Spaces, type SpacesProps, type Space } from './ui/Spaces'
+export { SideRail, type SideRailProps, type SideRailItem } from './ui/SideRail'
 
 // Motion components (src/ui) — animation primitives built on the `motion` engine
 // (adapted from motion.dev examples). All tree-shakeable and reduced-motion aware;

@@ -5,10 +5,11 @@ import { expect, test } from '@playwright/test'
 
 // Derive the component list from the docs registry (single source of truth) so
 // adding a component to registry.tsx automatically adds it to this suite. Match
-// only DocEntry ids — the ones immediately followed by `title:` — so `id`s used
-// inside demo data (e.g. Tree node ids) aren't picked up as doc pages.
+// only DocEntry ids — `id` followed by `title:` AND `group:` — so `id`s used
+// inside demo data (e.g. Tree node ids, or `{ id: '1', title: 'Acme' }` rows in
+// a TransactionFeed demo) aren't picked up as doc pages.
 const registry = readFileSync(path.resolve('preview/registry.tsx'), 'utf8')
-const IDS = [...registry.matchAll(/id: '([^']+)',\s*title:/g)].map((m) => m[1])
+const IDS = [...registry.matchAll(/id: '([^']+)',\s*title: '[^']*',\s*group:/g)].map((m) => m[1])
 
 // --- Every doc page renders (heading + live example) with no runtime errors ---
 test.describe('docs render', () => {
@@ -171,6 +172,20 @@ test.describe('interactions', () => {
     await expect(page.locator('main table')).toBeVisible()
     await page.getByText('Gallery', { exact: true }).click()
     await expect(page.locator('main table')).toHaveCount(0)
+  })
+
+  test('side rail selects an item', async ({ page }) => {
+    await page.goto('/#/side-rail')
+    const files = page.getByRole('tab', { name: 'Files' })
+    await files.click()
+    await expect(files).toHaveAttribute('aria-selected', 'true')
+  })
+
+  test('spaces switches context', async ({ page }) => {
+    await page.goto('/#/spaces')
+    const work = page.getByRole('tab', { name: 'Work' })
+    await work.click()
+    await expect(work).toHaveAttribute('aria-selected', 'true')
   })
 
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {

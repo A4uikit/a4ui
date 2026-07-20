@@ -109,6 +109,13 @@ export const EXAMPLES: ExampleEntry[] = [
     component: lazy(() => import('./Assistant')),
   },
   {
+    id: 'finance',
+    title: 'Finance',
+    blurb:
+      'Treasury dashboard — SideRail nav, BalanceCard, KPI blocks, money-action CTAs, and a transaction feed.',
+    component: lazy(() => import('./Finance')),
+  },
+  {
     id: 'checkout',
     title: 'Checkout',
     blurb: 'Cart lines with quantity steppers, a shipping form, and an order summary.',
