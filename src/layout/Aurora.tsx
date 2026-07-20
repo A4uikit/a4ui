@@ -8,15 +8,22 @@
 // Usage: render it once at the top of your layout and keep the page root's
 // background transparent (don't put `bg-background` on the root) so the Aurora
 // shows through — the component paints the base background itself.
-import { For, type JSX } from 'solid-js'
+import { For, onCleanup, onMount, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { motionReduced } from '../lib/motion'
+import { bindPointerFx } from './sceneEffects'
 
 export interface AuroraProps {
   /** Blob opacity multiplier, 0..1 — higher = more visible color. @default 0.45 */
   intensity?: number
   /** Slowly drift/scale the blobs. Reduced-motion aware (holds still). @default false */
   animated?: boolean
+  /**
+   * A soft glow that follows the cursor across the backdrop (plus cursor-tracking
+   * on any `.glow-edge` cards). Reduced-motion aware (off when reduced). @default true
+   */
+  pointerGlow?: boolean
   class?: string
 }
 
@@ -46,8 +53,19 @@ const BLOBS = [
  */
 export function Aurora(props: AuroraProps): JSX.Element {
   const intensity = (): number => props.intensity ?? 0.45
+  let root: HTMLDivElement | undefined
+
+  onMount(() => {
+    // The pointer glow (`#cursorGlow`) + `.glow-edge` cursor tracking come from
+    // the shared pointer-fx binder — only when motion is allowed.
+    if (props.pointerGlow === false || motionReduced() || !root) return
+    const cleanup = bindPointerFx(root)
+    onCleanup(cleanup)
+  })
+
   return (
     <div
+      ref={root}
       aria-hidden="true"
       class={cn('pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background', props.class)}
     >
@@ -61,6 +79,16 @@ export function Aurora(props: AuroraProps): JSX.Element {
           />
         )}
       </For>
+      {/* Soft glow that follows the cursor across the backdrop (positioned by
+          bindPointerFx via left/top on pointermove). */}
+      <div
+        id="cursorGlow"
+        class="absolute h-[520px] w-[520px] rounded-full opacity-0 transition-opacity duration-300"
+        style={{
+          background: 'radial-gradient(circle, hsl(var(--primary) / 0.1), transparent 70%)',
+          transform: 'translate(-50%,-50%)',
+        }}
+      />
     </div>
   )
 }

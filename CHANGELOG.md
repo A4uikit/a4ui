@@ -6,6 +6,16 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.22.0] — 2026-07-20
+
+### Added
+
+- **`Aurora` pointer glow** — Aurora now renders a soft glow that follows the
+  cursor across the backdrop (and lights up any `.glow-edge` cards' cursor
+  tracking), via the shared `bindPointerFx`. On by default; `pointerGlow={false}`
+  to disable. Reduced-motion aware. Brings the "space theme" cursor-light to any
+  page using Aurora — no `SpaceBackground` needed.
+
 ## [0.21.0] — 2026-07-20
 
 ### Added
