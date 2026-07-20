@@ -16,7 +16,7 @@ import {
   User,
   Zap,
 } from 'lucide-solid'
-import { createSignal, For, onMount, type JSX } from 'solid-js'
+import { createSignal, For, onCleanup, onMount, Show, type JSX } from 'solid-js'
 
 import * as UI from '../src'
 import * as Commerce from '../src/commerce'
@@ -3835,5 +3835,245 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     code: `<AnnouncementBar tone="accent" dismissible couponCode="SAVE20" href="/sale">
   Summer sale is live — 20% off everything
 </AnnouncementBar>`,
+  },
+
+  // ---- Conversation / AI, transitions, depth (roadmap phase 1) ---------------
+  {
+    id: 'chat-thread',
+    title: 'ChatThread',
+    group: 'Data',
+    blurb:
+      'Scrollable, centered reading column that stacks chat messages — the container for conversation/AI UIs.',
+    demo: () => (
+      <UI.ChatThread maxWidth={520} class="h-64 rounded-xl border border-border p-4">
+        <UI.Message role="user" author="You">
+          What can you do?
+        </UI.Message>
+        <UI.Message role="assistant" author="Assistant">
+          I can summarize threads, draft replies, and answer questions about your data.
+        </UI.Message>
+        <UI.Message role="user" author="You">
+          Nice — summarize this one.
+        </UI.Message>
+      </UI.ChatThread>
+    ),
+    code: `<ChatThread maxWidth={520}>
+  <Message role="user">…</Message>
+  <Message role="assistant">…</Message>
+</ChatThread>`,
+  },
+  {
+    id: 'message',
+    title: 'Message',
+    group: 'Data',
+    blurb: 'One chat message row — full-width (no bubble), role-styled, content as children.',
+    demo: () => (
+      <div class="flex max-w-md flex-col gap-3">
+        <UI.Message role="user" author="Alex Rivera" timestamp="2:41 PM">
+          <p>Can you pull the Q3 numbers for the Aurora account?</p>
+        </UI.Message>
+        <UI.Message role="assistant" author="Nova" timestamp="2:42 PM">
+          <p>Aurora's Q3 churn was 3.2%, down from 4.1% in Q2.</p>
+        </UI.Message>
+        <UI.Message role="system">Nova joined the conversation</UI.Message>
+      </div>
+    ),
+    code: `<Message role="user" author="Alex">…</Message>
+<Message role="assistant" author="Nova">…</Message>
+<Message role="system">Nova joined</Message>`,
+  },
+  {
+    id: 'streaming-text',
+    title: 'StreamingText',
+    group: 'Motion',
+    blurb: 'Reveals text as it "streams" in with a blinking caret — for AI answer UIs.',
+    demo: () => {
+      const full =
+        'Spatial Glass blends translucent surfaces, soft light, and tasteful motion into one system.'
+      const [text, setText] = createSignal('')
+      const [streaming, setStreaming] = createSignal(true)
+      onMount(() => {
+        let i = 0
+        const id = setInterval(() => {
+          i += 3
+          setText(full.slice(0, i))
+          if (i >= full.length) {
+            setStreaming(false)
+            clearInterval(id)
+          }
+        }, 120)
+        onCleanup(() => clearInterval(id))
+      })
+      return (
+        <div class="max-w-prose text-lg text-foreground">
+          <UI.StreamingText text={text()} streaming={streaming()} />
+        </div>
+      )
+    },
+    code: `<StreamingText text={answer()} streaming={!done()} />`,
+  },
+  {
+    id: 'citation',
+    title: 'Citation',
+    group: 'Data',
+    blurb: 'Inline numbered source chips + a compact SourceList — for AI answers with citations.',
+    demo: () => (
+      <div class="flex max-w-md flex-col gap-3">
+        <p class="text-sm text-foreground">
+          Glass surfaces use a translucent backdrop blur
+          <UI.Citation index={1} href="https://example.com/spec" title="Design spec" />, tuned so text keeps
+          AA contrast
+          <UI.Citation index={2} title="Contrast audit" />.
+        </p>
+        <UI.SourceList
+          sources={[{ title: 'Design spec', href: 'https://example.com/spec' }, { title: 'Contrast audit' }]}
+        />
+      </div>
+    ),
+    code: `text <Citation index={1} href="/spec" title="Design spec" />.
+<SourceList sources={[{ title: 'Design spec', href: '/spec' }]} />`,
+  },
+  {
+    id: 'prompt-composer',
+    title: 'PromptComposer',
+    group: 'Forms',
+    blurb:
+      'Chat input: auto-growing textarea, removable attachment chips, attach + send. Submits on Cmd/Ctrl+Enter.',
+    demo: () => {
+      const [value, setValue] = createSignal('')
+      const [attachments, setAttachments] = createSignal(['spec.pdf', 'diagram.png'])
+      return (
+        <UI.PromptComposer
+          value={value()}
+          onInput={setValue}
+          onSubmit={() => setValue('')}
+          placeholder="Ask anything…"
+          hint="Cmd/Ctrl+Enter to send"
+          attachments={attachments()}
+          onRemoveAttachment={(i) => setAttachments((xs) => xs.filter((_, idx) => idx !== i))}
+          onAttach={() => setAttachments((xs) => [...xs, 'note.txt'])}
+          class="max-w-lg"
+        />
+      )
+    },
+    code: `<PromptComposer value={value()} onInput={setValue} onSubmit={send}
+  attachments={['spec.pdf']} onAttach={pick} />`,
+  },
+  {
+    id: 'artifact-panel',
+    title: 'ArtifactPanel',
+    group: 'Layout',
+    blurb:
+      'Inline right-side panel for AI-generated output next to a chat — reveals by animating width (not a portalled overlay).',
+    demo: () => {
+      const [open, setOpen] = createSignal(false)
+      return (
+        <div class="flex h-64 overflow-hidden rounded-xl border border-border">
+          <div class="flex min-w-0 flex-1 flex-col gap-3 p-4">
+            <p class="text-sm text-muted-foreground">Chat pane (main content)…</p>
+            <UI.Button variant="outline" onClick={() => setOpen((v) => !v)}>
+              {open() ? 'Hide artifact' : 'Show artifact'}
+            </UI.Button>
+          </div>
+          <UI.ArtifactPanel open={open()} onClose={() => setOpen(false)} title="notes.md" width={320}>
+            <div class="p-4 text-sm text-muted-foreground">Generated output renders here.</div>
+          </UI.ArtifactPanel>
+        </div>
+      )
+    },
+    code: `const [open, setOpen] = createSignal(false)
+<ArtifactPanel open={open()} onClose={() => setOpen(false)} title="notes.md">
+  …generated output…
+</ArtifactPanel>`,
+  },
+  {
+    id: 'floating-toolbar',
+    title: 'FloatingToolbar',
+    group: 'Layout',
+    blurb:
+      'Fixed, centered glass toolbar that condenses as you scroll — a detached action bar (renders fixed-position over the page).',
+    demo: () => (
+      <UI.FloatingToolbar position="bottom">
+        <UI.Button variant="ghost" aria-label="Add">
+          <Plus class="h-4 w-4" />
+        </UI.Button>
+        <UI.Button variant="ghost" aria-label="Favorite">
+          <Heart class="h-4 w-4" />
+        </UI.Button>
+        <UI.Button variant="ghost" aria-label="Star">
+          <Star class="h-4 w-4" />
+        </UI.Button>
+        <UI.Button variant="ghost" aria-label="Search">
+          <Search class="h-4 w-4" />
+        </UI.Button>
+      </UI.FloatingToolbar>
+    ),
+    code: `<FloatingToolbar position="bottom">
+  <Button variant="ghost"><Plus /></Button>
+  <Button variant="ghost"><Search /></Button>
+</FloatingToolbar>`,
+  },
+  {
+    id: 'page-transition',
+    title: 'PageTransition',
+    group: 'Motion',
+    blurb: 'Cross-fades (or slides) keyed content in and out on change — for route/view transitions.',
+    demo: () => {
+      const [view, setView] = createSignal(1)
+      const next = () => setView((v) => (v % 3) + 1)
+      return (
+        <div class="flex flex-col gap-3">
+          <UI.Button onClick={next}>Next view ({view()})</UI.Button>
+          <UI.PageTransition key={view()} mode="slide" class="rounded-xl border border-border bg-card p-4">
+            <Show when={view() === 1}>
+              <div>
+                <h3 class="font-semibold text-foreground">Welcome aboard</h3>
+                <p class="text-sm text-muted-foreground">Orbital Freight — shipment 1 of 3.</p>
+              </div>
+            </Show>
+            <Show when={view() === 2}>
+              <div>
+                <h3 class="font-semibold text-foreground">In transit</h3>
+                <p class="text-sm text-muted-foreground">Container OF-4471 cleared customs.</p>
+              </div>
+            </Show>
+            <Show when={view() === 3}>
+              <div>
+                <h3 class="font-semibold text-foreground">Delivered</h3>
+                <p class="text-sm text-muted-foreground">Signed for at 14:32.</p>
+              </div>
+            </Show>
+          </UI.PageTransition>
+        </div>
+      )
+    },
+    code: `<PageTransition key={view()} mode="slide">
+  <Show when={view() === 1}>…</Show>
+  <Show when={view() === 2}>…</Show>
+</PageTransition>`,
+  },
+  {
+    id: 'inline-select',
+    title: 'InlineSelect',
+    group: 'Forms',
+    blurb:
+      'Edit-in-place select: click the value to swap it for a dropdown, pick to commit. For inline status/priority fields.',
+    demo: () => {
+      const [status, setStatus] = createSignal('doing')
+      return (
+        <UI.InlineSelect
+          value={status()}
+          onChange={setStatus}
+          options={[
+            { value: 'todo', label: 'To do' },
+            { value: 'doing', label: 'In progress' },
+            { value: 'review', label: 'In review' },
+            { value: 'done', label: 'Done' },
+          ]}
+        />
+      )
+    },
+    code: `const [status, setStatus] = createSignal('doing')
+<InlineSelect value={status()} onChange={setStatus} options={statusOptions} />`,
   },
 ]

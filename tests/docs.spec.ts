@@ -110,6 +110,30 @@ test.describe('interactions', () => {
     await expect(chips).toHaveCount(0)
   })
 
+  test('prompt composer submits on cmd/ctrl+enter', async ({ page }) => {
+    await page.goto('/#/prompt-composer')
+    const box = page.locator('main textarea').first()
+    await box.fill('Hello there')
+    await expect(box).toHaveValue('Hello there')
+    await box.press('ControlOrMeta+Enter')
+    await expect(box).toHaveValue('')
+  })
+
+  test('inline select edits in place', async ({ page }) => {
+    await page.goto('/#/inline-select')
+    await page.getByRole('button', { name: /^Edit —/ }).click()
+    await page.locator('main select').first().selectOption('done')
+    await expect(page.getByRole('button', { name: /^Edit —/ })).toContainText('Done')
+  })
+
+  test('artifact panel toggles open', async ({ page }) => {
+    await page.goto('/#/artifact-panel')
+    const panel = page.locator('main [role="complementary"][aria-label="notes.md"]')
+    await expect(panel).toHaveAttribute('aria-hidden', 'true')
+    await page.getByRole('button', { name: 'Show artifact' }).click()
+    await expect(panel).toHaveAttribute('aria-hidden', 'false')
+  })
+
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
     await page.goto('/#/date-field')
     await page.getByRole('button', { name: 'Due date' }).click()
