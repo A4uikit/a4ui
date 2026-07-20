@@ -6,6 +6,14 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.24.1] — 2026-07-20
+
+### Fixed
+
+- **Accessibility** — `NumberInput` now accepts an `aria-label` (forwarded to the
+  underlying input), and `FacetSidebar` labels its min/max price inputs. Fixes an
+  unlabeled-form-control issue flagged by Lighthouse on filter sidebars.
+
 ## [0.24.0] — 2026-07-20
 
 ### Added
