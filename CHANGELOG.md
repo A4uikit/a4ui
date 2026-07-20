@@ -6,6 +6,22 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.28.0] — 2026-07-20
+
+### Added
+
+Roadmap phase 3 — scroll storytelling, finance, and workspace navigation.
+
+- **Scroll storytelling** — `ScrollScene` (bind a render to scroll progress) and
+  `StickyReveal` (a pinned section that fades/rises in). Reduced-motion aware.
+- **Finance dashboard set** — `BalanceCard`, `TransactionFeed`, `KpiBlock`, and
+  `MoneyActionButton` (a CTA scoped to value-moving actions), plus a **Finance**
+  example page composing them with a `SideRail`.
+- **Workspace navigation** — `Spaces` (swipeable context containers) and
+  `SideRail` (a vertical navigation rail).
+
+All classified Experimental.
+
 ## [0.27.0] — 2026-07-20
 
 ### Added
