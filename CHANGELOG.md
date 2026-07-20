@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.17.0] — 2026-07-20
+
 ### Added
 
 - **Motion baked into more components** (opt-in props, additive, all engine-free
@@ -24,6 +26,8 @@ changes, `patch` for fixes).
 - **Animated height** baked into `Accordion` (open/close via Kobalte's measured
   content height) and `Collapse` (grid-rows CSS transition) — engine-free,
   reduced-motion aware.
+
+## [0.16.0] — 2026-07-19
 
 ### Added
 
