@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.24.3'
+export const A4UI_VERSION = '0.25.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -33,6 +33,8 @@ export {
 } from './lib/motion'
 export { useMediaQuery } from './lib/media'
 export { remeasureAfterLayout } from './lib/virtual'
+export { createOptimistic } from './lib/createOptimistic'
+export { startViewTransition } from './lib/viewTransition'
 
 // UI components (src/ui) — all 18 extracted. See CLAUDE.md.
 export { Accordion, type AccordionItem } from './ui/Accordion'
@@ -144,6 +146,17 @@ export { CalendarHeatmap, type HeatmapValue, type CalendarHeatmapProps } from '.
 export { Portal, type PortalProps } from './ui/Portal'
 export { Sortable, type SortableProps } from './ui/Sortable'
 export { Clock, type ClockProps } from './ui/Clock'
+
+// Conversation / AI, transitions, and depth surfaces (roadmap phase 1).
+export { ChatThread, type ChatThreadProps } from './ui/ChatThread'
+export { Message, type MessageProps, type ChatRole } from './ui/Message'
+export { StreamingText, type StreamingTextProps } from './ui/StreamingText'
+export { Citation, type CitationProps, SourceList, type SourceListProps } from './ui/Citation'
+export { PromptComposer, type PromptComposerProps } from './ui/PromptComposer'
+export { ArtifactPanel, type ArtifactPanelProps } from './ui/ArtifactPanel'
+export { FloatingToolbar, type FloatingToolbarProps } from './ui/FloatingToolbar'
+export { PageTransition, type PageTransitionProps } from './ui/PageTransition'
+export { InlineSelect, type InlineSelectProps, type InlineSelectOption } from './ui/InlineSelect'
 
 // Motion components (src/ui) — animation primitives built on the `motion` engine
 // (adapted from motion.dev examples). All tree-shakeable and reduced-motion aware;

@@ -102,6 +102,13 @@ export const EXAMPLES: ExampleEntry[] = [
     component: lazy(() => import('./Showpiece')),
   },
   {
+    id: 'assistant',
+    title: 'Assistant',
+    blurb:
+      'Conversational AI surface — ChatThread, streaming replies, citations, prompt composer, and an artifact panel.',
+    component: lazy(() => import('./Assistant')),
+  },
+  {
     id: 'checkout',
     title: 'Checkout',
     blurb: 'Cart lines with quantity steppers, a shipping form, and an order summary.',

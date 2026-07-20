@@ -6,6 +6,26 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.25.0] — 2026-07-20
+
+### Added
+
+Roadmap phase 1 — conversation, transitions, and depth.
+
+- **Conversation / AI chat kit** — `ChatThread` (scrollable reading column),
+  `Message` (full-width, role-styled), `StreamingText` (streaming caret),
+  `Citation` + `SourceList`, `PromptComposer` (auto-grow, attachments,
+  Cmd/Ctrl+Enter to send), and `ArtifactPanel` (inline right-side panel). Plus a
+  new **Assistant** example page assembling the kit.
+- **Transitions & optimistic UI** — `PageTransition` (keyed enter/exit,
+  fade/slide), `startViewTransition` (View Transitions API wrapper with a
+  reduced-motion + unsupported fallback), `createOptimistic` (optimistic value
+  with rollback + rethrow), and `InlineSelect` (edit-in-place select).
+- **`FloatingToolbar`** — a fixed, centered glass toolbar that condenses on
+  scroll.
+
+All are reduced-motion aware and classified Experimental in `STABILITY.md`.
+
 ## [0.24.3] — 2026-07-20
 
 ### Fixed
