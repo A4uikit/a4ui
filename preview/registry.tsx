@@ -2485,6 +2485,35 @@ toast.error('Failed to save')`,
 </div>
 
 <Aurora intensity={0.6} animated />   // stronger + slow drift`,
+    variants: [
+      {
+        label: 'variant="blobs" (default)',
+        demo: () => (
+          <div class="relative h-40 w-full overflow-hidden rounded-xl border border-border bg-background">
+            <div
+              class="absolute -left-10 -top-10 h-40 w-40 rounded-full blur-3xl"
+              style={{ background: 'radial-gradient(circle, hsl(var(--primary) / 0.5), transparent 70%)' }}
+            />
+            <div
+              class="absolute -right-8 top-1/3 h-36 w-36 rounded-full blur-3xl"
+              style={{ background: 'radial-gradient(circle, hsl(var(--accent) / 0.45), transparent 70%)' }}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'variant="mesh"',
+        demo: () => (
+          <div
+            class="h-40 w-full overflow-hidden rounded-xl border border-border blur-[1px]"
+            style={{
+              background:
+                'radial-gradient(45% 45% at 18% 22%, hsl(var(--primary) / 0.5), transparent 70%), radial-gradient(45% 45% at 82% 26%, hsl(var(--accent) / 0.45), transparent 70%), radial-gradient(45% 45% at 72% 82%, hsl(var(--primary) / 0.4), transparent 70%), radial-gradient(45% 45% at 14% 78%, hsl(var(--accent) / 0.45), transparent 70%)',
+            }}
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'pricing-table',
@@ -3682,6 +3711,18 @@ toast.error('Failed to save')`,
     code: `<PriceBlock amount={249} compareAt={329}
   coupon={{ code: 'SAVE50', amount: 50 }}
   financing={{ months: 12, apr: 0.1 }} />`,
+    variants: [
+      { label: 'Compare-at only', demo: () => <Commerce.PriceBlock amount={89} compareAt={129} /> },
+      {
+        label: 'With coupon',
+        demo: () => <Commerce.PriceBlock amount={60} coupon={{ code: 'WELCOME10', amount: 10 }} />,
+      },
+      {
+        label: 'With financing',
+        demo: () => <Commerce.PriceBlock amount={899} financing={{ months: 24, apr: 0.15 }} />,
+      },
+      { label: 'Plain', demo: () => <Commerce.PriceBlock amount={42.5} /> },
+    ],
   },
   {
     id: 'facet-sidebar',
@@ -3759,6 +3800,26 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
       </div>
     ),
     code: `<ConditionScale value={8} />`,
+    variants: [
+      { label: 'Excellent (9)', demo: () => <Commerce.ConditionScale value={9} /> },
+      { label: 'Fair (2)', demo: () => <Commerce.ConditionScale value={2} /> },
+      {
+        label: 'Custom scale (0-100)',
+        demo: () => (
+          <Commerce.ConditionScale
+            value={62}
+            min={0}
+            max={100}
+            tiers={[
+              { min: 90, label: 'Like New' },
+              { min: 70, label: 'Lightly Used' },
+              { min: 40, label: 'Worn' },
+              { min: 0, label: 'Heavily Worn' },
+            ]}
+          />
+        ),
+      },
+    ],
   },
 
   // ---- Data (added) ---------------------------------------------------------
@@ -3798,6 +3859,43 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
   ] },
   { title: 'Battery', rows: [{ label: 'Capacity', value: '4500 mAh' }] },
 ]} />`,
+    variants: [
+      {
+        label: '1 column',
+        demo: () => (
+          <UI.SpecSheet
+            groups={[
+              {
+                title: 'Processor',
+                rows: [
+                  { label: 'Chip', value: 'A18 Pro' },
+                  { label: 'Cores', value: '6-core CPU' },
+                ],
+              },
+            ]}
+          />
+        ),
+      },
+      {
+        label: '2 columns',
+        demo: () => (
+          <UI.SpecSheet
+            columns={2}
+            groups={[
+              {
+                title: 'Camera',
+                rows: [
+                  { label: 'Main', value: '48 MP' },
+                  { label: 'Ultra-wide', value: '12 MP' },
+                  { label: 'Zoom', value: '5x optical' },
+                  { label: 'Video', value: '4K @ 60fps' },
+                ],
+              },
+            ]}
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'ratings-summary',
@@ -3856,6 +3954,32 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     code: `<AnnouncementBar tone="accent" dismissible couponCode="SAVE20" href="/sale">
   Summer sale is live — 20% off everything
 </AnnouncementBar>`,
+    variants: [
+      {
+        label: 'Primary tone',
+        demo: () => <UI.AnnouncementBar tone="primary">New: dark mode is here</UI.AnnouncementBar>,
+      },
+      {
+        label: 'Accent, no coupon',
+        demo: () => <UI.AnnouncementBar tone="accent">Free shipping this week</UI.AnnouncementBar>,
+      },
+      {
+        label: 'Neutral, dismissible',
+        demo: () => (
+          <UI.AnnouncementBar tone="neutral" dismissible>
+            Scheduled maintenance tonight at 10pm
+          </UI.AnnouncementBar>
+        ),
+      },
+      {
+        label: 'With coupon',
+        demo: () => (
+          <UI.AnnouncementBar tone="primary" couponCode="LAUNCH15">
+            Launch week — 15% off
+          </UI.AnnouncementBar>
+        ),
+      },
+    ],
   },
 
   // ---- Conversation / AI, transitions, depth (roadmap phase 1) ---------------
@@ -4141,6 +4265,44 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
   ]}
   onSearch={search}
 />`,
+    variants: [
+      {
+        label: 'All fields filled',
+        demo: () => (
+          <UI.PillSearch
+            fields={[
+              { key: 'location', label: 'Location', value: 'Porto, PT' },
+              { key: 'dates', label: 'Dates', value: 'Aug 3 - 10' },
+              { key: 'guests', label: 'Guests', value: '2 guests' },
+            ]}
+          />
+        ),
+      },
+      {
+        label: 'Two fields',
+        demo: () => (
+          <UI.PillSearch
+            fields={[
+              { key: 'query', label: 'Search', placeholder: 'Search products' },
+              { key: 'category', label: 'Category', value: 'Electronics' },
+            ]}
+          />
+        ),
+      },
+      {
+        label: 'Four fields',
+        demo: () => (
+          <UI.PillSearch
+            fields={[
+              { key: 'location', label: 'Location', value: 'Madrid, ES' },
+              { key: 'checkin', label: 'Check-in', placeholder: 'Add date' },
+              { key: 'checkout', label: 'Check-out', placeholder: 'Add date' },
+              { key: 'guests', label: 'Guests', value: '4 guests' },
+            ]}
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'category-strip',
@@ -4525,6 +4687,34 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     ),
     code: `<KpiBlock label="Monthly revenue" value="$48,204" delta={0.128} />
 <KpiBlock label="Subscriptions" value="1,092" delta={0.041} chart={<Sparkline data={data} />} />`,
+    variants: [
+      {
+        label: 'Positive delta',
+        demo: () => <UI.KpiBlock label="New signups" value="3,204" delta={0.086} />,
+      },
+      { label: 'Negative delta', demo: () => <UI.KpiBlock label="Refunds" value="128" delta={-0.052} /> },
+      { label: 'No delta', demo: () => <UI.KpiBlock label="Open tickets" value="47" /> },
+      {
+        label: 'With chart',
+        demo: () => (
+          <UI.KpiBlock
+            label="Weekly orders"
+            value="892"
+            delta={0.031}
+            chart={
+              <svg viewBox="0 0 100 24" class="h-6 w-full text-primary/70" aria-hidden="true">
+                <polyline
+                  points="0,20 15,16 30,18 45,9 60,11 75,6 90,8 100,2"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+              </svg>
+            }
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'money-action-button',
@@ -4546,6 +4736,19 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
       </div>
     ),
     code: `<MoneyActionButton kind="send" onClick={send}>Send</MoneyActionButton>`,
+    variants: [
+      { label: 'Send', demo: () => <UI.MoneyActionButton kind="send">Send</UI.MoneyActionButton> },
+      { label: 'Request', demo: () => <UI.MoneyActionButton kind="request">Request</UI.MoneyActionButton> },
+      { label: 'Pay', demo: () => <UI.MoneyActionButton kind="pay">Pay invoice</UI.MoneyActionButton> },
+      {
+        label: 'Disabled',
+        demo: () => (
+          <UI.MoneyActionButton kind="withdraw" disabled>
+            Withdraw
+          </UI.MoneyActionButton>
+        ),
+      },
+    ],
   },
   {
     id: 'spaces',
