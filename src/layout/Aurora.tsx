@@ -8,7 +8,7 @@
 // Usage: render it once at the top of your layout and keep the page root's
 // background transparent (don't put `bg-background` on the root) so the Aurora
 // shows through — the component paints the base background itself.
-import { For, onCleanup, onMount, type JSX } from 'solid-js'
+import { For, onCleanup, onMount, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { motionReduced } from '../lib/motion'
@@ -24,8 +24,23 @@ export interface AuroraProps {
    * on any `.glow-edge` cards). Reduced-motion aware (off when reduced). @default true
    */
   pointerGlow?: boolean
+  /**
+   * Backdrop style: `'blobs'` (soft blurred color blobs) or `'mesh'` (a
+   * multi-point gradient mesh). Both are theme-tinted and drift when `animated`.
+   * @default 'blobs'
+   */
+  variant?: 'blobs' | 'mesh'
   class?: string
 }
+
+// Mesh variant — several token-tinted radial gradients composited into one
+// backdrop (positions chosen to fill the corners without a hard seam).
+const MESH_STOPS = [
+  { at: '18% 22%', token: '--primary', a: 1 },
+  { at: '82% 26%', token: '--accent', a: 0.9 },
+  { at: '72% 82%', token: '--primary', a: 0.8 },
+  { at: '14% 78%', token: '--accent', a: 0.85 },
+] as const
 
 // Static class strings (scanned by Tailwind). token = which theme color; a =
 // per-blob opacity weight, multiplied by `intensity`.
@@ -53,6 +68,11 @@ const BLOBS = [
  */
 export function Aurora(props: AuroraProps): JSX.Element {
   const intensity = (): number => props.intensity ?? 0.45
+  const meshBg = (): string =>
+    MESH_STOPS.map(
+      (s) =>
+        `radial-gradient(45% 45% at ${s.at}, hsl(var(${s.token}) / ${(intensity() * s.a).toFixed(2)}), transparent 70%)`,
+    ).join(', ')
   let root: HTMLDivElement | undefined
 
   onMount(() => {
@@ -69,16 +89,26 @@ export function Aurora(props: AuroraProps): JSX.Element {
       aria-hidden="true"
       class={cn('pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-background', props.class)}
     >
-      <For each={BLOBS}>
-        {(b) => (
-          <div
-            class={cn('absolute rounded-full blur-3xl', b.pos, b.size, props.animated && 'aurora-drift')}
-            style={{
-              background: `radial-gradient(circle, hsl(var(${b.token}) / ${(intensity() * b.a).toFixed(2)}), transparent 70%)`,
-            }}
-          />
-        )}
-      </For>
+      <Show
+        when={props.variant === 'mesh'}
+        fallback={
+          <For each={BLOBS}>
+            {(b) => (
+              <div
+                class={cn('absolute rounded-full blur-3xl', b.pos, b.size, props.animated && 'aurora-drift')}
+                style={{
+                  background: `radial-gradient(circle, hsl(var(${b.token}) / ${(intensity() * b.a).toFixed(2)}), transparent 70%)`,
+                }}
+              />
+            )}
+          </For>
+        }
+      >
+        <div
+          class={cn('absolute -inset-[15%] blur-2xl', props.animated && 'aurora-drift')}
+          style={{ background: meshBg() }}
+        />
+      </Show>
       {/* Soft glow that follows the cursor across the backdrop (positioned by
           bindPointerFx via left/top on pointermove). */}
       <div

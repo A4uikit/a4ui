@@ -48,6 +48,30 @@ const glass = plugin(({ addComponents, addVariant }) => {
       boxShadow: 'inset 0 1px 2px hsl(var(--shadow) / 0.18)',
     },
 
+    // ---- Refractive glass ----
+    // A heavier glass surface with a specular sheen + bright top edge, so it
+    // reads as light refracting through the material rather than a flat blur.
+    // Sits over the Aurora backdrop like `.card`; use for hero/feature panels.
+    '.glass-refractive': {
+      position: 'relative',
+      overflow: 'hidden',
+      background: 'hsl(var(--card) / 0.5)',
+      backdropFilter: 'blur(14px) saturate(180%)',
+      WebkitBackdropFilter: 'blur(14px) saturate(180%)',
+      border: '1px solid hsl(var(--foreground) / 0.14)',
+      borderRadius: 'var(--radius-xl, 1rem)',
+      boxShadow:
+        '0 1px 2px hsl(var(--shadow) / 0.06), 0 8px 24px hsl(var(--shadow) / 0.14), inset 0 1px 0 hsl(0 0% 100% / 0.18)',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        inset: '0',
+        borderRadius: 'inherit',
+        background: 'linear-gradient(150deg, hsl(0 0% 100% / 0.16), transparent 42%)',
+        pointerEvents: 'none',
+      },
+    },
+
     // ---- Primary glass surface ----
     '.card': {
       position: 'relative',
