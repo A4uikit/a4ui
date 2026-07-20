@@ -1,0 +1,5 @@
+# Fast local gate before pushing — typecheck, lint, unit. Catches the common
+# breakages in seconds so CI (which also runs build + Playwright E2E) is a
+# backstop, not the first place you learn a push is broken. Skip a one-off with
+# `git push --no-verify`.
+npm run typecheck && npm run lint && npm run test:unit

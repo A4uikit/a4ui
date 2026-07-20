@@ -9,6 +9,12 @@ on:
 permissions:
   contents: read
 
+# A newer push/PR update cancels the in-flight run for the same ref, so rapid
+# pushes don't pile up runners waiting behind stale ones.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 # Skip Playwright's browser download on install — the E2E job uses system Chrome.
 env:
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'

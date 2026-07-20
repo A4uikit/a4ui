@@ -13,6 +13,13 @@ updates:
 
     open-pull-requests-limit: 5
 
+    # Major bumps need a dedicated migration (e.g. Tailwind 3->4 rewrites the
+    # config/preset model, ESLint 9->10) — never auto-PR them; do majors by hand.
+    ignore:
+      - dependency-name: '*'
+        update-types:
+          - 'version-update:semver-major'
+
     groups:
       production-dependencies:
         dependency-type: 'production'
