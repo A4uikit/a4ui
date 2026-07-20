@@ -254,15 +254,23 @@ ships **in the package**, so it works from `node_modules` without visiting the d
 - **Typed API + examples** — every export has JSDoc with an `@example` in the
   shipped `.d.ts` (`node_modules/@a4ui/core/dist/index.d.ts`), so editor
   autocomplete and agents get the props and usage inline.
-- **`llms.txt`** — a machine-readable summary of every component:
-  https://a4ui.pages.dev/llms.txt
+- **`llms.txt`** — a machine-readable summary of every component **plus the
+  "Spatial Glass" recipe**: https://a4ui.pages.dev/llms.txt
+- **[Spatial Glass guide](./SPATIAL-GLASS.md)** — how to get the A4ui _look_
+  (Aurora backdrop, glass surfaces, the cursor light, tasteful motion, Expandable),
+  not just wire up components. Read this before building a page.
 
 Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
 
-> This project uses **@a4ui/core** (SolidJS design system). Import components as
-> named exports from `@a4ui/core`; import `@a4ui/core/styles.css` once in the app
-> entry; add `@a4ui/core/preset` to `tailwind.config` (optional). Props are typed
-> with JSDoc/`@example` in the package's `.d.ts`. Full component list:
+> This project uses **@a4ui/core** (SolidJS "Spatial Glass" design system). Import
+> components as named exports from `@a4ui/core`; import `@a4ui/core/styles.css`
+> once in the app entry; add `@a4ui/core/preset` to `tailwind.config` (optional).
+> Props are typed with JSDoc/`@example` in the package's `.d.ts`.
+> **For the A4ui look, follow the Spatial Glass recipe** (in `llms.txt` and
+> https://a4ui.pages.dev/#/guide-spatial-glass): put an `<Aurora/>` backdrop
+> behind a transparent root, use `<Card glass>` surfaces (glass reads only over a
+> colored backdrop), keep `pointerGlow` on for the cursor light, add restrained
+> motion, and use `Expandable` for galleries. Full component list + recipe:
 > https://a4ui.pages.dev/llms.txt
 
 ## Develop

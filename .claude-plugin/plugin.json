@@ -1,0 +1,14 @@
+{
+  "name": "spatial-glass",
+  "displayName": "Spatial Glass",
+  "version": "1.0.0",
+  "description": "Applies the A4ui \"Spatial Glass\" recipe (Aurora backdrop, glass surfaces, cursor light, tasteful motion, Expandable) when building a page with @a4ui/core.",
+  "author": {
+    "name": "A4uikit"
+  },
+  "homepage": "https://a4ui.pages.dev",
+  "repository": "https://github.com/A4uikit/a4ui",
+  "license": "MIT",
+  "keywords": ["a4ui", "solidjs", "design-system", "glassmorphism", "spatial-glass"],
+  "skills": ["./.claude/skills/spatial-glass"]
+}

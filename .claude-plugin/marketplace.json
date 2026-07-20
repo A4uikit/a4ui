@@ -1,0 +1,16 @@
+{
+  "name": "a4ui",
+  "owner": {
+    "name": "A4uikit",
+    "url": "https://github.com/A4uikit"
+  },
+  "description": "A4ui — Spatial Glass design system tooling for Claude Code.",
+  "plugins": [
+    {
+      "name": "spatial-glass",
+      "source": "./",
+      "description": "Applies the A4ui \"Spatial Glass\" recipe when building a SolidJS UI with @a4ui/core.",
+      "version": "1.0.0"
+    }
+  ]
+}
