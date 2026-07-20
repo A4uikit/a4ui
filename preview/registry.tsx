@@ -900,6 +900,28 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `import { TiltCard } from '@a4ui/core'
 
 <TiltCard><Card>Tilt me</Card></TiltCard>`,
+    variants: [
+      {
+        label: 'Subtle (max=4)',
+        demo: () => (
+          <UI.TiltCard max={4}>
+            <div class="card grid h-36 w-60 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium">
+              Subtle tilt
+            </div>
+          </UI.TiltCard>
+        ),
+      },
+      {
+        label: 'Dramatic (max=20)',
+        demo: () => (
+          <UI.TiltCard max={20}>
+            <div class="card grid h-36 w-60 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium">
+              Dramatic tilt
+            </div>
+          </UI.TiltCard>
+        ),
+      },
+    ],
   },
   {
     id: 'motion-spotlight',
@@ -917,6 +939,28 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `import { Spotlight } from '@a4ui/core'
 
 <Spotlight><Card>Move your cursor here</Card></Spotlight>`,
+    variants: [
+      {
+        label: 'Accent color',
+        demo: () => (
+          <UI.Spotlight class="rounded-2xl" color="hsl(var(--accent))">
+            <div class="grid h-36 w-72 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium text-foreground">
+              Accent glow
+            </div>
+          </UI.Spotlight>
+        ),
+      },
+      {
+        label: 'Small, tight glow',
+        demo: () => (
+          <UI.Spotlight class="rounded-2xl" size={80}>
+            <div class="grid h-36 w-72 place-items-center rounded-2xl border border-border bg-card p-4 text-center text-sm font-medium text-foreground">
+              Tight glow
+            </div>
+          </UI.Spotlight>
+        ),
+      },
+    ],
   },
   {
     id: 'motion-scroll-progress',
@@ -945,6 +989,24 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `import { GradientText } from '@a4ui/core'
 
 <GradientText class="text-4xl">Spatial Glass</GradientText>`,
+    variants: [
+      {
+        label: 'Rose → amber',
+        demo: () => (
+          <UI.GradientText class="text-4xl" from="#f43f5e" via="#f97316" to="#f43f5e">
+            Sonora Precision
+          </UI.GradientText>
+        ),
+      },
+      {
+        label: 'Sky → violet',
+        demo: () => (
+          <UI.GradientText class="text-4xl" from="#0ea5e9" via="#8b5cf6" to="#0ea5e9">
+            Launch Ready
+          </UI.GradientText>
+        ),
+      },
+    ],
   },
 
   // ---- Actions --------------------------------------------------------------
@@ -979,6 +1041,19 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
 
 // href renders it as an <a> (router link / tel: CTA), same look + ripple:
 <Button ripple href="tel:+525512345678">Llama ahora</Button>${c.ripple ? '\n\n// ripple spawns a Material-style press ripple — no wrapper, no motion dep' : ''}`,
+    variants: [
+      { label: 'Secondary', demo: () => <UI.Button variant="secondary">Cancel</UI.Button> },
+      { label: 'Outline', demo: () => <UI.Button variant="outline">Learn more</UI.Button> },
+      { label: 'Ghost', demo: () => <UI.Button variant="ghost">Dismiss</UI.Button> },
+      {
+        label: 'With icon',
+        demo: () => (
+          <UI.Button variant="primary">
+            <Sparkles class="mr-2 h-4 w-4" /> Upgrade
+          </UI.Button>
+        ),
+      },
+    ],
   },
 
   // ---- Feedback -------------------------------------------------------------
@@ -1055,6 +1130,14 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [on, setOn] = createSignal(true)
 <Switch checked={on()} onChange={setOn} label="${c.label}"${c.disabled ? ' disabled' : ''} />`,
+    variants: [
+      { label: 'On', demo: () => <UI.Switch checked={true} onChange={() => {}} label="Auto-save" /> },
+      { label: 'Off', demo: () => <UI.Switch checked={false} onChange={() => {}} label="Dark mode" /> },
+      {
+        label: 'Disabled',
+        demo: () => <UI.Switch checked={true} onChange={() => {}} label="Beta features" disabled />,
+      },
+    ],
   },
 
   // ---- Data -----------------------------------------------------------------
@@ -1110,6 +1193,26 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: (c) => `<Tooltip content="${c.content}">
   <Button variant="outline">Hover me</Button>
 </Tooltip>`,
+    variants: [
+      {
+        label: 'Long content',
+        demo: () => (
+          <UI.Tooltip content="This action cannot be undone once confirmed">
+            <UI.Button variant="ghost">Delete account</UI.Button>
+          </UI.Tooltip>
+        ),
+      },
+      {
+        label: 'Icon trigger',
+        demo: () => (
+          <UI.Tooltip content="Notifications">
+            <UI.Button variant="outline">
+              <Bell class="h-4 w-4" />
+            </UI.Button>
+          </UI.Tooltip>
+        ),
+      },
+    ],
   },
 
   // ---- Actions --------------------------------------------------------------
@@ -1187,6 +1290,24 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
 <Toggle pressed={bold()} onChange={setBold}>
   <BoldIcon />
 </Toggle>`,
+    variants: [
+      {
+        label: 'Pressed',
+        demo: () => (
+          <UI.Toggle pressed={true} onChange={() => {}}>
+            <Star class="h-4 w-4" />
+          </UI.Toggle>
+        ),
+      },
+      {
+        label: 'Not pressed',
+        demo: () => (
+          <UI.Toggle pressed={false} onChange={() => {}}>
+            <Star class="h-4 w-4" />
+          </UI.Toggle>
+        ),
+      },
+    ],
   },
   {
     id: 'toggle-group',
@@ -1216,6 +1337,41 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     { value: 'center', label: 'Center' },
   ]}
 />`,
+    variants: [
+      {
+        label: 'No selection',
+        demo: () => {
+          const [view, setView] = createSignal<string | null>(null)
+          return (
+            <UI.ToggleGroup
+              value={view()}
+              onChange={setView}
+              options={[
+                { value: 'grid', label: 'Grid' },
+                { value: 'list', label: 'List' },
+              ]}
+            />
+          )
+        },
+      },
+      {
+        label: 'Three options, middle selected',
+        demo: () => {
+          const [size, setSize] = createSignal<string | null>('md')
+          return (
+            <UI.ToggleGroup
+              value={size()}
+              onChange={setSize}
+              options={[
+                { value: 'sm', label: 'S' },
+                { value: 'md', label: 'M' },
+                { value: 'lg', label: 'L' },
+              ]}
+            />
+          )
+        },
+      },
+    ],
   },
   {
     id: 'segmented-control',
@@ -1271,6 +1427,34 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [name, setName] = createSignal('')
 <Input value={name()} onInput={setName} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
+    variants: [
+      {
+        label: 'Pre-filled value',
+        demo: () => {
+          const [name, setName] = createSignal('Marina Vega')
+          return <UI.Input value={name()} onInput={setName} placeholder="Full name" class="max-w-xs" />
+        },
+      },
+      {
+        label: 'Disabled',
+        demo: () => <UI.Input value="Read only" onInput={() => {}} disabled class="max-w-xs" />,
+      },
+      {
+        label: 'Email type',
+        demo: () => {
+          const [email, setEmail] = createSignal('')
+          return (
+            <UI.Input
+              type="email"
+              value={email()}
+              onInput={setEmail}
+              placeholder="you@example.com"
+              class="max-w-xs"
+            />
+          )
+        },
+      },
+    ],
   },
   {
     id: 'textarea',
@@ -1295,6 +1479,19 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [note, setNote] = createSignal('')
 <Textarea value={note()} onInput={setNote} placeholder="${c.placeholder}"${c.disabled ? ' disabled' : ''} />`,
+    variants: [
+      {
+        label: 'Pre-filled value',
+        demo: () => {
+          const [text, setText] = createSignal('Loved the product, will buy again.')
+          return <UI.Textarea value={text()} onInput={setText} class="max-w-sm" />
+        },
+      },
+      {
+        label: 'Disabled',
+        demo: () => <UI.Textarea value="Locked note" onInput={() => {}} disabled class="max-w-sm" />,
+      },
+    ],
   },
   {
     id: 'select',
@@ -1357,6 +1554,16 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [accepted, setAccepted] = createSignal(false)
 <Checkbox checked={accepted()} onChange={setAccepted} label="${c.label}" />`,
+    variants: [
+      {
+        label: 'Checked',
+        demo: () => <UI.Checkbox checked={true} onChange={() => {}} label="Subscribe to newsletter" />,
+      },
+      {
+        label: 'Unchecked',
+        demo: () => <UI.Checkbox checked={false} onChange={() => {}} label="Remember me" />,
+      },
+    ],
   },
   {
     id: 'radio-group',
@@ -1417,6 +1624,41 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [price, setPrice] = createSignal(50)
 <Slider value={price()} onChange={setPrice} min={${c.min}} max={${c.max}} step={${c.step}} label="${c.label}" />`,
+    variants: [
+      {
+        label: 'Volume (0–10)',
+        demo: () => {
+          const [v, setV] = createSignal(6)
+          return (
+            <div class="w-64">
+              <UI.Slider value={v()} onChange={setV} min={0} max={10} step={1} label="Volume" />
+            </div>
+          )
+        },
+      },
+      {
+        label: 'Discount % (fine step)',
+        demo: () => {
+          const [v, setV] = createSignal(15)
+          return (
+            <div class="w-64">
+              <UI.Slider value={v()} onChange={setV} min={0} max={50} step={1} label="Discount %" />
+            </div>
+          )
+        },
+      },
+      {
+        label: 'Budget (large range)',
+        demo: () => {
+          const [v, setV] = createSignal(4000)
+          return (
+            <div class="w-64">
+              <UI.Slider value={v()} onChange={setV} min={0} max={10000} step={250} label="Budget" />
+            </div>
+          )
+        },
+      },
+    ],
   },
   {
     id: 'number-input',
@@ -2144,6 +2386,34 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         </div>
       ),
     code: (c) => `<Separator orientation="${c.orientation}" />`,
+    variants: [
+      {
+        label: 'Both orientations together',
+        demo: () => (
+          <div class="flex items-center gap-4 text-sm text-foreground">
+            <div class="w-32 space-y-3">
+              <p>Above</p>
+              <UI.Separator orientation="horizontal" />
+              <p>Below</p>
+            </div>
+            <UI.Separator orientation="vertical" class="h-12" />
+            <span>Aside</span>
+          </div>
+        ),
+      },
+      {
+        label: 'Between toolbar buttons',
+        demo: () => (
+          <div class="flex items-center gap-2 rounded-md border border-border p-2 text-sm text-foreground">
+            <span>Bold</span>
+            <UI.Separator orientation="vertical" class="h-4" />
+            <span>Italic</span>
+            <UI.Separator orientation="vertical" class="h-4" />
+            <span>Underline</span>
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'skeleton',
@@ -2981,6 +3251,29 @@ toast.error('Failed to save')`,
   description="When you create your first invoice it'll show up here."
   action={<Button>New invoice</Button>}
 />`,
+    variants: [
+      {
+        label: 'No action',
+        demo: () => (
+          <UI.Empty title="No results found" description="Try adjusting your filters or search terms." />
+        ),
+      },
+      {
+        label: 'Title only',
+        demo: () => <UI.Empty title="Inbox zero" />,
+      },
+      {
+        label: 'Custom icon',
+        demo: () => (
+          <UI.Empty
+            icon={<Search class="h-6 w-6" />}
+            title="No matches"
+            description="Nothing matched your search."
+            action={<UI.Button variant="outline">Clear search</UI.Button>}
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'calendar',
@@ -3046,6 +3339,32 @@ toast.error('Failed to save')`,
       </div>
     ),
     code: `Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to search`,
+    variants: [
+      {
+        label: 'Save shortcut',
+        demo: () => (
+          <div class="flex items-center gap-1 text-sm text-muted-foreground">
+            <UI.Kbd>Ctrl</UI.Kbd> <UI.Kbd>S</UI.Kbd> to save
+          </div>
+        ),
+      },
+      {
+        label: 'Three-key chord',
+        demo: () => (
+          <div class="flex items-center gap-1 text-sm text-muted-foreground">
+            <UI.Kbd>Ctrl</UI.Kbd> <UI.Kbd>Shift</UI.Kbd> <UI.Kbd>P</UI.Kbd>
+          </div>
+        ),
+      },
+      {
+        label: 'Single key',
+        demo: () => (
+          <div class="flex items-center gap-1 text-sm text-muted-foreground">
+            Press <UI.Kbd>Esc</UI.Kbd> to close
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'avatar-group',
@@ -3122,6 +3441,45 @@ toast.error('Failed to save')`,
   description="Your order has been confirmed."
   actions={<Button>Continue</Button>}
 />`,
+    variants: [
+      {
+        label: 'Error',
+        demo: () => (
+          <div class="w-full">
+            <UI.Result
+              status="error"
+              title="Payment failed"
+              description="Your card was declined. Try another payment method."
+              actions={<UI.Button variant="outline">Try again</UI.Button>}
+            />
+          </div>
+        ),
+      },
+      {
+        label: '404',
+        demo: () => (
+          <div class="w-full">
+            <UI.Result
+              status="404"
+              title="Page not found"
+              description="The page you're looking for doesn't exist."
+            />
+          </div>
+        ),
+      },
+      {
+        label: '500',
+        demo: () => (
+          <div class="w-full">
+            <UI.Result
+              status="500"
+              title="Something went wrong"
+              description="Our servers had an issue. Please try again later."
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'splitter',
@@ -3256,6 +3614,21 @@ toast.error('Failed to save')`,
       `<FloatingActionButton label="Compose" icon={<Plus />}${c.ripple ? ' ripple' : ''} />${
         c.ripple ? '\n\n// ripple = Material press ripple (engine-free, reduced-motion aware)' : ''
       }`,
+    variants: [
+      {
+        label: 'Bottom-left',
+        demo: () => (
+          <div class="text-sm text-muted-foreground">
+            Pinned to the bottom-left corner →
+            <UI.FloatingActionButton
+              label="New chat"
+              icon={<Plus class="h-6 w-6" />}
+              position="bottom-left"
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'anchor',
@@ -3287,6 +3660,32 @@ toast.error('Failed to save')`,
       </div>
     ),
     code: `<Highlight text="…the lazy dog" query="the" />`,
+    variants: [
+      {
+        label: 'Different query',
+        demo: () => (
+          <div class="text-sm text-foreground">
+            <UI.Highlight text="The quick brown fox jumps over the lazy dog" query="fox" />
+          </div>
+        ),
+      },
+      {
+        label: 'Multiple matches',
+        demo: () => (
+          <div class="text-sm text-foreground">
+            <UI.Highlight text="Sonora Precision Sonora Analytics" query="sonora" />
+          </div>
+        ),
+      },
+      {
+        label: 'No match',
+        demo: () => (
+          <div class="text-sm text-foreground">
+            <UI.Highlight text="The quick brown fox jumps over the lazy dog" query="xyz" />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'list',
