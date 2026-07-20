@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.26.0'
+export const A4UI_VERSION = '0.27.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -36,6 +36,7 @@ export { remeasureAfterLayout } from './lib/virtual'
 export { createOptimistic } from './lib/createOptimistic'
 export { startViewTransition } from './lib/viewTransition'
 export { EASE, SPRING, type EaseName, type SpringName } from './lib/easing'
+export { createLinkedSelection, type LinkedSelection } from './lib/createLinkedSelection'
 
 // UI components (src/ui) — all 18 extracted. See CLAUDE.md.
 export { Accordion, type AccordionItem } from './ui/Accordion'
@@ -164,6 +165,8 @@ export { CodeTabs, type CodeTabsProps, type CodeTab } from './ui/CodeTabs'
 export { PillSearch, type PillSearchProps, type PillField } from './ui/PillSearch'
 export { CategoryStrip, type CategoryStripProps, type CategoryItem } from './ui/CategoryStrip'
 export { MasterDetail, type MasterDetailProps, type MasterDetailItem } from './ui/MasterDetail'
+export { SlashMenu, type SlashMenuProps, type SlashItem } from './ui/SlashMenu'
+export { DataView, type DataViewProps, type DataViewColumn, type DataViewMode } from './ui/DataView'
 
 // Motion components (src/ui) — animation primitives built on the `motion` engine
 // (adapted from motion.dev examples). All tree-shakeable and reduced-motion aware;

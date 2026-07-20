@@ -8,11 +8,16 @@ import {
   Bell,
   Cloud,
   Croissant,
+  Heading,
   Heart,
   Home,
+  Image as ImageIcon,
   Milk,
+  Minus,
   Package,
   Plus,
+  Table as TableIcon,
+  Type,
   Rocket,
   Search,
   ShoppingCart,
@@ -4202,5 +4207,133 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     code: `<MasterDetail items={messages.map((m) => ({
   id: m.id, label: m.subject, detail: <Body m={m} />,
 }))} />`,
+  },
+  {
+    id: 'slash-menu',
+    title: 'SlashMenu',
+    group: 'Overlays',
+    blurb: 'Filterable "/" insert menu — a block/command picker with keyboard navigation.',
+    demo: () => {
+      const [query, setQuery] = createSignal('')
+      const [log, setLog] = createSignal<string[]>([])
+      return (
+        <div class="max-w-sm space-y-2">
+          <input
+            type="text"
+            value={query()}
+            onInput={(e) => setQuery(e.currentTarget.value)}
+            placeholder="Type to filter blocks…"
+            class="w-full rounded-md border border-border bg-transparent px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground"
+          />
+          <UI.SlashMenu
+            query={query()}
+            onSelect={(v) => setLog((l) => [...l, v])}
+            items={[
+              {
+                value: 'heading',
+                label: 'Heading',
+                description: 'Big section heading',
+                icon: <Heading class="h-4 w-4" />,
+                keywords: ['h1', 'title'],
+              },
+              {
+                value: 'text',
+                label: 'Text',
+                description: 'Plain paragraph',
+                icon: <Type class="h-4 w-4" />,
+                keywords: ['paragraph'],
+              },
+              {
+                value: 'image',
+                label: 'Image',
+                description: 'Upload or embed',
+                icon: <ImageIcon class="h-4 w-4" />,
+                keywords: ['photo'],
+              },
+              {
+                value: 'table',
+                label: 'Table',
+                description: 'Rows and columns',
+                icon: <TableIcon class="h-4 w-4" />,
+                keywords: ['grid'],
+              },
+              {
+                value: 'divider',
+                label: 'Divider',
+                description: 'Horizontal rule',
+                icon: <Minus class="h-4 w-4" />,
+                keywords: ['hr'],
+              },
+            ]}
+          />
+          <p class="text-xs text-muted-foreground">Inserted: {log().join(', ') || '—'}</p>
+        </div>
+      )
+    },
+    code: `const [query, setQuery] = createSignal('')
+<input value={query()} onInput={(e) => setQuery(e.currentTarget.value)} />
+<SlashMenu items={blocks} query={query()} onSelect={insertBlock} />`,
+  },
+  {
+    id: 'data-view',
+    title: 'DataView',
+    group: 'Data',
+    blurb: 'One dataset, switchable views — table, board (kanban), and gallery — via a segmented control.',
+    demo: () => {
+      type Task = { id: string; title: string; status: string; assignee: string }
+      const tasks: Task[] = [
+        { id: 't1', title: 'Draft Q3 roadmap', status: 'Todo', assignee: 'Nadia' },
+        { id: 't2', title: 'Fix checkout redirect', status: 'In progress', assignee: 'Marco' },
+        { id: 't3', title: 'Write onboarding email', status: 'Todo', assignee: 'Priya' },
+        { id: 't4', title: 'Ship dark-mode toggle', status: 'Done', assignee: 'Marco' },
+        { id: 't5', title: 'Audit API rate limits', status: 'In progress', assignee: 'Nadia' },
+        { id: 't6', title: 'Update pricing copy', status: 'Done', assignee: 'Priya' },
+      ]
+      return (
+        <UI.DataView<Task>
+          data={tasks}
+          getId={(t) => t.id}
+          columns={[
+            { key: 'title', header: 'Title' },
+            { key: 'status', header: 'Status' },
+            { key: 'assignee', header: 'Assignee' },
+          ]}
+          groupBy={(t) => t.status}
+          card={(t) => (
+            <div class="flex flex-col gap-1">
+              <span class="font-medium text-foreground">{t.title}</span>
+              <span class="text-xs text-muted-foreground">{t.assignee}</span>
+            </div>
+          )}
+        />
+      )
+    },
+    code: `<DataView data={tasks} getId={(t) => t.id}
+  columns={cols} groupBy={(t) => t.status} card={renderCard} />`,
+  },
+  {
+    id: 'refractive-glass',
+    title: 'Refractive glass',
+    group: 'Layout',
+    blurb:
+      'A heavier glass surface with a specular sheen + bright top edge (the `.glass-refractive` utility). For hero/feature panels over a colourful backdrop like Aurora.',
+    demo: () => (
+      <div
+        class="relative overflow-hidden rounded-2xl p-10"
+        style={{
+          background:
+            'radial-gradient(45% 45% at 25% 20%, hsl(var(--primary) / 0.55), transparent 70%), radial-gradient(45% 45% at 80% 80%, hsl(var(--accent) / 0.55), transparent 70%)',
+        }}
+      >
+        <div class="glass-refractive mx-auto max-w-sm p-6">
+          <h3 class="text-lg font-semibold text-foreground">Refractive glass</h3>
+          <p class="mt-1 text-sm text-muted-foreground">
+            A specular sheen and bright top edge read as light refracting through the material.
+          </p>
+        </div>
+      </div>
+    ),
+    code: `<Aurora variant="mesh" animated />
+<div class="glass-refractive p-6">…</div>`,
   },
 ]

@@ -6,6 +6,25 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.27.0] — 2026-07-20
+
+### Added
+
+Roadmap phase 2 (second wave) + the remaining phase-1 depth/backdrop work.
+
+- **`SlashMenu`** — a filterable "/" insert menu (block/command picker) with
+  keyboard navigation.
+- **`DataView`** — one dataset, switchable views (table / board / gallery) via a
+  segmented control; generic over the row type.
+- **`createLinkedSelection`** — a helper to keep two views (e.g. a map + a list)
+  in sync on hover/selection.
+- **`Aurora` `variant="mesh"`** — a multi-point gradient-mesh backdrop option
+  alongside the default blurred blobs.
+- **`.glass-refractive`** — a heavier glass surface utility with a specular sheen
+  and bright top edge, for hero/feature panels.
+
+All reduced-motion aware where relevant; Experimental.
+
 ## [0.26.0] — 2026-07-20
 
 ### Added

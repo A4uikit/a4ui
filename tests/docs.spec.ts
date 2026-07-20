@@ -157,6 +157,22 @@ test.describe('interactions', () => {
     await expect(page.locator('main')).toContainText('Payment of $1,240.00 received')
   })
 
+  test('slash menu filters items', async ({ page }) => {
+    await page.goto('/#/slash-menu')
+    const options = page.getByRole('option')
+    await expect(options).toHaveCount(5)
+    await page.locator('main input').first().fill('tab')
+    await expect(options).toHaveCount(1)
+    await expect(options.first()).toContainText('Table')
+  })
+
+  test('data view switches to gallery', async ({ page }) => {
+    await page.goto('/#/data-view')
+    await expect(page.locator('main table')).toBeVisible()
+    await page.getByText('Gallery', { exact: true }).click()
+    await expect(page.locator('main table')).toHaveCount(0)
+  })
+
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
     await page.goto('/#/date-field')
     await page.getByRole('button', { name: 'Due date' }).click()
