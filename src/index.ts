@@ -168,6 +168,7 @@ export { ChristmasBackground } from './layout/ChristmasBackground'
 export { ThemeToggle } from './layout/ThemeToggle'
 export { EffectsToggle } from './layout/EffectsToggle'
 export { NavGroup } from './layout/NavGroup'
+export { Section, type SectionWidth, type SectionPad } from './layout/Section'
 
 // Themes (src/themes) — swappable color palettes (Space is the default). Pick one
 // with `selectTheme('dino')`, restore the saved one with `initTheme()`, or build

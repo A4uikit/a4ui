@@ -6,6 +6,12 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`Section`** — centered content container with a max width (`size`), vertical
+  rhythm (`py`), and an optional `id` anchor. The layout wrapper every page
+  repeats; found while building the templates repo.
+
 ## [0.17.0] — 2026-07-20
 
 ### Added

@@ -2302,6 +2302,28 @@ toast.error('Failed to save')`,
 <EffectsToggle />`,
   },
   {
+    id: 'section',
+    title: 'Section',
+    group: 'Layout',
+    blurb:
+      'Centered content container — max width (size) + vertical rhythm (py) + optional id anchor. The layout wrapper every page repeats.',
+    demo: () => (
+      <div class="w-full">
+        <UI.Section size="md" py="sm" class="rounded-lg border border-dashed border-border text-center">
+          <p class="text-sm text-muted-foreground">Centered, max-w-md, py-sm</p>
+        </UI.Section>
+      </div>
+    ),
+    code: `<Section id="services" size="6xl" py="lg">
+  <h2>Servicios</h2>
+</Section>
+
+// full-bleed band + centered content:
+<div class="bg-muted/30">
+  <Section size="4xl" py="md">…</Section>
+</div>`,
+  },
+  {
     id: 'nav-group',
     title: 'NavGroup',
     group: 'Layout',
