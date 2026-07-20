@@ -110,7 +110,7 @@ export function PriceBlock(props: PriceBlockProps): JSX.Element {
       <Show when={props.coupon}>
         {(coupon) => (
           <div class="flex flex-wrap items-center gap-2">
-            <span class="inline-flex items-center gap-1 rounded-md border border-dashed border-primary/50 px-2 py-0.5 text-xs font-mono text-primary">
+            <span class="inline-flex items-center gap-1 rounded-md border border-dashed border-primary/50 px-2 py-0.5 text-xs font-mono text-foreground">
               {coupon().label ?? 'Coupon'} {coupon().code}
             </span>
             <Show when={coupon().amount !== undefined}>

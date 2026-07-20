@@ -49,7 +49,7 @@ export function SegmentedControl(props: SegmentedControlProps): JSX.Element {
         {(option) => (
           <KSegmentedControl.Item
             value={option.value}
-            class="relative z-10 flex cursor-pointer items-center px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors data-[selected]:text-primary-foreground"
+            class="relative z-10 flex cursor-pointer items-center px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors data-[checked]:text-primary-foreground"
           >
             <KSegmentedControl.ItemInput />
             <KSegmentedControl.ItemLabel>{option.label}</KSegmentedControl.ItemLabel>
