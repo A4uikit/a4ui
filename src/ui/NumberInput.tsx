@@ -11,6 +11,8 @@ interface NumberInputProps {
   min?: number
   /** Upper bound; the increment trigger disables itself at this value. */
   max?: number
+  /** Accessible name applied to the input as its `aria-label` (no visible label is rendered). */
+  'aria-label'?: string
   class?: string
 }
 
@@ -39,7 +41,10 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
       <KNumberField.DecrementTrigger class={cn(TRIGGER_CLASS, 'rounded-l-md')} aria-label="Decrement">
         −
       </KNumberField.DecrementTrigger>
-      <KNumberField.Input class="w-16 border-y border-input bg-background px-3 py-2 text-center text-sm text-foreground outline-none transition-colors a4-field" />
+      <KNumberField.Input
+        aria-label={props['aria-label']}
+        class="w-16 border-y border-input bg-background px-3 py-2 text-center text-sm text-foreground outline-none transition-colors a4-field"
+      />
       <KNumberField.IncrementTrigger class={cn(TRIGGER_CLASS, 'rounded-r-md')} aria-label="Increment">
         +
       </KNumberField.IncrementTrigger>

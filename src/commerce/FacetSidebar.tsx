@@ -195,6 +195,7 @@ export function FacetSidebar(props: FacetSidebarProps): JSX.Element {
                 onChange={setMin}
                 min={price().min}
                 max={price().value[1]}
+                aria-label="Minimum price"
               />
               <span class="text-sm text-muted-foreground">–</span>
               <NumberInput
@@ -202,6 +203,7 @@ export function FacetSidebar(props: FacetSidebarProps): JSX.Element {
                 onChange={setMax}
                 min={price().value[0]}
                 max={price().max}
+                aria-label="Maximum price"
               />
             </div>
           </div>
