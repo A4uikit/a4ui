@@ -6,11 +6,28 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.18.0] — 2026-07-20
+
+Components distilled from repeated patterns while building the templates repo.
+
 ### Added
 
 - **`Section`** — centered content container with a max width (`size`), vertical
-  rhythm (`py`), and an optional `id` anchor. The layout wrapper every page
-  repeats; found while building the templates repo.
+  rhythm (`py`), and an optional `id` anchor. The layout wrapper every page repeats.
+- **`PricingTable`** — tiered pricing cards with a highlighted "Popular" tier and
+  an optional monthly/annual toggle (controlled or uncontrolled).
+- **`BeforeAfter`** — draggable before/after image comparison slider (clip-path,
+  keyboard-accessible, reduced-motion aware, engine-free).
+- **`ActionBar`** — sticky action/emergency bar: a status slot + a prominent CTA
+  (renders as `<a>` for `tel:`/links). For urgent-service pages.
+- **`createCart`** (`@a4ui/core/commerce`) — a generic Solid signal cart store
+  (`add`/`remove`/`setQty`/`clear`, reactive `count()`/`subtotal()`), so commerce
+  pages stop hand-rolling one.
+
+### Fixed
+
+- `ProductCard` — the add-to-cart button now `stopPropagation`s, so a card wrapped
+  in a link/router `<A>` adds to cart without also navigating.
 
 ## [0.17.0] — 2026-07-20
 

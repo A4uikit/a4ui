@@ -127,7 +127,15 @@ export function ProductCard(props: ProductCardProps): JSX.Element {
           locale={props.locale}
         />
         <Show when={props.onAddToCart}>
-          <Button class="mt-auto w-full" onClick={() => props.onAddToCart?.()}>
+          {/* stopPropagation so a card wrapped in a link/router-<A> adds to cart
+              without also navigating. */}
+          <Button
+            class="mt-auto w-full"
+            onClick={(e) => {
+              e.stopPropagation()
+              props.onAddToCart?.()
+            }}
+          >
             Add to cart
           </Button>
         </Show>

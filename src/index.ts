@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.16.0'
+export const A4UI_VERSION = '0.17.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -86,6 +86,8 @@ export { Carousel, type CarouselProps } from './ui/Carousel'
 export { Stepper, type StepItem, type StepperProps } from './ui/Stepper'
 export { Timeline, type TimelineItem, type TimelineTone, type TimelineProps } from './ui/Timeline'
 export { Rating, type RatingProps } from './ui/Rating'
+export { PricingTable, type PricingTier, type PricingPeriod } from './ui/PricingTable'
+export { BeforeAfter, type BeforeAfterProps } from './ui/BeforeAfter'
 export { Empty, type EmptyProps } from './ui/Empty'
 export { Calendar, type CalendarProps } from './ui/Calendar'
 export { Tree, type TreeNode, type TreeProps } from './ui/Tree'
@@ -169,6 +171,7 @@ export { ThemeToggle } from './layout/ThemeToggle'
 export { EffectsToggle } from './layout/EffectsToggle'
 export { NavGroup } from './layout/NavGroup'
 export { Section, type SectionWidth, type SectionPad } from './layout/Section'
+export { ActionBar, type ActionBarProps, type ActionBarPosition } from './layout/ActionBar'
 
 // Themes (src/themes) — swappable color palettes (Space is the default). Pick one
 // with `selectTheme('dino')`, restore the saved one with `initTheme()`, or build

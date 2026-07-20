@@ -2324,6 +2324,90 @@ toast.error('Failed to save')`,
 </div>`,
   },
   {
+    id: 'pricing-table',
+    title: 'PricingTable',
+    group: 'Layout',
+    blurb: 'Tiered pricing cards with a highlighted "Popular" tier and an optional monthly/annual toggle.',
+    demo: () => (
+      <UI.PricingTable
+        tiers={[
+          {
+            name: 'Free',
+            price: '$0',
+            priceAnnual: '$0',
+            features: ['1 project', 'Community support'],
+            cta: { label: 'Start' },
+          },
+          {
+            name: 'Pro',
+            price: '$12/mo',
+            priceAnnual: '$120/yr',
+            features: ['Unlimited projects', 'Priority support', 'Analytics'],
+            highlighted: true,
+            cta: { label: 'Upgrade' },
+          },
+          {
+            name: 'Team',
+            price: '$29/mo',
+            priceAnnual: '$290/yr',
+            features: ['Everything in Pro', 'SSO', 'Roles'],
+            cta: { label: 'Contact' },
+          },
+        ]}
+      />
+    ),
+    code: `<PricingTable tiers={[
+  { name: 'Free', price: '$0', priceAnnual: '$0', features: ['1 project'], cta: { label: 'Start' } },
+  { name: 'Pro', price: '$12/mo', priceAnnual: '$120/yr', features: ['Unlimited'], highlighted: true, cta: { label: 'Upgrade', href: '/signup' } },
+]} />`,
+  },
+  {
+    id: 'before-after',
+    title: 'BeforeAfter',
+    group: 'Data',
+    blurb:
+      'Draggable before/after image comparison slider — keyboard-accessible, reduced-motion aware, engine-free.',
+    demo: () => (
+      <div class="w-full max-w-lg">
+        <UI.BeforeAfter
+          before="https://picsum.photos/seed/a4ui-before/800/450?grayscale"
+          after="https://picsum.photos/seed/a4ui-before/800/450"
+          alt="Ejemplo antes/después"
+          labels={['Antes', 'Después']}
+          class="aspect-video"
+        />
+      </div>
+    ),
+    code: `<BeforeAfter before="/antes.jpg" after="/despues.jpg" alt="Resultado" labels={['Antes','Después']} />`,
+  },
+  {
+    id: 'action-bar',
+    title: 'ActionBar',
+    group: 'Layout',
+    blurb:
+      'Sticky action/emergency bar: a status slot + a prominent CTA (renders as <a> for tel:/links). For urgent-service pages.',
+    demo: () => (
+      <div class="w-full overflow-hidden rounded-lg border border-border">
+        <UI.ActionBar
+          sticky={false}
+          status={
+            <UI.Badge tone="success" pulse>
+              24/7
+            </UI.Badge>
+          }
+          message="Servicio de emergencia"
+          action={{ label: 'Llama ahora', href: 'tel:+525512345678' }}
+        />
+      </div>
+    ),
+    code: `<ActionBar
+  sticky
+  status={<Badge tone="success" pulse>24/7</Badge>}
+  message="Servicio de emergencia"
+  action={{ label: 'Llama ahora', href: 'tel:+525512345678' }}
+/>`,
+  },
+  {
     id: 'nav-group',
     title: 'NavGroup',
     group: 'Layout',
