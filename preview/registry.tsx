@@ -2484,6 +2484,83 @@ toast.error('Failed to save')`,
     code: `<BeforeAfter before="/antes.jpg" after="/despues.jpg" alt="Resultado" labels={['Antes','Después']} />`,
   },
   {
+    id: 'configurator',
+    title: 'Configurator',
+    group: 'Data',
+    blurb:
+      'Data-driven "pick options → live preview + running total" builder (select / counter / text groups). Distilled from the templates\' engraving customizer and board builder.',
+    demo: () => {
+      const [cfg, setCfg] = createSignal<UI.ConfiguratorState>({
+        producto: 'termo',
+        color: 'plata',
+        texto: 'Familia',
+      })
+      return (
+        <div class="w-full">
+          <UI.Configurator
+            value={cfg()}
+            onChange={setCfg}
+            formatTotal={(n) => `$${n} MXN`}
+            groups={[
+              {
+                type: 'select',
+                name: 'producto',
+                label: 'Producto',
+                options: [
+                  { value: 'termo', label: 'Termo acero', price: 450 },
+                  { value: 'placa', label: 'Placa de madera', price: 320 },
+                ],
+              },
+              {
+                type: 'select',
+                name: 'color',
+                label: 'Acabado',
+                options: [
+                  { value: 'plata', label: 'Plata' },
+                  { value: 'negro', label: 'Negro', price: 40 },
+                ],
+              },
+              {
+                type: 'text',
+                name: 'texto',
+                label: 'Texto a grabar',
+                placeholder: 'Tu texto…',
+                maxLength: 20,
+              },
+            ]}
+            action={{ label: 'Solicitar diseño' }}
+            preview={(state) => (
+              <div class="grid aspect-square place-items-center rounded-xl border border-border bg-muted/40 p-6 text-center">
+                <div>
+                  <p class="text-xs uppercase tracking-wide text-muted-foreground">
+                    {(state.producto as string) === 'placa' ? 'Placa' : 'Termo'} · {state.color as string}
+                  </p>
+                  <p class="mt-2 text-2xl font-semibold text-foreground">
+                    {(state.texto as string) || 'Tu texto'}
+                  </p>
+                  <p class="mt-1 text-xs text-muted-foreground">grabado láser</p>
+                </div>
+              </div>
+            )}
+          />
+        </div>
+      )
+    },
+    code: `const [cfg, setCfg] = createSignal<ConfiguratorState>({ producto: 'termo', texto: '' })
+<Configurator
+  value={cfg()} onChange={setCfg} formatTotal={(n) => \`$\${n} MXN\`}
+  groups={[
+    { type: 'select', name: 'producto', label: 'Producto', options: [
+      { value: 'termo', label: 'Termo', price: 450 } ] },
+    { type: 'counter', name: 'extras', label: 'Extras', items: [
+      { id: 'caja', label: 'Caja de regalo', price: 60 } ] },
+    { type: 'text', name: 'texto', label: 'Texto a grabar', maxLength: 20 },
+  ]}
+  action={{ label: 'Solicitar diseño', onClick: submit }}
+  preview={(state, total) => <MyPreview state={state} total={total} />}
+/>`,
+  },
+  {
     id: 'action-bar',
     title: 'ActionBar',
     group: 'Layout',

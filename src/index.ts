@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.18.0'
+export const A4UI_VERSION = '0.19.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -88,6 +88,14 @@ export { Timeline, type TimelineItem, type TimelineTone, type TimelineProps } fr
 export { Rating, type RatingProps } from './ui/Rating'
 export { PricingTable, type PricingTier, type PricingPeriod } from './ui/PricingTable'
 export { BeforeAfter, type BeforeAfterProps } from './ui/BeforeAfter'
+export {
+  Configurator,
+  type ConfiguratorProps,
+  type ConfiguratorGroup,
+  type ConfiguratorState,
+  type ConfiguratorOption,
+  type ConfiguratorItem,
+} from './ui/Configurator'
 export { Empty, type EmptyProps } from './ui/Empty'
 export { Calendar, type CalendarProps } from './ui/Calendar'
 export { Tree, type TreeNode, type TreeProps } from './ui/Tree'

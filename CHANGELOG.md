@@ -6,6 +6,15 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.20.0] — 2026-07-20
+
+### Added
+
+- **`Configurator`** — a data-driven "pick options → live preview + running
+  total" builder (`select` / `counter` / `text` groups, controlled state,
+  optional `preview` render-prop and `action` CTA). Distilled from the templates'
+  engraving customizer and charcuterie board builder.
+
 ## [0.19.0] — 2026-07-20
 
 ### Added
