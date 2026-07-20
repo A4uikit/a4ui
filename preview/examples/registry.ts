@@ -90,6 +90,18 @@ export const EXAMPLES: ExampleEntry[] = [
     component: lazy(() => import('./Storefront')),
   },
   {
+    id: 'boutique',
+    title: 'Boutique',
+    blurb: 'Faceted marketplace with three switchable product-card styles and a cart drawer.',
+    component: lazy(() => import('./Boutique')),
+  },
+  {
+    id: 'showpiece',
+    title: 'Showpiece',
+    blurb: 'Product detail — gallery lightbox, PriceBlock, ConditionScale, SpecSheet, and reviews.',
+    component: lazy(() => import('./Showpiece')),
+  },
+  {
     id: 'checkout',
     title: 'Checkout',
     blurb: 'Cart lines with quantity steppers, a shipping form, and an order summary.',
