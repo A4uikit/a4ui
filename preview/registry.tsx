@@ -211,6 +211,58 @@ import { Button } from '@a4ui/core'
 // Browse every icon at https://lucide.dev/icons`,
   },
   {
+    id: 'templates',
+    title: 'Templates',
+    group: 'Get started',
+    blurb:
+      'Complete, real company sites built with A4ui — each its own theme, live on Cloudflare Pages. Proof the system builds full pages, not just demos. Source: github.com/A4uikit/templates',
+    demo: () => {
+      const TEMPLATES = [
+        { slug: 'beauty', name: 'Lumière', kind: 'Estética & skincare' },
+        { slug: 'hvac', name: 'AirePro', kind: 'Aire acondicionado' },
+        { slug: 'laser-engraving', name: 'Roble & Láser', kind: 'Grabado láser' },
+        { slug: 'charcuterie', name: 'La Tabla', kind: 'Charcutería' },
+        { slug: 'towing', name: 'Grúas Rescate 24', kind: 'Grúas 24/7' },
+        { slug: 'computers', name: 'TecnoFix', kind: 'Cómputo & CCTV' },
+        { slug: 'taller', name: 'Taller GT', kind: 'Taller mecánico' },
+        { slug: 'restaurant', name: 'Sazón', kind: 'Restaurante' },
+        { slug: 'saas-landing', name: 'Nimbus', kind: 'SaaS landing' },
+        { slug: 'dolls', name: 'Juguetería Luna', kind: 'Juguetería' },
+        { slug: 'sports', name: 'GolMX', kind: 'Deportes' },
+        { slug: 'sports-live', name: 'En Vivo MX', kind: 'Marcadores en vivo' },
+        { slug: 'phones', name: 'CelMX', kind: 'Tienda de teléfonos' },
+        { slug: 'realestate', name: 'Casa Nova', kind: 'Inmobiliaria' },
+        { slug: 'fintech', name: 'Nuvo', kind: 'Wallet / neobank' },
+      ]
+      return (
+        <div class="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <For each={TEMPLATES}>
+            {(t) => (
+              <a
+                href={`https://a4ui-${t.slug}.pages.dev`}
+                target="_blank"
+                rel="noreferrer"
+                class="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/60"
+              >
+                <div class="flex items-center justify-between">
+                  <span class="font-medium text-foreground">{t.name}</span>
+                  <span class="text-xs text-muted-foreground transition-colors group-hover:text-primary">
+                    a4ui-{t.slug} ↗
+                  </span>
+                </div>
+                <p class="mt-1 text-sm text-muted-foreground">{t.kind}</p>
+              </a>
+            )}
+          </For>
+        </div>
+      )
+    },
+    code: `// 15 complete vertical sites built with @a4ui/core, each on its own
+// Cloudflare Pages project (a4ui-<slug>.pages.dev). Monorepo:
+//   https://github.com/A4uikit/templates
+// e.g. https://a4ui-beauty.pages.dev · https://a4ui-fintech.pages.dev`,
+  },
+  {
     id: 'motion-stagger',
     title: 'Stagger',
     group: 'Motion',
