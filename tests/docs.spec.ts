@@ -92,6 +92,24 @@ test.describe('interactions', () => {
     await expect(page.getByText('Do you want to continue with this action?')).toBeVisible()
   })
 
+  test('announcement bar dismisses', async ({ page }) => {
+    await page.goto('/#/announcement-bar')
+    const bar = page.getByRole('region', { name: 'Announcement' })
+    await expect(bar).toBeVisible()
+    await page.getByRole('button', { name: 'Dismiss announcement' }).click()
+    await expect(bar).toHaveCount(0)
+  })
+
+  test('facet sidebar chips: remove one and clear all', async ({ page }) => {
+    await page.goto('/#/facet-sidebar')
+    const chips = page.getByRole('button', { name: /^Remove / })
+    await expect(chips).toHaveCount(2)
+    await page.getByRole('button', { name: 'Remove Mug' }).click()
+    await expect(chips).toHaveCount(1)
+    await page.getByRole('button', { name: 'Clear all' }).click()
+    await expect(chips).toHaveCount(0)
+  })
+
   test('date field opens the calendar (portaled, visible on top)', async ({ page }) => {
     await page.goto('/#/date-field')
     await page.getByRole('button', { name: 'Due date' }).click()

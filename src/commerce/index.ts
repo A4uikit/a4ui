@@ -8,4 +8,13 @@ export { ProductGrid, type ProductGridProps } from './ProductGrid'
 export { CartLine, type CartLineProps } from './CartLine'
 export { CartSummary, type CartSummaryProps, type CartSummaryItem } from './CartSummary'
 export { FilterGroup, type FilterGroupProps, type FacetOption } from './FilterGroup'
+export { FacetSidebar, type FacetSidebarProps, type FacetSection, type FacetPrice } from './FacetSidebar'
+export {
+  PriceBlock,
+  type PriceBlockProps,
+  type PriceBlockCoupon,
+  type PriceBlockFinancing,
+  type PriceBlockSize,
+} from './PriceBlock'
+export { ConditionScale, type ConditionScaleProps, type ConditionTier } from './ConditionScale'
 export { createCart, type Cart, type CartProduct, type CartEntry } from './createCart'
