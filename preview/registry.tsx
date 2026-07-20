@@ -23,6 +23,7 @@ import * as Commerce from '../src/commerce'
 import * as Charts from '../src/charts'
 import { MarkdownGuide } from './MarkdownGuide'
 // Long-form guides render the actual repo markdown (single-source, never drift).
+import spatialGlassMd from '../SPATIAL-GLASS.md?raw'
 import integrationsMd from '../INTEGRATIONS.md?raw'
 import stabilityMd from '../STABILITY.md?raw'
 import migrationMd from '../MIGRATION.md?raw'
@@ -3599,6 +3600,15 @@ toast.error('Failed to save')`,
 
   // ---- Guides ---------------------------------------------------------------
   // Long-form docs rendered from the repo markdown (single-source).
+  {
+    id: 'guide-spatial-glass',
+    title: 'Spatial Glass',
+    group: 'Guides',
+    blurb:
+      'The recipe for the A4ui look — Aurora backdrop, glass surfaces, the cursor light, tasteful motion, Expandable. Follow it and a page looks like A4ui.',
+    demo: () => <MarkdownGuide src={spatialGlassMd} />,
+    guide: true,
+  },
   {
     id: 'guide-integrations',
     title: 'Integrations',
