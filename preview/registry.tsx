@@ -235,24 +235,72 @@ import { Button } from '@a4ui/core'
         { slug: 'fintech', name: 'Nuvo', kind: 'Wallet / neobank' },
       ]
       return (
-        <div class="grid w-full gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="grid w-full gap-5 sm:grid-cols-2 xl:grid-cols-3">
           <For each={TEMPLATES}>
-            {(t) => (
-              <a
-                href={`https://a4ui-${t.slug}.pages.dev`}
-                target="_blank"
-                rel="noreferrer"
-                class="group rounded-xl border border-border bg-card p-4 transition-colors hover:border-primary/60"
-              >
-                <div class="flex items-center justify-between">
-                  <span class="font-medium text-foreground">{t.name}</span>
-                  <span class="text-xs text-muted-foreground transition-colors group-hover:text-primary">
-                    a4ui-{t.slug} ↗
-                  </span>
+            {(t) => {
+              const url = `https://a4ui-${t.slug}.pages.dev`
+              return (
+                <div class="overflow-hidden rounded-xl border border-border bg-card shadow-sm transition-shadow hover:shadow-md">
+                  {/* browser chrome */}
+                  <div class="flex items-center gap-2 border-b border-border bg-muted/40 px-3 py-2">
+                    <span class="flex gap-1.5">
+                      <span class="h-2.5 w-2.5 rounded-full bg-destructive/60" />
+                      <span class="h-2.5 w-2.5 rounded-full bg-amber-400/70" />
+                      <span class="h-2.5 w-2.5 rounded-full bg-emerald-400/70" />
+                    </span>
+                    <span class="truncate rounded bg-background/70 px-2 py-0.5 text-[11px] text-muted-foreground">
+                      a4ui-{t.slug}.pages.dev
+                    </span>
+                    <span class="ml-auto rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+                      demo
+                    </span>
+                  </div>
+                  {/* live preview (lazy iframe, non-interactive) */}
+                  <a
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                    class="group relative block h-56 overflow-hidden bg-background"
+                  >
+                    <iframe
+                      src={url}
+                      title={t.name}
+                      loading="lazy"
+                      class="pointer-events-none absolute left-0 top-0 h-[178%] w-[178%] origin-top-left scale-[0.5625] border-0"
+                    />
+                    <span class="absolute inset-0 grid place-items-center bg-background/0 opacity-0 transition-opacity group-hover:bg-background/40 group-hover:opacity-100">
+                      <span class="rounded-full bg-primary px-4 py-1.5 text-sm font-medium text-primary-foreground">
+                        Ver demo ↗
+                      </span>
+                    </span>
+                  </a>
+                  {/* meta + actions */}
+                  <div class="space-y-3 p-4">
+                    <div>
+                      <p class="font-medium text-foreground">{t.name}</p>
+                      <p class="text-sm text-muted-foreground">{t.kind}</p>
+                    </div>
+                    <div class="flex gap-2">
+                      <UI.Button
+                        variant="outline"
+                        href={url}
+                        target="_blank"
+                        rel="noreferrer"
+                        class="flex-1 justify-center px-3 py-1.5 text-sm"
+                      >
+                        Ver demo ↗
+                      </UI.Button>
+                      <UI.Button
+                        href={`${import.meta.env.BASE_URL}templates/${t.slug}.zip`}
+                        class="justify-center px-3 py-1.5 text-sm"
+                      >
+                        ZIP
+                      </UI.Button>
+                    </div>
+                  </div>
                 </div>
-                <p class="mt-1 text-sm text-muted-foreground">{t.kind}</p>
-              </a>
-            )}
+              )
+            }}
           </For>
         </div>
       )
