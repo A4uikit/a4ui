@@ -162,6 +162,27 @@ body {
   animation: toast-out 0.18s ease-in;
 }
 
+/* Skeleton shimmer — a light band sweeping across the placeholder (opt-in
+   alternative to the default pulse). The band color is token-driven so it reads
+   on every theme; the sweep is a pure CSS animation (no engine). */
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.skeleton-shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.08), transparent);
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
 /* Table row enter/exit fade. */
 .row-enter-active,
 .row-exit-active {

@@ -8,6 +8,7 @@ import type { JSX } from 'solid-js'
 import { createSignal, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { motionReduced } from '../lib/motion'
 
 export interface ImageProps {
   src: string
@@ -15,6 +16,12 @@ export interface ImageProps {
   class?: string
   /** When true, clicking the image opens a zoomable lightbox. @default true */
   preview?: boolean
+  /**
+   * Reveal the thumbnail with a blur-up: it starts blurred and slightly scaled,
+   * then eases to sharp once the image finishes loading. Pure CSS transition,
+   * no-op under reduced motion. @default false
+   */
+  blurUp?: boolean
 }
 
 /**
@@ -32,8 +39,29 @@ export function Image(props: ImageProps): JSX.Element {
   const [open, setOpen] = createSignal(false)
   const preview = () => props.preview !== false
 
+  // blur-up: hidden behind the blur until `load` fires (or immediately, if the
+  // image is already cached or reduced motion is on).
+  const [loaded, setLoaded] = createSignal(false)
+  const blurUp = () => props.blurUp === true && !motionReduced()
+  const revealed = () => !blurUp() || loaded()
+
   const img = (
-    <img src={props.src} alt={props.alt} loading="lazy" class={cn('rounded-lg object-cover', props.class)} />
+    <img
+      src={props.src}
+      alt={props.alt}
+      loading="lazy"
+      onLoad={() => setLoaded(true)}
+      ref={(el) => {
+        // A cached image can be complete before `onLoad` binds — reveal it now.
+        if (el.complete) setLoaded(true)
+      }}
+      class={cn(
+        'rounded-lg object-cover',
+        blurUp() && 'transition-[filter,transform] duration-500 ease-out',
+        blurUp() && !revealed() && 'scale-[1.03] blur-lg',
+        props.class,
+      )}
+    />
   )
 
   return (

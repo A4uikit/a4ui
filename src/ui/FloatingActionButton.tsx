@@ -1,6 +1,7 @@
 import type { JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { spawnRipple } from './Ripple'
 
 /** Screen corner a {@link FloatingActionButton} anchors to. Defaults to `'bottom-right'`. */
 export type FloatingActionButtonPosition = 'bottom-right' | 'bottom-left'
@@ -23,6 +24,12 @@ export interface FloatingActionButtonProps {
   onClick?: () => void
   /** Screen corner to anchor to. Defaults to `'bottom-right'`. */
   position?: FloatingActionButtonPosition
+  /**
+   * Material-style click ripple from the press position. Engine-free (Web
+   * Animations API, shared with {@link spawnRipple}) and reduced-motion aware —
+   * costs nothing when off.
+   */
+  ripple?: boolean
   class?: string
 }
 
@@ -40,7 +47,15 @@ export function FloatingActionButton(props: FloatingActionButtonProps): JSX.Elem
       type="button"
       aria-label={props.label}
       onClick={() => props.onClick?.()}
-      class={cn(FAB_BASE, POSITION_CLASSES[props.position ?? 'bottom-right'], props.class)}
+      onPointerDown={(event) => {
+        if (props.ripple) spawnRipple(event.currentTarget, event, { opacity: 0.35 })
+      }}
+      class={cn(
+        FAB_BASE,
+        POSITION_CLASSES[props.position ?? 'bottom-right'],
+        props.ripple && 'relative overflow-hidden',
+        props.class,
+      )}
     >
       {props.icon}
     </button>

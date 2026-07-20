@@ -37,6 +37,16 @@ export interface ProductCardProps {
   currency?: string
   locale?: string
   onAddToCart?: () => void
+  /**
+   * 3D hover tilt toward the cursor — forwarded to the underlying {@link Card}
+   * ({@link attachTilt}). Engine-free and reduced-motion aware.
+   */
+  tilt?: boolean
+  /**
+   * Cursor-following radial glow inside the card — forwarded to the underlying
+   * {@link Card} ({@link attachSpotlight}). Engine-free and reduced-motion aware.
+   */
+  spotlight?: boolean
   class?: string
 }
 
@@ -72,7 +82,13 @@ function inferTone(badge: string | undefined, tone: ProductBadgeTone | undefined
  */
 export function ProductCard(props: ProductCardProps): JSX.Element {
   return (
-    <Card glass glow class={cn('flex h-full flex-col overflow-hidden p-4', props.class)}>
+    <Card
+      glass
+      glow
+      tilt={props.tilt}
+      spotlight={props.spotlight}
+      class={cn('flex h-full flex-col overflow-hidden p-4', props.class)}
+    >
       <div class="relative aspect-square overflow-hidden rounded-lg bg-muted">
         <img src={props.image} alt={props.title} loading="lazy" class="h-full w-full object-cover" />
         <Show when={props.badge}>

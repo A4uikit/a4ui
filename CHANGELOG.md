@@ -6,7 +6,18 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
-## [0.16.0] — 2026-07-19
+### Added
+
+- **Motion baked into more components** (opt-in props, additive, all engine-free
+  and reduced-motion aware — no `motion` dependency pulled):
+  - **`<FloatingActionButton ripple>`** and a Material press ripple baked into
+    the `SpeedDial` main button (same primitive as `<Button ripple>`).
+  - **`<ProductCard tilt spotlight>`** — forwards the cursor tilt/glow to its
+    underlying `Card`.
+  - **`<Skeleton shimmer>`** — a token-tinted light band sweeps across the
+    placeholder instead of the default pulse.
+  - **`<Image blurUp>`** — reveals the thumbnail from blurred to sharp on load.
+  - **`<Badge pulse>`** — a pinging dot for "live"/"recording"/"online" states.
 
 ### Added
 

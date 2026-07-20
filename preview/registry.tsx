@@ -1409,8 +1409,13 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'product-card',
     title: 'ProductCard',
     group: 'Commerce',
-    blurb: 'Product tile — image, badge, title, rating, price, add-to-cart.',
-    demo: () => (
+    blurb:
+      'Product tile — image, badge, title, rating, price, add-to-cart. `tilt`/`spotlight` forward to the underlying Card — hover it with them on ↓',
+    controls: {
+      tilt: { type: 'boolean', label: 'tilt', default: true },
+      spotlight: { type: 'boolean', label: 'spotlight', default: true },
+    },
+    demo: (c) => (
       <div class="w-56">
         <Commerce.ProductCard
           title="Nebula Hoodie"
@@ -1421,13 +1426,17 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
           badge="Sale"
           rating={4}
           image="https://picsum.photos/seed/a4ui-hoodie/400/400"
+          tilt={c.tilt as boolean}
+          spotlight={c.spotlight as boolean}
           onAddToCart={() => {}}
         />
       </div>
     ),
-    code: `<ProductCard title="Nebula Hoodie" brand="Orbit" category="Apparel"
+    code: (c) => `<ProductCard title="Nebula Hoodie" brand="Orbit" category="Apparel"
   price={64} compareAt={80} badge="Sale" badgeTone="sale"
-  rating={4} image="/hoodie.jpg" onAddToCart={add} />`,
+  rating={4} image="/hoodie.jpg"${c.tilt ? ' tilt' : ''}${c.spotlight ? ' spotlight' : ''} onAddToCart={add} />${
+    c.tilt || c.spotlight ? '\n\n// tilt/spotlight forward to Card — engine-free, reduced-motion aware' : ''
+  }`,
   },
   {
     id: 'product-grid',
@@ -1672,7 +1681,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'badge',
     title: 'Badge',
     group: 'Data',
-    blurb: 'Status pill with 5 semantic tones.',
+    blurb: 'Status pill with 5 semantic tones. `pulse` adds a pinging dot for "live" states.',
     controls: {
       tone: {
         type: 'select',
@@ -1681,9 +1690,19 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         default: 'success',
       },
       text: { type: 'text', label: 'text', default: 'paid' },
+      pulse: { type: 'boolean', label: 'pulse', default: false },
     },
-    demo: (c) => <UI.Badge tone={c.tone as UI.BadgeTone}>{c.text as string}</UI.Badge>,
-    code: (c) => `<Badge tone="${c.tone}">${c.text}</Badge>`,
+    demo: (c) => (
+      <UI.Badge tone={c.tone as UI.BadgeTone} pulse={c.pulse as boolean}>
+        {c.text as string}
+      </UI.Badge>
+    ),
+    code: (c) =>
+      `<Badge tone="${c.tone}"${c.pulse ? ' pulse' : ''}>${c.text}</Badge>${
+        c.pulse
+          ? '\n\n// pulse = pinging dot for live/recording/online states (CSS, reduced-motion aware)'
+          : ''
+      }`,
   },
   {
     id: 'card',
@@ -1906,16 +1925,22 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'skeleton',
     title: 'Skeleton',
     group: 'Data',
-    blurb: 'Pulsing placeholder while content loads. Set the size with class.',
-    demo: () => (
+    blurb:
+      'Placeholder while content loads. Set the size with class. `shimmer` sweeps a light band instead of pulsing.',
+    controls: {
+      shimmer: { type: 'boolean', label: 'shimmer', default: false },
+    },
+    demo: (c) => (
       <div class="w-full max-w-sm space-y-2">
-        <UI.Skeleton class="h-4 w-3/4" />
-        <UI.Skeleton class="h-4 w-1/2" />
-        <UI.Skeleton class="h-24 w-full" />
+        <UI.Skeleton shimmer={c.shimmer as boolean} class="h-4 w-3/4" />
+        <UI.Skeleton shimmer={c.shimmer as boolean} class="h-4 w-1/2" />
+        <UI.Skeleton shimmer={c.shimmer as boolean} class="h-24 w-full" />
       </div>
     ),
-    code: `<Skeleton class="h-4 w-3/4" />
-<Skeleton class="h-24 w-full" />`,
+    code: (c) => `<Skeleton${c.shimmer ? ' shimmer' : ''} class="h-4 w-3/4" />
+<Skeleton${c.shimmer ? ' shimmer' : ''} class="h-24 w-full" />${
+      c.shimmer ? '\n\n// shimmer = sweeping light band (CSS, token-tinted) instead of the default pulse' : ''
+    }`,
   },
 
   // ---- Overlays -------------------------------------------------------------
@@ -2677,14 +2702,25 @@ toast.error('Failed to save')`,
     id: 'fab',
     title: 'FloatingActionButton',
     group: 'Actions',
-    blurb: 'Prominent circular primary action pinned to a corner of the viewport.',
-    demo: () => (
+    blurb:
+      'Prominent circular primary action pinned to a corner of the viewport. `ripple` adds a Material press ripple.',
+    controls: {
+      ripple: { type: 'boolean', label: 'ripple', default: true },
+    },
+    demo: (c) => (
       <div class="text-sm text-muted-foreground">
         A floating action button is pinned to the bottom-right corner →
-        <UI.FloatingActionButton label="Compose" icon={<Plus class="h-6 w-6" />} />
+        <UI.FloatingActionButton
+          label="Compose"
+          icon={<Plus class="h-6 w-6" />}
+          ripple={c.ripple as boolean}
+        />
       </div>
     ),
-    code: `<FloatingActionButton label="Compose" icon={<Plus />} />`,
+    code: (c) =>
+      `<FloatingActionButton label="Compose" icon={<Plus />}${c.ripple ? ' ripple' : ''} />${
+        c.ripple ? '\n\n// ripple = Material press ripple (engine-free, reduced-motion aware)' : ''
+      }`,
   },
   {
     id: 'anchor',
@@ -2835,16 +2871,30 @@ toast.error('Failed to save')`,
     id: 'image',
     title: 'Image',
     group: 'Data',
-    blurb: 'Lazy image with a click-to-zoom lightbox.',
+    blurb: 'Lazy image with a click-to-zoom lightbox. `blurUp` reveals it from blurred to sharp on load.',
+    controls: {
+      blurUp: { type: 'boolean', label: 'blurUp', default: true },
+    },
     // Base-aware src so the asset resolves under a deployed subpath (e.g. /a4ui/).
-    demo: () => <UI.Image src={`${import.meta.env.BASE_URL}og.png`} alt="A4ui preview" class="h-32 w-56" />,
-    code: `<Image src="/hero.png" alt="Hero" />`,
+    demo: (c) => (
+      <UI.Image
+        src={`${import.meta.env.BASE_URL}og.png`}
+        alt="A4ui preview"
+        blurUp={c.blurUp as boolean}
+        class="h-32 w-56"
+      />
+    ),
+    code: (c) =>
+      `<Image src="/hero.png" alt="Hero"${c.blurUp ? ' blurUp' : ''} />${
+        c.blurUp ? '\n\n// blurUp = blur-to-sharp reveal on load (CSS, reduced-motion aware)' : ''
+      }`,
   },
   {
     id: 'speed-dial',
     title: 'SpeedDial',
     group: 'Actions',
-    blurb: 'A FAB that fans out into multiple quick actions.',
+    blurb:
+      'A FAB that fans out into multiple quick actions. The main button carries a Material press ripple.',
     demo: () => (
       <div class="text-sm text-muted-foreground">
         Tap the + in the bottom-right corner to fan out actions →

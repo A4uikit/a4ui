@@ -5,6 +5,7 @@ import { createSignal, For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { animate, motionReduced } from '../lib/motion'
+import { spawnRipple } from './Ripple'
 
 /** A single action in a {@link SpeedDial} — an icon button with an accessible label. */
 export interface SpeedDialAction {
@@ -74,7 +75,8 @@ export function SpeedDial(props: SpeedDialProps): JSX.Element {
         aria-label={open() ? 'Close actions' : 'Open actions'}
         aria-expanded={open()}
         onClick={() => setOpen((v) => !v)}
-        class="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform duration-150 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-ring"
+        onPointerDown={(event) => spawnRipple(event.currentTarget, event, { opacity: 0.35 })}
+        class="relative flex h-14 w-14 items-center justify-center overflow-hidden rounded-full bg-primary text-primary-foreground shadow-lg transition-transform duration-150 active:scale-[0.97] focus:outline-none focus:ring-2 focus:ring-ring"
       >
         <span class={cn('inline-flex transition-transform duration-150', open() && 'rotate-45')}>
           {props.icon ?? <Plus class="h-6 w-6" />}

@@ -2,7 +2,7 @@
 // (flowBadgeProps, statusBadgeTone, priorityBadgeTone, …) stay in the consuming
 // app: they encode business vocabulary (income/expense, project priority, user
 // roles), not design-system concerns.
-import { type JSX, type ParentProps, splitProps } from 'solid-js'
+import { type JSX, type ParentProps, Show, splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
@@ -23,6 +23,12 @@ const BADGE_BASE =
 interface BadgeProps extends ParentProps {
   /** Visual/semantic tone. Defaults to `'neutral'`. */
   tone?: BadgeTone
+  /**
+   * Show a pinging dot before the label for "live"/"recording"/"online"
+   * states. Tinted with the tone's color (`currentColor`); pure CSS
+   * (`animate-ping`), reduced-motion aware.
+   */
+  pulse?: boolean
   class?: string
 }
 
@@ -37,9 +43,15 @@ interface BadgeProps extends ParentProps {
  * ```
  */
 export function Badge(props: BadgeProps): JSX.Element {
-  const [local, rest] = splitProps(props, ['tone', 'class', 'children'])
+  const [local, rest] = splitProps(props, ['tone', 'class', 'children', 'pulse'])
   return (
     <span class={cn(BADGE_BASE, TONE_CLASSES[local.tone ?? 'neutral'], local.class)} {...rest}>
+      <Show when={local.pulse}>
+        <span class="relative flex h-1.5 w-1.5" aria-hidden="true">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75" />
+          <span class="relative inline-flex h-1.5 w-1.5 rounded-full bg-current" />
+        </span>
+      </Show>
       {local.children}
     </span>
   )
