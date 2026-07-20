@@ -6,6 +6,35 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.23.0] — 2026-07-20
+
+### Added
+
+- **Commerce components** (`@a4ui/core/commerce`):
+  - **`PriceBlock`** — a richer price than `PriceTag`: struck compare-at with a
+    savings badge, a coupon chip with the after-coupon price, and an optional
+    financing estimate (standard amortization when APR > 0).
+  - **`FacetSidebar`** — a faceted-filter panel: collapsible checkbox sections,
+    a min/max price range, removable active-filter chips, a result count, and
+    clear-all. Fully controlled.
+  - **`ConditionScale`** — a graded-condition meter with a marker, resolved tier
+    label, and endpoint labels (`role="meter"`).
+- **Data / display components** (`@a4ui/core`):
+  - **`SpecSheet`** — a grouped key/value specification table (1 or 2 columns).
+  - **`RatingsSummary`** — a compact social-proof grid of aggregate ratings.
+  - **`LogoWall`** — an "as seen in" logo grid, grayscale with color-on-hover.
+- **`AnnouncementBar`** (`@a4ui/core`) — a full-bleed promo bar, optionally
+  dismissible, with a copyable coupon-code pill.
+- **Spatial Glass guide** — a canonical recipe for the A4ui look
+  (`SPATIAL-GLASS.md`), rendered as a docs guide, embedded in `llms.txt`, and
+  shipped as a Claude Code skill/plugin.
+
+### Docs
+
+- New example pages: **Boutique** (a faceted catalog with switchable
+  product-card styles and a cart drawer) and **Showpiece** (a product detail
+  page with a gallery lightbox, `PriceBlock`, `ConditionScale`, and `SpecSheet`).
+
 ## [0.22.0] — 2026-07-20
 
 ### Added

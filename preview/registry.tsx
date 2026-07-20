@@ -3642,4 +3642,198 @@ toast.error('Failed to save')`,
     demo: () => <MarkdownGuide src={changelogMd} />,
     guide: true,
   },
+
+  // ---- Commerce (added) -----------------------------------------------------
+  {
+    id: 'price-block',
+    title: 'PriceBlock',
+    group: 'Commerce',
+    blurb:
+      'Richer price than PriceTag: compare-at savings, a coupon chip with the after-coupon price, and a financing estimate.',
+    demo: () => (
+      <Commerce.PriceBlock
+        amount={249}
+        compareAt={329}
+        coupon={{ code: 'SAVE50', amount: 50 }}
+        financing={{ months: 12, apr: 0.1 }}
+      />
+    ),
+    code: `<PriceBlock amount={249} compareAt={329}
+  coupon={{ code: 'SAVE50', amount: 50 }}
+  financing={{ months: 12, apr: 0.1 }} />`,
+  },
+  {
+    id: 'facet-sidebar',
+    title: 'FacetSidebar',
+    group: 'Commerce',
+    blurb:
+      'Full faceted-filter panel: collapsible checkbox sections, a price range, active chips, and clear-all.',
+    demo: () => {
+      const [selected, setSelected] = createSignal<Record<string, string[]>>({
+        type: ['mug'],
+        color: ['blue'],
+      })
+      const [price, setPrice] = createSignal<[number, number]>([10, 60])
+      return (
+        <div class="max-w-xs">
+          <Commerce.FacetSidebar
+            sections={[
+              {
+                key: 'type',
+                title: 'Type',
+                options: [
+                  { value: 'mug', label: 'Mug', count: 4 },
+                  { value: 'plate', label: 'Plate', count: 2 },
+                  { value: 'bowl', label: 'Bowl', count: 3 },
+                ],
+              },
+              {
+                key: 'color',
+                title: 'Color',
+                options: [
+                  { value: 'blue', label: 'Blue', count: 5 },
+                  { value: 'green', label: 'Green', count: 2 },
+                ],
+              },
+              {
+                key: 'material',
+                title: 'Material',
+                collapsible: true,
+                defaultOpen: false,
+                options: [
+                  { value: 'ceramic', label: 'Ceramic', count: 6 },
+                  { value: 'glass', label: 'Glass', count: 1 },
+                ],
+              },
+            ]}
+            selected={selected()}
+            onChange={(key, values) => setSelected({ ...selected(), [key]: values })}
+            price={{ min: 0, max: 100, value: price() }}
+            onPriceChange={setPrice}
+            resultCount={7}
+            onClearAll={() => {
+              setSelected({})
+              setPrice([0, 100])
+            }}
+          />
+        </div>
+      )
+    },
+    code: `const [selected, setSelected] = createSignal<Record<string, string[]>>({})
+const [price, setPrice] = createSignal<[number, number]>([0, 100])
+<FacetSidebar sections={facets} selected={selected()}
+  onChange={(key, values) => setSelected({ ...selected(), [key]: values })}
+  price={{ min: 0, max: 100, value: price() }} onPriceChange={setPrice}
+  resultCount={7} onClearAll={() => { setSelected({}); setPrice([0, 100]) }} />`,
+  },
+  {
+    id: 'condition-scale',
+    title: 'ConditionScale',
+    group: 'Commerce',
+    blurb:
+      'A graded-condition meter (e.g. 1–10 for a pre-owned item) with a marker, tier label, and endpoints.',
+    demo: () => (
+      <div class="max-w-sm">
+        <Commerce.ConditionScale value={8} />
+      </div>
+    ),
+    code: `<ConditionScale value={8} />`,
+  },
+
+  // ---- Data (added) ---------------------------------------------------------
+  {
+    id: 'spec-sheet',
+    title: 'SpecSheet',
+    group: 'Data',
+    blurb: 'A grouped key/value specification table for product specs and tech sheets.',
+    demo: () => (
+      <UI.SpecSheet
+        columns={2}
+        groups={[
+          {
+            title: 'Display',
+            rows: [
+              { label: 'Panel', value: 'AMOLED, 6.4"' },
+              { label: 'Resolution', value: '2340 x 1080' },
+              { label: 'Refresh rate', value: '120 Hz' },
+              { label: 'Peak brightness', value: '1200 nits' },
+            ],
+          },
+          {
+            title: 'Battery',
+            rows: [
+              { label: 'Capacity', value: '4500 mAh' },
+              { label: 'Charging', value: '65 W wired' },
+              { label: 'Wireless', value: '30 W' },
+            ],
+          },
+        ]}
+      />
+    ),
+    code: `<SpecSheet columns={2} groups={[
+  { title: 'Display', rows: [
+    { label: 'Panel', value: 'AMOLED, 6.4"' },
+    { label: 'Refresh rate', value: '120 Hz' },
+  ] },
+  { title: 'Battery', rows: [{ label: 'Capacity', value: '4500 mAh' }] },
+]} />`,
+  },
+  {
+    id: 'ratings-summary',
+    title: 'RatingsSummary',
+    group: 'Data',
+    blurb: 'A compact social-proof grid of aggregate ratings across multiple review sources.',
+    demo: () => (
+      <UI.RatingsSummary
+        sources={[
+          { name: 'Google', score: 4.8, outOf: 5, count: 2140 },
+          { name: 'Trustpilot', score: 4.6, outOf: 5, count: 980 },
+          { name: 'Verified Buyers', score: 4.9, outOf: 5, count: 512 },
+          { name: 'App Store', score: 'A+', count: 310 },
+        ]}
+      />
+    ),
+    code: `<RatingsSummary sources={[
+  { name: 'Google', score: 4.8, outOf: 5, count: 2140 },
+  { name: 'Trustpilot', score: 4.6, outOf: 5, count: 980 },
+]} />`,
+  },
+  {
+    id: 'logo-wall',
+    title: 'LogoWall',
+    group: 'Data',
+    blurb: '"As seen in" grid of press/partner logos — grayscale by default, color on hover.',
+    demo: () => (
+      <UI.LogoWall
+        logos={[
+          { src: 'https://picsum.photos/seed/techdaily/160/48', alt: 'TechDaily' },
+          { src: 'https://picsum.photos/seed/stylemag/160/48', alt: 'StyleMag' },
+          { src: 'https://picsum.photos/seed/marketwire/160/48', alt: 'MarketWire' },
+          { src: 'https://picsum.photos/seed/urbanpost/160/48', alt: 'UrbanPost' },
+          { src: 'https://picsum.photos/seed/dailyscoop/160/48', alt: 'DailyScoop' },
+          { src: 'https://picsum.photos/seed/northwire/160/48', alt: 'NorthWire' },
+        ]}
+      />
+    ),
+    code: `<LogoWall logos={[
+  { src: '/press/techdaily.svg', alt: 'TechDaily' },
+  { src: '/press/stylemag.svg', alt: 'StyleMag', href: 'https://stylemag.example' },
+]} />`,
+  },
+
+  // ---- Feedback (added) -----------------------------------------------------
+  {
+    id: 'announcement-bar',
+    title: 'AnnouncementBar',
+    group: 'Feedback',
+    blurb: 'Full-bleed promo bar — optional dismiss and a copyable coupon-code pill.',
+    demo: () => (
+      <UI.AnnouncementBar tone="accent" dismissible couponCode="SAVE20" href="#/announcement-bar">
+        Summer sale is live — 20% off everything
+      </UI.AnnouncementBar>
+    ),
+    code: `<AnnouncementBar tone="accent" dismissible couponCode="SAVE20" href="/sale">
+  Summer sale is live — 20% off everything
+</AnnouncementBar>`,
+  },
 ]
