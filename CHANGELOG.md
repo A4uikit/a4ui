@@ -6,6 +6,16 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **Web Components** — `<a4-condition-scale>` and `<a4-announcement-bar>` join
+  the `@a4ui/core/elements` bundle (the primitive-prop leaf variants of the
+  0.23.0 components).
+
+### Docs
+
+- `STABILITY.md` now classifies the 0.23.0 components (Experimental tier).
+
 ## [0.23.0] — 2026-07-20
 
 ### Added
