@@ -151,7 +151,7 @@ Or straight from a CDN in plain HTML:
 
 ### Available elements
 
-`a4-button` · `a4-badge` · `a4-alert` · `a4-spinner` · `a4-avatar` · `a4-progress` · `a4-meter` · `a4-ring-progress` · `a4-stat` · `a4-kbd` · `a4-separator` · `a4-rating` · `a4-countdown` · `a4-clock`
+`a4-button` · `a4-badge` · `a4-alert` · `a4-spinner` · `a4-avatar` · `a4-progress` · `a4-meter` · `a4-ring-progress` · `a4-stat` · `a4-kbd` · `a4-separator` · `a4-rating` · `a4-countdown` · `a4-clock` · `a4-condition-scale` · `a4-announcement-bar`
 
 Props map to attributes (kebab‑case, coerced by type). Text goes in a `label` attribute (or between the tags). `a4-alert` uses `heading` (not `title`, which collides with the native HTML attribute). `a4-rating` emits a `change` event with the new value in `event.detail`.
 

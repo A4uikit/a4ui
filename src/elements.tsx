@@ -17,7 +17,9 @@
 import { customElement, noShadowDOM } from 'solid-element'
 import type { JSX } from 'solid-js'
 
+import { ConditionScale } from './commerce/ConditionScale'
 import { Alert, type AlertTone } from './ui/Alert'
+import { AnnouncementBar, type AnnouncementTone } from './ui/AnnouncementBar'
 import { Avatar } from './ui/Avatar'
 import { Badge, type BadgeTone } from './ui/Badge'
 import { Button, type ButtonVariant } from './ui/Button'
@@ -118,6 +120,35 @@ export function defineA4uiElements(): void {
     noShadowDOM()
     return <Kbd>{props.label || initialText(element)}</Kbd>
   })
+
+  customElement(
+    'a4-condition-scale',
+    { value: 0, min: 1, max: 10, showvalue: true },
+    (props): JSX.Element => {
+      noShadowDOM()
+      return (
+        <ConditionScale value={props.value} min={props.min} max={props.max} showValue={props.showvalue} />
+      )
+    },
+  )
+
+  customElement(
+    'a4-announcement-bar',
+    { tone: 'primary', dismissible: false, coupon: '', href: '', label: '' },
+    (props, { element }): JSX.Element => {
+      noShadowDOM()
+      return (
+        <AnnouncementBar
+          tone={props.tone as AnnouncementTone}
+          dismissible={props.dismissible}
+          couponCode={props.coupon || undefined}
+          href={props.href || undefined}
+        >
+          {props.label || initialText(element)}
+        </AnnouncementBar>
+      )
+    },
+  )
 
   customElement('a4-separator', { orientation: 'horizontal' }, (props): JSX.Element => {
     noShadowDOM()
