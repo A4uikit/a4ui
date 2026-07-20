@@ -183,6 +183,51 @@ body {
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
 
+/* Accordion open/close — animate the panel height using Kobalte's measured
+   `--kb-accordion-content-height` var (presence keyed off data-expanded/closed,
+   animationend-driven like Modal). Engine-free. */
+@keyframes accordion-down {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--kb-accordion-content-height);
+  }
+}
+@keyframes accordion-up {
+  from {
+    height: var(--kb-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+.accordion-content {
+  overflow: hidden;
+}
+.accordion-content[data-expanded] {
+  animation: accordion-down 0.2s ease-out;
+}
+.accordion-content[data-closed] {
+  animation: accordion-up 0.2s ease-out;
+}
+
+/* List stagger — rows fade/slide in on mount, delayed per index (set inline as
+   `animation-delay`). Opt-in via <List stagger>. */
+@keyframes list-row-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.list-row-stagger {
+  animation: list-row-in 0.35s both ease-out;
+}
+
 /* Table row enter/exit fade. */
 .row-enter-active,
 .row-exit-active {

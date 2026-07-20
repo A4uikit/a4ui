@@ -18,6 +18,12 @@ changes, `patch` for fixes).
     placeholder instead of the default pulse.
   - **`<Image blurUp>`** — reveals the thumbnail from blurred to sharp on load.
   - **`<Badge pulse>`** — a pinging dot for "live"/"recording"/"online" states.
+  - **`<List stagger>`** — rows cascade in on mount, delayed per index.
+  - **`<Carousel swipe>`** (default on) — drag/touch to swipe between slides;
+    the track follows the pointer and snaps on release.
+- **Animated height** baked into `Accordion` (open/close via Kobalte's measured
+  content height) and `Collapse` (grid-rows CSS transition) — engine-free,
+  reduced-motion aware.
 
 ### Added
 

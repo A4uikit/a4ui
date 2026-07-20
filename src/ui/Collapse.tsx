@@ -1,7 +1,6 @@
 // Single controlled collapsible region with a toggle header.
 import { ChevronDown } from 'lucide-solid'
 import type { JSX, ParentProps } from 'solid-js'
-import { Show } from 'solid-js'
 import { cn } from '../lib/cn'
 
 interface CollapseProps extends ParentProps {
@@ -40,9 +39,19 @@ export function Collapse(props: CollapseProps): JSX.Element {
           class={cn('h-4 w-4 shrink-0 transition-transform duration-200', props.open && 'rotate-180')}
         />
       </button>
-      <Show when={props.open}>
-        <div class="px-3 py-2 text-sm text-muted-foreground">{props.children}</div>
-      </Show>
+      {/* grid-rows 0fr->1fr animates the panel height with pure CSS (no measuring,
+          no engine); the inner div is `overflow-hidden` so the collapsed content
+          is clipped, not just transparent. */}
+      <div
+        class={cn(
+          'grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none',
+          props.open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
+        )}
+      >
+        <div class="overflow-hidden">
+          <div class="px-3 py-2 text-sm text-muted-foreground">{props.children}</div>
+        </div>
+      </div>
     </div>
   )
 }

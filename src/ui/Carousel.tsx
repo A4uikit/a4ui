@@ -13,6 +13,12 @@ export interface CarouselProps {
   slides: JSX.Element[]
   /** Auto-advance interval in ms. Omit to disable autoplay (also skipped under reduced motion / hover). */
   autoplayMs?: number
+  /**
+   * Drag/touch to swipe between slides (in addition to arrows, dots, and arrow
+   * keys). The track follows the pointer and snaps on release — pure CSS, no
+   * engine. @default true
+   */
+  swipe?: boolean
   class?: string
 }
 
@@ -52,6 +58,34 @@ export function Carousel(props: CarouselProps): JSX.Element {
     }
   }
 
+  // --- drag/touch swipe (engine-free; the track follows the pointer, then the
+  // CSS transition snaps to the resolved slide on release) -------------------
+  const swipeOn = (): boolean => props.swipe !== false
+  let viewport: HTMLDivElement | undefined
+  const [dragging, setDragging] = createSignal(false)
+  const [dragPx, setDragPx] = createSignal(0)
+  let startX = 0
+
+  const onPointerDown = (e: PointerEvent): void => {
+    if (!swipeOn() || count() < 2) return
+    startX = e.clientX
+    setDragging(true)
+    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+  }
+  const onPointerMove = (e: PointerEvent): void => {
+    if (dragging()) setDragPx(e.clientX - startX)
+  }
+  const endDrag = (): void => {
+    if (!dragging()) return
+    const width = viewport?.clientWidth ?? 1
+    const dx = dragPx()
+    const threshold = Math.max(48, width * 0.2)
+    if (dx <= -threshold) next()
+    else if (dx >= threshold) prev()
+    setDragPx(0)
+    setDragging(false)
+  }
+
   // --- autoplay (paused on hover, skipped under reduced motion) --------------
   const [paused, setPaused] = createSignal(false)
   onMount(() => {
@@ -75,10 +109,21 @@ export function Carousel(props: CarouselProps): JSX.Element {
       onPointerEnter={() => setPaused(true)}
       onPointerLeave={() => setPaused(false)}
     >
-      <div class="relative overflow-hidden rounded-xl border border-border bg-card text-foreground">
+      <div
+        ref={viewport}
+        class="relative overflow-hidden rounded-xl border border-border bg-card text-foreground"
+      >
         <div
-          class="flex transition-transform duration-500 ease-out"
-          style={{ transform: `translateX(-${index() * 100}%)` }}
+          class={cn(
+            'flex',
+            swipeOn() && count() > 1 && 'touch-pan-y cursor-grab active:cursor-grabbing',
+            !dragging() && 'transition-transform duration-500 ease-out',
+          )}
+          style={{ transform: `translateX(calc(-${index() * 100}% + ${dragPx()}px))` }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
         >
           <For each={props.slides}>{(slide) => <div class="w-full shrink-0">{slide}</div>}</For>
         </div>

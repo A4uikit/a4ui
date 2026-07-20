@@ -16,6 +16,11 @@ export interface ListItem {
 
 interface ListProps {
   items: ListItem[]
+  /**
+   * Cascade the rows in on mount — each row fades/slides up staggered by its
+   * index. Pure CSS (`list-row-stagger`), reduced-motion aware. @default false
+   */
+  stagger?: boolean
   class?: string
 }
 
@@ -46,8 +51,11 @@ export function List(props: ListProps): JSX.Element {
   return (
     <ul class={cn('divide-y divide-border rounded-lg border border-border', props.class)}>
       <For each={props.items}>
-        {(item) => (
-          <li class="flex items-center gap-3 px-4 py-3">
+        {(item, i) => (
+          <li
+            class={cn('flex items-center gap-3 px-4 py-3', props.stagger && 'list-row-stagger')}
+            style={props.stagger ? { 'animation-delay': `${i() * 60}ms` } : undefined}
+          >
             <Show when={item.avatar}>
               <div class="shrink-0">{item.avatar}</div>
             </Show>

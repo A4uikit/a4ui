@@ -2168,7 +2168,8 @@ toast.error('Failed to save')`,
     id: 'accordion',
     title: 'Accordion',
     group: 'Navigation',
-    blurb: 'Accessible accordion (Kobalte). multiple lets several sections be open at once.',
+    blurb:
+      'Accessible accordion (Kobalte) with animated open/close height. multiple lets several sections be open at once.',
     demo: () => (
       <div class="w-full max-w-md">
         <UI.Accordion
@@ -2343,11 +2344,15 @@ toast.error('Failed to save')`,
     title: 'Carousel',
     group: 'Data',
     blurb:
-      'One slide at a time with arrows, clickable dots, arrow-key nav, and optional autoplay (pauses on hover).',
-    demo: () => (
+      'One slide at a time with arrows, clickable dots, arrow-key nav, drag/touch swipe, and optional autoplay (pauses on hover). Drag the slide ↓',
+    controls: {
+      swipe: { type: 'boolean', label: 'swipe', default: true },
+    },
+    demo: (c) => (
       <div class="w-full max-w-md">
         <UI.Carousel
           autoplayMs={3500}
+          swipe={c.swipe as boolean}
           slides={[1, 2, 3].map((n) => (
             <div class="grid h-40 place-items-center bg-muted text-2xl font-bold text-foreground">
               Slide {n}
@@ -2356,10 +2361,10 @@ toast.error('Failed to save')`,
         />
       </div>
     ),
-    code: `<Carousel
-  autoplayMs={3500}
+    code: (c) => `<Carousel
+  autoplayMs={3500}${c.swipe ? '' : '\n  swipe={false}'}
   slides={[<Slide1 />, <Slide2 />, <Slide3 />]}
-/>`,
+/>${c.swipe ? '\n\n// drag/touch to swipe between slides (CSS snap, no engine)' : ''}`,
   },
   {
     id: 'stepper',
@@ -2661,7 +2666,7 @@ toast.error('Failed to save')`,
     id: 'collapse',
     title: 'Collapse',
     group: 'Layout',
-    blurb: 'A single expand/collapse region with a rotating chevron.',
+    blurb: 'A single expand/collapse region with a rotating chevron and animated height.',
     demo: () => {
       const [open, setOpen] = createSignal(true)
       return (
@@ -2757,10 +2762,15 @@ toast.error('Failed to save')`,
     id: 'list',
     title: 'List',
     group: 'Data',
-    blurb: 'Structured list with avatar, title/description, meta, and actions per row.',
-    demo: () => (
+    blurb:
+      'Structured list with avatar, title/description, meta, and actions per row. `stagger` cascades the rows in on mount.',
+    controls: {
+      stagger: { type: 'boolean', label: 'stagger', default: true },
+    },
+    demo: (c) => (
       <div class="w-full max-w-md">
         <UI.List
+          stagger={c.stagger as boolean}
           items={[
             {
               title: 'Marina Vega',
@@ -2774,13 +2784,19 @@ toast.error('Failed to save')`,
               meta: '1h ago',
               avatar: <UI.Avatar fallback="TN" />,
             },
+            {
+              title: 'Priya Anand',
+              description: 'PM',
+              meta: '3h ago',
+              avatar: <UI.Avatar fallback="PA" />,
+            },
           ]}
         />
       </div>
     ),
-    code: `<List items={[
+    code: (c) => `<List${c.stagger ? ' stagger' : ''} items={[
   { title: 'Marina Vega', description: 'Product designer', avatar: <Avatar fallback="MV" /> },
-]} />`,
+]} />${c.stagger ? '\n\n// stagger = rows cascade in on mount (CSS, reduced-motion aware)' : ''}`,
   },
   {
     id: 'countdown',
