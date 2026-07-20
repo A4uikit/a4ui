@@ -154,3 +154,21 @@ export function App() {
 - **`spotlight`/`tilt` on every card** → noisy. Reserve for key cards.
 - **Over-animating** → pick 4–6 touches; respect reduced motion.
 - **Big hero images not lazy** → tanks LCP. Lazy-load + reserve space.
+
+## Use it with an AI agent
+
+This recipe also ships in machine-readable form so your coding agent applies it
+for you:
+
+- **`llms.txt`** — the recipe is embedded in
+  [a4ui.pages.dev/llms.txt](https://a4ui.pages.dev/llms.txt). Point any LLM tool
+  at it (or paste it into your `AGENTS.md` / `CLAUDE.md`).
+- **Claude Code skill** — install the `spatial-glass` skill and Claude Code
+  applies the recipe automatically when you build a page with `@a4ui/core`:
+
+  ```bash
+  /plugin marketplace add A4uikit/a4ui
+  /plugin install spatial-glass@a4ui
+  ```
+
+  The skill lives in this repo under `.claude/skills/spatial-glass/`.
