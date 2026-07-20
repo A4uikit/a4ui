@@ -1,6 +1,6 @@
 {
   "name": "create-a4ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "license": "MIT",
   "description": "Scaffold a new A4ui app (Solid + Vite + Tailwind) with `npm create a4ui@latest`.",
