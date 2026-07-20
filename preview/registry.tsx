@@ -68,6 +68,10 @@ export interface DocEntry {
   demo: (c: ControlValues) => JSX.Element
   /** Code block: a static string, or a function of the control values. */
   code?: string | ((c: ControlValues) => string)
+  /** Extra labelled examples of the same component with different props, shown
+      under the main demo as a "Variations" section so you can see how props
+      change it side by side. */
+  variants?: { label: string; demo: () => JSX.Element }[]
   /** Long-form markdown guide (not a component demo): render just the prose,
       no Example/Controls/Code chrome. */
   guide?: boolean
@@ -3623,7 +3627,7 @@ toast.error('Failed to save')`,
     group: 'Guides',
     blurb:
       'The recipe for the A4ui look — Aurora backdrop, glass surfaces, the cursor light, tasteful motion, Expandable. Follow it and a page looks like A4ui.',
-    demo: () => <MarkdownGuide src={spatialGlassMd} />,
+    demo: () => <MarkdownGuide src={spatialGlassMd} links={changelogComponentLinks()} />,
     guide: true,
   },
   {
@@ -3631,7 +3635,7 @@ toast.error('Failed to save')`,
     title: 'Integrations',
     group: 'Guides',
     blurb: 'Use A4ui in Vite + Solid, SolidStart (SSR), Astro, or React/Next/Vue/vanilla via Web Components.',
-    demo: () => <MarkdownGuide src={integrationsMd} />,
+    demo: () => <MarkdownGuide src={integrationsMd} links={changelogComponentLinks()} />,
     guide: true,
   },
   {
@@ -3640,7 +3644,7 @@ toast.error('Failed to save')`,
     group: 'Guides',
     blurb:
       'Versioning policy and the Stable / Experimental / Internal tiers — what is safe to build on before 1.0.',
-    demo: () => <MarkdownGuide src={stabilityMd} />,
+    demo: () => <MarkdownGuide src={stabilityMd} links={changelogComponentLinks()} />,
     guide: true,
   },
   {
@@ -3648,7 +3652,7 @@ toast.error('Failed to save')`,
     title: 'Upgrading',
     group: 'Guides',
     blurb: 'Upgrade notes across the 0.x line — what changed and what (if anything) you need to do.',
-    demo: () => <MarkdownGuide src={migrationMd} />,
+    demo: () => <MarkdownGuide src={migrationMd} links={changelogComponentLinks()} />,
     guide: true,
   },
   {
@@ -3656,7 +3660,7 @@ toast.error('Failed to save')`,
     title: 'Changelog',
     group: 'Guides',
     blurb: 'Every release of @a4ui/core, newest first.',
-    demo: () => <MarkdownGuide src={changelogMd} />,
+    demo: () => <MarkdownGuide src={changelogMd} links={changelogComponentLinks()} />,
     guide: true,
   },
 
@@ -4341,6 +4345,39 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     ),
     code: `<Aurora variant="mesh" animated />
 <div class="glass-refractive p-6">…</div>`,
+    variants: [
+      {
+        label: 'As a stat panel',
+        demo: () => (
+          <div
+            class="relative overflow-hidden rounded-xl p-6"
+            style={{
+              background: 'radial-gradient(60% 60% at 30% 20%, hsl(var(--primary) / 0.5), transparent 70%)',
+            }}
+          >
+            <div class="glass-refractive p-5">
+              <p class="text-xs text-muted-foreground">Monthly revenue</p>
+              <p class="text-2xl font-bold text-foreground">$48,204</p>
+            </div>
+          </div>
+        ),
+      },
+      {
+        label: 'As a compact pill',
+        demo: () => (
+          <div
+            class="relative overflow-hidden rounded-xl p-6"
+            style={{
+              background: 'radial-gradient(60% 60% at 70% 30%, hsl(var(--accent) / 0.5), transparent 70%)',
+            }}
+          >
+            <span class="glass-refractive inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground">
+              <Sparkles class="h-4 w-4 text-primary" /> Pro plan
+            </span>
+          </div>
+        ),
+      },
+    ],
   },
 
   // ---- Phase 3 — scroll storytelling, finance, spaces/rail -------------------
@@ -4406,6 +4443,33 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
       />
     ),
     code: `<BalanceCard label="Total balance" amount={128430.52} delta={0.042} />`,
+    variants: [
+      {
+        label: 'Positive delta',
+        demo: () => <UI.BalanceCard label="Revenue" amount={52140} delta={0.128} />,
+      },
+      {
+        label: 'Negative delta',
+        demo: () => <UI.BalanceCard label="Burn" amount={38610} delta={-0.041} />,
+      },
+      {
+        label: 'No delta',
+        demo: () => <UI.BalanceCard label="Reserve" amount={95000} />,
+      },
+      {
+        label: 'Euro, with sub-line',
+        demo: () => (
+          <UI.BalanceCard
+            label="Saldo"
+            amount={12840.5}
+            currency="EUR"
+            locale="es-ES"
+            delta={0.02}
+            sub={<span class="text-xs text-muted-foreground">Disponible</span>}
+          />
+        ),
+      },
+    ],
   },
   {
     id: 'transaction-feed',
@@ -4560,4 +4624,71 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     code: `const [tab, setTab] = createSignal('inbox')
 <SideRail value={tab()} onChange={setTab} items={navItems} />`,
   },
+  {
+    id: 'block-editor',
+    title: 'BlockEditor',
+    group: 'Data',
+    blurb: 'A block stack: drag a handle to reorder, delete on hover, and a slash-menu "+ Add block" picker.',
+    demo: () => {
+      const [blocks, setBlocks] = createSignal([
+        {
+          id: 'b1',
+          type: 'heading',
+          content: <h3 class="text-lg font-semibold text-foreground">Project kickoff</h3>,
+        },
+        { id: 'b2', type: 'text', content: <p class="text-sm text-foreground">Kickoff notes go here.</p> },
+        {
+          id: 'b3',
+          type: 'quote',
+          content: (
+            <blockquote class="border-l-2 border-border pl-3 text-sm italic text-muted-foreground">
+              “Ship small, ship often.”
+            </blockquote>
+          ),
+        },
+      ])
+      return (
+        <div class="w-full max-w-md">
+          <UI.BlockEditor
+            blocks={blocks()}
+            onChange={setBlocks}
+            blockTypes={[
+              { value: 'heading', label: 'Heading', description: 'Big section title' },
+              { value: 'text', label: 'Text', description: 'Plain paragraph' },
+              { value: 'quote', label: 'Quote', description: 'Blockquote' },
+            ]}
+            onAddBlock={(type) =>
+              setBlocks((prev) => [
+                ...prev,
+                {
+                  id: `b${prev.length + 1}`,
+                  type,
+                  content: <p class="text-sm text-foreground">New {type} block</p>,
+                },
+              ])
+            }
+          />
+        </div>
+      )
+    },
+    code: `const [blocks, setBlocks] = createSignal(initialBlocks)
+<BlockEditor blocks={blocks()} onChange={setBlocks}
+  blockTypes={blockTypes} onAddBlock={(type) => append(type)} />`,
+  },
 ]
+
+// Names → docs route, for linkifying component/utility mentions inside the
+// rendered markdown guides (e.g. every `ComponentName` in the changelog becomes
+// a link to its page). Built from the registry so it never drifts; a few aliases
+// cover CSS utilities and layout pieces that aren't their own DocEntry.
+const GUIDE_LINK_ALIASES: Record<string, string> = {
+  '.glass-refractive': '#/refractive-glass',
+  '.elevation-1': '#/refractive-glass',
+  '.elevation-4': '#/refractive-glass',
+  Aurora: '#/aurora',
+}
+export function changelogComponentLinks(): Record<string, string> {
+  const map: Record<string, string> = { ...GUIDE_LINK_ALIASES }
+  for (const d of DOCS) if (!d.guide) map[d.title] = `#/${d.id}`
+  return map
+}

@@ -20,10 +20,24 @@ function rewriteLinks(html: string): string {
   })
 }
 
-export function MarkdownGuide(props: { src: string }): JSX.Element {
+// Turn inline `<code>Name</code>` tokens that match a known component/utility
+// into links to that component's docs page. Only inline code — block code lives
+// in `<pre><code …>`, excluded by the negative lookbehind — so code samples are
+// left untouched.
+function linkifyCode(html: string, links: Record<string, string>): string {
+  return html.replace(/(?<!<pre>)<code>([^<]+)<\/code>/g, (match, text: string) => {
+    const route = links[text.trim()]
+    return route ? `<a href="${route}">${match}</a>` : match
+  })
+}
+
+export function MarkdownGuide(props: { src: string; links?: Record<string, string> }): JSX.Element {
   // Drop the file's own leading `# Title` — the doc page already renders a title.
   const body = () => props.src.replace(/^\s*#\s+[^\n]*\n+/, '')
-  const html = () => rewriteLinks(marked.parse(body(), { async: false }) as string)
+  const html = () => {
+    const rendered = rewriteLinks(marked.parse(body(), { async: false }) as string)
+    return props.links ? linkifyCode(rendered, props.links) : rendered
+  }
   // eslint-disable-next-line solid/no-innerhtml -- trusted, first-party repo markdown
   return <div class="a4-prose max-w-3xl" innerHTML={html()} />
 }

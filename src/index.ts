@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.28.0'
+export const A4UI_VERSION = '0.29.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -177,6 +177,7 @@ export { KpiBlock, type KpiBlockProps } from './ui/KpiBlock'
 export { MoneyActionButton, type MoneyActionButtonProps, type MoneyActionKind } from './ui/MoneyActionButton'
 export { Spaces, type SpacesProps, type Space } from './ui/Spaces'
 export { SideRail, type SideRailProps, type SideRailItem } from './ui/SideRail'
+export { BlockEditor, type BlockEditorProps, type EditorBlock, type BlockTypeOption } from './ui/BlockEditor'
 
 // Motion components (src/ui) — animation primitives built on the `motion` engine
 // (adapted from motion.dev examples). All tree-shakeable and reduced-motion aware;
