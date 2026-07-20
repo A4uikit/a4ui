@@ -89,6 +89,34 @@ Styling has two paths: **with Tailwind**, add the \`@a4ui/core/preset\` and impo
 The **Commerce** and **Charts** groups below import from \`@a4ui/core/commerce\` and
 \`@a4ui/core/charts\` respectively; everything else from \`@a4ui/core\`.
 
+## The "Spatial Glass" look (recipe)
+
+To make a page actually look like A4ui (frosted glass over an ambient backdrop,
+a cursor light, restrained motion) — not flat cards on a flat background — follow
+this. Full guide: https://a4ui.pages.dev/#/guide-spatial-glass
+
+1. **Backdrop first.** Render \`<Aurora/>\` once at the top of the layout and keep
+   the page root transparent (NO \`bg-background\` on the root — Aurora paints the
+   base). It tints to your theme; \`animated\` = slow drift; \`pointerGlow\` (default
+   on) = a glow that follows the cursor across the backdrop.
+   Glass only reads if there is color behind it — this is what provides it.
+2. **Surfaces are glass.** Use \`<Card glass>\` (not opaque \`bg-card\` divs) so the
+   Aurora shows through the frosted blur. \`glow\` is on by default; add \`spotlight\`
+   (inner cursor glow) + \`tilt\` to KEY cards only (hero/feature/product), not all.
+3. **Theme via tokens.** Override the 15 CSS vars (\`--primary\`, \`--accent\`, radius)
+   under \`:root\`; everything incl. Aurora recolors. Light glass ships slightly
+   transparent so the frost reads.
+4. **Motion, 4–6 tasteful touches** (reduced-motion aware): \`ScrollProgress\`,
+   \`Parallax\` hero, \`TextReveal\` headings, \`Magnetic\` on the primary CTA, count-up
+   \`Stat\`, \`Carousel\` swipe. Keep them off the critical path.
+5. **Expand, don't modal:** use \`Expandable\` (shared-element FLIP) for galleries and
+   "click to see the full thing".
+6. **Structure** with \`<Section>\` + full-bleed \`bg-muted/30\` bands.
+7. **Ship-quality:** lazy images, ≥24px targets, labeled inputs, a robots.txt.
+
+Common mistakes: flat background (add Aurora), opaque cards (use \`Card glass\`),
+\`spotlight\`/\`tilt\` on every card (noisy), over-animating.
+
 ## Components
 `
 
