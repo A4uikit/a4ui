@@ -6254,6 +6254,320 @@ const [burst, setBurst] = createSignal(0)
 
 <div class="relative"><CursorTrail color="accent" size={32} /></div>`,
   },
+
+  // ---- Productivity data views ----------------------------------------------
+  {
+    id: 'kanban',
+    title: 'Kanban',
+    group: 'Data',
+    blurb:
+      'A drag-and-drop board — move cards within and between columns, with optional WIP limits. Drag a card ↓',
+    demo: () => {
+      const [cols, setCols] = createSignal<UI.KanbanColumn[]>([
+        {
+          id: 'todo',
+          title: 'To do',
+          cards: [
+            { id: 't1', title: 'Draft the spec' },
+            { id: 't2', title: 'Design the API' },
+          ],
+        },
+        {
+          id: 'doing',
+          title: 'In progress',
+          limit: 2,
+          cards: [{ id: 't3', title: 'Build the parser', badge: <UI.Badge tone="warning">P1</UI.Badge> }],
+        },
+        { id: 'done', title: 'Done', cards: [{ id: 't4', title: 'Set up CI' }] },
+      ])
+      return <UI.Kanban columns={cols()} onChange={setCols} class="w-full" />
+    },
+    code: `import { Kanban } from '@a4ui/core'
+
+const [cols, setCols] = createSignal(columns)
+<Kanban columns={cols()} onChange={setCols} />`,
+  },
+  {
+    id: 'gantt-chart',
+    title: 'GanttChart',
+    group: 'Data',
+    blurb: 'A project timeline — task bars on a date axis with dependencies and a "today" marker.',
+    demo: () => (
+      <UI.GanttChart
+        class="w-full"
+        tasks={[
+          { id: 'design', name: 'Design', start: '2026-07-06', end: '2026-07-17', tone: 'accent' },
+          { id: 'build', name: 'Build', start: '2026-07-20', end: '2026-08-07', dependencies: ['design'] },
+          { id: 'qa', name: 'QA', start: '2026-08-10', end: '2026-08-18', dependencies: ['build'] },
+          {
+            id: 'launch',
+            name: 'Launch',
+            start: '2026-08-19',
+            end: '2026-08-21',
+            dependencies: ['qa'],
+            tone: 'accent',
+          },
+        ]}
+      />
+    ),
+    code: `import { GanttChart } from '@a4ui/core'
+
+<GanttChart tasks={[
+  { id: 'design', name: 'Design', start: '2026-07-06', end: '2026-07-17' },
+  { id: 'build', name: 'Build', start: '2026-07-20', end: '2026-08-07', dependencies: ['design'] },
+]} />`,
+  },
+  {
+    id: 'tree-table',
+    title: 'TreeTable',
+    group: 'Data',
+    blurb: 'A table with expandable, hierarchical rows and per-column alignment/aggregates.',
+    demo: () => (
+      <UI.TreeTable
+        class="w-full max-w-lg"
+        defaultExpanded
+        columns={[
+          { key: 'name', header: 'Name' },
+          { key: 'size', header: 'Size (KB)', align: 'right', cell: (r: { size: number }) => r.size || '—' },
+        ]}
+        rows={[
+          {
+            id: 'src',
+            data: { name: 'src', size: 0 },
+            children: [
+              { id: 'index', data: { name: 'index.ts', size: 4 } },
+              {
+                id: 'ui',
+                data: { name: 'ui/', size: 0 },
+                children: [
+                  { id: 'button', data: { name: 'Button.tsx', size: 6 } },
+                  { id: 'card', data: { name: 'Card.tsx', size: 3 } },
+                ],
+              },
+            ],
+          },
+          { id: 'pkg', data: { name: 'package.json', size: 2 } },
+        ]}
+      />
+    ),
+    code: `import { TreeTable } from '@a4ui/core'
+
+<TreeTable defaultExpanded columns={columns} rows={rows} />`,
+  },
+  {
+    id: 'pivot-table',
+    title: 'PivotTable',
+    group: 'Data',
+    blurb: 'A cross-tab: group data by row × column dimensions and aggregate a value field, with totals.',
+    demo: () => (
+      <UI.PivotTable
+        class="w-full max-w-xl"
+        rowField="region"
+        columnField="quarter"
+        valueField="revenue"
+        aggregate="sum"
+        data={[
+          { region: 'West', quarter: 'Q1', revenue: 120 },
+          { region: 'West', quarter: 'Q2', revenue: 150 },
+          { region: 'East', quarter: 'Q1', revenue: 90 },
+          { region: 'East', quarter: 'Q2', revenue: 110 },
+          { region: 'North', quarter: 'Q1', revenue: 60 },
+          { region: 'North', quarter: 'Q2', revenue: 80 },
+        ]}
+      />
+    ),
+    code: `import { PivotTable } from '@a4ui/core'
+
+<PivotTable data={rows} rowField="region" columnField="quarter" valueField="revenue" aggregate="sum" />`,
+  },
+
+  // ---- Onboarding + commerce ------------------------------------------------
+  {
+    id: 'onboarding-checklist',
+    title: 'OnboardingChecklist',
+    group: 'Data',
+    blurb: 'An activation checklist with a completion ring and expandable steps + CTAs.',
+    demo: () => {
+      const [steps, setSteps] = createSignal<UI.OnboardingStep[]>([
+        { id: 'a', title: 'Create your account', done: true },
+        { id: 'b', title: 'Add a payment method', description: 'Cards and SPEI are supported.', done: true },
+        {
+          id: 'c',
+          title: 'Invite your team',
+          description: 'Add teammates to collaborate.',
+          action: { label: 'Invite', onClick: () => {} },
+        },
+        { id: 'd', title: 'Ship your first project' },
+      ])
+      return (
+        <UI.OnboardingChecklist
+          class="w-full max-w-md"
+          title="Get started"
+          steps={steps()}
+          onToggle={(id, done) => setSteps((s) => s.map((x) => (x.id === id ? { ...x, done } : x)))}
+        />
+      )
+    },
+    code: `import { OnboardingChecklist } from '@a4ui/core'
+
+<OnboardingChecklist steps={steps()} onToggle={toggle} />`,
+  },
+  {
+    id: 'coupon-field',
+    title: 'CouponField',
+    group: 'Commerce',
+    blurb:
+      'A promo-code input with async validate/apply and idle/loading/success/error states. Try "SAVE10" ↓',
+    demo: () => (
+      <UI.CouponField
+        class="w-full max-w-sm"
+        onApply={async (code) => {
+          await new Promise((r) => setTimeout(r, 700))
+          return code.trim().toUpperCase() === 'SAVE10'
+            ? { ok: true, discount: '−$10.00' }
+            : { ok: false, message: 'That code isn’t valid.' }
+        }}
+      />
+    ),
+    code: `import { CouponField } from '@a4ui/core'
+
+<CouponField onApply={async (code) => validate(code)} />`,
+  },
+
+  // ---- Media ----------------------------------------------------------------
+  {
+    id: 'lightbox',
+    title: 'Lightbox',
+    group: 'Overlays',
+    blurb:
+      'A thumbnail grid that opens a full-screen zoomable viewer — arrows/swipe nav, thumbnail strip. Click a thumb ↓',
+    demo: () => (
+      <UI.Lightbox
+        class="w-full max-w-lg"
+        images={[
+          {
+            src: 'https://picsum.photos/id/1015/1200/800',
+            thumb: 'https://picsum.photos/id/1015/300/200',
+            alt: 'River canyon',
+          },
+          {
+            src: 'https://picsum.photos/id/1016/1200/800',
+            thumb: 'https://picsum.photos/id/1016/300/200',
+            alt: 'Mountain ridge',
+          },
+          {
+            src: 'https://picsum.photos/id/1018/1200/800',
+            thumb: 'https://picsum.photos/id/1018/300/200',
+            alt: 'Forest lake',
+          },
+          {
+            src: 'https://picsum.photos/id/1019/1200/800',
+            thumb: 'https://picsum.photos/id/1019/300/200',
+            alt: 'Coastline',
+          },
+        ]}
+      />
+    ),
+    code: `import { Lightbox } from '@a4ui/core'
+
+<Lightbox images={[{ src: '/full.jpg', thumb: '/thumb.jpg', alt: 'Photo' }]} />`,
+  },
+  {
+    id: 'video-player-shell',
+    title: 'VideoPlayerShell',
+    group: 'Data',
+    blurb:
+      'Custom glass chrome over a native <video> — play/scrub/volume/fullscreen/PiP, keyboard-controllable.',
+    demo: () => (
+      <UI.VideoPlayerShell
+        class="w-full max-w-xl"
+        src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"
+      />
+    ),
+    code: `import { VideoPlayerShell } from '@a4ui/core'
+
+<VideoPlayerShell src="/media/demo.mp4" poster="/media/poster.jpg" />`,
+  },
+  {
+    id: 'audio-waveform',
+    title: 'AudioWaveform',
+    group: 'Data',
+    blurb: 'A waveform with play/scrub — the played portion fills in. Great for voice messages and podcasts.',
+    demo: () => (
+      <UI.AudioWaveform
+        class="w-full max-w-md"
+        peaks={Array.from({ length: 64 }, (_, i) => 0.25 + Math.abs(Math.sin(i * 0.5)) * 0.7)}
+      />
+    ),
+    code: `import { AudioWaveform } from '@a4ui/core'
+
+<AudioWaveform src="/media/track.mp3" />
+<AudioWaveform peaks={[0.2, 0.8, 0.4, 0.9]} />`,
+  },
+
+  // ---- Spatial + interaction ------------------------------------------------
+  {
+    id: 'lamp',
+    title: 'Lamp',
+    group: 'Motion',
+    blurb: 'A conic light-beam backdrop that spotlights the content below — a hero/section motif.',
+    demo: () => (
+      <UI.Lamp class="min-h-[22rem] w-full rounded-2xl">
+        <div class="text-center">
+          <h3 class="text-3xl font-semibold text-foreground">Build in the light</h3>
+          <p class="mt-2 text-sm text-muted-foreground">A spotlighted hero backdrop.</p>
+        </div>
+      </UI.Lamp>
+    ),
+    code: `import { Lamp } from '@a4ui/core'
+
+<Lamp><h1>Build in the light</h1></Lamp>`,
+  },
+  {
+    id: 'following-pointer',
+    title: 'FollowingPointer',
+    group: 'Motion',
+    blurb:
+      'A labeled cursor that trails the pointer — for live-presence/collab surfaces. Move your cursor over the box ↓',
+    demo: () => (
+      <UI.FollowingPointer label="Alex" color="accent">
+        <div class="grid h-48 w-full max-w-md place-items-center rounded-2xl border border-border bg-card text-sm text-muted-foreground">
+          Move your cursor here
+        </div>
+      </UI.FollowingPointer>
+    ),
+    code: `import { FollowingPointer } from '@a4ui/core'
+
+<FollowingPointer label="Alex" color="accent"><div>…</div></FollowingPointer>`,
+  },
+  {
+    id: 'sheet-snap',
+    title: 'SheetSnap',
+    group: 'Overlays',
+    blurb: 'A bottom sheet with snap points — drag the handle to resize, flick down to dismiss. Open it ↓',
+    demo: () => {
+      const [open, setOpen] = createSignal(false)
+      return (
+        <>
+          <UI.Button variant="primary" onClick={() => setOpen(true)}>
+            Open sheet
+          </UI.Button>
+          <UI.SheetSnap open={open()} onOpenChange={setOpen} snapPoints={[0.4, 0.9]}>
+            <div class="space-y-2 p-4">
+              <h3 class="text-lg font-semibold text-foreground">Sheet title</h3>
+              <p class="text-sm text-muted-foreground">
+                Drag the handle up/down to snap between sizes, or flick down to dismiss.
+              </p>
+            </div>
+          </UI.SheetSnap>
+        </>
+      )
+    },
+    code: `import { SheetSnap } from '@a4ui/core'
+
+const [open, setOpen] = createSignal(false)
+<SheetSnap open={open()} onOpenChange={setOpen} snapPoints={[0.4, 0.9]}>…</SheetSnap>`,
+  },
 ]
 
 // Names → docs route, for linkifying component/utility mentions inside the
