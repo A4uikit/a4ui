@@ -6568,6 +6568,377 @@ const [cols, setCols] = createSignal(columns)
 const [open, setOpen] = createSignal(false)
 <SheetSnap open={open()} onOpenChange={setOpen} snapPoints={[0.4, 0.9]}>…</SheetSnap>`,
   },
+
+  // ---- Advanced form inputs -------------------------------------------------
+  {
+    id: 'otp-input',
+    title: 'OtpInput',
+    group: 'Forms',
+    blurb: 'A segmented one-time-code / PIN input — paste distributes across the boxes. Type a code ↓',
+    demo: () => {
+      const [code, setCode] = createSignal('')
+      return (
+        <UI.OtpInput length={6} value={code()} onInput={setCode} numeric aria-label="Verification code" />
+      )
+    },
+    code: `import { OtpInput } from '@a4ui/core'
+
+const [code, setCode] = createSignal('')
+<OtpInput length={6} value={code()} onInput={setCode} numeric onComplete={verify} />`,
+  },
+  {
+    id: 'masked-input',
+    title: 'MaskedInput',
+    group: 'Forms',
+    blurb: 'A format-as-you-type input — # = digit, A = letter, everything else is a literal. Type ↓',
+    demo: () => {
+      const [phone, setPhone] = createSignal('')
+      const [card, setCard] = createSignal('')
+      return (
+        <div class="w-full max-w-sm space-y-3">
+          <UI.MaskedInput
+            mask="(###) ###-####"
+            value={phone()}
+            onInput={setPhone}
+            placeholder="(555) 123-4567"
+            aria-label="Phone"
+          />
+          <UI.MaskedInput
+            mask="#### #### #### ####"
+            value={card()}
+            onInput={setCard}
+            placeholder="Card number"
+            aria-label="Card"
+          />
+        </div>
+      )
+    },
+    code: `import { MaskedInput } from '@a4ui/core'
+
+<MaskedInput mask="(###) ###-####" value={phone()} onInput={setPhone} />`,
+  },
+  {
+    id: 'code-editor',
+    title: 'CodeEditor',
+    group: 'Forms',
+    blurb:
+      'A line-numbered code textarea with lightweight syntax highlighting (no editor dependency). Edit it ↓',
+    demo: () => {
+      const [src, setSrc] = createSignal(
+        `// a small function\nfunction greet(name: string) {\n  const msg = 'Hello, ' + name\n  return msg\n}`,
+      )
+      return <UI.CodeEditor class="h-48 w-full max-w-xl" value={src()} onInput={setSrc} language="ts" />
+    },
+    code: `import { CodeEditor } from '@a4ui/core'
+
+const [src, setSrc] = createSignal('const x = 1')
+<CodeEditor value={src()} onInput={setSrc} language="ts" />`,
+  },
+  {
+    id: 'signature-pad',
+    title: 'SignaturePad',
+    group: 'Forms',
+    blurb: 'A canvas draw-to-sign field with clear/undo and PNG export. Draw a signature ↓',
+    demo: () => <UI.SignaturePad class="w-full max-w-md" height={200} />,
+    code: `import { SignaturePad } from '@a4ui/core'
+
+<SignaturePad height={220} onChange={(dataUrl) => setSignature(dataUrl)} />`,
+  },
+  {
+    id: 'emoji-picker',
+    title: 'EmojiPicker',
+    group: 'Forms',
+    blurb: 'A searchable emoji grid with categories and recents — plugs into composers and comments.',
+    demo: () => {
+      const [picked, setPicked] = createSignal('')
+      return (
+        <div class="space-y-2">
+          <UI.EmojiPicker onSelect={setPicked} />
+          <Show when={picked()}>
+            <div class="text-sm text-muted-foreground">
+              Picked: <span class="text-2xl">{picked()}</span>
+            </div>
+          </Show>
+        </div>
+      )
+    },
+    code: `import { EmojiPicker } from '@a4ui/core'
+
+<EmojiPicker onSelect={(emoji) => insertAtCursor(emoji)} />`,
+  },
+
+  // ---- Scheduling -----------------------------------------------------------
+  {
+    id: 'event-scheduler',
+    title: 'EventScheduler',
+    group: 'Data',
+    blurb: 'A time-grid calendar (day/week) with events laid out on an hour axis and a "now" line.',
+    demo: () => (
+      <UI.EventScheduler
+        class="w-full"
+        view="week"
+        date="2026-07-21"
+        startHour={8}
+        endHour={18}
+        events={[
+          { id: '1', title: 'Standup', start: '2026-07-21T09:00', end: '2026-07-21T09:30', tone: 'primary' },
+          {
+            id: '2',
+            title: 'Design review',
+            start: '2026-07-21T11:00',
+            end: '2026-07-21T12:30',
+            tone: 'accent',
+          },
+          { id: '3', title: '1:1 with Priya', start: '2026-07-22T14:00', end: '2026-07-22T14:45' },
+          { id: '4', title: 'Release', start: '2026-07-23T10:00', end: '2026-07-23T13:00', tone: 'accent' },
+          { id: '5', title: 'Retro', start: '2026-07-24T16:00', end: '2026-07-24T17:00' },
+        ]}
+      />
+    ),
+    code: `import { EventScheduler } from '@a4ui/core'
+
+<EventScheduler view="week" date="2026-07-21" events={[
+  { id: '1', title: 'Standup', start: '2026-07-21T09:00', end: '2026-07-21T09:30' },
+]} />`,
+  },
+  {
+    id: 'availability-picker',
+    title: 'AvailabilityPicker',
+    group: 'Data',
+    blurb: 'A booking-style slot picker — pick a date, choose an open time. Timezone-aware.',
+    demo: () => {
+      const [sel, setSel] = createSignal<{ date: string; time: string }>()
+      return (
+        <UI.AvailabilityPicker
+          class="w-full max-w-lg"
+          value={sel()}
+          onChange={setSel}
+          slotsByDate={{
+            '2026-07-22': ['09:00', '09:30', '10:00', '11:30', '14:00', '15:30'],
+            '2026-07-23': ['08:30', '09:00', '13:00', '16:00'],
+            '2026-07-24': ['10:00', '10:30', '11:00', '15:00', '15:30', '16:00'],
+          }}
+        />
+      )
+    },
+    code: `import { AvailabilityPicker } from '@a4ui/core'
+
+<AvailabilityPicker slotsByDate={{ '2026-07-22': ['09:00', '09:30'] }} onChange={book} />`,
+  },
+
+  // ---- Geo ------------------------------------------------------------------
+  {
+    id: 'interactive-map',
+    title: 'InteractiveMap',
+    group: 'Data',
+    blurb:
+      'A pannable/zoomable tile map with markers (OpenStreetMap tiles, no map dependency). Drag & scroll ↓',
+    demo: () => (
+      <UI.InteractiveMap
+        class="w-full max-w-2xl"
+        height={360}
+        center={{ lat: 48.8584, lng: 2.2945 }}
+        zoom={13}
+        markers={[
+          { lat: 48.8584, lng: 2.2945, label: 'Eiffel Tower' },
+          { lat: 48.8606, lng: 2.3376, label: 'Louvre' },
+          { lat: 48.853, lng: 2.3499, label: 'Notre-Dame' },
+        ]}
+      />
+    ),
+    code: `import { InteractiveMap } from '@a4ui/core'
+
+<InteractiveMap center={{ lat: 48.8584, lng: 2.2945 }} zoom={13}
+  markers={[{ lat: 48.8584, lng: 2.2945, label: 'Eiffel Tower' }]} />`,
+  },
+  {
+    id: 'location-picker',
+    title: 'LocationPicker',
+    group: 'Forms',
+    blurb: 'A location field — a label input plus a mini map; click/drag to drop the pin.',
+    demo: () => {
+      const [place, setPlace] = createSignal({ lat: 40.7128, lng: -74.006, label: 'New York, NY' })
+      return <UI.LocationPicker class="w-full max-w-lg" value={place()} onChange={setPlace} />
+    },
+    code: `import { LocationPicker } from '@a4ui/core'
+
+const [place, setPlace] = createSignal({ lat: 40.71, lng: -74.0, label: 'New York' })
+<LocationPicker value={place()} onChange={setPlace} />`,
+  },
+
+  // ---- Dev / data tooling ---------------------------------------------------
+  {
+    id: 'query-builder',
+    title: 'QueryBuilder',
+    group: 'Forms',
+    blurb: 'A nested AND/OR rule/group builder for boolean queries — exports a JSON tree.',
+    demo: () => {
+      const [q, setQ] = createSignal<UI.QueryGroup>({
+        combinator: 'and',
+        rules: [
+          { field: 'status', operator: 'is', value: 'open' },
+          {
+            combinator: 'or',
+            rules: [
+              { field: 'priority', operator: 'is', value: 'high' },
+              { field: 'age', operator: '>', value: '30' },
+            ],
+          },
+        ],
+      })
+      return (
+        <UI.QueryBuilder
+          class="w-full max-w-2xl"
+          value={q()}
+          onChange={setQ}
+          fields={[
+            { name: 'status', label: 'Status', type: 'select', options: ['open', 'closed', 'pending'] },
+            { name: 'priority', label: 'Priority', type: 'select', options: ['low', 'medium', 'high'] },
+            { name: 'age', label: 'Age (days)', type: 'number' },
+            { name: 'title', label: 'Title', type: 'text' },
+          ]}
+        />
+      )
+    },
+    code: `import { QueryBuilder } from '@a4ui/core'
+
+<QueryBuilder fields={fields} value={query()} onChange={setQuery} />`,
+  },
+  {
+    id: 'json-viewer',
+    title: 'JsonViewer',
+    group: 'Data',
+    blurb: 'A collapsible JSON/object tree with type-tinted values — for API responses and debug panels.',
+    demo: () => (
+      <UI.JsonViewer
+        class="w-full max-w-xl"
+        defaultExpanded
+        data={{
+          id: 4821,
+          name: 'Ada Lovelace',
+          active: true,
+          roles: ['admin', 'editor'],
+          address: { city: 'London', zip: null },
+          logins: 132,
+        }}
+      />
+    ),
+    code: `import { JsonViewer } from '@a4ui/core'
+
+<JsonViewer defaultExpanded data={apiResponse} />`,
+  },
+  {
+    id: 'spreadsheet-grid',
+    title: 'SpreadsheetGrid',
+    group: 'Data',
+    blurb: 'An editable cell grid — arrow-key nav, range select, copy/paste TSV. Click a cell and type ↓',
+    demo: () => (
+      <UI.SpreadsheetGrid
+        class="w-full max-w-2xl"
+        rows={8}
+        cols={5}
+        columnHeaders={['Item', 'Qty', 'Unit', 'Total', 'Notes']}
+        data={[
+          ['Widget', '3', '4.00', '12.00', ''],
+          ['Gadget', '1', '9.50', '9.50', 'fragile'],
+          ['Gizmo', '5', '2.20', '11.00', ''],
+        ]}
+      />
+    ),
+    code: `import { SpreadsheetGrid } from '@a4ui/core'
+
+const [sheet, setSheet] = createSignal<string[][]>([])
+<SpreadsheetGrid rows={10} cols={6} onChange={setSheet} />`,
+  },
+
+  // ---- Collaboration --------------------------------------------------------
+  {
+    id: 'presence-avatars',
+    title: 'PresenceAvatars',
+    group: 'Data',
+    blurb:
+      'A stacked group of active users (+overflow) with optional labeled live cursors. Multiplayer presence.',
+    demo: () => (
+      <div class="relative h-56 w-full max-w-lg overflow-hidden rounded-2xl border border-border bg-card">
+        <UI.PresenceAvatars
+          class="absolute right-3 top-3"
+          max={4}
+          users={[
+            { id: 'u1', name: 'Ada Lovelace' },
+            { id: 'u2', name: 'Grace Hopper', color: 'hsl(280 80% 60%)' },
+            { id: 'u3', name: 'Alan Turing', color: 'hsl(160 70% 45%)' },
+            { id: 'u4', name: 'Katherine Johnson' },
+            { id: 'u5', name: 'Linus Torvalds' },
+            { id: 'u6', name: 'Margaret Hamilton' },
+          ]}
+          cursors={[
+            { userId: 'u2', x: 0.35, y: 0.55 },
+            { userId: 'u3', x: 0.7, y: 0.4 },
+          ]}
+        />
+        <div class="grid h-full place-items-center text-sm text-muted-foreground">Shared canvas</div>
+      </div>
+    ),
+    code: `import { PresenceAvatars } from '@a4ui/core'
+
+<div class="relative">
+  <PresenceAvatars users={users} cursors={cursors} />
+</div>`,
+  },
+  {
+    id: 'activity-feed',
+    title: 'ActivityFeed',
+    group: 'Data',
+    blurb: 'A chronological audit trail — who did what, when — grouped by day with relative timestamps.',
+    demo: () => (
+      <UI.ActivityFeed
+        class="w-full max-w-md"
+        items={[
+          {
+            id: '1',
+            actor: 'Ada Lovelace',
+            action: (
+              <>
+                commented on <b>Invoice #4821</b>
+              </>
+            ),
+            timestamp: '2026-07-21T15:40:00Z',
+          },
+          {
+            id: '2',
+            actor: 'Alan Turing',
+            action: (
+              <>
+                closed <b>PR #66</b>
+              </>
+            ),
+            timestamp: '2026-07-21T13:05:00Z',
+          },
+          {
+            id: '3',
+            actor: 'Grace Hopper',
+            action: (
+              <>
+                invited <b>3 teammates</b>
+              </>
+            ),
+            timestamp: '2026-07-20T18:20:00Z',
+          },
+          {
+            id: '4',
+            actor: 'System',
+            action: <>ran the nightly backup</>,
+            timestamp: '2026-07-20T02:00:00Z',
+          },
+        ]}
+      />
+    ),
+    code: `import { ActivityFeed } from '@a4ui/core'
+
+<ActivityFeed items={[
+  { id: '1', actor: 'Ada', action: <>commented</>, timestamp: '2026-07-21T15:40:00Z' },
+]} />`,
+  },
 ]
 
 // Names → docs route, for linkifying component/utility mentions inside the

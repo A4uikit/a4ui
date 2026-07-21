@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.34.0'
+export const A4UI_VERSION = '0.35.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -233,6 +233,41 @@ export { AudioWaveform, type AudioWaveformProps } from './ui/AudioWaveform'
 export { Lamp, type LampProps } from './ui/Lamp'
 export { FollowingPointer, type FollowingPointerProps } from './ui/FollowingPointer'
 export { SheetSnap, type SheetSnapProps } from './ui/SheetSnap'
+
+// Advanced form inputs.
+export { OtpInput, type OtpInputProps } from './ui/OtpInput'
+export { MaskedInput, type MaskedInputProps } from './ui/MaskedInput'
+export { CodeEditor, type CodeEditorProps } from './ui/CodeEditor'
+export { SignaturePad, type SignaturePadProps } from './ui/SignaturePad'
+export { EmojiPicker, type EmojiPickerProps } from './ui/EmojiPicker'
+
+// Scheduling.
+export { EventScheduler, type SchedulerEvent, type EventSchedulerProps } from './ui/EventScheduler'
+export { AvailabilityPicker, type AvailabilityPickerProps } from './ui/AvailabilityPicker'
+
+// Geo.
+export { InteractiveMap, type MapMarker, type InteractiveMapProps } from './ui/InteractiveMap'
+export { LocationPicker, type LocationValue, type LocationPickerProps } from './ui/LocationPicker'
+
+// Dev / data tooling.
+export {
+  QueryBuilder,
+  type QueryField,
+  type QueryRule,
+  type QueryGroup,
+  type QueryBuilderProps,
+} from './ui/QueryBuilder'
+export { JsonViewer, type JsonViewerProps } from './ui/JsonViewer'
+export { SpreadsheetGrid, type SpreadsheetGridProps } from './ui/SpreadsheetGrid'
+
+// Collaboration.
+export {
+  PresenceAvatars,
+  type PresenceUser,
+  type RemoteCursor,
+  type PresenceAvatarsProps,
+} from './ui/PresenceAvatars'
+export { ActivityFeed, type ActivityItem, type ActivityFeedProps } from './ui/ActivityFeed'
 export {
   CopyButton,
   type CopyButtonProps,
