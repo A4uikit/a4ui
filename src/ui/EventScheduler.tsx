@@ -203,7 +203,13 @@ export function EventScheduler(props: EventSchedulerProps): JSX.Element {
       </div>
 
       {/* Body: scrolls vertically; gutter of hour labels + day columns */}
-      <div class="flex overflow-y-auto" style={{ 'max-height': '32rem' }}>
+      <div
+        role="group"
+        aria-label="Schedule grid"
+        tabIndex={0}
+        class="flex overflow-y-auto outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+        style={{ 'max-height': '32rem' }}
+      >
         <div class="w-14 shrink-0" style={{ height: `${gridHeight()}px` }}>
           <For each={hours()}>
             {(h) => (

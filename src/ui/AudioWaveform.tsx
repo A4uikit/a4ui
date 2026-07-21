@@ -167,10 +167,8 @@ export function AudioWaveform(props: AudioWaveformProps): JSX.Element {
           {(peak, index) => {
             const played = createMemo(() => index() / bars().length <= progress())
             return (
-              <button
-                type="button"
+              <div
                 aria-hidden="true"
-                tabIndex={-1}
                 onClick={(event) => {
                   event.stopPropagation()
                   handleBarClick(index())
