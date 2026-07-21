@@ -36,6 +36,8 @@ import {
   CardSpread,
   Globe,
   Confetti,
+  Lamp,
+  VideoPlayerShell,
   revealOnScroll,
 } from '../../src'
 
@@ -274,6 +276,20 @@ export default function Landing(): JSX.Element {
         <Carousel3D variant="coverflow" slides={SHOWCASE_SLIDES} class="mx-auto max-w-3xl" />
       </section>
 
+      {/* Watch the demo */}
+      <section class="mx-auto max-w-3xl space-y-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight">Watch the demo</h2>
+          <p class="mt-3 text-muted-foreground">
+            A two-minute walkthrough of building a page with A4ui primitives.
+          </p>
+        </div>
+        <VideoPlayerShell
+          src="https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4"
+          class="mx-auto"
+        />
+      </section>
+
       {/* Stats band */}
       <section ref={statsEl} class="rounded-xl border border-border bg-card p-8">
         <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
@@ -360,6 +376,24 @@ export default function Landing(): JSX.Element {
           </For>
         </div>
       </section>
+
+      {/* Closing call to action, spotlighted */}
+      <Lamp class="min-h-[26rem] rounded-xl">
+        <div class="mx-auto max-w-2xl px-6 pt-24 text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+            Ready to build in the light?
+          </h2>
+          <p class="mx-auto mt-4 max-w-xl text-muted-foreground">
+            Start with the primitives above, or pull the whole kit into your next project.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <SlideArrowButton class="px-5">Get started</SlideArrowButton>
+            <Button variant="outline" class="px-5">
+              Read the docs
+            </Button>
+          </div>
+        </div>
+      </Lamp>
 
       {/* Newsletter / interests */}
       <section ref={newsletterEl} class="relative rounded-xl border border-border bg-card p-8">
