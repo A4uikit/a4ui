@@ -48,10 +48,12 @@ function pseudoRandom(i: number): number {
   return (s - Math.floor(s)) * 2 - 1
 }
 
-function restTransform(i: number): CardTransform {
-  // Tight near-centered stack: a hair of offset/rotation per card so the
-  // pile still reads as separate cards.
-  return { x: i * 1.5, y: -i * 1, rotate: (i % 2 === 0 ? 1 : -1) * 1.5, origin: 'bottom center' }
+function restTransform(i: number, n: number): CardTransform {
+  // Resting deck: a gentle symmetric peek-fan (cards' edges show) so the pile
+  // reads as multiple cards even before it opens, without stealing the reveal.
+  const mid = (n - 1) / 2
+  const d = i - mid
+  return { x: d * 7, y: Math.abs(d) * 2.5, rotate: d * 2.5, origin: 'bottom center' }
 }
 
 function openTransform(layout: CardSpreadLayout, i: number, n: number, spread: number): CardTransform {
@@ -131,7 +133,7 @@ export function CardSpread(props: CardSpreadProps): JSX.Element {
 
     cardRefs.forEach((card, i) => {
       if (!card) return
-      const t = open ? openTransform(layout(), i, n, spread()) : restTransform(i)
+      const t = open ? openTransform(layout(), i, n, spread()) : restTransform(i, n)
       card.style.transformOrigin = t.origin
       card.style.zIndex = String(open ? i : n - i)
 
@@ -183,7 +185,7 @@ export function CardSpread(props: CardSpreadProps): JSX.Element {
           <div
             ref={(el) => (cardRefs[i()] = el)}
             class="absolute inset-x-0 top-0 h-56 w-40 rounded-xl border border-border bg-card text-card-foreground shadow-sm will-change-transform"
-            style={{ transform: transformString(restTransform(i())) }}
+            style={{ transform: transformString(restTransform(i(), props.items.length)) }}
           >
             {item}
           </div>

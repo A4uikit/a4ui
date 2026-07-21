@@ -6,6 +6,22 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.31.0] — 2026-07-21
+
+### Added
+
+- **Morph presets** — ready-made two-state buttons on top of `IconMorphButton`,
+  so you don't wire the two icons yourself: `CopyButton` (copies its `value`,
+  morphs copy→check with auto-revert), `PlayPauseButton`, `MuteButton`,
+  `LockButton`, and `ThemeMorphButton` (presentational — the caller owns the
+  theme wiring).
+
+### Changed
+
+- **`CardSpread`** — the resting (unopened) stack now shows a subtle symmetric
+  peek-fan so it reads as a deck of cards even before it opens, instead of a
+  near-flat pile. Opening still fans it fully per `layout`.
+
 ## [0.30.0] — 2026-07-21
 
 ### Added
