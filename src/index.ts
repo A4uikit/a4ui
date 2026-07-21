@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.31.1'
+export const A4UI_VERSION = '0.32.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -179,6 +179,13 @@ export { FocusBlurGroup, type FocusBlurGroupProps } from './ui/FocusBlurGroup'
 export { CardSpread, type CardSpreadProps, type CardSpreadLayout } from './ui/CardSpread'
 export { Carousel3D, type Carousel3DProps, type Carousel3DVariant } from './ui/Carousel3D'
 export { TimeMachineStack, type TimeMachineStackProps } from './ui/TimeMachineStack'
+
+// Spatial "wow" primitives (bento, dock, beams, meteors).
+export { BentoGrid, BentoCard, type BentoGridProps, type BentoCardProps } from './ui/BentoGrid'
+export { Dock, type DockItem, type DockProps } from './ui/Dock'
+export { AnimatedBeam, type AnimatedBeamProps } from './ui/AnimatedBeam'
+export { BorderBeam, type BorderBeamProps } from './ui/BorderBeam'
+export { Meteors, type MeteorsProps } from './ui/Meteors'
 export {
   CopyButton,
   type CopyButtonProps,

@@ -6,6 +6,31 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.32.0] — 2026-07-21
+
+### Added
+
+Charts (native SVG, no chart library) — deepens the thin chart set:
+
+- **`LineChart`** — multi-series line chart with optional per-series area
+  fill, dots, a legend, and a hover crosshair + tooltip. Exported from
+  `@a4ui/core/charts`.
+- **`GaugeChart`** — a 270° radial gauge with an animated sweep and optional
+  colored thresholds, for single KPI values.
+- **`RadarChart`** — a spider/radar chart for comparing entities across
+  several dimensions at once.
+
+Spatial "wow" primitives (fit the Spatial Glass look; all reduced-motion safe):
+
+- **`BentoGrid`** / **`BentoCard`** — a responsive bento layout of glass tiles
+  that span columns/rows.
+- **`Dock`** — a macOS-style dock whose icons magnify by cursor distance
+  (transform-only).
+- **`AnimatedBeam`** — an SVG beam with a traveling gradient that connects two
+  elements (recomputes on resize).
+- **`BorderBeam`** — a light that continuously traces the border of its parent.
+- **`Meteors`** — a decorative meteor-shower backdrop layer.
+
 ## [0.31.1] — 2026-07-21
 
 ### Fixed
