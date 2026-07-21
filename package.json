@@ -101,6 +101,7 @@
     "test:visual": "playwright test --config playwright.visual.config.ts",
     "test:report": "playwright show-report",
     "test:package": "node scripts/test-package.mjs",
+    "test:smoke": "node scripts/smoke-console.mjs",
     "validate": "npm run typecheck && npm run lint && npm run format:check && npm run test:unit && npm run build && npm run test:package",
     "prepublishOnly": "npm run validate",
     "prepare": "husky"
