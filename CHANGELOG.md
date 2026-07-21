@@ -6,6 +6,45 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.33.0] — 2026-07-21
+
+### Added
+
+Batch-2 components (issues #54–#59).
+
+AI agent surface + chat affordances:
+
+- **`ReasoningTrace`** — a collapsible "thinking" panel for a model's
+  step-by-step reasoning (streaming-friendly).
+- **`ToolCallTimeline`** — a vertical trace of an agent's tool calls with
+  pending / success / error states and collapsible args/results.
+- **`DiffViewer`** — an inline git-style diff (unified diff string or parsed
+  lines) with added/removed highlighting.
+- **`ModelPicker`** — a model/capability dropdown with per-option icon +
+  metadata.
+- **`UsageMeter`** — a token/quota bar with a near-limit warning state.
+- **`SuggestionChips`** — a row of tappable, dismissible follow-up chips.
+
+Content blocks:
+
+- **`Callout`** — an inline note/tip/warning/danger block for prose.
+- **`Snippet`** — a single code block with copy + language badge (lighter than
+  `CodeTabs`).
+
+Dashboard data-viz (`@a4ui/core/charts`):
+
+- **`BarList`** — ranked horizontal bars for top-N metrics.
+- **`StatusTracker`** — a status-page history bar (ok/degraded/down segments).
+- **`CategoryBar`** — a segmented threshold bar with a position marker.
+
+Spatial showpieces + motion extras:
+
+- **`Globe`** — an interactive Canvas 3D globe with markers and arcs (drag to
+  spin, no 3D dependency).
+- **`WorldMap`** — a dotted-grid world map with animated connection arcs.
+- **`Confetti`** (+ `fireConfetti`) — a celebratory particle burst.
+- **`CursorTrail`** — a soft blob trail following the cursor.
+
 ## [0.32.0] — 2026-07-21
 
 ### Added
