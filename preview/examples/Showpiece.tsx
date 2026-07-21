@@ -2,10 +2,21 @@
 // composition showcasing PriceBlock, ConditionScale, SpecSheet, and
 // RatingsSummary alongside the gallery/cart primitives.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
-import { ShieldCheck, BadgeCheck, RotateCcw, Truck } from 'lucide-solid'
+import { ShieldCheck, BadgeCheck, RotateCcw, Truck, Copy, Check } from 'lucide-solid'
 import { For, createSignal, type JSX } from 'solid-js'
 
-import { Badge, Breadcrumb, Button, Drawer, Expandable, Image, SpecSheet, RatingsSummary } from '../../src'
+import {
+  Badge,
+  Breadcrumb,
+  Button,
+  Drawer,
+  Expandable,
+  IconMorphButton,
+  Image,
+  LikeButton,
+  SpecSheet,
+  RatingsSummary,
+} from '../../src'
 import {
   CartLine,
   CartSummary,
@@ -192,8 +203,23 @@ export default function Showpiece(): JSX.Element {
               <Badge tone="success">In stock</Badge>
               <Badge tone="info">Certified pre-owned</Badge>
             </div>
-            <h1 class="text-2xl font-bold tracking-tight text-foreground">Nocturne M2 Rangefinder</h1>
-            <p class="font-mono text-xs text-muted-foreground">SKU: NOC-M2-GPH-24187</p>
+            <div class="flex items-center justify-between gap-3">
+              <h1 class="text-2xl font-bold tracking-tight text-foreground">Nocturne M2 Rangefinder</h1>
+              <LikeButton icon="heart" defaultPressed={false} aria-label="Save to wishlist" />
+            </div>
+            <div class="flex items-center gap-2">
+              <p class="font-mono text-xs text-muted-foreground">SKU: NOC-M2-GPH-24187</p>
+              <IconMorphButton
+                inactive={<Copy size={16} />}
+                active={<Check size={16} />}
+                label="REF · A4-2291"
+                revertAfter={1500}
+                aria-label="Copy reference"
+                onChange={(pressed) => {
+                  if (pressed) void navigator.clipboard?.writeText('NOC-M2-GPH-24187')
+                }}
+              />
+            </div>
           </div>
 
           <PriceBlock

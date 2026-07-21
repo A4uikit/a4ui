@@ -1,5 +1,6 @@
 // Example template — Dashboard. Full-page composition dogfooding A4ui components.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
+import { Bell, RotateCw } from 'lucide-solid'
 import { For, type JSX } from 'solid-js'
 
 import {
@@ -9,6 +10,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  MicroButton,
   Progress,
   Separator,
   Stat,
@@ -54,9 +56,21 @@ const initials = (name: string): string =>
 export default function Dashboard(): JSX.Element {
   return (
     <div class="mx-auto max-w-7xl space-y-6 py-8">
-      <header class="flex flex-col gap-1">
-        <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
-        <p class="text-sm text-muted-foreground">Welcome back — here's how your store is performing today.</p>
+      <header class="flex flex-wrap items-start justify-between gap-4">
+        <div class="flex flex-col gap-1">
+          <h1 class="text-2xl font-bold tracking-tight">Dashboard</h1>
+          <p class="text-sm text-muted-foreground">
+            Welcome back — here's how your store is performing today.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <MicroButton effect="spin" variant="ghost" aria-label="Refresh">
+            <RotateCw size={16} />
+          </MicroButton>
+          <MicroButton effect="ring" variant="ghost" aria-label="Notifications">
+            <Bell size={16} />
+          </MicroButton>
+        </div>
       </header>
 
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

@@ -12,6 +12,7 @@ import {
   Card,
   Drawer,
   Image,
+  LikeButton,
   LogoWall,
   RatingsSummary,
   SegmentedControl,
@@ -289,7 +290,15 @@ export default function Boutique(): JSX.Element {
                       if (el) animateIn(el, { delay: i() * 0.05 })
                     })
                     return (
-                      <div ref={el}>
+                      <div ref={el} class="relative h-full">
+                        {/* Wishlist toggle — pinned to the card's top-right corner, on top
+                            of whichever card style is active. Own glass chip so it reads
+                            clearly over the product photo in every style. */}
+                        <LikeButton
+                          icon="heart"
+                          aria-label={`Save ${product.title}`}
+                          class="absolute right-2 top-2 z-10 rounded-full bg-background/70 p-1.5 backdrop-blur-sm"
+                        />
                         <Switch>
                           <Match when={cardStyle() === 'standard'}>
                             <ProductCard

@@ -1,7 +1,24 @@
 // Example template — Landing / marketing page. Full-page composition dogfooding A4ui.
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
 import { createSignal, For, onMount, type JSX } from 'solid-js'
-import { Zap, Shield, Boxes, Palette, Gauge, Search } from 'lucide-solid'
+import {
+  Zap,
+  Shield,
+  Boxes,
+  Palette,
+  Gauge,
+  Search,
+  LayoutDashboard,
+  Inbox,
+  BarChart3,
+  Calendar,
+  Settings,
+  Layers,
+  Sparkles,
+  Component,
+  Wand2,
+  Blocks,
+} from 'lucide-solid'
 
 import {
   Button,
@@ -13,6 +30,10 @@ import {
   TagInput,
   RingProgress,
   BackToTop,
+  SlideArrowButton,
+  FocusBlurGroup,
+  Carousel3D,
+  CardSpread,
   revealOnScroll,
 } from '../../src'
 
@@ -94,6 +115,46 @@ const FAQS: Faq[] = [
   },
 ]
 
+interface ShowcaseScreen {
+  icon: (props: { class?: string }) => JSX.Element
+  title: string
+}
+
+const SHOWCASE_SCREENS: ShowcaseScreen[] = [
+  { icon: LayoutDashboard, title: 'Dashboard' },
+  { icon: Inbox, title: 'Inbox' },
+  { icon: BarChart3, title: 'Analytics' },
+  { icon: Calendar, title: 'Calendar' },
+  { icon: Settings, title: 'Settings' },
+]
+
+const SHOWCASE_SLIDES: JSX.Element[] = SHOWCASE_SCREENS.map((screen) => (
+  <div class="flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl border border-border bg-card p-6 text-center shadow-sm">
+    <screen.icon class="h-8 w-8 text-primary" />
+    <span class="text-base font-semibold">{screen.title}</span>
+  </div>
+))
+
+interface CollectionCard {
+  icon: (props: { class?: string }) => JSX.Element
+  label: string
+}
+
+const COLLECTIONS: CollectionCard[] = [
+  { icon: Layers, label: 'Layouts' },
+  { icon: Sparkles, label: 'Motion' },
+  { icon: Component, label: 'Primitives' },
+  { icon: Wand2, label: 'Theming' },
+  { icon: Blocks, label: 'Patterns' },
+]
+
+const COLLECTION_CARDS: JSX.Element[] = COLLECTIONS.map((collection) => (
+  <div class="flex h-full w-full flex-col items-center justify-center gap-2 p-4 text-center">
+    <collection.icon class="h-6 w-6 text-primary" />
+    <span class="text-sm font-semibold">{collection.label}</span>
+  </div>
+))
+
 const SAMPLE = 'A4ui is a theme-agnostic SolidJS component library built with semantic Tailwind tokens.'
 
 export default function Landing(): JSX.Element {
@@ -103,14 +164,18 @@ export default function Landing(): JSX.Element {
 
   let marqueeEl: HTMLElement | undefined
   let featuresEl: HTMLElement | undefined
+  let showcaseEl: HTMLElement | undefined
   let statsEl: HTMLElement | undefined
+  let collectionsEl: HTMLElement | undefined
   let faqEl: HTMLElement | undefined
   let newsletterEl: HTMLElement | undefined
 
   onMount(() => {
     if (marqueeEl) revealOnScroll(marqueeEl, { amount: 0.15 })
     if (featuresEl) revealOnScroll(featuresEl, { amount: 0.15 })
+    if (showcaseEl) revealOnScroll(showcaseEl, { amount: 0.15 })
     if (statsEl) revealOnScroll(statsEl, { amount: 0.15 })
+    if (collectionsEl) revealOnScroll(collectionsEl, { amount: 0.15 })
     if (faqEl) revealOnScroll(faqEl, { amount: 0.15 })
     if (newsletterEl) revealOnScroll(newsletterEl, { amount: 0.15 })
   })
@@ -126,9 +191,7 @@ export default function Landing(): JSX.Element {
           your design system.
         </p>
         <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button variant="primary" class="px-5">
-            Get started
-          </Button>
+          <SlideArrowButton class="px-5">Get started</SlideArrowButton>
           <Button variant="outline" class="px-5">
             View on GitHub
           </Button>
@@ -159,19 +222,28 @@ export default function Landing(): JSX.Element {
             A complete toolkit of primitives that compose into anything.
           </p>
         </div>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <For each={FEATURES}>
-            {(feature) => (
-              <Card class="p-6">
-                <div class="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
-                  <feature.icon class="h-5 w-5" />
-                </div>
-                <h3 class="mt-4 text-base font-semibold">{feature.title}</h3>
-                <p class="mt-2 text-sm text-muted-foreground">{feature.body}</p>
-              </Card>
-            )}
-          </For>
+        <FocusBlurGroup items={FEATURES} class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {(feature) => (
+            <Card class="p-6">
+              <div class="grid h-10 w-10 place-items-center rounded-lg bg-primary/10 text-primary">
+                <feature.icon class="h-5 w-5" />
+              </div>
+              <h3 class="mt-4 text-base font-semibold">{feature.title}</h3>
+              <p class="mt-2 text-sm text-muted-foreground">{feature.body}</p>
+            </Card>
+          )}
+        </FocusBlurGroup>
+      </section>
+
+      {/* Showcase carousel */}
+      <section ref={showcaseEl} class="space-y-8 py-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight">See it in motion</h2>
+          <p class="mt-3 text-muted-foreground">
+            A quick look at a few screens, built entirely from A4ui primitives.
+          </p>
         </div>
+        <Carousel3D variant="coverflow" slides={SHOWCASE_SLIDES} class="mx-auto max-w-3xl" />
       </section>
 
       {/* Stats band */}
@@ -188,6 +260,22 @@ export default function Landing(): JSX.Element {
               </div>
             )}
           </For>
+        </div>
+      </section>
+
+      {/* Collections teaser */}
+      <section
+        ref={collectionsEl}
+        class="grid items-center gap-8 rounded-xl border border-border bg-card p-8 sm:grid-cols-2"
+      >
+        <div class="space-y-3 text-center sm:text-left">
+          <h2 class="text-2xl font-bold tracking-tight">Built from a shared toolkit</h2>
+          <p class="text-sm text-muted-foreground">
+            Every primitive draws from the same tokens and patterns — hover the stack to fan it out.
+          </p>
+        </div>
+        <div class="flex justify-center">
+          <CardSpread layout="wheel" aria-label="A4ui pattern collections" items={COLLECTION_CARDS} />
         </div>
       </section>
 
