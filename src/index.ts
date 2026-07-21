@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.29.1'
+export const A4UI_VERSION = '0.30.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -159,6 +159,26 @@ export { ArtifactPanel, type ArtifactPanelProps } from './ui/ArtifactPanel'
 export { FloatingToolbar, type FloatingToolbarProps } from './ui/FloatingToolbar'
 export { PageTransition, type PageTransitionProps } from './ui/PageTransition'
 export { InlineSelect, type InlineSelectProps, type InlineSelectOption } from './ui/InlineSelect'
+
+// Micro-interactions — animated buttons + card/3D transitions (Motion-driven).
+export {
+  MicroButton,
+  type MicroButtonProps,
+  type MicroButtonEffect,
+  type MicroButtonVariant,
+} from './ui/MicroButton'
+export { IconMorphButton, type IconMorphButtonProps, type IconMorphButtonVariant } from './ui/IconMorphButton'
+export { LikeButton, type LikeButtonProps, type LikeButtonIcon } from './ui/LikeButton'
+export {
+  SlideArrowButton,
+  type SlideArrowButtonProps,
+  type SlideArrowButtonVariant,
+  type SlideArrowDirection,
+} from './ui/SlideArrowButton'
+export { FocusBlurGroup, type FocusBlurGroupProps } from './ui/FocusBlurGroup'
+export { CardSpread, type CardSpreadProps, type CardSpreadLayout } from './ui/CardSpread'
+export { Carousel3D, type Carousel3DProps, type Carousel3DVariant } from './ui/Carousel3D'
+export { TimeMachineStack, type TimeMachineStackProps } from './ui/TimeMachineStack'
 
 // Phase 2 — code, search, navigation, master-detail.
 export { CodeTabs, type CodeTabsProps, type CodeTab } from './ui/CodeTabs'

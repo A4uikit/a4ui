@@ -32,6 +32,12 @@ import {
   Star,
   User,
   Zap,
+  Check,
+  Copy,
+  Moon,
+  Sun,
+  Volume2,
+  VolumeX,
 } from 'lucide-solid'
 import { createSignal, For, onCleanup, onMount, Show, type JSX } from 'solid-js'
 
@@ -92,6 +98,21 @@ export const DOC_GROUPS = [
   'Motion',
   'Guides',
 ]
+
+// Shared demo content for the micro-interaction gallery (CardSpread / 3D).
+const demoCards = (n = 5): JSX.Element[] =>
+  Array.from({ length: n }, (_, i) => (
+    <div class="grid h-full place-items-center p-4 text-center text-sm font-medium text-card-foreground">
+      Card {i + 1}
+    </div>
+  ))
+
+const demoPanels = (labels: string[]): JSX.Element[] =>
+  labels.map((label) => (
+    <div class="grid h-full w-full place-items-center rounded-xl border border-border bg-card p-6 text-center text-sm font-medium text-card-foreground">
+      {label}
+    </div>
+  ))
 
 export const DOCS: DocEntry[] = [
   // ---- Get started ----------------------------------------------------------
@@ -5441,6 +5462,250 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     code: `const [blocks, setBlocks] = createSignal(initialBlocks)
 <BlockEditor blocks={blocks()} onChange={setBlocks}
   blockTypes={blockTypes} onAddBlock={(type) => append(type)} />`,
+  },
+
+  // ---- Micro-interactions (buttons + card/3D transitions) -------------------
+  {
+    id: 'micro-button',
+    title: 'MicroButton',
+    group: 'Actions',
+    blurb:
+      'A button that fires a physically-tuned feedback effect — spin, shake, pulse, ring or sparkle on click, or a glare sweep on hover. Transform/opacity only, reduced-motion safe. Click the buttons ↓',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-3">
+        <UI.MicroButton effect="sparkle" aria-label="Sparkle">
+          <Sparkles size={16} />
+        </UI.MicroButton>
+        <UI.MicroButton effect="ring" variant="outline" aria-label="Ring">
+          <Bell size={16} />
+        </UI.MicroButton>
+        <UI.MicroButton effect="spin" variant="ghost" aria-label="Spin">
+          <Settings size={16} />
+        </UI.MicroButton>
+        <UI.MicroButton effect="glare">Deploy</UI.MicroButton>
+      </div>
+    ),
+    code: `import { MicroButton } from '@a4ui/core'
+
+<MicroButton effect="sparkle"><Sparkles size={16} /></MicroButton>
+<MicroButton effect="glare">Deploy</MicroButton>`,
+    variants: [
+      {
+        label: 'spin',
+        demo: () => (
+          <UI.MicroButton effect="spin" variant="ghost" aria-label="spin">
+            <Settings size={16} />
+          </UI.MicroButton>
+        ),
+      },
+      {
+        label: 'shake',
+        demo: () => (
+          <UI.MicroButton effect="shake" variant="outline" aria-label="shake">
+            <Zap size={16} />
+          </UI.MicroButton>
+        ),
+      },
+      {
+        label: 'pulse',
+        demo: () => (
+          <UI.MicroButton effect="pulse" aria-label="pulse">
+            <Heart size={16} />
+          </UI.MicroButton>
+        ),
+      },
+      {
+        label: 'ring',
+        demo: () => (
+          <UI.MicroButton effect="ring" variant="outline" aria-label="ring">
+            <Bell size={16} />
+          </UI.MicroButton>
+        ),
+      },
+      {
+        label: 'sparkle',
+        demo: () => (
+          <UI.MicroButton effect="sparkle" aria-label="sparkle">
+            <Sparkles size={16} />
+          </UI.MicroButton>
+        ),
+      },
+      { label: 'glare (hover)', demo: () => <UI.MicroButton effect="glare">Deploy App</UI.MicroButton> },
+    ],
+  },
+  {
+    id: 'icon-morph-button',
+    title: 'IconMorphButton',
+    group: 'Actions',
+    blurb:
+      'A two-state icon toggle whose glyph morphs — spring scale + rotate + fade — between states: copy→check, mute, theme. Click ↓',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-3">
+        <UI.IconMorphButton
+          inactive={<Copy size={18} />}
+          active={<Check size={18} />}
+          aria-label="Copy install command"
+          revertAfter={1500}
+          label="Copy"
+          activeLabel="Copied"
+          variant="outline"
+        />
+        <UI.IconMorphButton
+          inactive={<Volume2 size={18} />}
+          active={<VolumeX size={18} />}
+          aria-label="Mute"
+        />
+        <UI.IconMorphButton
+          inactive={<Sun size={18} />}
+          active={<Moon size={18} />}
+          aria-label="Toggle theme"
+        />
+      </div>
+    ),
+    code: `import { IconMorphButton } from '@a4ui/core'
+import { Copy, Check } from 'lucide-solid'
+
+<IconMorphButton
+  inactive={<Copy size={18} />} active={<Check size={18} />}
+  revertAfter={1500} label="Copy" activeLabel="Copied"
+  onChange={(p) => p && navigator.clipboard?.writeText(text)}
+/>`,
+  },
+  {
+    id: 'like-button',
+    title: 'LikeButton',
+    group: 'Actions',
+    blurb:
+      'Like / favorite / save toggle (heart · star · bookmark via one `icon` prop) with a spring pop and a staggered icon burst. Click ↓',
+    demo: () => (
+      <div class="flex items-center gap-6">
+        <UI.LikeButton defaultPressed count={128} showCount aria-label="Like this post" />
+        <UI.LikeButton icon="star" aria-label="Add to favorites" />
+        <UI.LikeButton icon="bookmark" aria-label="Save for later" />
+      </div>
+    ),
+    code: `import { LikeButton } from '@a4ui/core'
+
+<LikeButton count={128} showCount />
+<LikeButton icon="star" />
+<LikeButton icon="bookmark" />`,
+    variants: [
+      {
+        label: 'heart + count',
+        demo: () => <UI.LikeButton defaultPressed count={128} showCount aria-label="Like" />,
+      },
+      { label: 'star', demo: () => <UI.LikeButton icon="star" aria-label="Favorite" /> },
+      { label: 'bookmark', demo: () => <UI.LikeButton icon="bookmark" aria-label="Save" /> },
+    ],
+  },
+  {
+    id: 'slide-arrow-button',
+    title: 'SlideArrowButton',
+    group: 'Actions',
+    blurb:
+      'A CTA where the label slides out and an arrow slides in from the opposite edge on hover — pure CSS transform. Hover ↓',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-3">
+        <UI.SlideArrowButton>Get started</UI.SlideArrowButton>
+        <UI.SlideArrowButton direction="left" variant="outline">
+          Back
+        </UI.SlideArrowButton>
+      </div>
+    ),
+    code: `import { SlideArrowButton } from '@a4ui/core'
+
+<SlideArrowButton>Get started</SlideArrowButton>
+<SlideArrowButton direction="left" variant="outline">Back</SlideArrowButton>`,
+  },
+  {
+    id: 'focus-blur-group',
+    title: 'FocusBlurGroup',
+    group: 'Motion',
+    blurb:
+      'Hover or focus one item and it stays sharp while its siblings blur and dim — a spotlight for lists and navs. Hover a link ↓',
+    demo: () => (
+      <UI.FocusBlurGroup
+        items={['Overview', 'Pricing', 'Docs', 'Changelog', 'Blog']}
+        class="flex flex-wrap gap-6 text-sm font-medium text-foreground"
+      >
+        {(label) => (
+          <a href="#/motion-magnetic" class="cursor-pointer">
+            {label}
+          </a>
+        )}
+      </UI.FocusBlurGroup>
+    ),
+    code: `import { FocusBlurGroup } from '@a4ui/core'
+
+<FocusBlurGroup items={links} class="flex gap-6">
+  {(link) => <a href={link.href}>{link.label}</a>}
+</FocusBlurGroup>`,
+  },
+  {
+    id: 'card-spread',
+    title: 'CardSpread',
+    group: 'Motion',
+    blurb:
+      'A stack of cards that fans out into an arc, line, corner, cascade, scatter or wheel. Hover the stack ↓ (the Variations below are pinned open).',
+    demo: () => <UI.CardSpread aria-label="Sample cards" items={demoCards()} />,
+    code: `import { CardSpread } from '@a4ui/core'
+
+<CardSpread layout="arc" items={[<Card>Day 1</Card>, <Card>Day 2</Card>, /* … */]} />`,
+    variants: [
+      { label: 'arc', demo: () => <UI.CardSpread open layout="arc" items={demoCards()} /> },
+      { label: 'long-arc', demo: () => <UI.CardSpread open layout="long-arc" items={demoCards()} /> },
+      { label: 'linear', demo: () => <UI.CardSpread open layout="linear" items={demoCards()} /> },
+      { label: 'corner', demo: () => <UI.CardSpread open layout="corner" items={demoCards()} /> },
+      { label: 'cascade', demo: () => <UI.CardSpread open layout="cascade" items={demoCards()} /> },
+      { label: 'scatter', demo: () => <UI.CardSpread open layout="scatter" items={demoCards()} /> },
+      { label: 'wheel', demo: () => <UI.CardSpread open layout="wheel" items={demoCards()} /> },
+    ],
+  },
+  {
+    id: 'carousel-3d',
+    title: 'Carousel3D',
+    group: 'Motion',
+    blurb:
+      'A 3D coverflow / arc carousel — slides curve back around the active one. Drag, use the arrows, the dots, or ← → keys ↓',
+    demo: () => (
+      <UI.Carousel3D
+        slides={demoPanels(['Ridge Loop', 'Falls Overlook', 'Summit Pass', 'Coastal Trail', 'Pine Descent'])}
+      />
+    ),
+    code: `import { Carousel3D } from '@a4ui/core'
+
+<Carousel3D variant="coverflow" slides={[<Card>A</Card>, <Card>B</Card>, /* … */]} />`,
+    variants: [
+      {
+        label: 'coverflow',
+        demo: () => <UI.Carousel3D variant="coverflow" slides={demoPanels(['A', 'B', 'C', 'D', 'E'])} />,
+      },
+      {
+        label: 'arc',
+        demo: () => <UI.Carousel3D variant="arc" slides={demoPanels(['A', 'B', 'C', 'D', 'E'])} />,
+      },
+    ],
+  },
+  {
+    id: 'time-machine-stack',
+    title: 'TimeMachineStack',
+    group: 'Motion',
+    blurb:
+      'An Apple-style depth stack: the active card is front and the rest recede into the screen. Use the scrubber on the right or ↑ ↓ keys ↓',
+    demo: () => (
+      <UI.TimeMachineStack
+        slides={demoPanels([
+          'Sunset over the bay',
+          'Empty beach at dawn',
+          'Fog through the pines',
+          'City lights',
+          'Desert road',
+        ])}
+      />
+    ),
+    code: `import { TimeMachineStack } from '@a4ui/core'
+
+<TimeMachineStack slides={[<Card>One</Card>, <Card>Two</Card>, /* … */]} />`,
   },
 ]
 

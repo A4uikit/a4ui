@@ -6,6 +6,39 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.30.0] — 2026-07-21
+
+### Added
+
+Micro-interactions — animated buttons and card/3D transitions. All are
+Motion-driven, animate only `transform`/`opacity` (so they stay
+compositor-only), respect reduced motion with a static fallback, and are
+keyboard-accessible.
+
+- **`MicroButton`** — an icon/label button that fires a feedback effect on
+  interaction: `spin`, `shake`, `pulse`, `ring`, or `sparkle` on click, or a
+  `glare` shine sweep on hover. Decorative particles spawn then remove
+  themselves (the `Ripple` one-shot pattern).
+- **`IconMorphButton`** — a two-state icon toggle whose glyph morphs (spring
+  scale + rotate + fade) between states, with an optional auto-revert timer
+  (e.g. copy → check → copy) and a crossfading label. Controlled or
+  uncontrolled.
+- **`LikeButton`** — a like/favorite/save toggle (`heart` · `star` ·
+  `bookmark` via one `icon` prop) with a spring pop, a staggered icon burst,
+  and an optional animated count.
+- **`SlideArrowButton`** — a CTA where the label slides out and an arrow slides
+  in from the opposite edge on hover (pure CSS transform).
+- **`FocusBlurGroup`** — a spotlight container: hovering or focusing one item
+  keeps it sharp while its siblings blur and dim.
+- **`CardSpread`** — a stack of cards that fans out into an `arc`, `long-arc`,
+  `linear`, `corner`, `cascade`, `scatter`, or `wheel` layout; spreads on hover
+  or via a controlled `open`.
+- **`Carousel3D`** — a 3D `coverflow` / `arc` carousel with pointer drag,
+  prev/next, dot indicators, and arrow-key navigation.
+- **`TimeMachineStack`** — an Apple-style depth stack: the active card sits
+  front while the rest recede into the screen, with a vertical scrubber to jump
+  to any index.
+
 ## [0.29.1] — 2026-07-21
 
 ### Fixed
