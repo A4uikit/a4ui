@@ -16,11 +16,11 @@ import {
 } from '../../src'
 
 const gallery: { label: string; gradient: string }[] = [
-  { label: 'Front', gradient: 'from-primary/30 via-card to-card' },
-  { label: 'Side', gradient: 'from-accent/30 via-card to-card' },
-  { label: 'Detail', gradient: 'from-primary/15 via-accent/15 to-card' },
-  { label: 'In use', gradient: 'from-accent/25 via-card to-card' },
-  { label: 'Packaging', gradient: 'from-muted via-card to-card' },
+  { label: 'Front', gradient: 'from-primary/50 via-primary/15 to-accent/30' },
+  { label: 'Side', gradient: 'from-accent/50 via-accent/15 to-primary/25' },
+  { label: 'Detail', gradient: 'from-primary/40 via-accent/25 to-accent/40' },
+  { label: 'In use', gradient: 'from-accent/45 via-primary/15 to-primary/35' },
+  { label: 'Packaging', gradient: 'from-muted-foreground/25 via-muted to-accent/25' },
 ]
 
 const specs: { label: string; value: JSX.Element }[] = [

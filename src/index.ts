@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.30.0'
+export const A4UI_VERSION = '0.31.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -179,6 +179,18 @@ export { FocusBlurGroup, type FocusBlurGroupProps } from './ui/FocusBlurGroup'
 export { CardSpread, type CardSpreadProps, type CardSpreadLayout } from './ui/CardSpread'
 export { Carousel3D, type Carousel3DProps, type Carousel3DVariant } from './ui/Carousel3D'
 export { TimeMachineStack, type TimeMachineStackProps } from './ui/TimeMachineStack'
+export {
+  CopyButton,
+  type CopyButtonProps,
+  PlayPauseButton,
+  type PlayPauseButtonProps,
+  MuteButton,
+  type MuteButtonProps,
+  LockButton,
+  type LockButtonProps,
+  ThemeMorphButton,
+  type ThemeMorphButtonProps,
+} from './ui/MorphPresets'
 
 // Phase 2 — code, search, navigation, master-detail.
 export { CodeTabs, type CodeTabsProps, type CodeTab } from './ui/CodeTabs'

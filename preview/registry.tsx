@@ -5572,6 +5572,33 @@ import { Copy, Check } from 'lucide-solid'
 />`,
   },
   {
+    id: 'morph-presets',
+    title: 'Morph presets',
+    group: 'Actions',
+    blurb:
+      'Ready-made two-state buttons built on IconMorphButton — no need to wire the two icons yourself. Click them ↓',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-3">
+        <UI.CopyButton value="npm i @a4ui/core" label="Copy" copiedLabel="Copied" variant="outline" />
+        <UI.PlayPauseButton aria-label="Play / pause" />
+        <UI.MuteButton aria-label="Mute" />
+        <UI.LockButton aria-label="Lock" />
+        <UI.ThemeMorphButton aria-label="Theme" />
+      </div>
+    ),
+    code: `import { CopyButton, PlayPauseButton, MuteButton, LockButton, ThemeMorphButton } from '@a4ui/core'
+
+<CopyButton value="npm i @a4ui/core" label="Copy" copiedLabel="Copied" />
+<PlayPauseButton /> <MuteButton /> <LockButton /> <ThemeMorphButton />`,
+    variants: [
+      { label: 'CopyButton', demo: () => <UI.CopyButton value="hello" label="Copy" copiedLabel="Copied" /> },
+      { label: 'PlayPauseButton', demo: () => <UI.PlayPauseButton aria-label="Play / pause" /> },
+      { label: 'MuteButton', demo: () => <UI.MuteButton aria-label="Mute" /> },
+      { label: 'LockButton', demo: () => <UI.LockButton aria-label="Lock" /> },
+      { label: 'ThemeMorphButton', demo: () => <UI.ThemeMorphButton aria-label="Theme" /> },
+    ],
+  },
+  {
     id: 'like-button',
     title: 'LikeButton',
     group: 'Actions',
