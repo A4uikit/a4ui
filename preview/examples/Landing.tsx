@@ -34,6 +34,8 @@ import {
   FocusBlurGroup,
   Carousel3D,
   CardSpread,
+  Globe,
+  Confetti,
   revealOnScroll,
 } from '../../src'
 
@@ -155,18 +157,43 @@ const COLLECTION_CARDS: JSX.Element[] = COLLECTIONS.map((collection) => (
   </div>
 ))
 
+interface GlobeMarker {
+  lat: number
+  lng: number
+  label: string
+}
+
+const GLOBE_MARKERS: GlobeMarker[] = [
+  { lat: 40.71, lng: -74.0, label: 'Northgate' },
+  { lat: 51.5, lng: -0.12, label: 'Rivermoor' },
+  { lat: 35.68, lng: 139.65, label: 'Sable Bay' },
+  { lat: -33.87, lng: 151.21, label: 'Auroria' },
+  { lat: 1.35, lng: 103.82, label: 'Kestrel Point' },
+  { lat: -23.55, lng: -46.63, label: 'Meridian Falls' },
+]
+
+const GLOBE_ARCS: { from: [number, number]; to: [number, number] }[] = [
+  { from: [40.71, -74.0], to: [51.5, -0.12] },
+  { from: [51.5, -0.12], to: [1.35, 103.82] },
+  { from: [1.35, 103.82], to: [35.68, 139.65] },
+  { from: [35.68, 139.65], to: [-33.87, 151.21] },
+  { from: [40.71, -74.0], to: [-23.55, -46.63] },
+]
+
 const SAMPLE = 'A4ui is a theme-agnostic SolidJS component library built with semantic Tailwind tokens.'
 
 export default function Landing(): JSX.Element {
   const [query, setQuery] = createSignal('theme')
   const [open, setOpen] = createSignal<number | null>(0)
   const [interests, setInterests] = createSignal<string[]>(['solid', 'design-systems'])
+  const [confettiTrigger, setConfettiTrigger] = createSignal(0)
 
   let marqueeEl: HTMLElement | undefined
   let featuresEl: HTMLElement | undefined
   let showcaseEl: HTMLElement | undefined
   let statsEl: HTMLElement | undefined
   let collectionsEl: HTMLElement | undefined
+  let globeEl: HTMLElement | undefined
   let faqEl: HTMLElement | undefined
   let newsletterEl: HTMLElement | undefined
 
@@ -176,6 +203,7 @@ export default function Landing(): JSX.Element {
     if (showcaseEl) revealOnScroll(showcaseEl, { amount: 0.15 })
     if (statsEl) revealOnScroll(statsEl, { amount: 0.15 })
     if (collectionsEl) revealOnScroll(collectionsEl, { amount: 0.15 })
+    if (globeEl) revealOnScroll(globeEl, { amount: 0.15 })
     if (faqEl) revealOnScroll(faqEl, { amount: 0.15 })
     if (newsletterEl) revealOnScroll(newsletterEl, { amount: 0.15 })
   })
@@ -279,6 +307,19 @@ export default function Landing(): JSX.Element {
         </div>
       </section>
 
+      {/* Global reach */}
+      <section ref={globeEl} class="space-y-8 py-8">
+        <div class="mx-auto max-w-2xl text-center">
+          <h2 class="text-3xl font-bold tracking-tight">Trusted around the world</h2>
+          <p class="mt-3 text-muted-foreground">
+            Teams ship A4ui interfaces from every timezone — drag the globe to explore.
+          </p>
+        </div>
+        <div class="flex justify-center">
+          <Globe markers={GLOBE_MARKERS} arcs={GLOBE_ARCS} size={360} autoRotate class="mx-auto" />
+        </div>
+      </section>
+
       {/* Search preview with Highlight */}
       <section class="mx-auto max-w-2xl space-y-4">
         <div class="text-center">
@@ -321,7 +362,8 @@ export default function Landing(): JSX.Element {
       </section>
 
       {/* Newsletter / interests */}
-      <section ref={newsletterEl} class="rounded-xl border border-border bg-card p-8">
+      <section ref={newsletterEl} class="relative rounded-xl border border-border bg-card p-8">
+        <Confetti trigger={confettiTrigger()} />
         <div class="mx-auto max-w-2xl space-y-4 text-center">
           <h2 class="text-2xl font-bold tracking-tight">Stay in the loop</h2>
           <p class="text-sm text-muted-foreground">
@@ -334,7 +376,7 @@ export default function Landing(): JSX.Element {
               placeholder="Add an interest…"
               class="flex-1 text-left"
             />
-            <Button variant="primary" class="shrink-0 px-5">
+            <Button variant="primary" class="shrink-0 px-5" onClick={() => setConfettiTrigger((n) => n + 1)}>
               Subscribe
             </Button>
           </div>
