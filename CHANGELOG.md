@@ -6,6 +6,15 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.29.1] — 2026-07-21
+
+### Fixed
+
+- **`StreamingText`** — the reveal no longer stutters. Its effect read the
+  `revealed` signal it also writes, so the rAF loop re-triggered the effect every
+  frame and kept cancelling/restarting itself (a janky reveal). The read is now
+  `untrack`ed, so the effect only re-runs when `text`/`streaming`/`speed` change.
+
 ## [0.29.0] — 2026-07-20
 
 ### Added
