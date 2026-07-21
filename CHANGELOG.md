@@ -6,6 +6,46 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.35.0] — 2026-07-21
+
+### Added
+
+Batch-4 components (issues #68–#72).
+
+Advanced form inputs:
+
+- **`OtpInput`** — a segmented OTP/PIN input with paste-distribution and
+  numeric mode.
+- **`MaskedInput`** — a format-as-you-type input (`#` digit, `A` letter,
+  literals otherwise).
+- **`CodeEditor`** — a line-numbered code textarea with lightweight syntax
+  highlighting (no editor dependency).
+- **`SignaturePad`** — a canvas draw-to-sign field with clear/undo and export.
+- **`EmojiPicker`** — a searchable emoji grid with categories and recents.
+
+Scheduling:
+
+- **`EventScheduler`** — a day/week time-grid calendar with positioned events
+  and a "now" line.
+- **`AvailabilityPicker`** — a booking-style slot picker (timezone-aware).
+
+Geo (OpenStreetMap tiles, no map dependency):
+
+- **`InteractiveMap`** — a pannable/zoomable tile map with markers.
+- **`LocationPicker`** — a location field (label + mini-map pin drop).
+
+Dev / data tooling:
+
+- **`QueryBuilder`** — a nested AND/OR rule/group builder exporting a JSON tree.
+- **`JsonViewer`** — a collapsible JSON/object tree.
+- **`SpreadsheetGrid`** — an editable cell grid with range select and TSV
+  copy/paste.
+
+Collaboration:
+
+- **`PresenceAvatars`** — active-user stack with optional labeled live cursors.
+- **`ActivityFeed`** — a chronological audit trail grouped by day.
+
 ## [0.34.0] — 2026-07-21
 
 ### Added
