@@ -6,6 +6,45 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.34.0] — 2026-07-21
+
+### Added
+
+Batch-3 components (issues #62–#65).
+
+Productivity data views:
+
+- **`Kanban`** — a drag-and-drop board (move cards within/between columns,
+  optional WIP limits), built on `Sortable`.
+- **`GanttChart`** — a project timeline: task bars on a date axis with
+  dependencies and a "today" marker (native dates, no date library).
+- **`TreeTable`** — a table with expandable hierarchical rows.
+- **`PivotTable`** — a cross-tab that aggregates a value field across
+  row × column dimensions, with totals.
+
+Onboarding + commerce:
+
+- **`OnboardingChecklist`** — an activation checklist with a completion ring
+  and expandable steps + CTAs.
+- **`CouponField`** — a promo-code input with async apply and explicit
+  idle/loading/success/error states.
+
+Media (built on native `<video>`/`<audio>`, no media dependency):
+
+- **`Lightbox`** — a thumbnail grid that opens a full-screen zoomable viewer
+  (arrow/swipe nav, thumbnail strip).
+- **`VideoPlayerShell`** — custom glass chrome over a native `<video>`
+  (scrub/volume/fullscreen/PiP, keyboard).
+- **`AudioWaveform`** — a waveform with play + scrub.
+
+Spatial + interaction:
+
+- **`Lamp`** — a conic light-beam backdrop that spotlights its content.
+- **`FollowingPointer`** — a labeled cursor that trails the pointer, for
+  live-presence surfaces.
+- **`SheetSnap`** — a bottom sheet with snap points, drag-to-resize, and
+  velocity-based flick dismiss.
+
 ## [0.33.0] — 2026-07-21
 
 ### Added

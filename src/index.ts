@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.33.0'
+export const A4UI_VERSION = '0.34.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -209,6 +209,30 @@ export { Globe, type GlobeMarker, type GlobeArc, type GlobeProps } from './ui/Gl
 export { WorldMap, type WorldMapPoint, type WorldMapConnection, type WorldMapProps } from './ui/WorldMap'
 export { Confetti, fireConfetti, type ConfettiProps } from './ui/Confetti'
 export { CursorTrail, type CursorTrailProps } from './ui/CursorTrail'
+
+// Productivity data views.
+export { Kanban, type KanbanCard, type KanbanColumn, type KanbanProps } from './ui/Kanban'
+export { GanttChart, type GanttTask, type GanttChartProps } from './ui/GanttChart'
+export { TreeTable, type TreeTableColumn, type TreeTableRow, type TreeTableProps } from './ui/TreeTable'
+export { PivotTable, type PivotDatum, type PivotTableProps } from './ui/PivotTable'
+
+// Onboarding + commerce.
+export {
+  OnboardingChecklist,
+  type OnboardingStep,
+  type OnboardingChecklistProps,
+} from './ui/OnboardingChecklist'
+export { CouponField, type CouponFieldProps } from './ui/CouponField'
+
+// Media.
+export { Lightbox, type LightboxImage, type LightboxProps } from './ui/Lightbox'
+export { VideoPlayerShell, type VideoPlayerShellProps } from './ui/VideoPlayerShell'
+export { AudioWaveform, type AudioWaveformProps } from './ui/AudioWaveform'
+
+// Spatial + interaction.
+export { Lamp, type LampProps } from './ui/Lamp'
+export { FollowingPointer, type FollowingPointerProps } from './ui/FollowingPointer'
+export { SheetSnap, type SheetSnapProps } from './ui/SheetSnap'
 export {
   CopyButton,
   type CopyButtonProps,
