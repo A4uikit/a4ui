@@ -8,19 +8,19 @@ import {
   Breadcrumb,
   Button,
   Card,
-  Carousel,
   Descriptions,
-  Image,
   NumberInput,
   Rating,
   Tabs,
+  TimeMachineStack,
 } from '../../src'
 
-const gallery: { alt: string; src: string }[] = [
-  { alt: 'Aurora headphones — front view', src: 'https://picsum.photos/seed/a4ui-prod-1/600/600' },
-  { alt: 'Aurora headphones — side profile', src: 'https://picsum.photos/seed/a4ui-prod-2/600/600' },
-  { alt: 'Aurora headphones — folded flat', src: 'https://picsum.photos/seed/a4ui-prod-3/600/600' },
-  { alt: 'Aurora headphones — in carrying case', src: 'https://picsum.photos/seed/a4ui-prod-4/600/600' },
+const gallery: { label: string; gradient: string }[] = [
+  { label: 'Front', gradient: 'from-primary/30 via-card to-card' },
+  { label: 'Side', gradient: 'from-accent/30 via-card to-card' },
+  { label: 'Detail', gradient: 'from-primary/15 via-accent/15 to-card' },
+  { label: 'In use', gradient: 'from-accent/25 via-card to-card' },
+  { label: 'Packaging', gradient: 'from-muted via-card to-card' },
 ]
 
 const specs: { label: string; value: JSX.Element }[] = [
@@ -81,9 +81,14 @@ export default function Product(): JSX.Element {
       />
 
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <Carousel
+        <TimeMachineStack
+          class="h-80"
           slides={gallery.map((slide) => (
-            <Image src={slide.src} alt={slide.alt} class="aspect-video w-full object-cover" />
+            <div class={`flex h-full w-full items-end justify-start bg-gradient-to-br p-4 ${slide.gradient}`}>
+              <span class="rounded-full bg-background/70 px-3 py-1 text-sm font-medium text-foreground">
+                {slide.label}
+              </span>
+            </div>
           ))}
         />
 

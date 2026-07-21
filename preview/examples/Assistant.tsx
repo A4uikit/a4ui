@@ -2,7 +2,7 @@
 // from the chat kit (ChatThread, Message, StreamingText, Citation, SourceList,
 // PromptComposer, ArtifactPanel). Theme-agnostic: semantic tokens only, so it
 // reskins under any theme. Fictional data.
-import { Code, Sparkles } from 'lucide-solid'
+import { Check, Code, Copy, RefreshCw, Sparkles } from 'lucide-solid'
 import { createSignal, For, onCleanup, Show, type JSX } from 'solid-js'
 
 import {
@@ -10,7 +10,9 @@ import {
   Button,
   ChatThread,
   Citation,
+  IconMorphButton,
   Message,
+  MicroButton,
   PromptComposer,
   SourceList,
   StreamingText,
@@ -62,6 +64,21 @@ export default function Assistant(): JSX.Element {
   let timer: ReturnType<typeof setInterval> | undefined
   onCleanup(() => clearInterval(timer))
 
+  // Type `full` into the message identified by `id`, character-chunked like a
+  // real stream. Shared by `send` (new reply) and `regenerate` (replay).
+  const streamReply = (id: number, full: string) => {
+    setMessages((m) => m.map((msg) => (msg.id === id ? { ...msg, text: '', streaming: true } : msg)))
+    let i = 0
+    clearInterval(timer)
+    timer = setInterval(() => {
+      i += 4
+      const slice = full.slice(0, i)
+      const done = i >= full.length
+      setMessages((m) => m.map((msg) => (msg.id === id ? { ...msg, text: slice, streaming: !done } : msg)))
+      if (done) clearInterval(timer)
+    }, 60)
+  }
+
   // Append the user's message, then simulate a streamed assistant reply.
   const send = (value: string) => {
     const text = value.trim()
@@ -73,18 +90,11 @@ export default function Assistant(): JSX.Element {
     const full =
       'Use <Card glass> surfaces over the Aurora, keep the page root transparent, and add a few tasteful motion touches. Reach for <Expandable> instead of a modal for galleries.'
     setMessages((m) => [...m, { id: replyId, role: 'assistant', text: '', streaming: true }])
-    let i = 0
-    clearInterval(timer)
-    timer = setInterval(() => {
-      i += 4
-      const slice = full.slice(0, i)
-      const done = i >= full.length
-      setMessages((m) =>
-        m.map((msg) => (msg.id === replyId ? { ...msg, text: slice, streaming: !done } : msg)),
-      )
-      if (done) clearInterval(timer)
-    }, 60)
+    streamReply(replyId, full)
   }
+
+  // Retype an existing assistant reply, as if it were regenerated.
+  const regenerate = (id: number, text: string) => streamReply(id, text)
 
   return (
     <div class="mx-auto flex h-[70vh] max-w-5xl gap-4 py-6">
@@ -120,6 +130,28 @@ export default function Assistant(): JSX.Element {
                       </div>
                     </>
                   )}
+                </Show>
+                <Show when={msg.role === 'assistant' && !msg.streaming && msg.text}>
+                  <div class="mt-2 flex items-center gap-1">
+                    <IconMorphButton
+                      inactive={<Copy size={16} />}
+                      active={<Check size={16} />}
+                      revertAfter={1500}
+                      variant="ghost"
+                      aria-label="Copy reply"
+                      onChange={(pressed) => {
+                        if (pressed) void navigator.clipboard?.writeText(msg.text)
+                      }}
+                    />
+                    <MicroButton
+                      effect="spin"
+                      variant="ghost"
+                      aria-label="Regenerate"
+                      onClick={() => regenerate(msg.id, msg.text)}
+                    >
+                      <RefreshCw size={16} />
+                    </MicroButton>
+                  </div>
                 </Show>
               </Message>
             )}
