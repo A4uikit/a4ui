@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.32.0'
+export const A4UI_VERSION = '0.33.0'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -186,6 +186,29 @@ export { Dock, type DockItem, type DockProps } from './ui/Dock'
 export { AnimatedBeam, type AnimatedBeamProps } from './ui/AnimatedBeam'
 export { BorderBeam, type BorderBeamProps } from './ui/BorderBeam'
 export { Meteors, type MeteorsProps } from './ui/Meteors'
+
+// AI agent surface + chat affordances.
+export { ReasoningTrace, type ReasoningTraceProps } from './ui/ReasoningTrace'
+export {
+  ToolCallTimeline,
+  type ToolCall,
+  type ToolCallStatus,
+  type ToolCallTimelineProps,
+} from './ui/ToolCallTimeline'
+export { DiffViewer, type DiffLine, type DiffViewerProps } from './ui/DiffViewer'
+export { ModelPicker, type ModelOption, type ModelPickerProps } from './ui/ModelPicker'
+export { UsageMeter, type UsageMeterProps } from './ui/UsageMeter'
+export { SuggestionChips, type SuggestionChipsProps } from './ui/SuggestionChips'
+
+// Content blocks.
+export { Callout, type CalloutTone, type CalloutProps } from './ui/Callout'
+export { Snippet, type SnippetProps } from './ui/Snippet'
+
+// Spatial showpieces + motion extras.
+export { Globe, type GlobeMarker, type GlobeArc, type GlobeProps } from './ui/Globe'
+export { WorldMap, type WorldMapPoint, type WorldMapConnection, type WorldMapProps } from './ui/WorldMap'
+export { Confetti, fireConfetti, type ConfettiProps } from './ui/Confetti'
+export { CursorTrail, type CursorTrailProps } from './ui/CursorTrail'
 export {
   CopyButton,
   type CopyButtonProps,

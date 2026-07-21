@@ -5958,6 +5958,302 @@ let container, from, to
   <Meteors count={20} />
 </div>`,
   },
+
+  // ---- AI agent surface + chat affordances ----------------------------------
+  {
+    id: 'reasoning-trace',
+    title: 'ReasoningTrace',
+    group: 'Data',
+    blurb: 'A collapsible "thinking" panel that shows a model’s step-by-step reasoning before its answer.',
+    demo: () => (
+      <UI.ReasoningTrace
+        class="w-full max-w-xl"
+        defaultOpen
+        text={
+          'The user wants a refund. First, confirm the order exists and is within the window.\nThen check the payment method is refundable.\nTherefore: issue the refund and notify the user.'
+        }
+      />
+    ),
+    code: `import { ReasoningTrace } from '@a4ui/core'
+
+<ReasoningTrace streaming text={reasoningSoFar()} />`,
+  },
+  {
+    id: 'tool-call-timeline',
+    title: 'ToolCallTimeline',
+    group: 'Data',
+    blurb: 'A vertical trace of an agent’s tool calls, each with a pending / success / error state.',
+    demo: () => (
+      <UI.ToolCallTimeline
+        class="w-full max-w-md"
+        calls={[
+          { name: 'search_docs', status: 'success', args: 'query: "refunds"', result: '3 matches' },
+          { name: 'fetch_order', status: 'success', args: 'id: 4821' },
+          { name: 'issue_refund', status: 'pending', args: 'amount: 49.00' },
+        ]}
+      />
+    ),
+    code: `import { ToolCallTimeline } from '@a4ui/core'
+
+<ToolCallTimeline calls={[
+  { name: 'search_docs', status: 'success', args: 'query: "refunds"', result: '3 matches' },
+  { name: 'issue_refund', status: 'pending', args: 'amount: 49.00' },
+]} />`,
+  },
+  {
+    id: 'diff-viewer',
+    title: 'DiffViewer',
+    group: 'Data',
+    blurb:
+      'An inline git-style code diff with added/removed line highlighting. Accepts a unified diff string or parsed lines.',
+    demo: () => (
+      <UI.DiffViewer
+        class="w-full max-w-xl"
+        filename="src/lib/cn.ts"
+        lines={[
+          { type: 'context', content: "import clsx from 'clsx'", oldNum: 1, newNum: 1 },
+          { type: 'remove', content: 'export const cn = (a) => a', oldNum: 2 },
+          { type: 'add', content: 'export const cn = (...a) => twMerge(clsx(a))', newNum: 2 },
+          { type: 'context', content: 'export default cn', oldNum: 3, newNum: 3 },
+        ]}
+      />
+    ),
+    code: `import { DiffViewer } from '@a4ui/core'
+
+<DiffViewer filename="src/lib/cn.ts" diff={unifiedDiffString} />`,
+  },
+  {
+    id: 'model-picker',
+    title: 'ModelPicker',
+    group: 'Data',
+    blurb: 'A dropdown for choosing an AI model/capability, with per-option icon and metadata.',
+    demo: () => (
+      <UI.ModelPicker
+        defaultValue="sonnet"
+        models={[
+          { id: 'opus', name: 'Opus 4.8', icon: <Sparkles size={16} />, description: 'Most capable' },
+          {
+            id: 'sonnet',
+            name: 'Sonnet 5',
+            icon: <Zap size={16} />,
+            description: 'Balanced speed + quality',
+          },
+          { id: 'haiku', name: 'Haiku 4.5', icon: <Rocket size={16} />, description: 'Fastest' },
+        ]}
+      />
+    ),
+    code: `import { ModelPicker } from '@a4ui/core'
+
+<ModelPicker
+  defaultValue="sonnet"
+  models={[{ id: 'sonnet', name: 'Sonnet 5', description: 'Balanced' }]}
+  onChange={setModel}
+/>`,
+  },
+  {
+    id: 'usage-meter',
+    title: 'UsageMeter',
+    group: 'Data',
+    blurb: 'A token/quota consumption bar with a near-limit warning state.',
+    demo: () => (
+      <div class="w-full max-w-sm space-y-4">
+        <UI.UsageMeter used={62} limit={100} label="Tokens" unit="k" />
+        <UI.UsageMeter used={92} limit={100} label="API requests" warnAt={0.9} />
+      </div>
+    ),
+    code: `import { UsageMeter } from '@a4ui/core'
+
+<UsageMeter used={92} limit={100} label="API requests" warnAt={0.9} />`,
+  },
+  {
+    id: 'suggestion-chips',
+    title: 'SuggestionChips',
+    group: 'Data',
+    blurb: 'A row of tappable, dismissible follow-up prompt chips to show after an answer.',
+    demo: () => (
+      <UI.SuggestionChips
+        suggestions={['Summarize this', 'Write tests', 'Explain the diff', 'Draft a reply']}
+        onSelect={() => {}}
+        onDismiss={() => {}}
+      />
+    ),
+    code: `import { SuggestionChips } from '@a4ui/core'
+
+<SuggestionChips suggestions={['Summarize', 'Write tests']} onSelect={send} onDismiss={remove} />`,
+  },
+
+  // ---- Content blocks -------------------------------------------------------
+  {
+    id: 'callout',
+    title: 'Callout',
+    group: 'Feedback',
+    blurb: 'An inline highlighted note/tip/warning block for docs and guidance text.',
+    demo: () => (
+      <div class="w-full max-w-xl space-y-3">
+        <UI.Callout tone="info" title="Heads up">
+          Semantic-token colors reskin under every theme.
+        </UI.Callout>
+        <UI.Callout tone="warning" title="Before you continue">
+          This action can’t be undone.
+        </UI.Callout>
+        <UI.Callout tone="success">Your changes were saved.</UI.Callout>
+      </div>
+    ),
+    code: `import { Callout } from '@a4ui/core'
+
+<Callout tone="warning" title="Before you continue">This action can't be undone.</Callout>`,
+  },
+  {
+    id: 'snippet',
+    title: 'Snippet',
+    group: 'Data',
+    blurb: 'A single code block with a copy button and a language badge — lighter than CodeTabs.',
+    demo: () => <UI.Snippet class="w-full max-w-md" language="bash" code="pnpm add @a4ui/core" />,
+    code: `import { Snippet } from '@a4ui/core'
+
+<Snippet language="bash" code="pnpm add @a4ui/core" />`,
+  },
+
+  // ---- Dashboard data-viz ---------------------------------------------------
+  {
+    id: 'bar-list',
+    title: 'BarList',
+    group: 'Charts',
+    blurb: 'A ranked horizontal bar list for top-N metrics (top pages, top spend).',
+    demo: () => (
+      <Charts.BarList
+        class="w-full max-w-md"
+        tone="accent"
+        data={[
+          { name: '/dashboard', value: 842 },
+          { name: '/settings', value: 531 },
+          { name: '/inbox', value: 420 },
+          { name: '/billing', value: 216 },
+          { name: '/docs', value: 98 },
+        ]}
+      />
+    ),
+    code: `import { BarList } from '@a4ui/core/charts'
+
+<BarList data={[{ name: '/dashboard', value: 842 }, { name: '/settings', value: 531 }]} tone="accent" />`,
+  },
+  {
+    id: 'status-tracker',
+    title: 'StatusTracker',
+    group: 'Charts',
+    blurb: 'A status-page style history bar — colored segments (ok/degraded/down) with per-segment tooltips.',
+    demo: () => (
+      <Charts.StatusTracker
+        class="w-full max-w-lg"
+        segments={Array.from({ length: 30 }, (_, i) => ({
+          status: i === 7 ? 'down' : i === 18 || i === 19 ? 'degraded' : 'ok',
+          label: `Day ${i + 1}`,
+        }))}
+      />
+    ),
+    code: `import { StatusTracker } from '@a4ui/core/charts'
+
+<StatusTracker segments={[{ status: 'ok' }, { status: 'degraded' }, { status: 'down' }]} />`,
+  },
+  {
+    id: 'category-bar',
+    title: 'CategoryBar',
+    group: 'Charts',
+    blurb: 'A segmented threshold bar with a position marker (e.g. a score within ranges).',
+    demo: () => <Charts.CategoryBar class="w-full max-w-md" values={[40, 25, 20, 15]} marker={62} />,
+    code: `import { CategoryBar } from '@a4ui/core/charts'
+
+<CategoryBar values={[40, 25, 20, 15]} marker={62} />`,
+  },
+
+  // ---- Spatial showpieces + motion extras -----------------------------------
+  {
+    id: 'globe',
+    title: 'Globe',
+    group: 'Motion',
+    blurb: 'An interactive 3D globe (Canvas, no deps) with markers and arcs. Drag to spin ↓',
+    demo: () => (
+      <UI.Globe
+        size={340}
+        markers={[
+          { lat: 40.7, lng: -74, label: 'New York' },
+          { lat: 51.5, lng: -0.1, label: 'London' },
+          { lat: 35.7, lng: 139.7, label: 'Tokyo' },
+          { lat: -23.5, lng: -46.6, label: 'São Paulo' },
+        ]}
+        arcs={[
+          { from: [40.7, -74], to: [51.5, -0.1] },
+          { from: [51.5, -0.1], to: [35.7, 139.7] },
+          { from: [40.7, -74], to: [-23.5, -46.6] },
+        ]}
+      />
+    ),
+    code: `import { Globe } from '@a4ui/core'
+
+<Globe
+  markers={[{ lat: 40.7, lng: -74, label: 'New York' }, { lat: 35.7, lng: 139.7, label: 'Tokyo' }]}
+  arcs={[{ from: [40.7, -74], to: [35.7, 139.7] }]}
+/>`,
+  },
+  {
+    id: 'world-map',
+    title: 'WorldMap',
+    group: 'Motion',
+    blurb: 'A dotted-grid world map with animated connection arcs, for "global reach" sections.',
+    demo: () => (
+      <UI.WorldMap
+        class="w-full max-w-2xl"
+        connections={[
+          { from: { lat: 40.7, lng: -74, label: 'NYC' }, to: { lat: 51.5, lng: -0.1, label: 'London' } },
+          { from: { lat: 51.5, lng: -0.1 }, to: { lat: 35.7, lng: 139.7, label: 'Tokyo' } },
+          { from: { lat: 40.7, lng: -74 }, to: { lat: -23.5, lng: -46.6, label: 'São Paulo' } },
+        ]}
+      />
+    ),
+    code: `import { WorldMap } from '@a4ui/core'
+
+<WorldMap connections={[
+  { from: { lat: 40.7, lng: -74 }, to: { lat: 51.5, lng: -0.1 } },
+]} />`,
+  },
+  {
+    id: 'confetti',
+    title: 'Confetti',
+    group: 'Motion',
+    blurb: 'A celebratory particle burst, fired imperatively on success/milestone events. Click ↓',
+    demo: () => {
+      const [n, setN] = createSignal(0)
+      return (
+        <div class="relative grid h-56 w-full max-w-md place-items-center overflow-hidden rounded-2xl border border-border bg-card">
+          <UI.Confetti trigger={n()} count={90} />
+          <UI.Button variant="primary" onClick={() => setN(n() + 1)}>
+            🎉 Celebrate
+          </UI.Button>
+        </div>
+      )
+    },
+    code: `import { Confetti } from '@a4ui/core'
+
+const [burst, setBurst] = createSignal(0)
+<div class="relative"><Confetti trigger={burst()} count={90} /></div>
+<Button onClick={() => setBurst(burst() + 1)}>Celebrate</Button>`,
+  },
+  {
+    id: 'cursor-trail',
+    title: 'CursorTrail',
+    group: 'Motion',
+    blurb:
+      'A soft blob trail that follows the cursor within its (relative) parent. Move your cursor over the box ↓',
+    demo: () => (
+      <div class="relative grid h-56 w-full max-w-md place-items-center overflow-hidden rounded-2xl border border-border bg-card text-sm text-muted-foreground">
+        <UI.CursorTrail color="primary" size={28} />
+        Move your cursor here
+      </div>
+    ),
+    code: `import { CursorTrail } from '@a4ui/core'
+
+<div class="relative"><CursorTrail color="accent" size={32} /></div>`,
+  },
 ]
 
 // Names → docs route, for linkifying component/utility mentions inside the
