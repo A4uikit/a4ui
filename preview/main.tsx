@@ -21,3 +21,11 @@ requestAnimationFrame(() =>
     document.getElementById('app-splash')?.remove()
   }),
 )
+
+// Register the PWA service worker (offline + installable). Fire after load so it
+// never competes with first render; ignore failures (e.g. unsupported browsers).
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js').catch(() => {})
+  })
+}
