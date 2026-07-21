@@ -100,7 +100,7 @@ export default function Assistant(): JSX.Element {
           </Button>
         </header>
 
-        <ChatThread class="flex-1 rounded-xl border border-border bg-muted/20 p-4">
+        <ChatThread class="flex-1 px-1 py-2">
           <For each={messages()}>
             {(msg) => (
               <Message role={msg.role} author={msg.role === 'assistant' ? 'Nova' : 'You'}>
@@ -109,19 +109,21 @@ export default function Assistant(): JSX.Element {
                 </Show>
                 <Show when={msg.sources}>
                   {(sources) => (
-                    <span class="ml-1 inline-flex gap-1 align-middle">
-                      <For each={sources()}>
-                        {(s, i) => <Citation index={i() + 1} href={s.href} title={s.title} />}
-                      </For>
-                    </span>
+                    <>
+                      <span class="ml-0.5 inline-flex gap-1 align-middle">
+                        <For each={sources()}>
+                          {(s, i) => <Citation index={i() + 1} href={s.href} title={s.title} />}
+                        </For>
+                      </span>
+                      <div class="mt-3 border-t border-border/60 pt-2">
+                        <SourceList sources={sources()} />
+                      </div>
+                    </>
                   )}
                 </Show>
               </Message>
             )}
           </For>
-          <Show when={messages()[messages().length - 1]?.sources}>
-            {(sources) => <SourceList class="mt-2" sources={sources()} />}
-          </Show>
         </ChatThread>
 
         <div class="mt-3">

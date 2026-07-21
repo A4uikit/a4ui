@@ -29,9 +29,9 @@ export default function Finance(): JSX.Element {
   const [section, setSection] = createSignal('overview')
 
   return (
-    <div class="mx-auto flex max-w-6xl gap-6 py-6">
+    <div class="mx-auto flex max-w-6xl items-start gap-6 py-6">
       <SideRail
-        class="shrink-0"
+        class="sticky top-6 shrink-0 rounded-xl"
         value={section()}
         onChange={setSection}
         items={[
@@ -98,6 +98,17 @@ export default function Finance(): JSX.Element {
               sub={<span class="text-xs text-muted-foreground">Savings · 4.1% APY</span>}
             />
             <KpiBlock label="Runway" value="14 mo" delta={0.02} />
+            <div class="space-y-3 rounded-xl border border-border bg-card p-4">
+              <p class="text-sm font-semibold text-foreground">Quick actions</p>
+              <div class="flex flex-col gap-2">
+                <MoneyActionButton kind="pay" class="w-full justify-center" onClick={() => {}}>
+                  Pay a bill
+                </MoneyActionButton>
+                <MoneyActionButton kind="withdraw" class="w-full justify-center" onClick={() => {}}>
+                  Withdraw
+                </MoneyActionButton>
+              </div>
+            </div>
           </aside>
         </div>
       </div>
