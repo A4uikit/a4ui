@@ -18,6 +18,14 @@ import {
   Stat,
   Timeline,
 } from '../../src'
+import {
+  BarList,
+  CategoryBar,
+  GaugeChart,
+  LineChart,
+  StatusTracker,
+  type StatusSegment,
+} from '../../src/charts'
 
 const goals: { label: string; value: number; caption: string }[] = [
   { label: 'Revenue', value: 78, caption: 'Monthly target' },
@@ -64,11 +72,11 @@ const events: {
   },
 ]
 
-const topPages: { title: string; description: string; views: string }[] = [
-  { title: '/home', description: 'Landing page', views: '18.2k' },
-  { title: '/pricing', description: 'Plans & billing', views: '9.4k' },
-  { title: '/blog/scaling-solidjs', description: 'Article', views: '6.1k' },
-  { title: '/docs', description: 'Documentation', views: '4.8k' },
+const topPages: { name: string; value: number; href: string }[] = [
+  { name: '/home', value: 18200, href: '#/home' },
+  { name: '/pricing', value: 9400, href: '#/pricing' },
+  { name: '/blog/scaling-solidjs', value: 6100, href: '#/blog/scaling-solidjs' },
+  { name: '/docs', value: 4800, href: '#/docs' },
 ]
 
 const referrers = ['google.com', 'twitter.com', 'producthunt.com', 'news.ycombinator.com']
@@ -78,6 +86,23 @@ const domainInitials = (host: string): string =>
     .replace(/\.com$/, '')
     .slice(0, 2)
     .toUpperCase()
+
+const formatViews = (n: number): string => `${(n / 1000).toFixed(1)}k`
+
+// Weekly buckets across the "Jun 18 – Jul 18" reporting period. Returning
+// visitors tracks the 36% split reported in the summary card below.
+const visitorTrend: number[] = [23800, 25200, 24600, 26900, 27900]
+const returningTrend: number[] = visitorTrend.map((v) => Math.round(v * 0.36))
+const trendLabels = ['Jun 18', 'Jun 25', 'Jul 2', 'Jul 9', 'Jul 16']
+
+// 30-day service history for the uptime tracker; mostly operational with a
+// couple of blips, consistent with the "Recent events" timeline above.
+const uptimeHistory: StatusSegment[] = Array.from({ length: 30 }, (_, i) => {
+  const day = i + 1
+  if (day === 12) return { status: 'degraded', label: `Day ${day}` }
+  if (day === 27) return { status: 'down', label: `Day ${day}` }
+  return { status: 'ok', label: `Day ${day}` }
+})
 
 export default function Analytics(): JSX.Element {
   return (
@@ -108,6 +133,23 @@ export default function Analytics(): JSX.Element {
         </Card>
       </div>
 
+      <Card>
+        <CardHeader>
+          <CardTitle>Visitor trend</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <LineChart
+            series={[
+              { name: 'Visitors', tone: 'primary', data: visitorTrend, area: true },
+              { name: 'Returning', tone: 'muted', data: returningTrend },
+            ]}
+            labels={trendLabels}
+            showDots
+            showTooltip
+          />
+        </CardContent>
+      </Card>
+
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card>
           <CardHeader>
@@ -133,6 +175,7 @@ export default function Analytics(): JSX.Element {
             <CardTitle>Traffic by channel</CardTitle>
           </CardHeader>
           <CardContent class="space-y-4">
+            <CategoryBar values={channels.map((channel) => channel.value)} class="mb-1" />
             <For each={channels}>{(channel) => <Progress value={channel.value} label={channel.label} />}</For>
           </CardContent>
         </Card>
@@ -147,23 +190,62 @@ export default function Analytics(): JSX.Element {
         </Card>
       </div>
 
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <Card>
+          <CardHeader>
+            <CardTitle>Conversion rate</CardTitle>
+          </CardHeader>
+          <CardContent class="flex items-center justify-center py-2">
+            <GaugeChart
+              value={4.7}
+              min={0}
+              max={10}
+              unit="%"
+              label="vs. 4.1% target"
+              thresholds={[
+                { value: 0, tone: 'muted' },
+                { value: 3, tone: 'primary' },
+                { value: 6, tone: 'accent' },
+              ]}
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Server load</CardTitle>
+          </CardHeader>
+          <CardContent class="flex items-center justify-center py-2">
+            <GaugeChart
+              value={63}
+              unit="%"
+              label="Edge cluster avg."
+              thresholds={[
+                { value: 0, tone: 'primary' },
+                { value: 60, tone: 'accent' },
+                { value: 85, tone: 'destructive' },
+              ]}
+            />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Service status</CardTitle>
+          </CardHeader>
+          <CardContent class="flex items-center py-6">
+            <StatusTracker segments={uptimeHistory} class="w-full" />
+          </CardContent>
+        </Card>
+      </div>
+
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle>Top pages</CardTitle>
           </CardHeader>
           <CardContent>
-            <List
-              items={topPages.map((page) => ({
-                title: page.title,
-                description: page.description,
-                meta: (
-                  <span class="font-medium text-foreground">
-                    {page.views} <span class="text-muted-foreground">views</span>
-                  </span>
-                ),
-              }))}
-            />
+            <BarList data={topPages} valueFormat={formatViews} />
           </CardContent>
         </Card>
 
