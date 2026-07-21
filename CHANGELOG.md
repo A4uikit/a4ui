@@ -6,6 +6,21 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.31.1] — 2026-07-21
+
+### Fixed
+
+- **`Carousel3D`** — the prev/next chevrons (and clicks on interactive slide
+  content) did nothing: the drag handler called `setPointerCapture` on
+  `pointerdown`, which retargeted the pointer to the stage and swallowed the
+  button's `click`. Pointer capture is now deferred until the pointer actually
+  moves past a small threshold, so a plain click is never intercepted; the
+  chevrons also stop propagation on `pointerdown` as a belt-and-suspenders.
+- **`CardSpread`** — the fanned-open cards extended far beyond the small
+  hover box, so moving onto them fired `pointerleave` and the stack flickered
+  open/closed (and was hard to click). The deck now fans around a centered
+  anchor inside a wider, stable hover area that contains the open spread.
+
 ## [0.31.0] — 2026-07-21
 
 ### Added

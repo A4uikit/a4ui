@@ -176,21 +176,27 @@ export function CardSpread(props: CardSpreadProps): JSX.Element {
     <div
       role="group"
       aria-label={props['aria-label']}
-      class={cn('relative inline-block h-56 w-40', props.class)}
+      class={cn('relative mx-auto h-96 w-full max-w-lg', props.class)}
       onPointerEnter={handleEnter}
       onPointerLeave={handleLeave}
     >
-      <For each={props.items}>
-        {(item, i) => (
-          <div
-            ref={(el) => (cardRefs[i()] = el)}
-            class="absolute inset-x-0 top-0 h-56 w-40 rounded-xl border border-border bg-card text-card-foreground shadow-sm will-change-transform"
-            style={{ transform: transformString(restTransform(i(), props.items.length)) }}
-          >
-            {item}
-          </div>
-        )}
-      </For>
+      {/* The cards fan around this fixed, centered anchor while the wider root
+          above stays the (stable) hover zone: a fanned spread reaches far past
+          a single card's box, so anchoring the hit-area to one card made the
+          cards leave it and flicker enter/leave. */}
+      <div class="absolute left-1/2 top-1/2 h-56 w-40 -translate-x-1/2 -translate-y-1/2">
+        <For each={props.items}>
+          {(item, i) => (
+            <div
+              ref={(el) => (cardRefs[i()] = el)}
+              class="absolute inset-0 rounded-xl border border-border bg-card text-card-foreground shadow-sm will-change-transform"
+              style={{ transform: transformString(restTransform(i(), props.items.length)) }}
+            >
+              {item}
+            </div>
+          )}
+        </For>
+      </div>
     </div>
   )
 }
