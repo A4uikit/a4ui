@@ -7,6 +7,7 @@ import { createSignal, For, onCleanup, Show, type JSX } from 'solid-js'
 
 import {
   ArtifactPanel,
+  AudioWaveform,
   Button,
   ChatThread,
   Citation,
@@ -40,6 +41,8 @@ interface ChatMsg {
   reasoning?: string
   toolCalls?: ToolCall[]
   suggestions?: string[]
+  /** Peaks (0..1) for a voice-message bubble; presence renders an AudioWaveform. */
+  voicePeaks?: number[]
 }
 
 const MODELS: ModelOption[] = [
@@ -49,6 +52,14 @@ const MODELS: ModelOption[] = [
 ]
 
 const TOKEN_LIMIT = 32_000
+
+// Deterministic placeholder peaks for the voice-message demo bubble — no
+// real audio file, so `AudioWaveform` falls back to its own demo playback.
+const VOICE_NOTE_PEAKS = Array.from({ length: 32 }, (_, i) => {
+  const a = Math.abs(Math.sin(i * 0.5))
+  const b = Math.abs(Math.sin(i * 0.13 + 0.6))
+  return 0.2 + 0.8 * (0.6 * a + 0.4 * b)
+})
 
 const SEED: ChatMsg[] = [
   { id: 1, role: 'system', text: 'Nova is ready to help.' },
@@ -83,6 +94,12 @@ const SEED: ChatMsg[] = [
       'How do I theme this for dark mode?',
       'Give me the Tailwind config',
     ],
+  },
+  {
+    id: 4,
+    role: 'user',
+    text: 'Voice message · 0:18',
+    voicePeaks: VOICE_NOTE_PEAKS,
   },
 ]
 
@@ -184,8 +201,20 @@ export default function Assistant(): JSX.Element {
                 <Show when={msg.toolCalls}>
                   {(toolCalls) => <ToolCallTimeline calls={toolCalls()} class="mb-3" />}
                 </Show>
-                <Show when={msg.streaming} fallback={<p>{msg.text}</p>}>
-                  <StreamingText text={msg.text} streaming />
+                <Show
+                  when={msg.voicePeaks}
+                  fallback={
+                    <Show when={msg.streaming} fallback={<p>{msg.text}</p>}>
+                      <StreamingText text={msg.text} streaming />
+                    </Show>
+                  }
+                >
+                  {(voicePeaks) => (
+                    <div class="max-w-xs">
+                      <p class="mb-1 text-xs text-muted-foreground">{msg.text}</p>
+                      <AudioWaveform peaks={voicePeaks()} height={40} />
+                    </div>
+                  )}
                 </Show>
                 <Show when={msg.sources}>
                   {(sources) => (

@@ -9,8 +9,14 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  GanttChart,
+  type GanttTask,
+  Kanban,
+  type KanbanColumn,
   MultiSelect,
   type MultiSelectOption,
+  PivotTable,
+  type PivotDatum,
   Separator,
   Stat,
   Table,
@@ -102,8 +108,75 @@ const users: {
   },
 ]
 
+const roadmapTasks: GanttTask[] = [
+  { id: 'discovery', name: 'Discovery', start: '2026-07-06', end: '2026-07-17', tone: 'accent' },
+  {
+    id: 'design',
+    name: 'Design',
+    start: '2026-07-20',
+    end: '2026-07-31',
+    dependencies: ['discovery'],
+    tone: 'accent',
+  },
+  { id: 'build', name: 'Build', start: '2026-08-03', end: '2026-08-28', dependencies: ['design'] },
+  { id: 'beta', name: 'Beta rollout', start: '2026-08-31', end: '2026-09-11', dependencies: ['build'] },
+  { id: 'launch', name: 'GA launch', start: '2026-09-14', end: '2026-09-18', dependencies: ['beta'] },
+]
+
+const revenueByRegion: PivotDatum[] = [
+  { region: 'North America', quarter: 'Q1', revenue: 182_000 },
+  { region: 'North America', quarter: 'Q2', revenue: 196_500 },
+  { region: 'EMEA', quarter: 'Q1', revenue: 94_200 },
+  { region: 'EMEA', quarter: 'Q2', revenue: 101_800 },
+  { region: 'APAC', quarter: 'Q1', revenue: 61_500 },
+  { region: 'APAC', quarter: 'Q2', revenue: 73_900 },
+  { region: 'North America', quarter: 'Q3', revenue: 210_100 },
+  { region: 'EMEA', quarter: 'Q3', revenue: 108_400 },
+  { region: 'APAC', quarter: 'Q3', revenue: 79_300 },
+]
+
 export default function Admin(): JSX.Element {
   const [segments, setSegments] = createSignal<string[]>(['na', 'enterprise'])
+  // Defined inside the component so the JSX badges are created under the render
+  // root (module-scope JSX warns: "computations created outside a createRoot").
+  const initialBoard: KanbanColumn[] = [
+    {
+      id: 'backlog',
+      title: 'Backlog',
+      cards: [
+        { id: 'task-1', title: 'Audit unused API scopes' },
+        { id: 'task-2', title: 'Draft Q3 pricing page copy' },
+      ],
+    },
+    {
+      id: 'in-progress',
+      title: 'In progress',
+      limit: 3,
+      cards: [
+        { id: 'task-3', title: 'SSO onboarding flow', badge: <Badge tone="info">Diego</Badge> },
+        { id: 'task-4', title: 'Invoice PDF export', badge: <Badge tone="info">Priya</Badge> },
+      ],
+    },
+    {
+      id: 'review',
+      title: 'Review',
+      cards: [
+        { id: 'task-5', title: 'Rate-limit dashboard alerts', badge: <Badge tone="warning">Yuki</Badge> },
+      ],
+    },
+    {
+      id: 'done',
+      title: 'Done',
+      cards: [
+        {
+          id: 'task-6',
+          title: 'Migrate billing to new gateway',
+          badge: <Badge tone="success">Shipped</Badge>,
+        },
+      ],
+    },
+  ]
+  const [board, setBoard] = createSignal<KanbanColumn[]>(initialBoard)
 
   return (
     <div class="mx-auto max-w-7xl space-y-6 py-8">
@@ -221,6 +294,35 @@ export default function Admin(): JSX.Element {
       </Card>
 
       <Separator />
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Task board</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Kanban columns={board()} onChange={setBoard} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Roadmap</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <GanttChart tasks={roadmapTasks} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Revenue by region × quarter</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div class="overflow-x-auto">
+            <PivotTable data={revenueByRegion} rowField="region" columnField="quarter" valueField="revenue" />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -10,9 +10,8 @@ import {
   Breadcrumb,
   Button,
   Drawer,
-  Expandable,
   IconMorphButton,
-  Image,
+  Lightbox,
   LikeButton,
   SpecSheet,
   RatingsSummary,
@@ -28,15 +27,36 @@ import {
   type CartProduct,
 } from '../../src/commerce'
 
-const thumbnails: { alt: string; src: string }[] = [
-  { alt: 'Nocturne M2 Rangefinder — front', src: 'https://picsum.photos/seed/nocturne-m2-1/160/160' },
-  { alt: 'Nocturne M2 Rangefinder — top plate', src: 'https://picsum.photos/seed/nocturne-m2-2/160/160' },
-  { alt: 'Nocturne M2 Rangefinder — back LCD', src: 'https://picsum.photos/seed/nocturne-m2-3/160/160' },
-  { alt: 'Nocturne M2 Rangefinder — lens mount', src: 'https://picsum.photos/seed/nocturne-m2-4/160/160' },
-  { alt: 'Nocturne M2 Rangefinder — base plate', src: 'https://picsum.photos/seed/nocturne-m2-5/160/160' },
+const galleryImages: { alt: string; src: string; thumb: string }[] = [
+  {
+    alt: 'Nocturne M2 Rangefinder — front',
+    src: 'https://picsum.photos/seed/nocturne-m2-1/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-1/160/160',
+  },
+  {
+    alt: 'Nocturne M2 Rangefinder — top plate',
+    src: 'https://picsum.photos/seed/nocturne-m2-2/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-2/160/160',
+  },
+  {
+    alt: 'Nocturne M2 Rangefinder — back LCD',
+    src: 'https://picsum.photos/seed/nocturne-m2-3/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-3/160/160',
+  },
+  {
+    alt: 'Nocturne M2 Rangefinder — lens mount',
+    src: 'https://picsum.photos/seed/nocturne-m2-4/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-4/160/160',
+  },
+  {
+    alt: 'Nocturne M2 Rangefinder — base plate',
+    src: 'https://picsum.photos/seed/nocturne-m2-5/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-5/160/160',
+  },
   {
     alt: 'Nocturne M2 Rangefinder — in leather case',
-    src: 'https://picsum.photos/seed/nocturne-m2-6/160/160',
+    src: 'https://picsum.photos/seed/nocturne-m2-6/800/800',
+    thumb: 'https://picsum.photos/seed/nocturne-m2-6/160/160',
   },
 ]
 
@@ -135,8 +155,6 @@ const relatedCameras: {
 ]
 
 export default function Showpiece(): JSX.Element {
-  const [mainImage, setMainImage] = createSignal(thumbnails[0].src.replace('/160/160', '/800/800'))
-  const [mainAlt, setMainAlt] = createSignal(thumbnails[0].alt)
   const [cartOpen, setCartOpen] = createSignal(false)
 
   const cart = createCart<CameraProduct>()
@@ -158,43 +176,7 @@ export default function Showpiece(): JSX.Element {
 
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
         {/* Gallery */}
-        <div class="flex flex-col gap-3">
-          <Expandable
-            trigger={
-              <Image
-                src={mainImage()}
-                alt={mainAlt()}
-                preview={false}
-                class="aspect-square w-full object-cover"
-              />
-            }
-            size="dialog"
-            maxWidth={800}
-          >
-            <img src={mainImage()} alt={mainAlt()} class="max-h-[80vh] w-full rounded-lg object-contain" />
-          </Expandable>
-          <div class="grid grid-cols-6 gap-2">
-            <For each={thumbnails}>
-              {(thumb) => (
-                <button
-                  type="button"
-                  class="overflow-hidden rounded-lg border border-border transition hover:border-primary/60 focus:outline-none focus:ring-2 focus:ring-ring"
-                  onClick={() => {
-                    setMainImage(thumb.src.replace('/160/160', '/800/800'))
-                    setMainAlt(thumb.alt)
-                  }}
-                >
-                  <img
-                    src={thumb.src}
-                    alt={thumb.alt}
-                    loading="lazy"
-                    class="aspect-square w-full object-cover"
-                  />
-                </button>
-              )}
-            </For>
-          </div>
-        </div>
+        <Lightbox images={galleryImages} showThumbnails class="grid-cols-3 self-start sm:grid-cols-4" />
 
         {/* Buy box */}
         <div class="flex flex-col gap-5">

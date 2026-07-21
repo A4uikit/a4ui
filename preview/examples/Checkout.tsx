@@ -2,7 +2,7 @@
 // Theme-agnostic: only semantic tokens/utilities, so it reskins under any theme.
 import { createMemo, createSignal, For, type JSX } from 'solid-js'
 
-import { Card, CardContent, CardHeader, CardTitle, Input, Separator } from '../../src'
+import { Card, CardContent, CardHeader, CardTitle, CouponField, Input, Separator } from '../../src'
 import { CartLine, CartSummary } from '../../src/commerce'
 import { FormControl, FormDescription, FormError, FormField, FormLabel } from '../../src/ui/Form'
 
@@ -45,6 +45,19 @@ export default function Checkout(): JSX.Element {
   const [name, setName] = createSignal('')
   const [email, setEmail] = createSignal('')
   const [address, setAddress] = createSignal('')
+  const [couponDiscount, setCouponDiscount] = createSignal(0)
+
+  // Fictional async validator: only 'SAVE10' succeeds. Real integrations would
+  // call an API here instead of a fixed delay.
+  const applyCoupon = async (code: string): Promise<{ ok: boolean; message?: string; discount?: string }> => {
+    await new Promise((resolve) => setTimeout(resolve, 600))
+    if (code.trim().toUpperCase() === 'SAVE10') {
+      setCouponDiscount(10)
+      return { ok: true, discount: '−$10.00' }
+    }
+    setCouponDiscount(0)
+    return { ok: false, message: 'That code isn’t valid.' }
+  }
 
   const updateQuantity = (id: string, quantity: number) => {
     setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity } : item)))
@@ -57,13 +70,19 @@ export default function Checkout(): JSX.Element {
   const subtotal = createMemo(() => cartItems().reduce((sum, item) => sum + item.price * item.quantity, 0))
   const shipping = createMemo(() => (cartItems().length > 0 ? SHIPPING_FLAT : 0))
   const tax = createMemo(() => subtotal() * TAX_RATE)
-  const total = createMemo(() => subtotal() + shipping() + tax())
+  const total = createMemo(() => subtotal() + shipping() + tax() - couponDiscount())
 
-  const summaryLines = createMemo(() => [
-    { label: 'Subtotal', amount: subtotal() },
-    { label: 'Shipping', amount: shipping() },
-    { label: 'Tax', amount: tax() },
-  ])
+  const summaryLines = createMemo(() => {
+    const lines = [
+      { label: 'Subtotal', amount: subtotal() },
+      { label: 'Shipping', amount: shipping() },
+      { label: 'Tax', amount: tax() },
+    ]
+    if (couponDiscount() > 0) {
+      lines.push({ label: 'Coupon discount', amount: -couponDiscount() })
+    }
+    return lines
+  })
 
   return (
     <div class="mx-auto max-w-7xl space-y-6 py-8">
@@ -148,6 +167,15 @@ export default function Checkout(): JSX.Element {
         </div>
 
         <div class="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Coupon code</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CouponField onApply={applyCoupon} placeholder="Try SAVE10" />
+            </CardContent>
+          </Card>
+
           <CartSummary
             lines={summaryLines()}
             total={total()}

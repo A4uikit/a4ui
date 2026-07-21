@@ -7,6 +7,8 @@ import {
   Card,
   CardContent,
   Input,
+  OnboardingChecklist,
+  type OnboardingStep,
   Progress,
   RadioGroup,
   Result,
@@ -21,6 +23,28 @@ const STEPS = [
   { label: 'Profile', description: 'About you' },
   { label: 'Preferences', description: 'Fine-tune' },
   { label: 'Done', description: 'All set' },
+]
+
+const INITIAL_ACTIVATION_STEPS: OnboardingStep[] = [
+  { id: 'workspace', title: 'Create workspace', done: true },
+  {
+    id: 'invite',
+    title: 'Invite your team',
+    description: 'Bring teammates in so work does not sit with just you.',
+    action: { label: 'Invite teammates', onClick: () => {} },
+  },
+  {
+    id: 'connect',
+    title: 'Connect a data source',
+    description: 'Link a database, spreadsheet, or API to start pulling in real data.',
+    action: { label: 'Connect source', onClick: () => {} },
+  },
+  {
+    id: 'ship',
+    title: 'Ship your first project',
+    description: 'Publish something small — you can always iterate later.',
+    action: { label: 'Start a project', onClick: () => {} },
+  },
 ]
 
 export default function Onboarding(): JSX.Element {
@@ -39,6 +63,12 @@ export default function Onboarding(): JSX.Element {
   const [plan, setPlan] = createSignal('pro')
   const [newsletter, setNewsletter] = createSignal(true)
   const [productUpdates, setProductUpdates] = createSignal(false)
+
+  // Post-signup activation checklist
+  const [activationSteps, setActivationSteps] = createSignal<OnboardingStep[]>(INITIAL_ACTIVATION_STEPS)
+  const toggleActivationStep = (id: string, done: boolean): void => {
+    setActivationSteps((prev) => prev.map((s) => (s.id === id ? { ...s, done } : s)))
+  }
 
   const clamp = (n: number) => Math.max(0, Math.min(3, n))
   const next = () => setStep((s) => clamp(s + 1))
@@ -140,6 +170,11 @@ export default function Onboarding(): JSX.Element {
               title="You're all set!"
               description="Your workspace is ready. Jump in and start building."
               actions={<Button onClick={() => setStep(0)}>Go to dashboard</Button>}
+            />
+            <OnboardingChecklist
+              title="Get the most out of your workspace"
+              steps={activationSteps()}
+              onToggle={toggleActivationStep}
             />
           </Show>
 
