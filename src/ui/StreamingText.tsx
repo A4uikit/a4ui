@@ -2,7 +2,7 @@
 // added tail at `speed` chars/sec (via a rAF loop) rather than snapping
 // straight to the new length, with a blinking caret while more is expected.
 // Built for AI answer UIs where `text` grows incrementally as tokens arrive.
-import { createEffect, createSignal, onCleanup, type JSX } from 'solid-js'
+import { createEffect, createSignal, onCleanup, untrack, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { motionReduced } from '../lib/motion'
@@ -48,7 +48,12 @@ export function StreamingText(props: StreamingTextProps): JSX.Element {
   createEffect(() => {
     const text = props.text
     const isAppend = text.startsWith(prevText)
-    const from = isAppend ? revealed() : 0
+    // `untrack`: read the current revealed count WITHOUT making this effect
+    // depend on `revealed` — otherwise the rAF loop's own `setRevealed` would
+    // re-trigger this effect every frame, cancelling and restarting the loop
+    // (a stuttery, "janky" reveal). The effect should only re-run when the
+    // incoming `text`/`streaming`/`speed` change.
+    const from = isAppend ? untrack(revealed) : 0
     prevText = text
 
     stop()
