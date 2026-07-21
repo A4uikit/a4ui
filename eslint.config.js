@@ -18,6 +18,11 @@ export default tseslint.config(
     files: ['scripts/**/*.{js,mjs,cjs}', 'create-a4ui/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
   },
+  {
+    // The PWA service worker runs in a ServiceWorkerGlobalScope, not the DOM.
+    files: ['preview/public/sw.js'],
+    languageOptions: { globals: { ...globals.serviceworker } },
+  },
   // The scaffolder's templates are standalone app files (they import the
   // published `@a4ui/core`), not part of this repo's source — don't lint them.
   {
