@@ -201,19 +201,31 @@ export function Carousel3D(props: Carousel3DProps): JSX.Element {
 
   // --- pointer drag: horizontal movement past a threshold advances one slide
   // per threshold crossed, so a long drag can page through several slides. --
-  const [dragging, setDragging] = createSignal(false)
+  // Capture is DEFERRED until the pointer actually moves past a small
+  // threshold. Capturing on pointerdown (the old behaviour) retargeted the
+  // pointer to the stage and swallowed the `click` on the chevron buttons and
+  // any interactive slide content. A plain click no longer starts a drag, so
+  // those clicks work again.
   let startX = 0
+  let pointerId: number | null = null
+  let captured = false
+  const CAPTURE_THRESHOLD = 8
   const DRAG_THRESHOLD = 60
 
   const onPointerDown = (e: PointerEvent): void => {
     if (count() < 2) return
     startX = e.clientX
-    setDragging(true)
-    ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    pointerId = e.pointerId
+    captured = false
   }
   const onPointerMove = (e: PointerEvent): void => {
-    if (!dragging()) return
+    if (pointerId === null) return
     const dx = e.clientX - startX
+    if (!captured) {
+      if (Math.abs(dx) < CAPTURE_THRESHOLD) return
+      captured = true
+      ;(e.currentTarget as HTMLElement).setPointerCapture(pointerId)
+    }
     if (dx <= -DRAG_THRESHOLD) {
       next()
       startX = e.clientX
@@ -222,8 +234,16 @@ export function Carousel3D(props: Carousel3DProps): JSX.Element {
       startX = e.clientX
     }
   }
-  const endDrag = (): void => {
-    setDragging(false)
+  const endDrag = (e: PointerEvent): void => {
+    if (pointerId !== null && captured) {
+      try {
+        ;(e.currentTarget as HTMLElement).releasePointerCapture(pointerId)
+      } catch {
+        /* already released */
+      }
+    }
+    pointerId = null
+    captured = false
   }
 
   return (
@@ -266,6 +286,7 @@ export function Carousel3D(props: Carousel3DProps): JSX.Element {
           type="button"
           aria-label="Previous slide"
           disabled={count() === 0 || active() === 0}
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={prev}
           class="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-40"
         >
@@ -275,6 +296,7 @@ export function Carousel3D(props: Carousel3DProps): JSX.Element {
           type="button"
           aria-label="Next slide"
           disabled={count() === 0 || active() === count() - 1}
+          onPointerDown={(e) => e.stopPropagation()}
           onClick={next}
           class="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90 disabled:pointer-events-none disabled:opacity-40"
         >
