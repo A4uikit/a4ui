@@ -62,4 +62,31 @@ test.describe('component interactions', () => {
     await expect(demo.getByText('In progress')).toBeVisible()
     await expect(demo.getByText('Draft the spec')).toBeVisible()
   })
+
+  test('SpreadsheetGrid: keyboard edit commits a cell value', async ({ page }) => {
+    await page.goto('/#/spreadsheet-grid')
+    const demo = page.getByTestId('demo')
+    await demo.locator('[role="gridcell"]').first().dblclick()
+    const input = demo.locator('input').first()
+    await input.fill('Zebra')
+    await input.press('Enter')
+    await expect(demo.getByText('Zebra')).toBeVisible()
+  })
+
+  test('CouponField: a valid code applies a discount', async ({ page }) => {
+    await page.goto('/#/coupon-field')
+    const demo = page.getByTestId('demo')
+    await demo.getByRole('textbox').fill('SAVE10')
+    await demo.getByRole('button', { name: /apply/i }).click()
+    await expect(demo.getByText(/\$10/)).toBeVisible()
+  })
+
+  test('Lightbox: a thumbnail opens the viewer and Escape closes it', async ({ page }) => {
+    await page.goto('/#/lightbox')
+    await page.getByTestId('demo').locator('img').first().click()
+    const dialog = page.getByRole('dialog')
+    await expect(dialog).toBeVisible()
+    await page.keyboard.press('Escape')
+    await expect(dialog).toBeHidden()
+  })
 })
