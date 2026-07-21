@@ -5734,6 +5734,230 @@ import { Copy, Check } from 'lucide-solid'
 
 <TimeMachineStack slides={[<Card>One</Card>, <Card>Two</Card>, /* … */]} />`,
   },
+
+  // ---- Charts (line / gauge / radar) ----------------------------------------
+  {
+    id: 'line-chart',
+    title: 'LineChart',
+    group: 'Charts',
+    blurb:
+      'Multi-series line chart (SVG, no deps) with optional area fill, dots, and a hover tooltip + crosshair. Hover the plot ↓',
+    demo: () => (
+      <Charts.LineChart
+        class="w-full max-w-2xl"
+        series={[
+          { name: 'Revenue', tone: 'primary', data: [4, 6, 5, 9, 8, 12, 11], area: true },
+          { name: 'Costs', tone: 'muted', data: [2, 3, 3, 4, 5, 6, 6] },
+        ]}
+        labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']}
+        showDots
+        showTooltip
+      />
+    ),
+    code: `import { LineChart } from '@a4ui/core/charts'
+
+<LineChart
+  series={[
+    { name: 'Revenue', tone: 'primary', data: [4, 6, 5, 9, 8, 12], area: true },
+    { name: 'Costs', tone: 'muted', data: [2, 3, 3, 4, 5, 6] },
+  ]}
+  labels={['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']}
+  showDots showTooltip
+/>`,
+  },
+  {
+    id: 'gauge-chart',
+    title: 'GaugeChart',
+    group: 'Charts',
+    blurb:
+      'A 270° radial gauge with an animated sweep and optional colored thresholds. For single KPI values.',
+    demo: () => (
+      <div class="flex flex-wrap items-center gap-8">
+        <Charts.GaugeChart value={72} unit="%" label="CPU load" />
+        <Charts.GaugeChart
+          value={88}
+          unit="%"
+          label="Memory"
+          thresholds={[
+            { value: 0, tone: 'primary' },
+            { value: 70, tone: 'accent' },
+            { value: 85, tone: 'destructive' },
+          ]}
+        />
+      </div>
+    ),
+    code: `import { GaugeChart } from '@a4ui/core/charts'
+
+<GaugeChart value={72} unit="%" label="CPU load" />
+<GaugeChart value={88} unit="%" label="Memory" thresholds={[
+  { value: 0, tone: 'primary' }, { value: 70, tone: 'accent' }, { value: 85, tone: 'destructive' },
+]} />`,
+  },
+  {
+    id: 'radar-chart',
+    title: 'RadarChart',
+    group: 'Charts',
+    blurb: 'A spider/radar chart for comparing entities across several dimensions at once.',
+    demo: () => (
+      <Charts.RadarChart
+        axes={['Speed', 'Power', 'Range', 'Defense', 'Utility', 'Cost']}
+        series={[
+          { name: 'Model A', tone: 'primary', values: [80, 60, 90, 40, 70, 55] },
+          { name: 'Model B', tone: 'accent', values: [50, 85, 60, 75, 55, 80] },
+        ]}
+      />
+    ),
+    code: `import { RadarChart } from '@a4ui/core/charts'
+
+<RadarChart
+  axes={['Speed', 'Power', 'Range', 'Defense', 'Utility']}
+  series={[
+    { name: 'Model A', tone: 'primary', values: [80, 60, 90, 40, 70] },
+    { name: 'Model B', tone: 'accent', values: [50, 85, 60, 75, 55] },
+  ]}
+/>`,
+  },
+
+  // ---- Spatial "wow" primitives ---------------------------------------------
+  {
+    id: 'bento-grid',
+    title: 'BentoGrid',
+    group: 'Layout',
+    blurb:
+      'A responsive bento layout — glass tiles that span columns/rows via BentoCard `colSpan`/`rowSpan`.',
+    demo: () => (
+      <UI.BentoGrid class="w-full max-w-2xl">
+        <UI.BentoCard colSpan={2} rowSpan={2}>
+          <div class="text-sm font-semibold text-foreground">Overview</div>
+          <div class="mt-1 text-xs text-muted-foreground">The big tile.</div>
+        </UI.BentoCard>
+        <UI.BentoCard>
+          <div class="text-sm font-semibold text-foreground">99.9%</div>
+          <div class="text-xs text-muted-foreground">Uptime</div>
+        </UI.BentoCard>
+        <UI.BentoCard>
+          <div class="text-sm font-semibold text-foreground">1.2k</div>
+          <div class="text-xs text-muted-foreground">Users</div>
+        </UI.BentoCard>
+        <UI.BentoCard colSpan={3}>
+          <div class="text-sm font-semibold text-foreground">Recent activity</div>
+        </UI.BentoCard>
+      </UI.BentoGrid>
+    ),
+    code: `import { BentoGrid, BentoCard } from '@a4ui/core'
+
+<BentoGrid>
+  <BentoCard colSpan={2} rowSpan={2}>Overview</BentoCard>
+  <BentoCard>Uptime</BentoCard>
+  <BentoCard>Users</BentoCard>
+  <BentoCard colSpan={3}>Recent activity</BentoCard>
+</BentoGrid>`,
+  },
+  {
+    id: 'dock',
+    title: 'Dock',
+    group: 'Navigation',
+    blurb: 'A macOS-style dock: icons magnify based on the cursor’s distance. Move your cursor across it ↓',
+    demo: () => (
+      <div class="flex justify-center py-4">
+        <UI.Dock
+          items={[
+            { icon: <Home size={22} />, label: 'Home' },
+            { icon: <Search size={22} />, label: 'Search' },
+            { icon: <Bell size={22} />, label: 'Alerts' },
+            { icon: <Settings size={22} />, label: 'Settings' },
+            { icon: <User size={22} />, label: 'Profile' },
+          ]}
+        />
+      </div>
+    ),
+    code: `import { Dock } from '@a4ui/core'
+import { Home, Search, Settings } from 'lucide-solid'
+
+<Dock items={[
+  { icon: <Home size={22} />, label: 'Home', onClick: () => {} },
+  { icon: <Search size={22} />, label: 'Search' },
+  { icon: <Settings size={22} />, label: 'Settings' },
+]} />`,
+  },
+  {
+    id: 'animated-beam',
+    title: 'AnimatedBeam',
+    group: 'Motion',
+    blurb:
+      'An SVG beam with a traveling gradient that connects two elements — great for “how it works” diagrams.',
+    demo: () => {
+      const [c, setC] = createSignal<HTMLDivElement>()
+      const [a, setA] = createSignal<HTMLDivElement>()
+      const [b, setB] = createSignal<HTMLDivElement>()
+      return (
+        <div
+          ref={setC}
+          class="relative flex w-full max-w-lg items-center justify-between rounded-xl border border-border bg-card p-10"
+        >
+          <div
+            ref={setA}
+            class="grid size-12 place-items-center rounded-full border border-border bg-background"
+          >
+            <Zap size={20} />
+          </div>
+          <div
+            ref={setB}
+            class="grid size-12 place-items-center rounded-full border border-border bg-background"
+          >
+            <Rocket size={20} />
+          </div>
+          <UI.AnimatedBeam containerRef={c()} fromRef={a()} toRef={b()} curvature={40} />
+        </div>
+      )
+    },
+    code: `import { AnimatedBeam } from '@a4ui/core'
+
+let container, from, to
+<div ref={container} class="relative flex justify-between p-8">
+  <div ref={from} class="size-12 rounded-full bg-card" />
+  <div ref={to} class="size-12 rounded-full bg-card" />
+  <AnimatedBeam containerRef={container} fromRef={from} toRef={to} curvature={40} />
+</div>`,
+  },
+  {
+    id: 'border-beam',
+    title: 'BorderBeam',
+    group: 'Motion',
+    blurb: 'A light that continuously traces the border of its (relative) parent. Drop one inside any card.',
+    demo: () => (
+      <div class="relative w-64 overflow-hidden rounded-2xl border border-border bg-card p-6">
+        <UI.BorderBeam />
+        <div class="text-sm font-semibold text-foreground">Pro plan</div>
+        <div class="mt-1 text-xs text-muted-foreground">A light traces the border.</div>
+      </div>
+    ),
+    code: `import { BorderBeam } from '@a4ui/core'
+
+<div class="relative overflow-hidden rounded-2xl border border-border p-6">
+  <BorderBeam />
+  <p>Card content</p>
+</div>`,
+  },
+  {
+    id: 'meteors',
+    title: 'Meteors',
+    group: 'Motion',
+    blurb: 'A decorative meteor-shower layer for hero/section backdrops. Reduced-motion safe.',
+    demo: () => (
+      <div class="relative h-48 w-full max-w-xl overflow-hidden rounded-2xl border border-border bg-card">
+        <UI.Meteors count={20} />
+        <div class="absolute inset-0 grid place-items-center text-sm font-semibold text-foreground">
+          Meteors
+        </div>
+      </div>
+    ),
+    code: `import { Meteors } from '@a4ui/core'
+
+<div class="relative overflow-hidden rounded-2xl border border-border p-8">
+  <Meteors count={20} />
+</div>`,
+  },
 ]
 
 // Names → docs route, for linkifying component/utility mentions inside the

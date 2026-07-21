@@ -3,3 +3,6 @@
 export { Sparkline, type SparklineProps } from './Sparkline'
 export { BarChart, type BarDatum, type BarChartProps } from './BarChart'
 export { DonutChart, type DonutSegment, type DonutChartProps } from './DonutChart'
+export { LineChart, type LineSeries, type LineChartProps } from './LineChart'
+export { GaugeChart, type GaugeThreshold, type GaugeChartProps } from './GaugeChart'
+export { RadarChart, type RadarSeries, type RadarChartProps } from './RadarChart'
