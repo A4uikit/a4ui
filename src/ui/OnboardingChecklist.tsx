@@ -79,6 +79,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps): JSX.Elemen
           value={percent()}
           size={56}
           thickness={6}
+          aria-label={`${done()} of ${total()} steps complete`}
           label={
             <span class="text-xs">
               {done()}/{total()}

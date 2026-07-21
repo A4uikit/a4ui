@@ -6,6 +6,24 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.35.1] — 2026-07-21
+
+### Fixed
+
+Accessibility — an axe (WCAG 2 A/AA) sweep of the newer components surfaced and
+fixed these violations:
+
+- **`QueryBuilder`** — the field/operator/value `Select`s and value input now
+  have accessible names.
+- **`SpreadsheetGrid`** — the ARIA grid now has a valid role hierarchy
+  (`grid` → `row` → `columnheader`/`rowheader`/`gridcell`).
+- **`OnboardingChecklist`** / **`RingProgress`** — the progress ring exposes an
+  accessible name (`RingProgress` gained an optional `aria-label`).
+- **`AudioWaveform`** — the seek surface no longer nests interactive elements
+  inside the play control.
+- **`EventScheduler`**, **`GanttChart`**, **`PivotTable`** — their scrollable
+  regions are now keyboard-focusable (`tabindex`, role, and label).
+
 ## [0.35.0] — 2026-07-21
 
 ### Added

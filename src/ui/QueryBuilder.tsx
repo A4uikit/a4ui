@@ -243,10 +243,10 @@ function RuleRow(props: RuleRowProps): JSX.Element {
 
   return (
     <div class="flex flex-wrap items-center gap-2">
-      <Select class="w-40" value={props.rule.field} onChange={setField}>
+      <Select class="w-40" value={props.rule.field} onChange={setField} aria-label="Field">
         <For each={props.fields}>{(f) => <option value={f.name}>{f.label}</option>}</For>
       </Select>
-      <Select class="w-32" value={props.rule.operator} onChange={setOperator}>
+      <Select class="w-32" value={props.rule.operator} onChange={setOperator} aria-label="Operator">
         <For each={props.operatorsFor(props.rule.field)}>{(op) => <option value={op}>{op}</option>}</For>
       </Select>
       <Show
@@ -257,10 +257,11 @@ function RuleRow(props: RuleRowProps): JSX.Element {
             type={field()?.type === 'number' ? 'number' : 'text'}
             value={props.rule.value}
             onInput={setValue}
+            aria-label="Value"
           />
         }
       >
-        <Select class="w-40" value={props.rule.value} onChange={setValue}>
+        <Select class="w-40" value={props.rule.value} onChange={setValue} aria-label="Value">
           <option value="" disabled>
             Select…
           </option>

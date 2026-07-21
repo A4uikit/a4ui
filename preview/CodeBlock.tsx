@@ -17,7 +17,12 @@ export function CodeBlock(props: { code: string }): JSX.Element {
       >
         {copied() ? '✓ Copied' : 'Copy'}
       </button>
-      <pre class="overflow-x-auto rounded-lg border border-border bg-card/50 p-4 font-mono text-[13px] leading-relaxed text-foreground">
+      <pre
+        tabindex="0"
+        role="region"
+        aria-label="Code example"
+        class="overflow-x-auto rounded-lg border border-border bg-card/50 p-4 font-mono text-[13px] leading-relaxed text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
         <code>{props.code}</code>
       </pre>
     </div>

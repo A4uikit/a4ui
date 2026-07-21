@@ -235,6 +235,7 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
       ref={containerRef}
       tabIndex={0}
       role="grid"
+      aria-label="Spreadsheet"
       aria-rowcount={props.rows}
       aria-colcount={props.cols}
       class={cn(
@@ -244,20 +245,22 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
       onKeyDown={handleKeyDown}
     >
       <div class="grid" style={{ 'grid-template-columns': `48px repeat(${props.cols}, minmax(80px, 1fr))` }}>
-        <div class="border-b border-r border-border bg-muted" />
-        <For each={headers()}>
-          {(h) => (
-            <div
-              role="columnheader"
-              class="border-b border-r border-border bg-muted px-2 py-1 text-center text-xs font-semibold text-muted-foreground"
-            >
-              {h}
-            </div>
-          )}
-        </For>
+        <div role="row" class="contents">
+          <div aria-hidden="true" class="border-b border-r border-border bg-muted" />
+          <For each={headers()}>
+            {(h) => (
+              <div
+                role="columnheader"
+                class="border-b border-r border-border bg-muted px-2 py-1 text-center text-xs font-semibold text-muted-foreground"
+              >
+                {h}
+              </div>
+            )}
+          </For>
+        </div>
         <For each={rowIndices()}>
           {(r) => (
-            <>
+            <div role="row" class="contents">
               <div
                 role="rowheader"
                 class="border-b border-r border-border bg-muted px-2 py-1 text-center text-xs text-muted-foreground"
@@ -295,7 +298,7 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
                   </div>
                 )}
               </For>
-            </>
+            </div>
           )}
         </For>
       </div>

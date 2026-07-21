@@ -12,6 +12,8 @@ export interface RingProgressProps {
   thickness?: number
   /** Content centered over the ring. Defaults to the rounded percent. */
   label?: JSX.Element
+  /** Accessible name for the `role="progressbar"` element. */
+  'aria-label'?: string
   class?: string
 }
 
@@ -37,6 +39,7 @@ export function RingProgress(props: RingProgressProps): JSX.Element {
   return (
     <div
       role="progressbar"
+      aria-label={props['aria-label']}
       aria-valuenow={clamped()}
       aria-valuemin={0}
       aria-valuemax={100}

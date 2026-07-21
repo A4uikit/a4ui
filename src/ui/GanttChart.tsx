@@ -155,7 +155,15 @@ export function GanttChart(props: GanttChartProps): JSX.Element {
   })
 
   return (
-    <div class={cn('overflow-x-auto rounded-lg border border-border bg-card', props.class)}>
+    <div
+      role="group"
+      aria-label="Gantt chart"
+      tabIndex={0}
+      class={cn(
+        'overflow-x-auto rounded-lg border border-border bg-card outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary',
+        props.class,
+      )}
+    >
       <Show
         when={props.tasks.length > 0}
         fallback={<p class="p-4 text-sm text-muted-foreground">No tasks to display.</p>}
