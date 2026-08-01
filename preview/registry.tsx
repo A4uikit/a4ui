@@ -1440,6 +1440,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         <UI.Input
           value={name()}
           onInput={setName}
+          aria-label={c.placeholder as string}
           placeholder={c.placeholder as string}
           disabled={c.disabled as boolean}
           class="max-w-xs"
@@ -1453,12 +1454,22 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         label: 'Pre-filled value',
         demo: () => {
           const [name, setName] = createSignal('Marina Vega')
-          return <UI.Input value={name()} onInput={setName} placeholder="Full name" class="max-w-xs" />
+          return (
+            <UI.Input
+              value={name()}
+              onInput={setName}
+              aria-label="Full name"
+              placeholder="Full name"
+              class="max-w-xs"
+            />
+          )
         },
       },
       {
         label: 'Disabled',
-        demo: () => <UI.Input value="Read only" onInput={() => {}} disabled class="max-w-xs" />,
+        demo: () => (
+          <UI.Input value="Read only" onInput={() => {}} aria-label="Read only" disabled class="max-w-xs" />
+        ),
       },
       {
         label: 'Email type',
@@ -1469,6 +1480,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
               type="email"
               value={email()}
               onInput={setEmail}
+              aria-label="Email"
               placeholder="you@example.com"
               class="max-w-xs"
             />

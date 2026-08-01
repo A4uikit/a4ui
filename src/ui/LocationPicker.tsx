@@ -20,6 +20,15 @@ export interface LocationPickerProps {
   value?: LocationValue
   /** Fires with the full value whenever the label, the pin, or geolocation changes it. */
   onChange?: (v: LocationValue) => void
+  /**
+   * Placeholder for the free-text label field. Overridable because this was
+   * hardcoded English inside an otherwise fully translatable component — a
+   * Spanish form showed "Location label" in the middle of its own wizard.
+   * @default 'Location label'
+   */
+  labelPlaceholder?: string
+  /** Accessible name for the "use my location" button. @default 'Use my location' */
+  geolocateLabel?: string
   class?: string
 }
 
@@ -77,10 +86,14 @@ export function LocationPicker(props: LocationPickerProps): JSX.Element {
           type="text"
           value={current().label ?? ''}
           onInput={(event) => setLabel(event.currentTarget.value)}
-          placeholder="Location label"
+          placeholder={props.labelPlaceholder ?? 'Location label'}
           class="h-9 flex-1 rounded-md border border-border bg-input px-3 text-sm text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:outline-none"
         />
-        <Button variant="outline" aria-label="Use my location" onClick={useMyLocation}>
+        <Button
+          variant="outline"
+          aria-label={props.geolocateLabel ?? 'Use my location'}
+          onClick={useMyLocation}
+        >
           <Crosshair class="h-4 w-4" />
         </Button>
       </div>

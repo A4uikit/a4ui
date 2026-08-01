@@ -31,6 +31,18 @@ export interface DataGridProps {
   pageSize?: number
   /** Show the global text filter above the table. Defaults to true. */
   filterable?: boolean
+  /**
+   * Copy overrides, for apps that do not run in English. Every user-visible
+   * string this component renders on its own is here; without them a Spanish
+   * or French page shows "Filter…" and "12 rows" in the middle of its own
+   * table with no way to change it.
+   * @default 'Filter…'
+   */
+  filterPlaceholder?: string
+  /** Accessible name for the filter box. @default 'Filter rows' */
+  filterLabel?: string
+  /** Builds the row-count summary. @default (n) => `${n} rows` */
+  rowsSummary?: (count: number) => string
   class?: string
 }
 
@@ -126,8 +138,8 @@ export function DataGrid(props: DataGridProps): JSX.Element {
               setQuery(v)
               setPage(1)
             }}
-            placeholder="Filter…"
-            aria-label="Filter rows"
+            placeholder={props.filterPlaceholder ?? 'Filter…'}
+            aria-label={props.filterLabel ?? 'Filter rows'}
           />
         </div>
       )}
@@ -170,7 +182,7 @@ export function DataGrid(props: DataGridProps): JSX.Element {
         page={Math.min(page(), totalPages())}
         totalPages={totalPages()}
         onChange={setPage}
-        summary={`${sorted().length} rows`}
+        summary={props.rowsSummary?.(sorted().length) ?? `${sorted().length} rows`}
       />
     </div>
   )

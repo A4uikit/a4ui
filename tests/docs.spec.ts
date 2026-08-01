@@ -97,9 +97,13 @@ test.describe('interactions', () => {
 
   test('announcement bar dismisses', async ({ page }) => {
     await page.goto('/#/announcement-bar')
-    const bar = page.getByRole('region', { name: 'Announcement' })
+    // Scoped to the main demo: every doc page renders the component again
+    // under "Variations", so the page-wide locator resolved to five regions
+    // and failed on strict mode rather than on the behaviour.
+    const demo = page.getByTestId('demo')
+    const bar = demo.getByRole('region', { name: 'Announcement' }).first()
     await expect(bar).toBeVisible()
-    await page.getByRole('button', { name: 'Dismiss announcement' }).click()
+    await demo.getByRole('button', { name: 'Dismiss announcement' }).first().click()
     await expect(bar).toHaveCount(0)
   })
 
@@ -252,7 +256,7 @@ test.describe('interactions', () => {
 
   test('input reflects typed text', async ({ page }) => {
     await page.goto('/#/input')
-    const field = page.getByPlaceholder('Full name')
+    const field = page.getByTestId('demo').getByPlaceholder('Full name').first()
     await field.fill('Luis Rivera')
     await expect(field).toHaveValue('Luis Rivera')
   })
@@ -280,7 +284,7 @@ test.describe('interactions', () => {
 
   test('checkbox becomes checked', async ({ page }) => {
     await page.goto('/#/checkbox')
-    const box = page.getByRole('checkbox')
+    const box = page.getByTestId('demo').getByRole('checkbox').first()
     await expect(box).not.toBeChecked()
     await box.click()
     await expect(box).toBeChecked()
