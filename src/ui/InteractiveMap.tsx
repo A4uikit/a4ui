@@ -51,10 +51,21 @@ interface WorldPixel {
   y: number
 }
 
+/**
+ * A tile's IDENTITY, with no position in it.
+ *
+ * `id` and `src` are both pure functions of z/x/y, so a given tile's
+ * descriptor never changes while it is on screen — only where it sits does.
+ * Keeping position out of this type is what lets the memo below hand `<For>`
+ * the same object across a pan, so the `<img>` survives instead of being torn
+ * down and rebuilt.
+ */
 interface TileDescriptor {
   id: string
-  left: number
-  top: number
+  /** Tile column, unwrapped — multiplied by TILE_SIZE to place the tile. */
+  x: number
+  /** Tile row. */
+  y: number
   src: string
 }
 
@@ -174,9 +185,33 @@ export function InteractiveMap(props: InteractiveMapProps): JSX.Element {
     return { x: c.x - w / 2, y: c.y - h / 2 }
   })
 
+  /**
+   * Live tiles, keyed by id so identity survives a pan.
+   *
+   * `<For>` in Solid keys by REFERENCE. This memo used to build fresh
+   * descriptor objects on every recompute, so every pointer move made every
+   * tile a "new" item: the whole grid was removed from the DOM and rebuilt,
+   * even though the same tiles were still on screen. Measured on a 20-tile
+   * map, one ~500 ms drag produced 340 element insertions and 344 removals.
+   *
+   * The fade-in below turned that churn into a visible strobe. A rebuilt
+   * `<img>` starts at `opacity-0` and only becomes visible when its `load`
+   * event re-adds `a4ui-tile-loaded`, so during a pan every tile blinked out
+   * and back roughly seventeen times a second — the file header has always
+   * claimed tiles are "repositioned (not reloaded) as the user pans", and now
+   * they are.
+   *
+   * Reusing entries also means the cache holds only what is on screen: ids
+   * that fall out of range are dropped on the same pass that adds new ones.
+   */
+  const tileCache = new Map<string, TileDescriptor>()
+
   const tiles = createMemo<TileDescriptor[]>(() => {
     const { w, h } = size()
-    if (w <= 0 || h <= 0) return []
+    if (w <= 0 || h <= 0) {
+      tileCache.clear()
+      return []
+    }
     const z = zoom()
     const numTiles = 2 ** z
     const tl = topLeftPx()
@@ -188,17 +223,29 @@ export function InteractiveMap(props: InteractiveMapProps): JSX.Element {
     const maxY = Math.min(numTiles - 1, Math.floor((tl.y + h) / TILE_SIZE) + 1)
 
     const list: TileDescriptor[] = []
+    const live = new Set<string>()
+
     for (let x = minX; x <= maxX; x++) {
       const wrappedX = ((x % numTiles) + numTiles) % numTiles
       for (let y = minY; y <= maxY; y++) {
-        list.push({
-          id: `${z}/${x}/${y}`,
-          left: x * TILE_SIZE - tl.x,
-          top: y * TILE_SIZE - tl.y,
-          src: buildTileUrl(url, z, wrappedX, y),
-        })
+        const id = `${z}/${x}/${y}`
+        live.add(id)
+        let tile = tileCache.get(id)
+        // The url prop can change at runtime, so a cached tile is only
+        // reusable while its src still matches.
+        const src = buildTileUrl(url, z, wrappedX, y)
+        if (!tile || tile.src !== src) {
+          tile = { id, x, y, src }
+          tileCache.set(id, tile)
+        }
+        list.push(tile)
       }
     }
+
+    for (const id of tileCache.keys()) {
+      if (!live.has(id)) tileCache.delete(id)
+    }
+
     return list
   })
 
@@ -309,7 +356,13 @@ export function InteractiveMap(props: InteractiveMapProps): JSX.Element {
                 !motionReduced() &&
                   'opacity-0 transition-opacity duration-150 [&.a4ui-tile-loaded]:opacity-100',
               )}
-              style={{ left: `${tile.left}px`, top: `${tile.top}px` }}
+              // Read from the reactive origin rather than from the tile, so
+              // panning updates two style properties on an element that stays
+              // put instead of replacing it.
+              style={{
+                left: `${tile.x * TILE_SIZE - topLeftPx().x}px`,
+                top: `${tile.y * TILE_SIZE - topLeftPx().y}px`,
+              }}
               onLoad={(event) => event.currentTarget.classList.add('a4ui-tile-loaded')}
             />
           )}

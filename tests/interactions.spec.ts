@@ -28,6 +28,67 @@ test.describe('component interactions', () => {
     await expect(demo.locator('button[aria-label="Go to slide 3"]')).toHaveAttribute('aria-current', 'true')
   })
 
+  test('InteractiveMap: panning repositions the tiles instead of rebuilding them', async ({ page }) => {
+    // REGRESSION. `<For>` keys by reference, and the tile memo used to return
+    // fresh descriptor objects on every recompute, so each pointer move tore
+    // the whole grid out of the DOM and rebuilt it. Combined with the tile
+    // fade-in — which resets to opacity-0 on a fresh element and only clears
+    // on `load` — the map strobed while being dragged. Measured before the
+    // fix on a 20-tile map: one ~500 ms drag inserted 340 elements and removed
+    // 344.
+    //
+    // Positions are already covered elsewhere and stayed correct throughout,
+    // which is exactly why nothing caught this; what this asserts is the
+    // ELEMENTS' survival.
+    await page.goto('/#/interactive-map')
+    const map = page.getByTestId('demo').locator('[role="application"]').first()
+    await map.locator('img').first().waitFor()
+
+    await page.waitForTimeout(500)
+
+    await map.evaluate((el) => {
+      const w = window as unknown as { __churn: { added: number; removed: number } }
+      w.__churn = { added: 0, removed: 0 }
+      new MutationObserver((records) => {
+        for (const record of records) {
+          record.addedNodes.forEach((n) => {
+            if (n.nodeName === 'IMG') w.__churn.added++
+          })
+          record.removedNodes.forEach((n) => {
+            if (n.nodeName === 'IMG') w.__churn.removed++
+          })
+        }
+      }).observe(el, { childList: true, subtree: true })
+    })
+
+    const box = await map.boundingBox()
+    if (!box) throw new Error('InteractiveMap has no bounding box')
+    const startX = box.x + box.width / 2
+    const startY = box.y + box.height / 2
+
+    // A short drag: small enough that the visible tile set barely changes, so
+    // almost every tile should survive it.
+    await page.mouse.move(startX, startY)
+    await page.mouse.down()
+    for (let step = 1; step <= 12; step++) {
+      await page.mouse.move(startX - step * 3, startY - step * 2)
+    }
+    await page.mouse.up()
+    await page.waitForTimeout(300)
+
+    const churn = await page.evaluate(
+      () => (window as unknown as { __churn: { added: number; removed: number } }).__churn,
+    )
+    const tileCount = await map.locator('img').count()
+
+    expect(tileCount).toBeGreaterThan(0)
+    // A drag this small may pull in a row or column of genuinely new tiles;
+    // what must not happen is the grid being rebuilt per pointer move, which
+    // scales with the number of moves rather than with the tiles gained.
+    expect(churn.added).toBeLessThan(tileCount)
+    expect(churn.removed).toBeLessThan(tileCount)
+  })
+
   test('OtpInput: typing fills consecutive boxes', async ({ page }) => {
     await page.goto('/#/otp-input')
     const boxes = page.getByTestId('demo').locator('input')
