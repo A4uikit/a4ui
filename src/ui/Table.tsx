@@ -34,7 +34,15 @@ interface TableProps extends ParentProps {
 export function Table(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
-    <div class="w-full overflow-x-auto">
+    // `relative` is load-bearing, not decoration: `overflow` only clips a
+    // descendant whose containing block is inside the scroller. Without a
+    // positioned wrapper, an absolutely-positioned descendant (a
+    // screen-reader-only input inside a cell control, for instance) resolves
+    // against an ancestor further up, escapes the clip at the table's full
+    // scroll width, and drags the whole DOCUMENT into horizontal scrolling —
+    // measured on a phone: a 356 px table inside a 390 px viewport pushed the
+    // page to 413 px.
+    <div class="relative w-full overflow-x-auto">
       <table class={cn('w-full border-collapse text-sm', local.class)} {...rest}>
         {local.children}
       </table>

@@ -6,6 +6,32 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`DataGrid`** — `filterPlaceholder`, `filterLabel` and `rowsSummary` props.
+- **`LocationPicker`** — `labelPlaceholder` and `geolocateLabel` props.
+
+  Both components hardcoded English strings with no way to change them, so a
+  Spanish app rendered "Filter…", "12 rows" and "Location label" in the middle
+  of its own forms and tables.
+
+### Fixed
+
+- **`Table`** — the scroll wrapper is now `relative`. `overflow` only clips a
+  descendant whose containing block sits inside the scroller, so an
+  absolutely-positioned descendant (a screen-reader-only input inside a cell
+  control) resolved against an ancestor further up, escaped the clip at the
+  table's full scroll width, and dragged the whole DOCUMENT into horizontal
+  scrolling. Measured on a phone: a 356 px table inside a 390 px viewport
+  pushed the page to 413 px.
+- **Docs** — the `/input` examples had no accessible name, failing axe's
+  `label` rule at critical impact. A placeholder is not a label, and the docs
+  were teaching that by example.
+- **Tests** — three interaction tests located components page-wide on doc
+  pages that render each component again under "Variations", so they failed on
+  strict mode rather than on behaviour. They are scoped to the demo now, which
+  takes CI from red to green for the first time in a while.
+
 ## [0.35.2] — 2026-08-01
 
 ### Fixed
