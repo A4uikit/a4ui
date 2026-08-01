@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.35.2] — 2026-08-01
+
 ### Fixed
 
 - **`InteractiveMap`** — panning no longer rebuilds the tile grid. `<For>` keys
