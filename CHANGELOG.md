@@ -6,6 +6,26 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Fixed
+
+- **`InteractiveMap`** — panning no longer rebuilds the tile grid. `<For>` keys
+  by reference and the tile memo returned fresh objects on every recompute, so
+  each pointer move tore every `<img>` out of the DOM and re-created it. With
+  the tile fade-in — which resets to `opacity-0` on a new element and only
+  clears on `load` — the map visibly strobed while being dragged, worst on
+  touch where panning is the only way to move it. Measured on a 20-tile map,
+  one ~500 ms drag inserted 340 elements and removed 344; the same drag now
+  stays below the tile count. Tiles are cached by `z/x/y` and repositioned
+  through the style binding, which is what the component's own header comment
+  has always described.
+
+### Changed
+
+- The Playwright config honours `A4UI_PREVIEW_PORT` and `A4UI_TEST_CHANNEL`.
+  5173 is Vite's default on every project, so an unrelated dev server would be
+  "reused" and fail the whole suite; and a machine without Google Chrome could
+  not run the logic tests at all.
+
 ## [0.35.1] — 2026-07-21
 
 ### Fixed
