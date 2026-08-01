@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.36.0] — 2026-08-01
+
 ### Added
 
 - **`DataGrid`** — `filterPlaceholder`, `filterLabel` and `rowsSummary` props.
