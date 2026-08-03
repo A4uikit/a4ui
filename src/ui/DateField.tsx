@@ -9,6 +9,7 @@ import type { JSX } from 'solid-js'
 import { Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import { Portal } from 'solid-js/web'
 
+import { createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 import { CalendarCore } from './internal/CalendarCore'
 
@@ -67,8 +68,8 @@ interface DateFieldProps {
 
 /**
  * Compact hand-rolled month-grid date picker (no Kobalte primitive covers this yet).
- * Trigger button opens a portaled popover calendar; closes on outside click, Escape,
- * scroll, or resize. Speaks plain `YYYY-MM-DD` strings, never `Date`/`toISOString`.
+ * Trigger button opens a portaled popover calendar; closes on outside click or Escape,
+ * and follows the trigger when the page scrolls or resizes. Speaks plain `YYYY-MM-DD` strings, never `Date`/`toISOString`.
  *
  * @example
  * ```tsx
@@ -115,17 +116,25 @@ export function DateField(props: DateFieldProps): JSX.Element {
 
   // Wire/tear-down the global listeners strictly around the open state. Scroll/
   // resize close the popover (its fixed position would otherwise drift).
+  // Follow the trigger rather than closing. The panel is `fixed` at the
+  // trigger's rect, so a scroll makes that rect stale — it does not make the
+  // panel unwanted. Closing on any captured scroll made this unusable on a
+  // scrolling page: clicking a trigger below the fold scrolls it into view,
+  // and that scroll arrived right after the panel opened and shut it in the
+  // same gesture. See `createAnchorReflow`.
+  const reflow = createAnchorReflow({ anchor: () => btnRef, place, close })
+
   const toggleListeners = (isOpen: boolean) => {
     if (isOpen) {
       document.addEventListener('mousedown', onDocPointer)
       document.addEventListener('keydown', onKey)
-      window.addEventListener('scroll', close, true)
-      window.addEventListener('resize', close)
+      window.addEventListener('scroll', reflow, true)
+      window.addEventListener('resize', reflow)
     } else {
       document.removeEventListener('mousedown', onDocPointer)
       document.removeEventListener('keydown', onKey)
-      window.removeEventListener('scroll', close, true)
-      window.removeEventListener('resize', close)
+      window.removeEventListener('scroll', reflow, true)
+      window.removeEventListener('resize', reflow)
     }
   }
   // Reactively attach when open flips; always clean up on unmount.

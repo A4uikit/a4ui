@@ -115,6 +115,39 @@ test.describe('component interactions', () => {
     await expect.poll(firstTile, { timeout: 15_000 }).not.toBe(before)
   })
 
+  test('DateField: the calendar survives scrolling, and follows the trigger', async ({ page }) => {
+    // REGRESSION. The panel is portaled and positioned `fixed` at the
+    // trigger's rect, and every anchored popover here closed on any captured
+    // scroll to keep that rect from going stale. On a scrolling page that
+    // makes the component unusable: clicking a trigger below the fold scrolls
+    // it into view, and the scroll arrives right after the panel opens.
+    // Measured in a consumer app as `mousedown` then `scroll:document`, with
+    // the panel open immediately after the click and gone 300 ms later — read
+    // by the user as a date picker that ignored clicks.
+    await page.goto('/#/date-field')
+    const trigger = page.getByRole('button', { name: 'Due date' })
+    await trigger.click()
+
+    const day = page.getByRole('button', { name: '15', exact: true })
+    await expect(day).toBeVisible()
+    const before = await day.boundingBox()
+
+    await page.mouse.wheel(0, 200)
+    await expect.poll(async () => page.evaluate(() => window.scrollY)).toBeGreaterThan(0)
+
+    // Still there — the whole point — and moved with the trigger rather than
+    // staying where it was first drawn. Visibility is asserted separately
+    // because a closed panel has no bounding box, which would satisfy a bare
+    // "the position changed" check.
+    await expect(day).toBeVisible()
+    const after = await day.boundingBox()
+    expect(after?.y).not.toBe(before?.y)
+
+    // And it still closes for the reasons it should.
+    await page.keyboard.press('Escape')
+    await expect(day).toBeHidden()
+  })
+
   test('OtpInput: typing fills consecutive boxes', async ({ page }) => {
     await page.goto('/#/otp-input')
     const boxes = page.getByTestId('demo').locator('input')
