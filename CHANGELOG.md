@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.37.0] — 2026-08-02
+
 ### Added
 
 - **`LocationPicker`** — `zoom` and `onGeolocate` props.
