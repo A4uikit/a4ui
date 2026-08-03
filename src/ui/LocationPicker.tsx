@@ -29,10 +29,30 @@ export interface LocationPickerProps {
   labelPlaceholder?: string
   /** Accessible name for the "use my location" button. @default 'Use my location' */
   geolocateLabel?: string
+  /**
+   * Map zoom. Also acts as a zoom trigger the same way `center` does on
+   * `InteractiveMap` — passing a new value zooms there.
+   *
+   * Exposed because 12 (a whole city) is the wrong scale for confirming a
+   * pin: a consumer that wants to zoom in after a successful geolocation had
+   * no way to do it. @default 12
+   */
+  zoom?: number
+  /**
+   * Fires ONLY when the "use my location" button succeeds, in addition to
+   * `onChange`.
+   *
+   * `onChange` alone cannot tell a map click from a geolocation, so a
+   * consumer had no way to react to one and not the other. Recentring on a
+   * user already looking at their own city moves the map barely at all and
+   * leaves the pin dead centre, which reads as nothing having happened —
+   * this is the hook for saying otherwise.
+   */
+  onGeolocate?: (v: LocationValue) => void
   class?: string
 }
 
-const MAP_ZOOM = 12
+const DEFAULT_MAP_ZOOM = 12
 const MAP_HEIGHT = 240
 
 /**
@@ -69,7 +89,15 @@ export function LocationPicker(props: LocationPickerProps): JSX.Element {
   const useMyLocation = (): void => {
     if (typeof navigator === 'undefined' || !navigator.geolocation) return
     navigator.geolocation.getCurrentPosition(
-      (position) => setCoord({ lat: position.coords.latitude, lng: position.coords.longitude }),
+      (position) => {
+        const next: LocationValue = {
+          ...current(),
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        }
+        emit(next)
+        props.onGeolocate?.(next)
+      },
       (error) => console.error('LocationPicker: geolocation failed', error),
     )
   }
@@ -99,7 +127,7 @@ export function LocationPicker(props: LocationPickerProps): JSX.Element {
       </div>
       <InteractiveMap
         center={{ lat: current().lat, lng: current().lng }}
-        zoom={MAP_ZOOM}
+        zoom={props.zoom ?? DEFAULT_MAP_ZOOM}
         height={MAP_HEIGHT}
         markers={pin()}
         onClick={setCoord}

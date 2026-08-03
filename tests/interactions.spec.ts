@@ -89,6 +89,32 @@ test.describe('component interactions', () => {
     expect(churn.removed).toBeLessThan(tileCount)
   })
 
+  test('LocationPicker: geolocation recentres and reports separately from a click', async ({
+    page,
+    context,
+  }) => {
+    // `onChange` cannot tell a map click from a geolocation, so a consumer had
+    // no way to react to one and not the other — and recentring on someone
+    // already looking at their own city moves the map barely at all, which
+    // reads as nothing having happened. `onGeolocate` is the hook for saying
+    // otherwise; this pins that it fires and that the map actually moves.
+    await context.grantPermissions(['geolocation'])
+    // Far from the demo's default view on purpose: a tile at zoom 12 spans
+    // roughly 10 km, so a nearby coordinate recentres without changing a
+    // single tile URL, and a test written against one proves nothing.
+    await context.setGeolocation({ latitude: 40.4168, longitude: -3.7038 })
+
+    await page.goto('/#/location-picker')
+    const demo = page.getByTestId('demo')
+    const firstTile = () => demo.locator('img').first().getAttribute('src')
+    await demo.locator('img').first().waitFor()
+    const before = await firstTile()
+
+    await demo.getByRole('button', { name: /Use my location/i }).click()
+
+    await expect.poll(firstTile, { timeout: 15_000 }).not.toBe(before)
+  })
+
   test('OtpInput: typing fills consecutive boxes', async ({ page }) => {
     await page.goto('/#/otp-input')
     const boxes = page.getByTestId('demo').locator('input')

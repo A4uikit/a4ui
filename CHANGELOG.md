@@ -6,6 +6,17 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`LocationPicker`** — `zoom` and `onGeolocate` props.
+
+  Zoom was fixed at 12, a whole city, which is the wrong scale for confirming
+  a pin and left a consumer no way to zoom in after a successful geolocation.
+  And `onChange` cannot tell a map click from a geolocation, so there was no
+  way to react to one and not the other — recentring on someone already
+  looking at their own city moves the map barely at all and leaves the pin
+  dead centre, which reads as nothing having happened.
+
 ## [0.36.0] — 2026-08-01
 
 ### Added
