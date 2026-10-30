@@ -6,6 +6,18 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Security
+
+- **`solid-js` peer floor raised to `^1.9.16`.** Earlier 1.9.x releases pull in
+  `seroval` versions with critical deserialization advisories (SSR). Consumers on
+  an older `solid-js` should upgrade.
+
+### Changed
+
+- Dependencies bumped within their current majors (Kobalte 0.13.14, motion 12.43,
+  lucide-solid 1.65, tailwind-merge 3.7, `@tanstack/solid-virtual` 3.13.51) and dev
+  tooling (Vite 6.4.5, Playwright 1.64, Vitest 4.1.12, typescript-eslint 8.72).
+
 ## [0.37.0] — 2026-08-02
 
 ### Added
