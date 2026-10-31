@@ -74,7 +74,8 @@ test.describe('forms: Field and InputGroup', () => {
     const before = await shadow(group)
     await input.focus()
     await expect.poll(() => shadow(group)).not.toBe(before)
-    expect(await shadow(group)).toMatch(/[1-9]\d*px/)
+    // The ring animates in (box-shadow transition): wait for the settled value.
+    await expect.poll(() => shadow(group)).toMatch(/[1-9]\d*px/)
     expect(await shadow(input)).not.toMatch(/[1-9]\d*px/)
   })
 
