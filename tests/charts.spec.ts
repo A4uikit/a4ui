@@ -257,4 +257,32 @@ test.describe('multi-series charts', () => {
     await expect(demo.locator('[data-chart-tooltip]')).toContainText('Exercise')
     await expect(demo.locator('[data-chart-tooltip]')).toContainText('Value:52')
   })
+
+  for (const id of ['area-chart', 'line-chart']) {
+    test(`${id}: each x-axis label sits on its data point`, async ({ page }) => {
+      await page.goto(`/#/${id}`)
+      const demo = page.getByTestId('demo')
+      const labels = demo.locator('[data-x-label]')
+      await expect(labels.first()).toBeVisible()
+      const offsets = await labels.evaluateAll((els) => {
+        const row = els[0].parentElement
+        if (!row) throw new Error('x-label row not found')
+        const r = row.getBoundingClientRect()
+        return els.map((el, i) => {
+          const b = el.getBoundingClientRect()
+          // Anchor: left edge for the first label, right edge for the last, centre otherwise.
+          const at = i === 0 ? b.left : i === els.length - 1 ? b.right : b.left + b.width / 2
+          return { actual: at - r.left, expected: (i / (els.length - 1)) * r.width }
+        })
+      })
+      expect(offsets.length).toBeGreaterThan(2)
+      for (const o of offsets) expect(Math.abs(o.actual - o.expected)).toBeLessThanOrEqual(1)
+      // The plot spans the same width as the label row, so points are at the same fractions.
+      const [svgW, rowW] = await demo.evaluate((d) => [
+        d.querySelector('svg')?.getBoundingClientRect().width ?? -1,
+        d.querySelector('[data-x-label]')?.parentElement?.getBoundingClientRect().width ?? -2,
+      ])
+      expect(Math.abs(svgW - rowW)).toBeLessThanOrEqual(1)
+    })
+  }
 })

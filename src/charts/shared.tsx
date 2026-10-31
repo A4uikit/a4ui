@@ -276,3 +276,29 @@ export function arcPath(
   const i2 = polar(cx, cy, inner, end)
   return `M ${f(o1.x)} ${f(o1.y)} A ${outer} ${outer} 0 ${large} 1 ${f(o2.x)} ${f(o2.y)} L ${f(i2.x)} ${f(i2.y)} A ${inner} ${inner} 0 ${large} 0 ${f(i1.x)} ${f(i1.y)} Z`
 }
+
+/**
+ * X-axis label row aligned with points placed edge to edge (`i / (n - 1)` of the
+ * width). Each label sits on its point; the first and last are anchored to the
+ * edges so they are not clipped.
+ */
+export function ChartXLabels(props: { labels: string[] }): JSX.Element {
+  const frac = (i: number): number => (props.labels.length <= 1 ? 0.5 : i / (props.labels.length - 1))
+  const shift = (i: number): string =>
+    props.labels.length <= 1 ? '-50%' : i === 0 ? '0%' : i === props.labels.length - 1 ? '-100%' : '-50%'
+  return (
+    <div class="relative mt-1 h-4 w-full text-xs text-muted-foreground" aria-hidden="true">
+      <For each={props.labels}>
+        {(label, i) => (
+          <span
+            data-x-label
+            class="absolute top-0 whitespace-nowrap"
+            style={{ left: `${frac(i()) * 100}%`, transform: `translateX(${shift(i())})` }}
+          >
+            {label}
+          </span>
+        )}
+      </For>
+    </div>
+  )
+}

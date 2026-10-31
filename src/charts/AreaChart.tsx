@@ -14,6 +14,7 @@ import {
   seriesColor,
   seriesValue,
   type ChartSeries,
+  ChartXLabels,
 } from './shared'
 
 export interface AreaDatum {
@@ -199,11 +200,7 @@ export function AreaChart(props: AreaChartProps): JSX.Element {
           )}
         </Show>
       </div>
-      <div class="mt-1 flex w-full text-xs text-muted-foreground">
-        <For each={props.data}>
-          {(d) => <span class="min-w-0 flex-1 truncate text-center">{d.label}</span>}
-        </For>
-      </div>
+      <ChartXLabels labels={props.data.map((d) => d.label)} />
     </div>
   )
 }
