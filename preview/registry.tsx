@@ -5,11 +5,13 @@
 import {
   Apple,
   Beef,
+  BookOpen,
   Bell,
   Briefcase,
   Calendar as CalendarIcon,
   ChevronDown,
   Cloud,
+  Compass,
   Croissant,
   Eye,
   EyeOff,
@@ -20,6 +22,8 @@ import {
   Home,
   Image as ImageIcon,
   Inbox,
+  Layers,
+  LifeBuoy,
   Milk,
   Minus,
   Package,
@@ -3105,6 +3109,207 @@ toast.error('Failed to save')`,
   },
 
   // ---- Navigation -----------------------------------------------------------
+  {
+    id: 'menubar',
+    title: 'Menubar',
+    group: 'Navigation',
+    blurb:
+      'Desktop-style application menubar (Kobalte Menubar). Arrow Left/Right moves between menus, hovering switches menus once one is open, items can carry shortcuts, checkbox/radio state and nested submenus. Escape closes and returns focus to the trigger.',
+    demo: () => {
+      const [grid, setGrid] = createSignal(true)
+      const [rulers, setRulers] = createSignal(false)
+      const [zoom, setZoom] = createSignal('100')
+      const [last, setLast] = createSignal('Nothing yet')
+      return (
+        <div class="w-full max-w-xl space-y-3">
+          <UI.Menubar label="Orbit Studio">
+            <UI.MenubarMenu label="File">
+              <UI.MenubarItem shortcut={['Ctrl', 'N']} onSelect={() => setLast('New project')}>
+                New project
+              </UI.MenubarItem>
+              <UI.MenubarItem shortcut={['Ctrl', 'O']} onSelect={() => setLast('Open…')}>
+                Open…
+              </UI.MenubarItem>
+              <UI.MenubarSub label="Export as">
+                <UI.MenubarItem onSelect={() => setLast('Export PNG')}>PNG image</UI.MenubarItem>
+                <UI.MenubarItem onSelect={() => setLast('Export SVG')}>SVG vector</UI.MenubarItem>
+                <UI.MenubarItem onSelect={() => setLast('Export PDF')}>PDF document</UI.MenubarItem>
+              </UI.MenubarSub>
+              <UI.MenubarSeparator />
+              <UI.MenubarItem shortcut={['Ctrl', 'S']} onSelect={() => setLast('Save')}>
+                Save
+              </UI.MenubarItem>
+              <UI.MenubarItem disabled>Share (offline)</UI.MenubarItem>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="Edit">
+              <UI.MenubarItem shortcut={['Ctrl', 'Z']} onSelect={() => setLast('Undo')}>
+                Undo
+              </UI.MenubarItem>
+              <UI.MenubarItem shortcut={['Ctrl', 'Y']} onSelect={() => setLast('Redo')}>
+                Redo
+              </UI.MenubarItem>
+              <UI.MenubarSeparator />
+              <UI.MenubarItem destructive onSelect={() => setLast('Clear canvas')}>
+                Clear canvas
+              </UI.MenubarItem>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="View">
+              <UI.MenubarLabel>Guides</UI.MenubarLabel>
+              <UI.MenubarCheckboxItem checked={grid()} onChange={setGrid}>
+                Show grid
+              </UI.MenubarCheckboxItem>
+              <UI.MenubarCheckboxItem checked={rulers()} onChange={setRulers}>
+                Show rulers
+              </UI.MenubarCheckboxItem>
+              <UI.MenubarSeparator />
+              <UI.MenubarLabel>Zoom</UI.MenubarLabel>
+              <UI.MenubarRadioGroup value={zoom()} onChange={setZoom}>
+                <UI.MenubarRadioItem value="50">50%</UI.MenubarRadioItem>
+                <UI.MenubarRadioItem value="100">100%</UI.MenubarRadioItem>
+                <UI.MenubarRadioItem value="200">200%</UI.MenubarRadioItem>
+              </UI.MenubarRadioGroup>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="Help">
+              <UI.MenubarItem onSelect={() => setLast('Keyboard shortcuts')}>
+                Keyboard shortcuts
+              </UI.MenubarItem>
+              <UI.MenubarItem onSelect={() => setLast('About Orbit Studio')}>
+                About Orbit Studio
+              </UI.MenubarItem>
+            </UI.MenubarMenu>
+          </UI.Menubar>
+          <p class="text-xs text-muted-foreground" data-testid="menubar-status">
+            Grid {grid() ? 'on' : 'off'} · rulers {rulers() ? 'on' : 'off'} · zoom {zoom()}% · last action:{' '}
+            {last()}
+          </p>
+        </div>
+      )
+    },
+    code: `<Menubar label="Orbit Studio">
+  <MenubarMenu label="File">
+    <MenubarItem shortcut={['Ctrl', 'N']} onSelect={newProject}>New project</MenubarItem>
+    <MenubarSub label="Export as">
+      <MenubarItem onSelect={exportPng}>PNG image</MenubarItem>
+    </MenubarSub>
+    <MenubarSeparator />
+    <MenubarItem disabled>Share (offline)</MenubarItem>
+  </MenubarMenu>
+  <MenubarMenu label="View">
+    <MenubarLabel>Guides</MenubarLabel>
+    <MenubarCheckboxItem checked={grid()} onChange={setGrid}>Show grid</MenubarCheckboxItem>
+    <MenubarSeparator />
+    <MenubarRadioGroup value={zoom()} onChange={setZoom}>
+      <MenubarRadioItem value="100">100%</MenubarRadioItem>
+      <MenubarRadioItem value="200">200%</MenubarRadioItem>
+    </MenubarRadioGroup>
+  </MenubarMenu>
+</Menubar>`,
+  },
+  {
+    id: 'navigation-menu',
+    title: 'NavigationMenu',
+    group: 'Navigation',
+    blurb:
+      'Site navigation whose triggers open rich panels (links with icon, title and description, plus a featured card) in one shared viewport that animates its size between panels. Hover or click opens, Escape closes, links are reachable with Tab. Below md it collapses to a hamburger that opens a Drawer with an Accordion of the sections.',
+    demo: () => (
+      <div class="min-h-[22rem] w-full">
+        <UI.NavigationMenu
+          label="Nebula"
+          mobileTitle="Nebula"
+          mobileSections={[
+            {
+              label: 'Products',
+              links: [
+                { title: 'Analytics', href: '#/navigation-menu', description: 'Dashboards that update live' },
+                { title: 'Automations', href: '#/navigation-menu', description: 'Workflows without code' },
+                { title: 'Security', href: '#/navigation-menu', description: 'Audit trails and roles' },
+              ],
+            },
+            {
+              label: 'Resources',
+              links: [
+                { title: 'Guides', href: '#/navigation-menu', description: 'Step-by-step tutorials' },
+                { title: 'Support', href: '#/navigation-menu', description: 'Talk to a human' },
+              ],
+            },
+            { label: 'Pricing', href: '#/navigation-menu' },
+          ]}
+        >
+          <UI.NavigationMenuItem>
+            <UI.NavigationMenuTrigger>Products</UI.NavigationMenuTrigger>
+            <UI.NavigationMenuContent>
+              <div class="grid w-[34rem] grid-cols-[1fr_1.4fr] gap-2 [&>li]:flex [&>li>a]:flex-1">
+                <UI.NavigationMenuPanelLink
+                  featured
+                  href="#/navigation-menu"
+                  title="Nebula Cloud"
+                  description="Everything below, in one workspace."
+                />
+                <div class="space-y-1">
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Layers class="h-4 w-4" />}
+                    title="Analytics"
+                    description="Dashboards that update live"
+                  />
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Zap class="h-4 w-4" />}
+                    title="Automations"
+                    description="Workflows without code"
+                  />
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Compass class="h-4 w-4" />}
+                    title="Security"
+                    description="Audit trails and roles"
+                  />
+                </div>
+              </div>
+            </UI.NavigationMenuContent>
+          </UI.NavigationMenuItem>
+          <UI.NavigationMenuItem>
+            <UI.NavigationMenuTrigger>Resources</UI.NavigationMenuTrigger>
+            <UI.NavigationMenuContent>
+              <div class="w-56 space-y-1">
+                <UI.NavigationMenuPanelLink
+                  href="#/navigation-menu"
+                  icon={<BookOpen class="h-4 w-4" />}
+                  title="Guides"
+                  description="Step-by-step tutorials"
+                />
+                <UI.NavigationMenuPanelLink
+                  href="#/navigation-menu"
+                  icon={<LifeBuoy class="h-4 w-4" />}
+                  title="Support"
+                  description="Talk to a human"
+                />
+              </div>
+            </UI.NavigationMenuContent>
+          </UI.NavigationMenuItem>
+          <UI.NavigationMenuLink href="#/navigation-menu">Pricing</UI.NavigationMenuLink>
+        </UI.NavigationMenu>
+      </div>
+    ),
+    code: `<NavigationMenu
+  label="Nebula"
+  mobileSections={[
+    { label: 'Products', links: [{ title: 'Analytics', href: '/analytics', description: 'Live dashboards' }] },
+    { label: 'Pricing', href: '/pricing' },
+  ]}
+>
+  <NavigationMenuItem>
+    <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+    <NavigationMenuContent>
+      <div class="grid w-[34rem] grid-cols-[1fr_1.4fr] gap-2">
+        <NavigationMenuPanelLink featured href="/cloud" title="Nebula Cloud" description="One workspace." />
+        <NavigationMenuPanelLink href="/analytics" icon={<Layers />} title="Analytics" description="Live dashboards" />
+      </div>
+    </NavigationMenuContent>
+  </NavigationMenuItem>
+  <NavigationMenuLink href="/pricing">Pricing</NavigationMenuLink>
+</NavigationMenu>`,
+  },
   {
     id: 'tabs',
     title: 'Tabs',

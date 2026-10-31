@@ -315,3 +315,87 @@ body {
     transform: none;
   }
 }
+
+/* NavigationMenu — Kobalte keys viewport/panel presence off animation names, so
+   these MUST be @keyframes. Panels slide in from the side of the previously
+   open one (data-motion) and are hidden once they have slid out. */
+@keyframes navmenu-viewport-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-viewport-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+@keyframes navmenu-from-start {
+  from {
+    opacity: 0;
+    transform: translateX(-2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-from-end {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-to-start {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-2.5rem);
+  }
+}
+@keyframes navmenu-to-end {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(2.5rem);
+  }
+}
+.navmenu-viewport[data-expanded] {
+  animation: navmenu-viewport-in 0.2s ease-out;
+}
+.navmenu-viewport[data-closed] {
+  animation: navmenu-viewport-out 0.15s ease-in;
+}
+.navmenu-content[data-motion='from-start'] {
+  animation: navmenu-from-start 0.25s ease-out;
+}
+.navmenu-content[data-motion='from-end'] {
+  animation: navmenu-from-end 0.25s ease-out;
+}
+.navmenu-content[data-motion='to-start'] {
+  animation: navmenu-to-start 0.25s ease-in forwards;
+}
+.navmenu-content[data-motion='to-end'] {
+  animation: navmenu-to-end 0.25s ease-in forwards;
+}

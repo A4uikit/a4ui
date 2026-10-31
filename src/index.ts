@@ -140,6 +140,37 @@ export { Toggle } from './ui/Toggle'
 export { ToggleGroup, type ToggleGroupOption } from './ui/ToggleGroup'
 export { SegmentedControl, type SegmentedOption } from './ui/SegmentedControl'
 export { Breadcrumb, type BreadcrumbItem } from './ui/Breadcrumb'
+export {
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarSub,
+  type MenubarCheckboxItemProps,
+  type MenubarItemProps,
+  type MenubarMenuProps,
+  type MenubarProps,
+  type MenubarRadioGroupProps,
+  type MenubarRadioItemProps,
+  type MenubarSubProps,
+} from './ui/Menubar'
+export {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuPanelLink,
+  NavigationMenuTrigger,
+  type NavigationMenuContentProps,
+  type NavigationMenuLinkProps,
+  type NavigationMenuMobileSection,
+  type NavigationMenuPanelLinkProps,
+  type NavigationMenuProps,
+} from './ui/NavigationMenu'
 export { AlertDialog } from './ui/AlertDialog'
 export { ContextMenu, type ContextMenuItem } from './ui/ContextMenu'
 export { Combobox } from './ui/Combobox'
