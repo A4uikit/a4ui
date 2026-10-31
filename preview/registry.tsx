@@ -13,6 +13,7 @@ import {
   Croissant,
   Eye,
   EyeOff,
+  FileText,
   Folder,
   Heading,
   Heart,
@@ -39,8 +40,10 @@ import {
   Copy,
   Moon,
   Sun,
+  UserPlus,
   Volume2,
   VolumeX,
+  X,
 } from 'lucide-solid'
 import { createSignal, For, onCleanup, onMount, Show, type JSX } from 'solid-js'
 
@@ -5326,10 +5329,65 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
         </UI.Message>
       </UI.ChatThread>
     ),
-    code: `<ChatThread maxWidth={520}>
-  <Message role="user">…</Message>
-  <Message role="assistant">…</Message>
-</ChatThread>`,
+    code: `<ChatThread maxWidth={520} apiRef={(a) => (api = a)}>
+  <Message id="m1" role="user">…</Message>
+  <Message id="m2" role="assistant">…</Message>
+</ChatThread>
+
+// Follows new output only while you are at the bottom; otherwise a
+// "Jump to latest" button appears. Prepending older messages keeps the view.
+api.scrollToMessage('m1')
+api.scrollToEnd()`,
+    variants: [
+      {
+        label: 'Scroll behaviour: prepend, append, jump to a message',
+        demo: () => {
+          const mk = (n: number) => ({ id: `m${n}`, text: `Message number ${n}` })
+          const [items, setItems] = createSignal(Array.from({ length: 12 }, (_, i) => mk(i + 10)))
+          let api: UI.ChatThreadApi | undefined
+          return (
+            <div class="flex w-full max-w-md flex-col gap-2">
+              <div class="flex flex-wrap gap-2">
+                <UI.Button
+                  variant="outline"
+                  onClick={() => {
+                    const first = Number(items()[0]!.id.slice(1))
+                    setItems([...Array.from({ length: 5 }, (_, i) => mk(first - 5 + i)), ...items()])
+                  }}
+                >
+                  Load older
+                </UI.Button>
+                <UI.Button
+                  variant="outline"
+                  onClick={() => {
+                    const last = Number(items()[items().length - 1]!.id.slice(1))
+                    setItems([...items(), mk(last + 1)])
+                  }}
+                >
+                  Add message
+                </UI.Button>
+                <UI.Button variant="outline" onClick={() => api?.scrollToMessage('m10')}>
+                  Go to first
+                </UI.Button>
+              </div>
+              <UI.ChatThread
+                apiRef={(a) => (api = a)}
+                maxWidth={440}
+                class="h-64 rounded-xl border border-border p-3"
+              >
+                <For each={items()}>
+                  {(m, i) => (
+                    <UI.Message id={m.id} role={i() % 2 ? 'assistant' : 'user'}>
+                      {m.text}
+                    </UI.Message>
+                  )}
+                </For>
+              </UI.ChatThread>
+            </div>
+          )
+        },
+      },
+    ],
   },
   {
     id: 'message',
@@ -5349,7 +5407,84 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     ),
     code: `<Message role="user" author="Alex">…</Message>
 <Message role="assistant" author="Nova">…</Message>
-<Message role="system">Nova joined</Message>`,
+<Message role="system">Nova joined</Message>
+
+// Bubble styles, sides, reactions, attachments
+<Message role="user" variant="tinted" align="end" reactions={<Badge>+1</Badge>}>…</Message>
+
+// One sender, several consecutive messages
+<MessageGroup author="Nova" avatar={<Avatar name="Nova" size="sm" />} variant="secondary">
+  <Message role="assistant">First</Message>
+  <Message role="assistant">Second</Message>
+</MessageGroup>`,
+    variants: [
+      {
+        label: 'Bubble variants',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-2">
+            <For each={['default', 'secondary', 'muted', 'tinted', 'outline', 'ghost', 'destructive']}>
+              {(v) => (
+                <UI.Message role="assistant" variant={v as UI.MessageVariant} align="start">
+                  {v}
+                </UI.Message>
+              )}
+            </For>
+          </div>
+        ),
+      },
+      {
+        label: 'Alignment, reactions and attachments',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-3">
+            <UI.Message
+              role="user"
+              variant="tinted"
+              align="end"
+              reactions={
+                <>
+                  <UI.Badge tone="neutral">+1 2</UI.Badge>
+                  <UI.Badge tone="neutral">Done 1</UI.Badge>
+                </>
+              }
+              attachments={
+                <UI.Attachment size="sm" state="done">
+                  <UI.AttachmentMedia>
+                    <FileText />
+                  </UI.AttachmentMedia>
+                  <UI.AttachmentContent>
+                    <UI.AttachmentTitle>brief.pdf</UI.AttachmentTitle>
+                    <UI.AttachmentDescription>1.2 MB</UI.AttachmentDescription>
+                  </UI.AttachmentContent>
+                </UI.Attachment>
+              }
+            >
+              Here is the brief for the Orbit launch.
+            </UI.Message>
+            <UI.Message role="assistant" variant="secondary" align="start">
+              Got it, reading it now.
+            </UI.Message>
+          </div>
+        ),
+      },
+      {
+        label: 'MessageGroup',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-3">
+            <UI.MessageGroup
+              author="Nova"
+              timestamp="2:42 PM"
+              avatar={<UI.Avatar name="Nova" size="sm" />}
+              variant="muted"
+              align="start"
+            >
+              <UI.Message role="assistant">Aurora's Q3 churn was 3.2%.</UI.Message>
+              <UI.Message role="assistant">That is down from 4.1% in Q2.</UI.Message>
+              <UI.Message role="assistant">Want the breakdown by plan?</UI.Message>
+            </UI.MessageGroup>
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'streaming-text',
@@ -5403,6 +5538,118 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
 <SourceList sources={[{ title: 'Design spec', href: '/spec' }]} />`,
   },
   {
+    id: 'chat-marker',
+    title: 'ChatMarker',
+    group: 'Data',
+    blurb:
+      'Inline system note inside a conversation: plain, bordered pill, or a labelled separator with lines. Optional decorative icon.',
+    controls: {
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['default', 'border', 'separator'],
+        default: 'separator',
+      },
+    },
+    demo: (c) => (
+      <div class="flex w-full max-w-md flex-col gap-2">
+        <UI.ChatMarker variant={c.variant as UI.ChatMarkerVariant}>Yesterday</UI.ChatMarker>
+        <UI.ChatMarker variant={c.variant as UI.ChatMarkerVariant} icon={<UserPlus />}>
+          Nova joined the conversation
+        </UI.ChatMarker>
+      </div>
+    ),
+    code: (c) => `<ChatMarker variant="${c.variant}">Yesterday</ChatMarker>
+<ChatMarker variant="${c.variant}" icon={<UserPlus />}>Nova joined</ChatMarker>`,
+  },
+  {
+    id: 'attachment',
+    title: 'Attachment',
+    group: 'Data',
+    blurb:
+      'File or image chip built on Item: media, title, description and icon actions, with idle / uploading / processing / error / done states, a progress bar and a scroll-snap AttachmentGroup.',
+    controls: {
+      state: {
+        type: 'select',
+        label: 'state',
+        options: ['idle', 'uploading', 'processing', 'error', 'done'],
+        default: 'uploading',
+      },
+      size: { type: 'select', label: 'size', options: ['default', 'sm', 'xs'], default: 'default' },
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['horizontal', 'vertical'],
+        default: 'horizontal',
+      },
+    },
+    demo: (c) => (
+      <div class="w-full max-w-sm">
+        <UI.Attachment
+          state={c.state as UI.AttachmentState}
+          size={c.size as UI.ItemSize}
+          orientation={c.orientation as UI.AttachmentOrientation}
+          progress={42}
+        >
+          <UI.AttachmentMedia>
+            <FileText />
+          </UI.AttachmentMedia>
+          <UI.AttachmentContent>
+            <UI.AttachmentTitle>roadmap-q4.pdf</UI.AttachmentTitle>
+            <UI.AttachmentDescription>
+              {c.state === 'error' ? 'Upload failed — file too large' : '2.4 MB'}
+            </UI.AttachmentDescription>
+          </UI.AttachmentContent>
+          <UI.AttachmentActions>
+            <UI.AttachmentAction label="Remove roadmap-q4.pdf">
+              <X />
+            </UI.AttachmentAction>
+          </UI.AttachmentActions>
+        </UI.Attachment>
+      </div>
+    ),
+    code: (c) => `<Attachment state="${c.state}" progress={42}>
+  <AttachmentMedia><FileText /></AttachmentMedia>
+  <AttachmentContent>
+    <AttachmentTitle>roadmap-q4.pdf</AttachmentTitle>
+    <AttachmentDescription>2.4 MB</AttachmentDescription>
+  </AttachmentContent>
+  <AttachmentActions>
+    <AttachmentAction label="Remove"><X /></AttachmentAction>
+  </AttachmentActions>
+</Attachment>
+
+// Several, in a horizontal scroll-snap row
+<AttachmentGroup>…</AttachmentGroup>
+
+// In the composer
+<PromptComposer attachmentItems={<AttachmentGroup>…</AttachmentGroup>} … />`,
+    variants: [
+      {
+        label: 'AttachmentGroup',
+        demo: () => (
+          <div class="w-full max-w-sm">
+            <UI.AttachmentGroup>
+              <For each={['uploading', 'done', 'error', 'processing', 'idle'] as UI.AttachmentState[]}>
+                {(st, i) => (
+                  <UI.Attachment state={st} progress={30 + i() * 10} size="sm">
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>{`file-${i() + 1}.pdf`}</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>{st}</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                )}
+              </For>
+            </UI.AttachmentGroup>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
     id: 'prompt-composer',
     title: 'PromptComposer',
     group: 'Forms',
@@ -5426,7 +5673,48 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
       )
     },
     code: `<PromptComposer value={value()} onInput={setValue} onSubmit={send}
-  attachments={['spec.pdf']} onAttach={pick} />`,
+  attachments={['spec.pdf']} onAttach={pick} />
+
+// Rich attachments with upload progress
+<PromptComposer attachmentItems={<AttachmentGroup>…</AttachmentGroup>} … />`,
+    variants: [
+      {
+        label: 'Attachment items',
+        demo: () => {
+          const [value, setValue] = createSignal('')
+          return (
+            <UI.PromptComposer
+              value={value()}
+              onInput={setValue}
+              onSubmit={() => setValue('')}
+              class="max-w-lg"
+              attachmentItems={
+                <UI.AttachmentGroup>
+                  <UI.Attachment size="sm" state="uploading" progress={64}>
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>spec.pdf</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>64%</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                  <UI.Attachment size="sm" state="error">
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>huge.zip</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>Too large</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                </UI.AttachmentGroup>
+              }
+            />
+          )
+        },
+      },
+    ],
   },
   {
     id: 'artifact-panel',

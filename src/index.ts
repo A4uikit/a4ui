@@ -224,7 +224,31 @@ export { Clock, type ClockProps } from './ui/Clock'
 
 // Conversation / AI, transitions, and depth surfaces (roadmap phase 1).
 export { ChatThread, type ChatThreadProps } from './ui/ChatThread'
-export { Message, type MessageProps, type ChatRole } from './ui/Message'
+export {
+  Message,
+  MessageGroup,
+  type MessageProps,
+  type MessageGroupProps,
+  type MessageVariant,
+  type MessageAlign,
+  type ChatRole,
+} from './ui/Message'
+export { type ChatThreadApi } from './ui/ChatThread'
+export { ChatMarker, type ChatMarkerProps, type ChatMarkerVariant } from './ui/ChatMarker'
+export {
+  Attachment,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
+  AttachmentGroup,
+  type AttachmentProps,
+  type AttachmentActionProps,
+  type AttachmentState,
+  type AttachmentOrientation,
+} from './ui/Attachment'
 export { StreamingText, type StreamingTextProps } from './ui/StreamingText'
 export { Citation, type CitationProps, SourceList, type SourceListProps } from './ui/Citation'
 export { PromptComposer, type PromptComposerProps } from './ui/PromptComposer'
