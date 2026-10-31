@@ -165,21 +165,30 @@ export function Field(props: FieldProps): JSX.Element {
     registerError: (id) => register(setErrIds, id),
   }
 
+  // The control is found in the DOM (any input-like element), so it may appear
+  // after mount (e.g. inside a <Show>). A MutationObserver re-runs the wiring.
+  const [control, setControl] = createSignal<HTMLElement | null>(null)
   const findControl = (): HTMLElement | null => root.querySelector<HTMLElement>(CONTROL_SELECTOR)
+  const syncControl = (): void => {
+    const el = findControl()
+    if (el && !el.id) el.id = controlId()
+    if (el) setControlId(el.id)
+    setControl(el)
+  }
 
   onMount(() => {
-    const el = findControl()
-    if (!el) return
-    if (el.id) setControlId(el.id)
-    else el.id = controlId()
+    syncControl()
+    const observer = new MutationObserver(syncControl)
+    observer.observe(root, { childList: true, subtree: true })
+    onCleanup(() => observer.disconnect())
   })
 
-  // Re-apply ARIA wiring whenever descriptions/errors/invalid change.
+  // Re-apply ARIA wiring whenever the control, descriptions, errors or invalid change.
   createEffect(() => {
     const desc = descIds()
     const err = errIds()
     const invalid = !!local.invalid
-    const el = findControl()
+    const el = control()
     if (!el) return
     const ids = [...desc, ...err]
     if (ids.length) el.setAttribute('aria-describedby', ids.join(' '))
