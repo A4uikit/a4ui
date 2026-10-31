@@ -82,6 +82,13 @@ changes, `patch` for fixes).
 
 ### Changed
 
+- **Major tooling upgrades:** Vite 8 (Rolldown; `rollupOptions` → `rolldownOptions`),
+  Vitest 5, vite-plugin-dts 5, TypeScript 6.0, ESLint 10 (`no-unassigned-vars` off
+  for Solid's `let ref!` pattern), jsdom 30, lint-staged 17. TypeScript 7 is not
+  adopted yet: typescript-eslint supports `<6.1` and the d.ts build needs the TS 6
+  API.
+- **`motion` 14** (runtime dependency). Only internal APIs were removed upstream;
+  the animated components were checked visually.
 - Dependencies bumped within their current majors (Kobalte 0.13.14, motion 12.43,
   lucide-solid 1.65, tailwind-merge 3.7, `@tanstack/solid-virtual` 3.13.51) and dev
   tooling (Vite 6.4.5, Playwright 1.64, Vitest 4.1.12, typescript-eslint 8.72).
