@@ -39,7 +39,7 @@ export default defineConfig({
       formats: ['es'],
       fileName: (_format, name) => `${name}.js`,
     },
-    rollupOptions: {
+    rolldownOptions: {
       external: [
         'solid-js',
         'solid-js/web',
