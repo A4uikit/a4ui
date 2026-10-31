@@ -2327,6 +2327,75 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `<FileUpload files={files()} onAdd={upload} onRemove={remove} onRetry={retry} />`,
   },
   {
+    id: 'area-chart',
+    title: 'AreaChart',
+    group: 'Charts',
+    blurb:
+      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation.',
+    controls: {
+      stacked: { type: 'boolean', label: 'stacked', default: true },
+    },
+    demo: (c) => (
+      <div class="w-full max-w-lg" data-testid="area-demo">
+        <Charts.AreaChart
+          mode={c.stacked ? 'stacked' : 'overlap'}
+          series={[
+            { key: 'orbit', label: 'Orbit' },
+            { key: 'nebula', label: 'Nebula', color: 'accent' },
+            { key: 'pulsar', label: 'Pulsar', color: 'chart-3' },
+          ]}
+          data={[
+            { label: 'Jan', values: { orbit: 12, nebula: 8, pulsar: 4 } },
+            { label: 'Feb', values: { orbit: 16, nebula: 10, pulsar: 6 } },
+            { label: 'Mar', values: { orbit: 14, nebula: 13, pulsar: 9 } },
+            { label: 'Apr', values: { orbit: 21, nebula: 12, pulsar: 8 } },
+            { label: 'May', values: { orbit: 24, nebula: 16, pulsar: 11 } },
+            { label: 'Jun', values: { orbit: 28, nebula: 15, pulsar: 14 } },
+          ]}
+        />
+      </div>
+    ),
+    code: (c) => `<AreaChart
+  mode="${c.stacked ? 'stacked' : 'overlap'}"
+  series={[{ key: 'orbit', label: 'Orbit' }, { key: 'nebula', label: 'Nebula', color: 'accent' }]}
+  data={[{ label: 'Jan', values: { orbit: 12, nebula: 8 } }, …]}
+/>`,
+  },
+  {
+    id: 'pie-chart',
+    title: 'PieChart',
+    group: 'Charts',
+    blurb: 'Pie with proportional wedges, tooltip, arrow-key navigation and a toggleable legend.',
+    demo: () => (
+      <Charts.PieChart
+        data={[
+          { label: 'Direct', value: 42 },
+          { label: 'Social', value: 28 },
+          { label: 'Referral', value: 18 },
+          { label: 'Other', value: 12 },
+        ]}
+      />
+    ),
+    code: `<PieChart data={[{ label: 'Direct', value: 42 }, { label: 'Social', value: 28, color: 'accent' }, …]} />`,
+  },
+  {
+    id: 'radial-bar-chart',
+    title: 'RadialBarChart',
+    group: 'Charts',
+    blurb: 'Concentric progress rings, one per datum, filled to value / max.',
+    demo: () => (
+      <Charts.RadialBarChart
+        max={100}
+        data={[
+          { label: 'Move', value: 78 },
+          { label: 'Exercise', value: 52 },
+          { label: 'Stand', value: 34 },
+        ]}
+      />
+    ),
+    code: `<RadialBarChart max={100} data={[{ label: 'Move', value: 78 }, { label: 'Stand', value: 34, color: 'accent' }]} />`,
+  },
+  {
     id: 'sparkline',
     title: 'Sparkline',
     group: 'Charts',
@@ -2364,7 +2433,58 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         />
       </div>
     ),
-    code: `<BarChart data={[{ label: 'Mon', value: 12 }, …]} />`,
+    code: `<BarChart data={[{ label: 'Mon', value: 12 }, …]} />
+
+// Multi-series: mode="stacked" | "grouped"
+<BarChart
+  mode="stacked"
+  series={[{ key: 'web', label: 'Web' }, { key: 'app', label: 'App', color: 'accent' }]}
+  data={[{ label: 'Mon', values: { web: 12, app: 5 } }, …]}
+/>`,
+    variants: [
+      {
+        label: 'Stacked',
+        demo: () => (
+          <div class="w-full max-w-md" data-testid="bar-stacked">
+            <Charts.BarChart
+              mode="stacked"
+              series={[
+                { key: 'web', label: 'Web' },
+                { key: 'app', label: 'App', color: 'accent' },
+              ]}
+              data={[
+                { label: 'Mon', values: { web: 12, app: 5 } },
+                { label: 'Tue', values: { web: 19, app: 8 } },
+                { label: 'Wed', values: { web: 8, app: 11 } },
+                { label: 'Thu', values: { web: 22, app: 9 } },
+                { label: 'Fri', values: { web: 16, app: 14 } },
+              ]}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Grouped',
+        demo: () => (
+          <div class="w-full max-w-md" data-testid="bar-grouped">
+            <Charts.BarChart
+              mode="grouped"
+              series={[
+                { key: 'web', label: 'Web' },
+                { key: 'app', label: 'App', color: 'accent' },
+              ]}
+              data={[
+                { label: 'Mon', values: { web: 12, app: 5 } },
+                { label: 'Tue', values: { web: 19, app: 8 } },
+                { label: 'Wed', values: { web: 8, app: 11 } },
+                { label: 'Thu', values: { web: 22, app: 9 } },
+                { label: 'Fri', values: { web: 16, app: 14 } },
+              ]}
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'donut-chart',

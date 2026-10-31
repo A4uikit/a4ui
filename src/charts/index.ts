@@ -9,3 +9,17 @@ export { RadarChart, type RadarSeries, type RadarChartProps } from './RadarChart
 export { BarList, type BarListDatum, type BarListProps } from './BarList'
 export { StatusTracker, type StatusSegment, type StatusTrackerProps } from './StatusTracker'
 export { CategoryBar, type CategoryBarTone, type CategoryBarProps } from './CategoryBar'
+export { AreaChart, type AreaDatum, type AreaChartProps } from './AreaChart'
+export { PieChart, type PieDatum, type PieChartProps } from './PieChart'
+export { RadialBarChart, type RadialBarDatum, type RadialBarChartProps } from './RadialBarChart'
+export {
+  ChartTooltip,
+  ChartLegend,
+  type ChartSeries,
+  type ChartColor,
+  type ChartTooltipProps,
+  type ChartTooltipRow,
+  type ChartLegendProps,
+  type ChartLegendItem,
+} from './shared'
+export type { BarChartMode } from './BarChart'

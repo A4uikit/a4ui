@@ -7,6 +7,7 @@
 import { For, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { sliceAngles } from './shared'
 
 export type DonutTone = 'primary' | 'accent' | 'destructive' | 'emit' | 'received' | 'net'
 
@@ -71,17 +72,13 @@ export function DonutChart(props: DonutChartProps): JSX.Element {
   const circumference = () => 2 * Math.PI * radius()
   const total = () => props.data.reduce((sum, d) => sum + d.value, 0)
 
-  const arcs = () => {
-    const grandTotal = total() || 1
-    let cumulative = 0
-    return props.data.map((segment, index) => {
-      const fraction = segment.value / grandTotal
-      const arcLength = fraction * circumference()
-      const offset = cumulative
-      cumulative += arcLength
-      return { segment, index, arcLength, offset }
-    })
-  }
+  const arcs = () =>
+    sliceAngles(props.data.map((d) => d.value)).map((slice) => ({
+      segment: props.data[slice.index],
+      index: slice.index,
+      arcLength: (slice.angle / 360) * circumference(),
+      offset: (slice.start / 360) * circumference(),
+    }))
 
   return (
     <div
