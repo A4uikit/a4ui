@@ -3430,8 +3430,71 @@ toast.error('Failed to save')`,
   <YourPage />   {/* glass cards now read over the tinted backdrop */}
 </div>
 
-<Aurora intensity={0.6} animated />   // stronger + slow drift`,
+<Aurora intensity={0.6} animated />   // stronger + slow drift
+
+// custom palette: CSS colors or theme tokens ('--primary'); glow is configurable too
+<Aurora colors={['#ff6a3d', '#ffb199', '--accent']} glowColor="#ff6a3d" glowOpacity={0.15} />`,
     variants: [
+      {
+        label: 'Custom palette (colors, glowColor)',
+        demo: () => {
+          const [palette, setPalette] = createSignal('sunset')
+          const PALETTES: Record<string, string[] | undefined> = {
+            tokens: undefined,
+            sunset: ['#ff6a3d', '#ffb199', '#c026d3'],
+            ocean: ['#0ea5e9', '#14b8a6', '#6366f1'],
+          }
+          return (
+            <div class="flex w-full flex-col gap-3">
+              <div class="flex gap-2" role="group" aria-label="Aurora palette">
+                <For each={Object.keys(PALETTES)}>
+                  {(name) => (
+                    <UI.Button
+                      variant={palette() === name ? 'primary' : 'outline'}
+                      aria-pressed={palette() === name}
+                      onClick={() => setPalette(name)}
+                    >
+                      {name}
+                    </UI.Button>
+                  )}
+                </For>
+              </div>
+              {/* A transformed box re-anchors the fixed Aurora to the demo area. */}
+              <div
+                data-testid="aurora-palette-demo"
+                class="relative h-40 w-full overflow-hidden rounded-xl border border-border [transform:translateZ(0)]"
+              >
+                <UI.Aurora
+                  pointerGlow={false}
+                  colors={PALETTES[palette()]}
+                  glowColor={palette() === 'sunset' ? '#ff6a3d' : undefined}
+                  glowOpacity={0.2}
+                  intensity={0.6}
+                />
+                <div class="relative grid h-full place-items-center">
+                  <UI.Card glass class="px-4 py-2 text-sm">
+                    {palette()}
+                  </UI.Card>
+                </div>
+              </div>
+            </div>
+          )
+        },
+      },
+      {
+        label: 'pointerGlow (transform-positioned)',
+        demo: () => (
+          <div
+            data-testid="aurora-glow-demo"
+            class="relative h-32 w-full overflow-hidden rounded-xl border border-border [transform:translateZ(0)]"
+          >
+            <UI.Aurora />
+            <p class="relative grid h-full place-items-center text-sm text-muted-foreground">
+              Move the pointer: the glow follows via transform.
+            </p>
+          </div>
+        ),
+      },
       {
         label: 'variant="blobs" (default)',
         demo: () => (
