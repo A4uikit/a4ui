@@ -8,11 +8,29 @@
 export function bindPointerFx(root: HTMLElement): () => void {
   const glow = root.querySelector<HTMLElement>('#cursorGlow')
 
+  // The glow is moved with `transform` only (compositor-friendly: no layout, and
+  // no repaint of backdrop-filter surfaces in front of it). It is pinned at 0,0
+  // once; pointermoves are coalesced to one write per animation frame.
+  let frame = 0
+  let gx = 0
+  let gy = 0
+  if (glow) {
+    glow.style.left = '0px'
+    glow.style.top = '0px'
+    glow.style.willChange = 'transform'
+  }
+  const paintGlow = (): void => {
+    frame = 0
+    if (!glow) return
+    glow.style.transform = `translate3d(${gx}px, ${gy}px, 0) translate(-50%, -50%)`
+  }
+
   const onMove = (e: PointerEvent): void => {
     if (glow) {
-      glow.style.opacity = '1'
-      glow.style.left = `${e.clientX}px`
-      glow.style.top = `${e.clientY}px`
+      gx = e.clientX
+      gy = e.clientY
+      if (glow.style.opacity !== '1') glow.style.opacity = '1'
+      if (!frame) frame = requestAnimationFrame(paintGlow)
     }
     const el = e.target as Element | null
     const magnetic = el?.closest?.('.magnetic') as HTMLElement | null
@@ -42,6 +60,7 @@ export function bindPointerFx(root: HTMLElement): () => void {
   document.addEventListener('pointerout', onOut as EventListener)
 
   return () => {
+    if (frame) cancelAnimationFrame(frame)
     document.removeEventListener('pointermove', onMove as EventListener)
     window.removeEventListener('pointerleave', onLeave)
     document.removeEventListener('pointerout', onOut as EventListener)
