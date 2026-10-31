@@ -188,7 +188,8 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
               left: `${pos().left}px`,
               width: `${pos().width}px`,
             }}
-            class="z-50 min-w-56 rounded-lg border border-border bg-card p-1 text-card-foreground shadow-lg"
+            data-a4-floating
+            class="pointer-events-auto z-50 min-w-56 rounded-lg border border-border bg-card p-1 text-card-foreground shadow-lg"
           >
             <Show when={props.searchable ?? true}>
               <input
