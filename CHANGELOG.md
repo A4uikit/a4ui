@@ -18,6 +18,61 @@ changes, `patch` for fixes).
   `orientation` `vertical` (default) / `horizontal` / `both`.
 - **`Drawer`** — `side` prop: `right` (default), `left`, `top`, `bottom`. Top and
   bottom render as full-width sheets capped at 85vh.
+- **`Sidebar`** — composable application sidebar: `SidebarProvider` + `useSidebar`,
+  Ctrl/Cmd+B toggles; `side` left/right, `variant` sidebar/floating/inset,
+  `collapsible` offcanvas/icon/none. Parts: Header, Footer, Content, Group (+ Label,
+  Action, Content), Menu, MenuItem, MenuButton (`active`, `href`, tooltip in the icon
+  rail), MenuAction, MenuBadge, MenuSub, MenuSkeleton, Trigger, Rail, Inset. Below
+  `md` it renders in a `Drawer`. (#99)
+- **`Field`** family — `FieldSet`, `FieldLegend`, `FieldGroup`, `Field`,
+  `FieldContent`, `FieldLabel`, `FieldTitle`, `FieldDescription`, `FieldSeparator`,
+  `FieldError`. Label, description and error ids are wired to the control
+  automatically (`for`, `aria-describedby`, `aria-errormessage`, `aria-invalid`),
+  including controls that mount later; vertical/horizontal/responsive orientation;
+  `FieldError` takes an `errors` array. (#100)
+- **`InputGroup`** family — `InputGroup`, `InputGroupAddon` (inline-start/end,
+  block-start/end), `InputGroupText`, `InputGroupButton`, `InputGroupInput`,
+  `InputGroupTextarea`: one border and focus ring around an input with addons;
+  clicking an addon focuses the input. (#101)
+- **`ButtonGroup`** (+ `ButtonGroupText`, `ButtonGroupSeparator`), **`AspectRatio`**,
+  **`Label`**, **`NativeSelect`** and **`Prose`** (typography for raw HTML/markdown,
+  no plugin). (#102)
+- **Chat** — `Attachment` family (idle/uploading/processing/error/done, progress bar,
+  `AttachmentGroup` row), `ChatMarker` (default/border/separator), `MessageGroup`;
+  `Message` gains `variant`, `align`, `reactions`, `attachments`, `id`;
+  `PromptComposer` gains an `attachmentItems` slot; `ChatThread` keeps its position
+  when older messages are prepended, exposes `apiRef` (`scrollToMessage`,
+  `scrollToEnd`), shows a "Jump to latest" button and follows new output only while
+  pinned to the bottom. (#103)
+- **`Questionnaire`** — data-driven multi-step survey (single, multiple, free text),
+  progress, required validation, Previous/Skip/Next/Submit, digit-key shortcuts,
+  focus moved to each step's heading. (#104)
+- **Charts** — `BarChart` `mode="stacked" | "grouped"` with multi-series data;
+  new `AreaChart`, `PieChart`, `RadialBarChart`; shared `ChartTooltip` and
+  `ChartLegend` (toggleable series); keyboard navigation and an aria-label summary
+  on the new charts. (#105)
+- **`Menubar`** (+ Menu, Item, CheckboxItem, RadioGroup, RadioItem, Sub, Separator,
+  Label) with keycap shortcuts and submenus. (#106)
+- **`NavigationMenu`** (+ Item, Trigger, Content, Link, PanelLink): rich panels in a
+  size-animating viewport; below `md` a hamburger opens a left `Drawer` with the
+  sections (`mobileSections`). (#107)
+- **`Aurora`** — `colors`, `glowColor`, `glowOpacity` props to set the blob palette
+  and the pointer glow without overriding internal selectors. (#109)
+- **`Modal`** — `size` prop (`sm`/`md`/`lg`/`xl`/`full`); the center variant's body
+  scrolls under a pinned header. (#91)
+- **`@a4ui/core/preset`** ships type declarations; `tailwindcss ^3.4.0` is declared
+  as an optional peer dependency. (#80)
+
+### Fixed
+
+- **Pointer glow** (`Aurora` and the other sceneries) moves with `transform`, one
+  write per animation frame, instead of repainting glass surfaces on every pointer
+  move. (#84)
+- **`MultiSelect`, `DateField`, `TimeField`, `DateRangePicker` inside a `Modal`** —
+  their portaled panels received no clicks (the dialog sets `pointer-events: none`
+  outside itself) and interacting with them dismissed the dialog. (#92)
+- **`ChatThread`** — its scroller is keyboard-focusable (axe
+  `scrollable-region-focusable`).
 
 ### Security
 
