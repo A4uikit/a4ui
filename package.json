@@ -126,7 +126,7 @@
     "@tanstack/solid-virtual": "^3.13.51",
     "clsx": "^2.1.1",
     "lucide-solid": "^1.65.0",
-    "motion": "^12.43.0",
+    "motion": "^14.9.0",
     "tailwind-merge": "^3.7.0"
   },
   "devDependencies": {
