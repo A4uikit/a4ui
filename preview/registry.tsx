@@ -2855,6 +2855,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     blurb: 'Dialog (Kobalte). variant="center" for short confirmations; "drawer" (default) for forms.',
     controls: {
       variant: { type: 'select', label: 'variant', options: ['drawer', 'center'], default: 'center' },
+      size: { type: 'select', label: 'size', options: ['sm', 'md', 'lg', 'xl', 'full'], default: 'md' },
       title: { type: 'text', label: 'title', default: 'Confirm action' },
     },
     demo: (c) => {
@@ -2866,6 +2867,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
             open={open()}
             onOpenChange={setOpen}
             variant={c.variant as 'drawer' | 'center'}
+            size={c.size as 'sm' | 'md' | 'lg' | 'xl' | 'full'}
             title={c.title as string}
           >
             <p class="text-sm text-muted-foreground">Do you want to continue with this action?</p>
@@ -2881,9 +2883,73 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open</Button>
-<Modal open={open()} onOpenChange={setOpen} variant="${c.variant}" title="${c.title}">
+<Modal open={open()} onOpenChange={setOpen} variant="${c.variant}" size="${c.size}" title="${c.title}">
   <p>Do you want to continue?</p>
-</Modal>`,
+</Modal>
+// content taller than the viewport scrolls inside the dialog; the header stays pinned`,
+    variants: [
+      {
+        label: 'Tall content scrolls (size="lg")',
+        demo: () => {
+          const [open, setOpen] = createSignal(false)
+          return (
+            <>
+              <UI.Button variant="outline" onClick={() => setOpen(true)}>
+                Open tall modal
+              </UI.Button>
+              <UI.Modal
+                open={open()}
+                onOpenChange={setOpen}
+                variant="center"
+                size="lg"
+                title="Pick references"
+              >
+                <For each={Array.from({ length: 40 }, (_, i) => i + 1)}>
+                  {(n) => <p class="py-1 text-sm text-muted-foreground">Row {n}</p>}
+                </For>
+                <div class="mt-4 flex justify-end">
+                  <UI.Button data-testid="tall-confirm" onClick={() => setOpen(false)}>
+                    Confirm
+                  </UI.Button>
+                </div>
+              </UI.Modal>
+            </>
+          )
+        },
+      },
+      {
+        label: 'MultiSelect inside a scrolling body',
+        demo: () => {
+          const [open, setOpen] = createSignal(false)
+          const [sel, setSel] = createSignal<string[]>([])
+          return (
+            <>
+              <UI.Button variant="outline" onClick={() => setOpen(true)}>
+                Open settings modal
+              </UI.Button>
+              <UI.Modal open={open()} onOpenChange={setOpen} variant="center" title="Settings">
+                <UI.MultiSelect
+                  placeholder="Pick tags"
+                  options={[
+                    { value: 'a', label: 'Alpha' },
+                    { value: 'b', label: 'Beta' },
+                    { value: 'c', label: 'Gamma' },
+                  ]}
+                  value={sel()}
+                  onChange={setSel}
+                />
+                <p data-testid="ms-count" class="mt-2 text-sm text-muted-foreground">
+                  {sel().length} selected
+                </p>
+                <For each={Array.from({ length: 40 }, (_, i) => i + 1)}>
+                  {(n) => <p class="py-1 text-sm text-muted-foreground">Setting {n}</p>}
+                </For>
+              </UI.Modal>
+            </>
+          )
+        },
+      },
+    ],
   },
   {
     id: 'drawer',

@@ -462,6 +462,7 @@ export {
 } from './ui/Sidebar'
 export { SpaceBackground } from './layout/SpaceBackground'
 export { Aurora, type AuroraProps } from './layout/Aurora'
+export type { ModalProps } from './ui/Modal'
 export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'
 export { SnowScenery } from './layout/SnowScenery'
 export { ChristmasBackground } from './layout/ChristmasBackground'
