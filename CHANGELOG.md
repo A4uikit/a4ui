@@ -6,6 +6,19 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`Item`** — composable row primitive: `ItemMedia` (icon tile / image / custom),
+  `ItemContent` with `ItemTitle` + `ItemDescription`, trailing `ItemActions`, and
+  full-width `ItemHeader`/`ItemFooter`; `ItemGroup` + `ItemSeparator` to stack them.
+  Variants `default`/`outline`/`muted`, sizes `default`/`sm`/`xs`; `href` or
+  `onClick` turns the whole row into one link/button.
+- **`ScrollArea`** — native scroll container with thin, token-tinted scrollbars,
+  keyboard-focusable, exposed as a named region when given a `label`.
+  `orientation` `vertical` (default) / `horizontal` / `both`.
+- **`Drawer`** — `side` prop: `right` (default), `left`, `top`, `bottom`. Top and
+  bottom render as full-width sheets capped at 85vh.
+
 ### Security
 
 - **`solid-js` peer floor raised to `^1.9.16`.** Earlier 1.9.x releases pull in

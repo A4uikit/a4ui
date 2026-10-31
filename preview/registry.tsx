@@ -2513,8 +2513,9 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Drawer',
     group: 'Overlays',
     blurb:
-      'Sliding panel anchored to the right (Kobalte Dialog), with an optional fixed header (title/subtitle).',
+      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle).',
     controls: {
+      side: { type: 'select', label: 'side', options: ['right', 'left', 'top', 'bottom'], default: 'right' },
       title: { type: 'text', label: 'title', default: 'Customer detail' },
       subtitle: { type: 'text', label: 'subtitle', default: 'Rivera S.A. de C.V.' },
     },
@@ -2528,6 +2529,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
           <UI.Drawer
             open={open()}
             onOpenChange={setOpen}
+            side={c.side as UI.DrawerSide}
             title={c.title as string}
             subtitle={c.subtitle as string}
           >
@@ -2538,7 +2540,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open panel</Button>
-<Drawer open={open()} onOpenChange={setOpen} title="${c.title}" subtitle="${c.subtitle}">
+<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}">
   <div class="p-6">…</div>
 </Drawer>`,
   },
@@ -3759,6 +3761,117 @@ toast.error('Failed to save')`,
     code: (c) => `<List${c.stagger ? ' stagger' : ''} items={[
   { title: 'Marina Vega', description: 'Product designer', avatar: <Avatar fallback="MV" /> },
 ]} />${c.stagger ? '\n\n// stagger = rows cascade in on mount (CSS, reduced-motion aware)' : ''}`,
+  },
+  {
+    id: 'item',
+    title: 'Item',
+    group: 'Data',
+    blurb:
+      'Composable row: `ItemMedia` (icon or image), `ItemContent` with title and description, trailing `ItemActions`, optional header/footer. Variants default/outline/muted, sizes default/sm/xs; `href` or `onClick` makes the whole row interactive.',
+    controls: {
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['default', 'outline', 'muted'],
+        default: 'outline',
+      },
+      size: { type: 'select', label: 'size', options: ['default', 'sm', 'xs'], default: 'default' },
+    },
+    demo: (c) => {
+      const [digest, setDigest] = createSignal(true)
+      return (
+        <UI.ItemGroup class="w-full max-w-md gap-2">
+          <UI.Item variant={c.variant as UI.ItemVariant} size={c.size as UI.ItemSize}>
+            <UI.ItemMedia variant="icon">
+              <Bell />
+            </UI.ItemMedia>
+            <UI.ItemContent>
+              <UI.ItemTitle>Weekly digest</UI.ItemTitle>
+              <UI.ItemDescription>A summary of your projects every Monday at 9:00.</UI.ItemDescription>
+            </UI.ItemContent>
+            <UI.ItemActions>
+              <UI.Switch checked={digest()} onChange={setDigest} label="Email" />
+            </UI.ItemActions>
+          </UI.Item>
+          <UI.Item variant={c.variant as UI.ItemVariant} size={c.size as UI.ItemSize} href="#/item">
+            <UI.ItemMedia variant="icon">
+              <Folder />
+            </UI.ItemMedia>
+            <UI.ItemContent>
+              <UI.ItemTitle>
+                Orbit launch assets <UI.Badge tone="neutral">12</UI.Badge>
+              </UI.ItemTitle>
+              <UI.ItemDescription>Updated 2 hours ago</UI.ItemDescription>
+            </UI.ItemContent>
+          </UI.Item>
+        </UI.ItemGroup>
+      )
+    },
+    code: (c) => `<Item variant="${c.variant}"${c.size === 'default' ? '' : ` size="${c.size}"`}>
+  <ItemMedia variant="icon"><Bell /></ItemMedia>
+  <ItemContent>
+    <ItemTitle>Weekly digest</ItemTitle>
+    <ItemDescription>A summary every Monday at 9:00.</ItemDescription>
+  </ItemContent>
+  <ItemActions><Switch checked={on()} onChange={setOn} label="Email" /></ItemActions>
+</Item>
+
+// href or onClick makes the whole row the hit target
+<Item href="/projects/orbit">…</Item>`,
+  },
+  {
+    id: 'scroll-area',
+    title: 'ScrollArea',
+    group: 'Layout',
+    blurb:
+      'Native scroll container with thin, token-tinted scrollbars. Keyboard-focusable; pass `label` to expose it as a named region. `orientation` vertical/horizontal/both.',
+    controls: {
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['vertical', 'horizontal'],
+        default: 'vertical',
+      },
+    },
+    demo: (c) =>
+      c.orientation === 'horizontal' ? (
+        <UI.ScrollArea
+          orientation="horizontal"
+          label="Palettes"
+          class="w-full max-w-md rounded-xl border border-border"
+        >
+          <div class="flex w-max gap-3 p-4">
+            <For each={Array.from({ length: 14 }, (_, i) => i)}>
+              {(i) => (
+                <div class="grid h-20 w-28 place-items-center rounded-lg border border-border bg-muted/40 text-sm text-muted-foreground">
+                  Tile {i + 1}
+                </div>
+              )}
+            </For>
+          </div>
+        </UI.ScrollArea>
+      ) : (
+        <UI.ScrollArea label="Release notes" class="h-56 w-full max-w-sm rounded-xl border border-border">
+          <div class="p-4">
+            <p class="mb-3 text-sm font-semibold">Release notes</p>
+            <For each={Array.from({ length: 30 }, (_, i) => 30 - i)}>
+              {(v) => (
+                <p class="border-b border-border py-2 text-sm text-muted-foreground">
+                  v0.{v}.0 — maintenance and fixes
+                </p>
+              )}
+            </For>
+          </div>
+        </UI.ScrollArea>
+      ),
+    code: (c) =>
+      c.orientation === 'horizontal'
+        ? `<ScrollArea orientation="horizontal" label="Palettes" class="w-full rounded-xl border border-border">
+  <div class="flex w-max gap-3 p-4">…tiles…</div>
+</ScrollArea>`
+        : `<ScrollArea label="Release notes" class="h-56 rounded-xl border border-border">
+  <div class="p-4">…long content…</div>
+</ScrollArea>`,
   },
   {
     id: 'countdown',

@@ -337,6 +337,56 @@ test.describe('interactions', () => {
     await expect(page.getByText(/Side panel content/)).toBeVisible()
   })
 
+  test('drawer side="left" anchors the panel to the left edge, "bottom" to the bottom', async ({ page }) => {
+    await page.goto('/#/drawer')
+    const viewport = page.viewportSize()
+    if (!viewport) throw new Error('viewport size is not set for this project')
+    const panel = page.getByRole('alertdialog', { name: 'Customer detail' })
+
+    await page.locator('main select').first().selectOption('left')
+    await page.getByRole('button', { name: 'Open panel' }).click()
+    await expect(panel).toHaveAttribute('data-side', 'left')
+    // Wait for the slide-in to settle, then check geometry, not just the attribute.
+    await expect.poll(async () => (await panel.boundingBox())?.x).toBe(0)
+    await page.keyboard.press('Escape')
+    await expect(panel).toBeHidden()
+
+    await page.locator('main select').first().selectOption('bottom')
+    await page.getByRole('button', { name: 'Open panel' }).click()
+    await expect(panel).toHaveAttribute('data-side', 'bottom')
+    await expect
+      .poll(async () => {
+        const box = await panel.boundingBox()
+        return box ? Math.round(box.y + box.height) : null
+      })
+      .toBe(viewport.height)
+    const box = await panel.boundingBox()
+    expect(box?.width).toBe(viewport.width)
+  })
+
+  test('scroll-area is a named, keyboard-scrollable region', async ({ page }) => {
+    await page.goto('/#/scroll-area')
+    const region = page.getByTestId('demo').getByRole('region', { name: 'Release notes' })
+    await expect(region).toBeVisible()
+    // It must actually overflow, or the scroll assertions below prove nothing.
+    expect(await region.evaluate((el) => el.scrollHeight > el.clientHeight)).toBe(true)
+    expect(await region.evaluate((el) => el.scrollTop)).toBe(0)
+    await region.focus()
+    await page.keyboard.press('End')
+    await expect.poll(() => region.evaluate((el) => el.scrollTop)).toBeGreaterThan(0)
+  })
+
+  test('item: an href row is one link, and its actions stay operable', async ({ page }) => {
+    await page.goto('/#/item')
+    const demo = page.getByTestId('demo')
+    const link = demo.getByRole('link', { name: /Orbit launch assets/ })
+    await expect(link).toHaveAttribute('href', '#/item')
+    const sw = demo.getByRole('switch', { name: 'Email' })
+    await expect(sw).toBeChecked()
+    await demo.getByText('Email', { exact: true }).click()
+    await expect(sw).not.toBeChecked()
+  })
+
   test('popover opens with content', async ({ page }) => {
     await page.goto('/#/popover')
     // The Kobalte trigger wraps the Button, so two buttons share the name.

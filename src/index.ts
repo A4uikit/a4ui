@@ -51,7 +51,7 @@ export { DateRangePicker, type DateRange, type DateRangePickerProps } from './ui
 export { FormField, FormLabel, FormControl, FormDescription, FormError, type FormFieldProps } from './ui/Form'
 export { FileUpload, type UploadFile, type FileUploadProps } from './ui/FileUpload'
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './ui/MultiSelect'
-export { Drawer } from './ui/Drawer'
+export { Drawer, type DrawerProps, type DrawerSide } from './ui/Drawer'
 export { Dropdown, type DropdownItem } from './ui/Dropdown'
 export { Dropzone } from './ui/Dropzone'
 export { Input } from './ui/Input'
@@ -124,6 +124,23 @@ export {
 export { Anchor, type AnchorItem, type AnchorProps } from './ui/Anchor'
 export { Highlight, type HighlightProps } from './ui/Highlight'
 export { List, type ListItem } from './ui/List'
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+  type ItemMediaVariant,
+  type ItemProps,
+  type ItemSize,
+  type ItemVariant,
+} from './ui/Item'
+export { ScrollArea, type ScrollAreaOrientation, type ScrollAreaProps } from './ui/ScrollArea'
 export { Countdown, type CountdownProps } from './ui/Countdown'
 export { Affix } from './ui/Affix'
 export { Transfer, type TransferItem, type TransferProps } from './ui/Transfer'
