@@ -10,6 +10,8 @@ import {
   Calendar as CalendarIcon,
   Cloud,
   Croissant,
+  Eye,
+  EyeOff,
   Folder,
   Heading,
   Heart,
@@ -1779,6 +1781,157 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: `const [range, setRange] = createSignal({ start: '', end: '' })
 <DateRangePicker value={range()} onChange={setRange} label="Trip dates" />`,
+  },
+  {
+    id: 'field',
+    title: 'Field',
+    group: 'Forms',
+    blurb:
+      'Composable form layout — fieldset, label, description and error list wired to the control automatically.',
+    demo: () => {
+      const [name, setName] = createSignal('')
+      const [emails, setEmails] = createSignal(true)
+      const [pw, setPw] = createSignal('abc')
+      return (
+        <div class="w-full max-w-sm">
+          <UI.FieldSet>
+            <UI.FieldLegend>Profile</UI.FieldLegend>
+            <UI.FieldGroup>
+              <UI.Field>
+                <UI.FieldLabel>Full name</UI.FieldLabel>
+                <UI.Input value={name()} onInput={setName} placeholder="Ada Orbit" />
+                <UI.FieldDescription>As it appears on invoices.</UI.FieldDescription>
+              </UI.Field>
+              <UI.Field orientation="horizontal">
+                <UI.FieldContent>
+                  <UI.FieldTitle>Product emails</UI.FieldTitle>
+                  <UI.FieldDescription>News from Nebula, once a month.</UI.FieldDescription>
+                </UI.FieldContent>
+                <UI.Switch checked={emails()} onChange={setEmails} />
+              </UI.Field>
+              <UI.FieldSeparator>security</UI.FieldSeparator>
+              <UI.Field invalid>
+                <UI.FieldLabel>Password</UI.FieldLabel>
+                <UI.Input type="password" value={pw()} onInput={setPw} />
+                <UI.FieldDescription>Used to sign in.</UI.FieldDescription>
+                <UI.FieldError errors={['At least 8 characters', 'Include a number']} />
+              </UI.Field>
+            </UI.FieldGroup>
+          </UI.FieldSet>
+        </div>
+      )
+    },
+    code: `<FieldSet>
+  <FieldLegend>Profile</FieldLegend>
+  <FieldGroup>
+    <Field>
+      <FieldLabel>Full name</FieldLabel>
+      <Input value={name()} onInput={setName} />
+      <FieldDescription>As it appears on invoices.</FieldDescription>
+    </Field>
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle>Product emails</FieldTitle>
+        <FieldDescription>News from Nebula.</FieldDescription>
+      </FieldContent>
+      <Switch checked={on()} onChange={setOn} />
+    </Field>
+    <FieldSeparator>security</FieldSeparator>
+    <Field invalid>
+      <FieldLabel>Password</FieldLabel>
+      <Input type="password" value={pw()} onInput={setPw} />
+      <FieldError errors={['At least 8 characters', 'Include a number']} />
+    </Field>
+  </FieldGroup>
+</FieldSet>`,
+  },
+  {
+    id: 'input-group',
+    title: 'InputGroup',
+    group: 'Forms',
+    blurb: 'One border and focus ring around an input and its icons, prefixes, buttons and hints.',
+    demo: () => {
+      const [q, setQ] = createSignal('')
+      const [url, setUrl] = createSignal('')
+      const [pw, setPw] = createSignal('hunter22')
+      const [show, setShow] = createSignal(false)
+      const [msg, setMsg] = createSignal('')
+      return (
+        <div class="flex w-full max-w-sm flex-col gap-4">
+          <UI.InputGroup>
+            <UI.InputGroupAddon>
+              <Search />
+            </UI.InputGroupAddon>
+            <UI.InputGroupInput value={q()} onInput={setQ} placeholder="Search" aria-label="Search" />
+            <UI.InputGroupAddon align="inline-end">
+              <UI.Kbd>/</UI.Kbd>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupAddon>
+              <UI.InputGroupText>https://</UI.InputGroupText>
+            </UI.InputGroupAddon>
+            <UI.InputGroupInput value={url()} onInput={setUrl} placeholder="orbit.dev" aria-label="Website" />
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupInput
+              type={show() ? 'text' : 'password'}
+              value={pw()}
+              onInput={setPw}
+              aria-label="Password"
+            />
+            <UI.InputGroupAddon align="inline-end">
+              <UI.InputGroupButton
+                size="icon-xs"
+                aria-label={show() ? 'Hide password' : 'Show password'}
+                onClick={() => setShow(!show())}
+              >
+                {show() ? <EyeOff /> : <Eye />}
+              </UI.InputGroupButton>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupTextarea
+              value={msg()}
+              onInput={setMsg}
+              rows={3}
+              placeholder="Write a message"
+              aria-label="Message"
+            />
+            <UI.InputGroupAddon align="block-end">
+              <UI.InputGroupButton size="icon-xs" variant="outline" aria-label="Attach">
+                <Plus />
+              </UI.InputGroupButton>
+              <UI.InputGroupText class="ml-auto">{msg().length} / 280</UI.InputGroupText>
+              <UI.InputGroupButton size="xs" variant="primary">
+                Send
+              </UI.InputGroupButton>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+        </div>
+      )
+    },
+    code: `<InputGroup>
+  <InputGroupAddon><Search /></InputGroupAddon>
+  <InputGroupInput value={q()} onInput={setQ} placeholder="Search" />
+  <InputGroupAddon align="inline-end"><Kbd>/</Kbd></InputGroupAddon>
+</InputGroup>
+
+<InputGroup>
+  <InputGroupInput type={show() ? 'text' : 'password'} value={pw()} onInput={setPw} />
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton size="icon-xs" aria-label="Show password" onClick={() => setShow(!show())}>
+      {show() ? <EyeOff /> : <Eye />}
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>
+
+<InputGroup>
+  <InputGroupTextarea value={msg()} onInput={setMsg} rows={3} />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="xs" variant="primary">Send</InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>`,
   },
   {
     id: 'form-field',

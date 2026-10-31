@@ -49,6 +49,41 @@ export { TimeField, type TimeFieldProps } from './ui/TimeField'
 export { DateTimeField, type DateTimeFieldProps } from './ui/DateTimeField'
 export { DateRangePicker, type DateRange, type DateRangePickerProps } from './ui/DateRangePicker'
 export { FormField, FormLabel, FormControl, FormDescription, FormError, type FormFieldProps } from './ui/Form'
+export {
+  Field,
+  FieldSet,
+  FieldLegend,
+  FieldGroup,
+  FieldContent,
+  FieldLabel,
+  FieldTitle,
+  FieldDescription,
+  FieldSeparator,
+  FieldError,
+  type FieldProps,
+  type FieldSetProps,
+  type FieldLegendProps,
+  type FieldGroupProps,
+  type FieldLabelProps,
+  type FieldSeparatorProps,
+  type FieldErrorProps,
+  type FieldOrientation,
+} from './ui/Field'
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupTextarea,
+  type InputGroupProps,
+  type InputGroupAddonProps,
+  type InputGroupAddonAlign,
+  type InputGroupButtonProps,
+  type InputGroupButtonSize,
+  type InputGroupInputProps,
+  type InputGroupTextareaProps,
+} from './ui/InputGroup'
 export { FileUpload, type UploadFile, type FileUploadProps } from './ui/FileUpload'
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './ui/MultiSelect'
 export { Drawer, type DrawerProps, type DrawerSide } from './ui/Drawer'
