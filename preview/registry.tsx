@@ -8,6 +8,7 @@ import {
   Bell,
   Briefcase,
   Calendar as CalendarIcon,
+  ChevronDown,
   Cloud,
   Croissant,
   Eye,
@@ -3615,6 +3616,246 @@ toast.error('Failed to save')`,
   ]},
   { id: 'pkg', label: 'package.json' },
 ]} />`,
+  },
+  {
+    id: 'button-group',
+    title: 'ButtonGroup',
+    group: 'Actions',
+    blurb:
+      'Joins buttons into one segmented control: shared borders, only the outer corners rounded. Horizontal or vertical, `role="group"` with an `aria-label`. Works with `Button`, `ButtonGroupText`, `ButtonGroupSeparator` and a `Dropdown` trigger as the last child.',
+    controls: {
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['horizontal', 'vertical'],
+        default: 'horizontal',
+      },
+    },
+    demo: (c) => {
+      const [last, setLast] = createSignal('none')
+      return (
+        <div class="flex flex-col items-start gap-6">
+          <UI.ButtonGroup
+            orientation={c.orientation as UI.ButtonGroupOrientation}
+            aria-label="Text alignment"
+          >
+            <UI.Button variant="outline" onClick={() => setLast('left')}>
+              Left
+            </UI.Button>
+            <UI.Button variant="outline" onClick={() => setLast('center')}>
+              Center
+            </UI.Button>
+            <UI.Button variant="outline" onClick={() => setLast('right')}>
+              Right
+            </UI.Button>
+          </UI.ButtonGroup>
+          <p class="text-sm text-muted-foreground">
+            Last pressed: <span data-testid="bg-last">{last()}</span>
+          </p>
+          <UI.ButtonGroup aria-label="Publish actions">
+            <UI.Button>Publish</UI.Button>
+            <UI.ButtonGroupSeparator />
+            <UI.Dropdown
+              label="More publish options"
+              class="items-center rounded-md bg-primary px-2 text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
+              items={[
+                { label: 'Schedule', onSelect: () => setLast('schedule') },
+                { label: 'Save draft', onSelect: () => setLast('draft') },
+              ]}
+            >
+              <ChevronDown class="h-4 w-4" />
+            </UI.Dropdown>
+          </UI.ButtonGroup>
+          <UI.ButtonGroup aria-label="Quantity">
+            <UI.ButtonGroupText>Qty</UI.ButtonGroupText>
+            <UI.Button variant="outline">-</UI.Button>
+            <UI.Button variant="outline">+</UI.Button>
+          </UI.ButtonGroup>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<ButtonGroup${c.orientation === 'vertical' ? ' orientation="vertical"' : ''} aria-label="Text alignment">
+  <Button variant="outline">Left</Button>
+  <Button variant="outline">Center</Button>
+  <Button variant="outline">Right</Button>
+</ButtonGroup>
+
+// A Dropdown trigger works as the last child
+<ButtonGroup aria-label="Publish actions">
+  <Button>Publish</Button>
+  <ButtonGroupSeparator />
+  <Dropdown label="More options" items={items} class="rounded-md bg-primary px-2 text-primary-foreground">
+    <ChevronDown class="h-4 w-4" />
+  </Dropdown>
+</ButtonGroup>`,
+  },
+  {
+    id: 'aspect-ratio',
+    title: 'AspectRatio',
+    group: 'Layout',
+    blurb: 'Keeps a fixed width:height ratio with CSS `aspect-ratio`; children fill the box.',
+    controls: {
+      ratio: { type: 'select', label: 'ratio', options: ['16/9', '4/3', '1/1', '9/16'], default: '16/9' },
+    },
+    demo: (c) => {
+      const ratio = (): number => {
+        const [w, h] = String(c.ratio).split('/').map(Number)
+        return w / h
+      }
+      return (
+        <div class="w-full max-w-sm">
+          <UI.AspectRatio
+            ratio={ratio()}
+            class="overflow-hidden rounded-xl border border-border"
+            data-testid="ar-box"
+          >
+            <div class="grid place-items-center bg-gradient-to-br from-primary/30 to-muted text-sm text-muted-foreground">
+              {String(c.ratio)}
+            </div>
+          </UI.AspectRatio>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<AspectRatio ratio={${String(c.ratio).replace('/', ' / ')}} class="w-full overflow-hidden rounded-xl">
+  <img src="/cover.jpg" alt="" class="object-cover" />
+</AspectRatio>`,
+  },
+  {
+    id: 'label',
+    title: 'Label',
+    group: 'Forms',
+    blurb:
+      'Styled `<label>`: `for` ties it to a control so clicking it focuses the field. `required` adds a decorative asterisk; dims when `disabled` or when a preceding `.peer` control is disabled.',
+    controls: {
+      required: { type: 'boolean', label: 'required', default: true },
+      disabled: { type: 'boolean', label: 'disabled', default: false },
+    },
+    demo: (c) => {
+      const [name, setName] = createSignal('')
+      return (
+        <div class="grid w-full max-w-xs gap-2">
+          <UI.Label for="label-demo-name" required={Boolean(c.required)} disabled={Boolean(c.disabled)}>
+            Full name
+          </UI.Label>
+          <UI.Input
+            id="label-demo-name"
+            value={name()}
+            onInput={setName}
+            placeholder="Ada Lovelace"
+            disabled={Boolean(c.disabled)}
+          />
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<Label for="name"${c.required ? ' required' : ''}${c.disabled ? ' disabled' : ''}>Full name</Label>
+<Input id="name" value={name()} onInput={setName} />
+
+// Dims automatically after a disabled sibling marked .peer
+<input class="peer" disabled /> <Label>Notes</Label>`,
+  },
+  {
+    id: 'native-select',
+    title: 'NativeSelect',
+    group: 'Forms',
+    blurb:
+      'Styled native `<select>` with a chevron: the OS picker on mobile. Sizes sm/default, `invalid`, `disabled`; `<option>` and `<optgroup>` children; `value` and `onChange` pass through.',
+    controls: {
+      size: { type: 'select', label: 'size', options: ['default', 'sm'], default: 'default' },
+      invalid: { type: 'boolean', label: 'invalid', default: false },
+      disabled: { type: 'boolean', label: 'disabled', default: false },
+    },
+    demo: (c) => {
+      const [plan, setPlan] = createSignal('pro')
+      return (
+        <div class="grid w-full max-w-xs gap-2">
+          <UI.NativeSelect
+            aria-label="Plan"
+            size={c.size as UI.NativeSelectSize}
+            invalid={Boolean(c.invalid)}
+            disabled={Boolean(c.disabled)}
+            value={plan()}
+            onChange={(e) => setPlan(e.currentTarget.value)}
+          >
+            <optgroup label="Personal">
+              <option value="free">Free</option>
+              <option value="pro">Pro</option>
+            </optgroup>
+            <optgroup label="Teams">
+              <option value="team">Team</option>
+              <option value="enterprise">Enterprise</option>
+            </optgroup>
+          </UI.NativeSelect>
+          <p class="text-sm text-muted-foreground">
+            Selected: <span data-testid="ns-value">{plan()}</span>
+          </p>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<NativeSelect${c.size === 'sm' ? ' size="sm"' : ''}${c.invalid ? ' invalid' : ''}${c.disabled ? ' disabled' : ''}
+  aria-label="Plan" value={plan()} onChange={(e) => setPlan(e.currentTarget.value)}>
+  <optgroup label="Personal">
+    <option value="free">Free</option>
+    <option value="pro">Pro</option>
+  </optgroup>
+</NativeSelect>`,
+  },
+  {
+    id: 'prose',
+    title: 'Prose',
+    group: 'Layout',
+    blurb:
+      'Typography wrapper for raw HTML or rendered markdown: headings, paragraphs, `.lead`, links, quotes, lists, code, tables. Pure Tailwind child selectors, no CSS file, no plugin. `size` sm/base/lg.',
+    controls: {
+      size: { type: 'select', label: 'size', options: ['sm', 'base', 'lg'], default: 'base' },
+    },
+    demo: (c) => (
+      <UI.Prose size={c.size as UI.ProseSize} class="w-full max-w-xl" data-testid="prose-demo">
+        <h2>Launch notes</h2>
+        <p class="lead">Orbit 2.0 ships next week with a faster editor.</p>
+        <p>
+          Read the <a href="#/prose">changelog</a> for every change, or try <code>orbit init</code> in a new
+          project.
+        </p>
+        <blockquote>Small releases, shipped often.</blockquote>
+        <ul>
+          <li>Faster startup</li>
+          <li>Offline drafts</li>
+        </ul>
+        <pre>
+          <code>orbit deploy --prod</code>
+        </pre>
+        <table>
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Seats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Team</td>
+              <td>10</td>
+            </tr>
+          </tbody>
+        </table>
+      </UI.Prose>
+    ),
+    code: (c) => `<Prose${c.size === 'base' ? '' : ` size="${c.size}"`}>
+  <h2>Launch notes</h2>
+  <p class="lead">Orbit 2.0 ships next week.</p>
+  <p>Read the <a href="/changelog">changelog</a>.</p>
+</Prose>
+
+// Rendered markdown
+<Prose><div innerHTML={html()} /></Prose>`,
   },
   {
     id: 'kbd',

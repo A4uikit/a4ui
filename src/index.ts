@@ -42,6 +42,19 @@ export { createLinkedSelection, type LinkedSelection } from './lib/createLinkedS
 export { Accordion, type AccordionItem } from './ui/Accordion'
 export { Badge, type BadgeTone } from './ui/Badge'
 export { Button, type ButtonVariant } from './ui/Button'
+export {
+  ButtonGroup,
+  ButtonGroupText,
+  ButtonGroupSeparator,
+  type ButtonGroupProps,
+  type ButtonGroupTextProps,
+  type ButtonGroupSeparatorProps,
+  type ButtonGroupOrientation,
+} from './ui/ButtonGroup'
+export { AspectRatio, type AspectRatioProps } from './ui/AspectRatio'
+export { Label, type LabelProps } from './ui/Label'
+export { NativeSelect, type NativeSelectProps, type NativeSelectSize } from './ui/NativeSelect'
+export { Prose, type ProseProps, type ProseSize } from './ui/Prose'
 export { Card, CardHeader, CardTitle, CardContent } from './ui/Card'
 export { Checkbox } from './ui/Checkbox'
 export { DateField } from './ui/DateField'
