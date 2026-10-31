@@ -39,6 +39,7 @@ const REQUIRED_DIST_FILES = [
   'dist/charts.js',
   'dist/charts/index.d.ts',
   'preset.js',
+  'preset.d.ts',
 ]
 
 const REQUIRED_EXPORT_KEYS = [
@@ -94,13 +95,16 @@ function main() {
     pass(`created temp project at ${tmpDir}`)
 
     // 3. Install the tarball + solid-js into the temp project.
-    console.log('Installing tarball + solid-js into temp project...')
-    execSync(`npm install ${JSON.stringify(tarballPath)} solid-js --no-audit --no-fund --silent`, {
-      cwd: tmpDir,
-      encoding: 'utf8',
-      stdio: 'pipe',
-    })
-    pass('installed tarball and solid-js')
+    console.log('Installing tarball + solid-js + tailwindcss@3 + typescript into temp project...')
+    execSync(
+      `npm install ${JSON.stringify(tarballPath)} solid-js tailwindcss@^3.4.0 typescript --no-audit --no-fund --silent`,
+      {
+        cwd: tmpDir,
+        encoding: 'utf8',
+        stdio: 'pipe',
+      },
+    )
+    pass('installed tarball, solid-js, tailwindcss@3 and typescript')
 
     // 4. Assert required dist files exist.
     const pkgDir = path.join(tmpDir, 'node_modules', '@a4ui', 'core')
@@ -133,6 +137,53 @@ function main() {
       }
       pass(`exports entry "${key}" present`)
     }
+
+    // 5b. The preset subpath must ship types, and Tailwind must be a declared
+    //     (optional) peer so a mismatching major is flagged by the package manager.
+    const presetExport = exportsMap['./preset']
+    if (!presetExport || presetExport.types !== './preset.d.ts') {
+      fail('exports["./preset"] must have a "types" condition pointing at ./preset.d.ts')
+    }
+    pass('exports "./preset" has a types condition')
+    if (!installedPkgJson.peerDependencies || !installedPkgJson.peerDependencies.tailwindcss) {
+      fail('tailwindcss is not declared in peerDependencies')
+    }
+    if (!installedPkgJson.peerDependenciesMeta?.tailwindcss?.optional) {
+      fail('tailwindcss peer dependency must be optional (peerDependenciesMeta)')
+    }
+    pass(`tailwindcss declared as an optional peer (${installedPkgJson.peerDependencies.tailwindcss})`)
+
+    // 5c. A consumer tailwind.config.ts using the preset must typecheck with no
+    //     hand-written module shim (the exact snippet from the docs).
+    fs.writeFileSync(
+      path.join(tmpDir, 'tailwind.config.ts'),
+      [
+        "import type { Config } from 'tailwindcss'",
+        "import a4ui from '@a4ui/core/preset'",
+        '',
+        'export default {',
+        '  presets: [a4ui],',
+        "  content: ['./src/**/*.{ts,tsx}'],",
+        '} satisfies Config',
+        '',
+      ].join('\n'),
+    )
+    fs.writeFileSync(
+      path.join(tmpDir, 'tsconfig.json'),
+      JSON.stringify({
+        compilerOptions: {
+          strict: true,
+          noEmit: true,
+          module: 'ESNext',
+          moduleResolution: 'Bundler',
+          target: 'ES2022',
+          skipLibCheck: true,
+        },
+        files: ['tailwind.config.ts'],
+      }),
+    )
+    execSync('npx --no-install tsc -p tsconfig.json', { cwd: tmpDir, encoding: 'utf8', stdio: 'pipe' })
+    pass('tailwind.config.ts using @a4ui/core/preset typechecks without a shim')
 
     // 6. Version sync: A4UI_VERSION (hand-written in the entry) must match
     //    package.json. Read the PUBLISHED src/index.ts — this also proves the
