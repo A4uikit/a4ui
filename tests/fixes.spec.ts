@@ -157,4 +157,21 @@ test.describe('fixes', () => {
     await page.locator('[role="option"]', { hasText: 'Beta' }).click()
     await expect(page.getByTestId('ms-count')).toHaveText('2 selected')
   })
+
+  test('DateField inside a Modal: a day in the portaled calendar can be picked', async ({ page }) => {
+    await page.goto('/#/modal')
+    await page.getByRole('button', { name: 'Open settings modal' }).click()
+    const dialog = page.locator('.modal-content')
+    await expect(dialog).toBeVisible()
+    await dialog.getByRole('button', { name: /Due date/ }).click()
+    const day = page
+      .locator('[data-a4-floating]')
+      .getByRole('button', { name: /^15\b|\b15$/ })
+      .first()
+    await expect(day).toBeVisible()
+    await day.click()
+    // The pick must land (value set) and must not dismiss the dialog.
+    await expect(page.getByTestId('due-value')).toHaveText(/^\d{4}-\d{2}-15$/)
+    await expect(dialog).toBeVisible()
+  })
 })

@@ -167,8 +167,9 @@ export function DateField(props: DateFieldProps): JSX.Element {
         <Portal>
           <div
             ref={popRef}
+            data-a4-floating
             style={{ position: 'fixed', top: `${pos().top}px`, left: `${pos().left}px` }}
-            class="z-50 w-72 rounded-lg border border-border bg-card p-3 text-card-foreground shadow-lg"
+            class="pointer-events-auto z-50 w-72 rounded-lg border border-border bg-card p-3 text-card-foreground shadow-lg"
           >
             <CalendarCore
               selected={selected() ?? undefined}

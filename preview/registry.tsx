@@ -2918,10 +2918,11 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         },
       },
       {
-        label: 'MultiSelect inside a scrolling body',
+        label: 'MultiSelect and DateField inside a scrolling body',
         demo: () => {
           const [open, setOpen] = createSignal(false)
           const [sel, setSel] = createSignal<string[]>([])
+          const [due, setDue] = createSignal('')
           return (
             <>
               <UI.Button variant="outline" onClick={() => setOpen(true)}>
@@ -2941,6 +2942,12 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
                 <p data-testid="ms-count" class="mt-2 text-sm text-muted-foreground">
                   {sel().length} selected
                 </p>
+                <div class="mt-3">
+                  <UI.DateField value={due()} onChange={setDue} label="Due date" />
+                  <p data-testid="due-value" class="mt-1 text-sm text-muted-foreground">
+                    {due() || 'No date'}
+                  </p>
+                </div>
                 <For each={Array.from({ length: 40 }, (_, i) => i + 1)}>
                   {(n) => <p class="py-1 text-sm text-muted-foreground">Setting {n}</p>}
                 </For>
