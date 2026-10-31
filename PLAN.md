@@ -1,44 +1,67 @@
-# A4ui roadmap — component expansion
+# A4ui roadmap — layout, forms and conversation expansion
 
-Working plan for growing `@a4ui/core` into the areas where it's currently thin,
-without losing the "Spatial Glass" identity. Tracked on GitHub —
-**[#36](https://github.com/A4uikit/a4ui/issues/36)** is the live index; each item
-below is its own issue with a deliverables checklist. This file mirrors that so
-the plan survives in the working tree.
+Working plan for the next round of `@a4ui/core`. Tracked on GitHub —
+**[#110](https://github.com/A4uikit/a4ui/issues/110)** is the live index; each item
+below is its own issue with a deliverables checklist. This file mirrors that so the
+plan survives in the working tree. The previous round (#26–#35, index #36) is done.
 
-## Phase 1 — highest demand / biggest gaps
+## Wave 0 — security (serial)
 
-- **[#26](https://github.com/A4uikit/a4ui/issues/26)** — conversation / AI chat UI
-  kit (`ChatThread`, `Message`, `StreamingText`, `Citation`, `PromptComposer`,
-  `ArtifactPanel`). No coverage today; most-requested surface.
-- **[#27](https://github.com/A4uikit/a4ui/issues/27)** — refractive glass material
-  - elevation depth system + `FloatingToolbar`. Raises the core differentiator.
-- **[#28](https://github.com/A4uikit/a4ui/issues/28)** — view & page transitions +
-  optimistic-update helpers + inline row pickers. Cross-cutting motion.
+- [#111](https://github.com/A4uikit/a4ui/pull/111) — dependency bump within current
+  majors, `solid-js` peer floor `^1.9.16` (seroval advisories). Release as a patch.
+- Templates bump from `@a4ui/core` 0.33 to the patched release.
 
-## Phase 2 — breadth
+## Wave 1 — base primitives (serial, small)
 
-- **[#29](https://github.com/A4uikit/a4ui/issues/29)** — ambient mesh-gradient
-  backdrop (Aurora variant) + `CodeTabs`.
-- **[#30](https://github.com/A4uikit/a4ui/issues/30)** — `PillSearch` +
-  `CategoryStrip` + map/list sync.
-- **[#31](https://github.com/A4uikit/a4ui/issues/31)** — slash-menu block editor +
-  multi-view `DataView` (table/board/gallery/calendar).
-- **[#33](https://github.com/A4uikit/a4ui/issues/33)** — master-detail command
-  surface (`MasterDetail`, `DetailPane`).
+Pieces several later items build on, done first so the rest can run in parallel:
 
-## Phase 3 — verticals & polish
+- `Drawer` `side` (left/top/bottom), `ScrollArea`, `Item` — part of
+  [#102](https://github.com/A4uikit/a4ui/issues/102).
 
-- **[#32](https://github.com/A4uikit/a4ui/issues/32)** — scroll-scrubbed scenes +
-  sticky reveals.
-- **[#34](https://github.com/A4uikit/a4ui/issues/34)** — finance dashboard set
-  (`BalanceCard`, `TransactionFeed`, `KpiBlock`, `MoneyActionButton`).
-- **[#35](https://github.com/A4uikit/a4ui/issues/35)** — swipeable spaces +
-  vertical navigation rail.
+## Wave 2 — everything independent (parallel)
+
+- [#99](https://github.com/A4uikit/a4ui/issues/99) — `Sidebar`
+- [#100](https://github.com/A4uikit/a4ui/issues/100) +
+  [#101](https://github.com/A4uikit/a4ui/issues/101) — `Field` + `InputGroup`
+- [#102](https://github.com/A4uikit/a4ui/issues/102) (rest) — `ButtonGroup`,
+  `AspectRatio`, `Label`, `NativeSelect`, `Prose`
+- [#103](https://github.com/A4uikit/a4ui/issues/103) — chat extras (attachments,
+  bubble variants, markers, history-aware scrolling)
+- [#104](https://github.com/A4uikit/a4ui/issues/104) — `Questionnaire`
+- [#105](https://github.com/A4uikit/a4ui/issues/105) — charts (stacked/grouped bars,
+  area, pie, radial bar, shared tooltip + legend)
+- [#106](https://github.com/A4uikit/a4ui/issues/106) +
+  [#107](https://github.com/A4uikit/a4ui/issues/107) — `Menubar` + `NavigationMenu`
+- Fixes: [#109](https://github.com/A4uikit/a4ui/issues/109) +
+  [#84](https://github.com/A4uikit/a4ui/issues/84) (Aurora palette + glow repaint),
+  [#91](https://github.com/A4uikit/a4ui/issues/91) (Modal size/scroll),
+  [#92](https://github.com/A4uikit/a4ui/issues/92) (verify), [#80](https://github.com/A4uikit/a4ui/issues/80)
+  (preset types)
+- Dependency majors, one at a time inside the lane (shared lockfile): Vite 8,
+  TypeScript 7, motion 14, ESLint 10, Vitest 5, jsdom 30, and the rest.
+
+Integration is serial: one lane at a time onto `main`, full Playwright suite after
+each (parallel suites produce false failures).
+
+## Wave 3 — cross-cutting (serial)
+
+- [#81](https://github.com/A4uikit/a4ui/issues/81) — Tailwind 4 support
+- [#108](https://github.com/A4uikit/a4ui/issues/108) — right-to-left support
+
+## Wave 4 — templates
+
+- [A4uikit/templates#24](https://github.com/A4uikit/templates/issues/24) — dashboard,
+  sidebar layouts, login/signup blocks (needs the wave 2 release).
+
+## Still open from before
+
+[#77](https://github.com/A4uikit/a4ui/issues/77) QA backlog,
+[#82](https://github.com/A4uikit/a4ui/issues/82) draggable map marker,
+[#83](https://github.com/A4uikit/a4ui/issues/83) E2E selectors.
 
 ## Working method
 
 Per issue: build behind the repo conventions (`src/index.ts` export +
 `preview/registry.tsx` DocEntry with auto render test + behavior tests + WCAG AA),
-one example page per cluster, ship in versioned releases. Update the checklists on
-each issue (and #36) as items land.
+ship in versioned releases, update the checklists on each issue (and #110) as items
+land.
