@@ -1428,6 +1428,106 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
 
   // ---- Forms ----------------------------------------------------------------
   {
+    id: 'questionnaire',
+    title: 'Questionnaire',
+    group: 'Forms',
+    blurb:
+      'Data-driven multi-step survey: single, multiple and free-text questions, progress, required validation, Previous / Skip / Next / Submit. Digits 1-9 pick options, Enter advances.',
+    demo: () => {
+      const [result, setResult] = createSignal<string>('')
+      return (
+        <div class="flex flex-col gap-3">
+          <UI.Questionnaire
+            questions={[
+              {
+                id: 'role',
+                title: 'What best describes your role?',
+                description: 'Pick one.',
+                type: 'single',
+                required: true,
+                options: [
+                  { value: 'dev', label: 'Developer', description: 'You build things at Orbit.' },
+                  { value: 'design', label: 'Designer' },
+                  { value: 'pm', label: 'Product manager' },
+                ],
+              },
+              {
+                id: 'tools',
+                title: 'Which tools do you use weekly?',
+                type: 'multiple',
+                options: [
+                  { value: 'editor', label: 'Code editor' },
+                  { value: 'board', label: 'Kanban board' },
+                  { value: 'chat', label: 'Team chat' },
+                ],
+              },
+              {
+                id: 'feedback',
+                title: 'Anything we should improve?',
+                type: 'text',
+                placeholder: 'Tell the Nebula team…',
+              },
+            ]}
+            onSubmit={(answers) => setResult(JSON.stringify(answers))}
+          />
+          <Show when={result()}>
+            <pre data-testid="questionnaire-result" class="text-xs text-muted-foreground">
+              {result()}
+            </pre>
+          </Show>
+        </div>
+      )
+    },
+    code: `<Questionnaire
+  questions={[
+    {
+      id: 'role',
+      title: 'What best describes your role?',
+      type: 'single',
+      required: true,
+      options: [
+        { value: 'dev', label: 'Developer' },
+        { value: 'design', label: 'Designer' },
+      ],
+    },
+    { id: 'tools', title: 'Which tools do you use?', type: 'multiple', options: [...] },
+    { id: 'feedback', title: 'Anything to improve?', type: 'text' },
+  ]}
+  onSubmit={(answers) => save(answers)} // { role: 'dev', tools: ['chat'], feedback: '…' }
+/>`,
+    variants: [
+      {
+        label: 'Custom labels and summary',
+        demo: () => (
+          <UI.Questionnaire
+            questions={[
+              {
+                id: 'q1',
+                title: '¿Cómo calificas el servicio?',
+                type: 'single',
+                options: [
+                  { value: 'good', label: 'Bueno' },
+                  { value: 'bad', label: 'Malo' },
+                ],
+              },
+              { id: 'q2', title: '¿Comentarios?', type: 'text' },
+            ]}
+            labels={{
+              next: 'Siguiente',
+              previous: 'Anterior',
+              skip: 'Omitir',
+              submit: 'Enviar',
+              required: 'Obligatorio',
+              stepOf: '{current} de {total}',
+            }}
+            onSubmit={() => {}}
+            summary={(a) => <p class="text-sm text-foreground">{Object.keys(a).length} respuestas</p>}
+          />
+        ),
+      },
+    ],
+  },
+  {
     id: 'input',
     title: 'Input',
     group: 'Forms',

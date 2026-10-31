@@ -90,6 +90,14 @@ export { Drawer, type DrawerProps, type DrawerSide } from './ui/Drawer'
 export { Dropdown, type DropdownItem } from './ui/Dropdown'
 export { Dropzone } from './ui/Dropzone'
 export { Input } from './ui/Input'
+export {
+  Questionnaire,
+  type QuestionnaireProps,
+  type QuestionnaireQuestion,
+  type QuestionnaireOption,
+  type QuestionnaireAnswers,
+  type QuestionnaireLabels,
+} from './ui/Questionnaire'
 export { Modal } from './ui/Modal'
 export { PageHeader } from './ui/PageHeader'
 export { Pagination } from './ui/Pagination'
