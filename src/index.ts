@@ -427,6 +427,39 @@ export { flyToCart, type FlyToCartOptions } from './lib/flyToCart'
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
 export { AppShell } from './layout/AppShell'
+export {
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarRail,
+  SidebarInset,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarMenuSkeleton,
+  useSidebar,
+  type SidebarProps,
+  type SidebarProviderProps,
+  type SidebarTriggerProps,
+  type SidebarGroupActionProps,
+  type SidebarMenuButtonProps,
+  type SidebarMenuSubProps,
+  type SidebarSide,
+  type SidebarVariant,
+  type SidebarCollapsible,
+} from './ui/Sidebar'
 export { SpaceBackground } from './layout/SpaceBackground'
 export { Aurora, type AuroraProps } from './layout/Aurora'
 export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'

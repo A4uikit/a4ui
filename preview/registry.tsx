@@ -3104,6 +3104,166 @@ toast.error('Failed to save')`,
 />`,
   },
   {
+    id: 'sidebar',
+    title: 'Sidebar',
+    group: 'Navigation',
+    blurb:
+      'Composable app sidebar: `SidebarProvider` holds the state (Ctrl/Cmd+B toggles), `Sidebar` collapses off-canvas or to an icon rail (with tooltips), and below the `md` breakpoint it opens as a `Drawer`. Parts: Header, Content, Group, Menu, MenuButton, MenuSub, Footer, Rail, Inset. The demo sits in a bounded box, not the page shell.',
+    controls: {
+      side: { type: 'select', label: 'side', options: ['left', 'right'], default: 'left' },
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['sidebar', 'floating', 'inset'],
+        default: 'sidebar',
+      },
+      collapsible: {
+        type: 'select',
+        label: 'collapsible',
+        options: ['icon', 'offcanvas', 'none'],
+        default: 'icon',
+      },
+    },
+    demo: (c) => {
+      const [page, setPage] = createSignal('overview')
+      const side = () => c.side as UI.SidebarSide
+      return (
+        <div class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border bg-background/40">
+          <UI.SidebarProvider class={side() === 'right' ? 'flex-row-reverse' : undefined}>
+            <UI.Sidebar
+              side={side()}
+              variant={c.variant as UI.SidebarVariant}
+              collapsible={c.collapsible as UI.SidebarCollapsible}
+              label="Orbit navigation"
+            >
+              <UI.SidebarHeader>
+                <div class="flex items-center gap-2 px-1.5 py-1 group-data-[icon-collapsed=true]/sidebar:justify-center group-data-[icon-collapsed=true]/sidebar:px-0">
+                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+                    <Rocket class="h-4 w-4" />
+                  </span>
+                  <span class="truncate text-sm font-bold group-data-[icon-collapsed=true]/sidebar:hidden">
+                    Orbit
+                  </span>
+                </div>
+              </UI.SidebarHeader>
+              <UI.SidebarContent>
+                <UI.SidebarGroup>
+                  <UI.SidebarGroupLabel>Workspace</UI.SidebarGroupLabel>
+                  <UI.SidebarGroupAction label="New project">
+                    <Plus />
+                  </UI.SidebarGroupAction>
+                  <UI.SidebarGroupContent>
+                    <UI.SidebarMenu>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuButton
+                          tooltip="Overview"
+                          active={page() === 'overview'}
+                          onClick={() => setPage('overview')}
+                        >
+                          <Home />
+                          <span>Overview</span>
+                        </UI.SidebarMenuButton>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuButton
+                          tooltip="Inbox"
+                          active={page() === 'inbox'}
+                          onClick={() => setPage('inbox')}
+                        >
+                          <Inbox />
+                          <span>Inbox</span>
+                        </UI.SidebarMenuButton>
+                        <UI.SidebarMenuBadge>12</UI.SidebarMenuBadge>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuSub label="Projects" icon={<Folder />} defaultOpen>
+                          <UI.SidebarMenuSubItem>
+                            <UI.SidebarMenuSubButton
+                              active={page() === 'nebula'}
+                              onClick={() => setPage('nebula')}
+                            >
+                              <span>Nebula redesign</span>
+                            </UI.SidebarMenuSubButton>
+                          </UI.SidebarMenuSubItem>
+                          <UI.SidebarMenuSubItem>
+                            <UI.SidebarMenuSubButton
+                              active={page() === 'launch'}
+                              onClick={() => setPage('launch')}
+                            >
+                              <span>Launch checklist</span>
+                            </UI.SidebarMenuSubButton>
+                          </UI.SidebarMenuSubItem>
+                        </UI.SidebarMenuSub>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuSkeleton showIcon />
+                      </UI.SidebarMenuItem>
+                    </UI.SidebarMenu>
+                  </UI.SidebarGroupContent>
+                </UI.SidebarGroup>
+              </UI.SidebarContent>
+              <UI.SidebarFooter>
+                <UI.SidebarMenu>
+                  <UI.SidebarMenuItem>
+                    <UI.SidebarMenuButton
+                      tooltip="Settings"
+                      active={page() === 'settings'}
+                      onClick={() => setPage('settings')}
+                    >
+                      <Settings />
+                      <span>Settings</span>
+                    </UI.SidebarMenuButton>
+                  </UI.SidebarMenuItem>
+                </UI.SidebarMenu>
+              </UI.SidebarFooter>
+              <UI.SidebarRail />
+            </UI.Sidebar>
+            <UI.SidebarInset>
+              <div class="flex items-center gap-2 border-b border-border p-2">
+                <UI.SidebarTrigger />
+                <span class="text-sm font-semibold capitalize">{page()}</span>
+                <span class="ml-auto hidden text-xs text-muted-foreground sm:inline">Ctrl/Cmd+B toggles</span>
+              </div>
+              <p class="p-4 text-sm text-muted-foreground">Main content for “{page()}”.</p>
+            </UI.SidebarInset>
+          </UI.SidebarProvider>
+        </div>
+      )
+    },
+    code: (c) => `<SidebarProvider class="h-screen">
+  <Sidebar side="${c.side}" variant="${c.variant}" collapsible="${c.collapsible}">
+    <SidebarHeader>Orbit</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#/overview" active tooltip="Overview">
+                <Home /><span>Overview</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuSub label="Projects" icon={<Folder />} defaultOpen>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton href="#/nebula"><span>Nebula redesign</span></SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+    <SidebarRail />
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+    …page…
+  </SidebarInset>
+</SidebarProvider>
+// useSidebar(): { open, setOpen, toggle, isMobile, openMobile, setOpenMobile }`,
+  },
+  {
     id: 'breadcrumb',
     title: 'Breadcrumb',
     group: 'Navigation',
