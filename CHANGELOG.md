@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.38.0] — 2026-10-31
+
 ### Added
 
 - **Page sections** — nine marketing-page blocks driven entirely by plain data
