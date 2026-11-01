@@ -341,7 +341,7 @@ test.describe('interactions', () => {
     await page.goto('/#/drawer')
     const viewport = page.viewportSize()
     if (!viewport) throw new Error('viewport size is not set for this project')
-    const panel = page.getByRole('alertdialog', { name: 'Customer detail' })
+    const panel = page.getByRole('dialog', { name: 'Customer detail' })
 
     await page.locator('main select').first().selectOption('left')
     await page.getByRole('button', { name: 'Open panel' }).click()
@@ -392,6 +392,24 @@ test.describe('interactions', () => {
     // The Kobalte trigger wraps the Button, so two buttons share the name.
     await page.getByRole('button', { name: 'Open popover' }).first().click()
     await expect(page.getByText('Floating panel', { exact: true })).toBeVisible()
+  })
+
+  test('Modal is a dialog and AlertDialog an alertdialog, whatever loaded first', async ({ page }) => {
+    // REGRESSION (#118). Kobalte builds `AlertDialog` with Object.assign on the
+    // same function as `Dialog`, so once both modules are loaded `Dialog.Content`
+    // rendered role="alertdialog" for every Modal/Drawer/Command/Image. Opening
+    // both on one page load proves the roles no longer depend on load order.
+    await page.goto('/#/modal')
+    await page.getByTestId('demo').getByRole('button').first().click()
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await expect(page.getByRole('alertdialog')).toHaveCount(0)
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('dialog')).toHaveCount(0)
+
+    await page.goto('/#/alert-dialog')
+    await page.getByRole('button', { name: 'Delete account' }).click()
+    await expect(page.getByRole('alertdialog')).toBeVisible()
+    await expect(page.getByRole('dialog')).toHaveCount(0)
   })
 
   test('alert dialog opens with content', async ({ page }) => {

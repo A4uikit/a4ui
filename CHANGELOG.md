@@ -6,6 +6,16 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Fixed
+
+- `Modal`, `Drawer`, `Command`, `Image` (preview) and the phone `Sidebar` drawer
+  now render `role="dialog"`. They rendered `role="alertdialog"`, which screen
+  readers announce as an urgent alert. Kobalte builds `AlertDialog` with
+  `Object.assign` on the same function as `Dialog`, so once both modules were
+  loaded, `Dialog.Content` became the alert-dialog content. a4ui now uses
+  Kobalte's named exports (`Root`, `Content`, ...), which load order does not
+  affect. `AlertDialog` keeps `role="alertdialog"` (#118).
+
 ## [0.38.0] — 2026-10-31
 
 ### Added

@@ -1,6 +1,9 @@
 // Confirmation dialog on Kobalte's AlertDialog primitive — centered modal,
 // reuses the modal-overlay/modal-content keyframes from styles.css.
-import { AlertDialog as KAlertDialog } from '@kobalte/core/alert-dialog'
+// Namespace import on purpose: Kobalte's `AlertDialog` is built with Object.assign on the
+// same `DialogRoot` function as `Dialog`, so `AlertDialog.Content` depends on module load order (#118).
+// The named exports (`Root`, `Content`, ...) are not affected.
+import * as KAlertDialog from '@kobalte/core/alert-dialog'
 import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
@@ -30,7 +33,7 @@ interface AlertDialogProps extends ParentProps {
  */
 export function AlertDialog(props: AlertDialogProps): JSX.Element {
   return (
-    <KAlertDialog open={props.open} onOpenChange={props.onOpenChange}>
+    <KAlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <KAlertDialog.Portal>
         <KAlertDialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -53,6 +56,6 @@ export function AlertDialog(props: AlertDialogProps): JSX.Element {
           </KAlertDialog.Content>
         </div>
       </KAlertDialog.Portal>
-    </KAlertDialog>
+    </KAlertDialog.Root>
   )
 }

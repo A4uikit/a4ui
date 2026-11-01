@@ -3,7 +3,10 @@
 // handles fuzzy filtering (label + hint + group), keyboard navigation
 // (↑/↓/Enter), optional grouping, and query reset on close. Theme-agnostic:
 // every color comes from a semantic token, never a literal.
-import { Dialog } from '@kobalte/core/dialog'
+// Namespace import on purpose: Kobalte's `AlertDialog` is built with Object.assign on the
+// same `DialogRoot` function as `Dialog`, so `Dialog.Content` depends on module load order (#118).
+// The named exports (`Root`, `Content`, ...) are not affected.
+import * as Dialog from '@kobalte/core/dialog'
 import { createEffect, createMemo, createSignal, For, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
@@ -93,7 +96,7 @@ export function Command(props: CommandProps): JSX.Element {
   }
 
   return (
-    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+    <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-x-0 top-[14vh] z-50 mx-auto w-full max-w-lg px-4">
@@ -153,6 +156,6 @@ export function Command(props: CommandProps): JSX.Element {
           </Dialog.Content>
         </div>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog.Root>
   )
 }

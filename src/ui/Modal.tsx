@@ -5,7 +5,10 @@
 //     yes/no) where a full-height drawer would be overkill.
 // The .drawer-content / .modal-content classes drive the slide/scale keyframes
 // (styles.css) off Kobalte's data-expanded/data-closed presence tracking.
-import { Dialog } from '@kobalte/core/dialog'
+// Namespace import on purpose: Kobalte's `AlertDialog` is built with Object.assign on the
+// same `DialogRoot` function as `Dialog`, so `Dialog.Content` depends on module load order (#118).
+// The named exports (`Root`, `Content`, ...) are not affected.
+import * as Dialog from '@kobalte/core/dialog'
 import { X } from 'lucide-solid'
 import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
@@ -75,7 +78,7 @@ function keepForFloating(e: Event): void {
 export function Modal(props: ModalProps): JSX.Element {
   const isCenter = () => props.variant === 'center'
   return (
-    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+    <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <Show
@@ -137,6 +140,6 @@ export function Modal(props: ModalProps): JSX.Element {
           </div>
         </Show>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog.Root>
   )
 }

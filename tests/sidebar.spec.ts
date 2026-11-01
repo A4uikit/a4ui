@@ -149,11 +149,11 @@ test.describe('sidebar', () => {
     await trigger.waitFor()
     // No inline desktop panel at this size, and no dialog until opened.
     await expect(demo.locator('aside')).toHaveCount(0)
-    await expect(page.getByRole('alertdialog')).toHaveCount(0)
+    await expect(page.getByRole('dialog')).toHaveCount(0)
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
 
     await trigger.click()
-    const dialog = page.getByRole('alertdialog', { name: 'Orbit navigation' })
+    const dialog = page.getByRole('dialog', { name: 'Orbit navigation' })
     await expect(dialog).toBeVisible()
     await expect(dialog.getByRole('button', { name: 'Inbox' })).toBeVisible()
     // Left drawer, capped at the sidebar width.
@@ -161,7 +161,7 @@ test.describe('sidebar', () => {
     await expect.poll(async () => (await dialog.boundingBox())?.x).toBe(0)
 
     await page.keyboard.press('Escape')
-    await expect(page.getByRole('alertdialog')).toHaveCount(0)
+    await expect(page.getByRole('dialog')).toHaveCount(0)
     await expect(trigger).toHaveAttribute('aria-expanded', 'false')
   })
 })
