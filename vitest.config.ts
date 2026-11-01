@@ -11,5 +11,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+    // Node >= 25 ships a global Web Storage that shadows jsdom's localStorage and
+    // is undefined without --localstorage-file. Turn it off so jsdom's is used.
+    execArgv: ['--no-experimental-webstorage'],
   },
 })
