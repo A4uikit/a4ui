@@ -5,17 +5,25 @@
 import {
   Apple,
   Beef,
+  BookOpen,
   Bell,
   Briefcase,
   Calendar as CalendarIcon,
+  ChevronDown,
   Cloud,
+  Compass,
   Croissant,
+  Eye,
+  EyeOff,
+  FileText,
   Folder,
   Heading,
   Heart,
   Home,
   Image as ImageIcon,
   Inbox,
+  Layers,
+  LifeBuoy,
   Milk,
   Minus,
   Package,
@@ -36,8 +44,10 @@ import {
   Copy,
   Moon,
   Sun,
+  UserPlus,
   Volume2,
   VolumeX,
+  X,
 } from 'lucide-solid'
 import { createSignal, For, onCleanup, onMount, Show, type JSX } from 'solid-js'
 
@@ -1426,6 +1436,106 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
 
   // ---- Forms ----------------------------------------------------------------
   {
+    id: 'questionnaire',
+    title: 'Questionnaire',
+    group: 'Forms',
+    blurb:
+      'Data-driven multi-step survey: single, multiple and free-text questions, progress, required validation, Previous / Skip / Next / Submit. Digits 1-9 pick options, Enter advances.',
+    demo: () => {
+      const [result, setResult] = createSignal<string>('')
+      return (
+        <div class="flex flex-col gap-3">
+          <UI.Questionnaire
+            questions={[
+              {
+                id: 'role',
+                title: 'What best describes your role?',
+                description: 'Pick one.',
+                type: 'single',
+                required: true,
+                options: [
+                  { value: 'dev', label: 'Developer', description: 'You build things at Orbit.' },
+                  { value: 'design', label: 'Designer' },
+                  { value: 'pm', label: 'Product manager' },
+                ],
+              },
+              {
+                id: 'tools',
+                title: 'Which tools do you use weekly?',
+                type: 'multiple',
+                options: [
+                  { value: 'editor', label: 'Code editor' },
+                  { value: 'board', label: 'Kanban board' },
+                  { value: 'chat', label: 'Team chat' },
+                ],
+              },
+              {
+                id: 'feedback',
+                title: 'Anything we should improve?',
+                type: 'text',
+                placeholder: 'Tell the Nebula team…',
+              },
+            ]}
+            onSubmit={(answers) => setResult(JSON.stringify(answers))}
+          />
+          <Show when={result()}>
+            <pre data-testid="questionnaire-result" class="text-xs text-muted-foreground">
+              {result()}
+            </pre>
+          </Show>
+        </div>
+      )
+    },
+    code: `<Questionnaire
+  questions={[
+    {
+      id: 'role',
+      title: 'What best describes your role?',
+      type: 'single',
+      required: true,
+      options: [
+        { value: 'dev', label: 'Developer' },
+        { value: 'design', label: 'Designer' },
+      ],
+    },
+    { id: 'tools', title: 'Which tools do you use?', type: 'multiple', options: [...] },
+    { id: 'feedback', title: 'Anything to improve?', type: 'text' },
+  ]}
+  onSubmit={(answers) => save(answers)} // { role: 'dev', tools: ['chat'], feedback: '…' }
+/>`,
+    variants: [
+      {
+        label: 'Custom labels and summary',
+        demo: () => (
+          <UI.Questionnaire
+            questions={[
+              {
+                id: 'q1',
+                title: '¿Cómo calificas el servicio?',
+                type: 'single',
+                options: [
+                  { value: 'good', label: 'Bueno' },
+                  { value: 'bad', label: 'Malo' },
+                ],
+              },
+              { id: 'q2', title: '¿Comentarios?', type: 'text' },
+            ]}
+            labels={{
+              next: 'Siguiente',
+              previous: 'Anterior',
+              skip: 'Omitir',
+              submit: 'Enviar',
+              required: 'Obligatorio',
+              stepOf: '{current} de {total}',
+            }}
+            onSubmit={() => {}}
+            summary={(a) => <p class="text-sm text-foreground">{Object.keys(a).length} respuestas</p>}
+          />
+        ),
+      },
+    ],
+  },
+  {
     id: 'input',
     title: 'Input',
     group: 'Forms',
@@ -1781,6 +1891,157 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
 <DateRangePicker value={range()} onChange={setRange} label="Trip dates" />`,
   },
   {
+    id: 'field',
+    title: 'Field',
+    group: 'Forms',
+    blurb:
+      'Composable form layout — fieldset, label, description and error list wired to the control automatically.',
+    demo: () => {
+      const [name, setName] = createSignal('')
+      const [emails, setEmails] = createSignal(true)
+      const [pw, setPw] = createSignal('abc')
+      return (
+        <div class="w-full max-w-sm">
+          <UI.FieldSet>
+            <UI.FieldLegend>Profile</UI.FieldLegend>
+            <UI.FieldGroup>
+              <UI.Field>
+                <UI.FieldLabel>Full name</UI.FieldLabel>
+                <UI.Input value={name()} onInput={setName} placeholder="Ada Orbit" />
+                <UI.FieldDescription>As it appears on invoices.</UI.FieldDescription>
+              </UI.Field>
+              <UI.Field orientation="horizontal">
+                <UI.FieldContent>
+                  <UI.FieldTitle>Product emails</UI.FieldTitle>
+                  <UI.FieldDescription>News from Nebula, once a month.</UI.FieldDescription>
+                </UI.FieldContent>
+                <UI.Switch checked={emails()} onChange={setEmails} />
+              </UI.Field>
+              <UI.FieldSeparator>security</UI.FieldSeparator>
+              <UI.Field invalid>
+                <UI.FieldLabel>Password</UI.FieldLabel>
+                <UI.Input type="password" value={pw()} onInput={setPw} />
+                <UI.FieldDescription>Used to sign in.</UI.FieldDescription>
+                <UI.FieldError errors={['At least 8 characters', 'Include a number']} />
+              </UI.Field>
+            </UI.FieldGroup>
+          </UI.FieldSet>
+        </div>
+      )
+    },
+    code: `<FieldSet>
+  <FieldLegend>Profile</FieldLegend>
+  <FieldGroup>
+    <Field>
+      <FieldLabel>Full name</FieldLabel>
+      <Input value={name()} onInput={setName} />
+      <FieldDescription>As it appears on invoices.</FieldDescription>
+    </Field>
+    <Field orientation="horizontal">
+      <FieldContent>
+        <FieldTitle>Product emails</FieldTitle>
+        <FieldDescription>News from Nebula.</FieldDescription>
+      </FieldContent>
+      <Switch checked={on()} onChange={setOn} />
+    </Field>
+    <FieldSeparator>security</FieldSeparator>
+    <Field invalid>
+      <FieldLabel>Password</FieldLabel>
+      <Input type="password" value={pw()} onInput={setPw} />
+      <FieldError errors={['At least 8 characters', 'Include a number']} />
+    </Field>
+  </FieldGroup>
+</FieldSet>`,
+  },
+  {
+    id: 'input-group',
+    title: 'InputGroup',
+    group: 'Forms',
+    blurb: 'One border and focus ring around an input and its icons, prefixes, buttons and hints.',
+    demo: () => {
+      const [q, setQ] = createSignal('')
+      const [url, setUrl] = createSignal('')
+      const [pw, setPw] = createSignal('hunter22')
+      const [show, setShow] = createSignal(false)
+      const [msg, setMsg] = createSignal('')
+      return (
+        <div class="flex w-full max-w-sm flex-col gap-4">
+          <UI.InputGroup>
+            <UI.InputGroupAddon>
+              <Search />
+            </UI.InputGroupAddon>
+            <UI.InputGroupInput value={q()} onInput={setQ} placeholder="Search" aria-label="Search" />
+            <UI.InputGroupAddon align="inline-end">
+              <UI.Kbd>/</UI.Kbd>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupAddon>
+              <UI.InputGroupText>https://</UI.InputGroupText>
+            </UI.InputGroupAddon>
+            <UI.InputGroupInput value={url()} onInput={setUrl} placeholder="orbit.dev" aria-label="Website" />
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupInput
+              type={show() ? 'text' : 'password'}
+              value={pw()}
+              onInput={setPw}
+              aria-label="Password"
+            />
+            <UI.InputGroupAddon align="inline-end">
+              <UI.InputGroupButton
+                size="icon-xs"
+                aria-label={show() ? 'Hide password' : 'Show password'}
+                onClick={() => setShow(!show())}
+              >
+                {show() ? <EyeOff /> : <Eye />}
+              </UI.InputGroupButton>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+          <UI.InputGroup>
+            <UI.InputGroupTextarea
+              value={msg()}
+              onInput={setMsg}
+              rows={3}
+              placeholder="Write a message"
+              aria-label="Message"
+            />
+            <UI.InputGroupAddon align="block-end">
+              <UI.InputGroupButton size="icon-xs" variant="outline" aria-label="Attach">
+                <Plus />
+              </UI.InputGroupButton>
+              <UI.InputGroupText class="ml-auto">{msg().length} / 280</UI.InputGroupText>
+              <UI.InputGroupButton size="xs" variant="primary">
+                Send
+              </UI.InputGroupButton>
+            </UI.InputGroupAddon>
+          </UI.InputGroup>
+        </div>
+      )
+    },
+    code: `<InputGroup>
+  <InputGroupAddon><Search /></InputGroupAddon>
+  <InputGroupInput value={q()} onInput={setQ} placeholder="Search" />
+  <InputGroupAddon align="inline-end"><Kbd>/</Kbd></InputGroupAddon>
+</InputGroup>
+
+<InputGroup>
+  <InputGroupInput type={show() ? 'text' : 'password'} value={pw()} onInput={setPw} />
+  <InputGroupAddon align="inline-end">
+    <InputGroupButton size="icon-xs" aria-label="Show password" onClick={() => setShow(!show())}>
+      {show() ? <EyeOff /> : <Eye />}
+    </InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>
+
+<InputGroup>
+  <InputGroupTextarea value={msg()} onInput={setMsg} rows={3} />
+  <InputGroupAddon align="block-end">
+    <InputGroupButton size="xs" variant="primary">Send</InputGroupButton>
+  </InputGroupAddon>
+</InputGroup>`,
+  },
+  {
     id: 'form-field',
     title: 'FormField',
     group: 'Forms',
@@ -2073,6 +2334,75 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     code: `<FileUpload files={files()} onAdd={upload} onRemove={remove} onRetry={retry} />`,
   },
   {
+    id: 'area-chart',
+    title: 'AreaChart',
+    group: 'Charts',
+    blurb:
+      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation.',
+    controls: {
+      stacked: { type: 'boolean', label: 'stacked', default: true },
+    },
+    demo: (c) => (
+      <div class="w-full max-w-lg" data-testid="area-demo">
+        <Charts.AreaChart
+          mode={c.stacked ? 'stacked' : 'overlap'}
+          series={[
+            { key: 'orbit', label: 'Orbit' },
+            { key: 'nebula', label: 'Nebula', color: 'accent' },
+            { key: 'pulsar', label: 'Pulsar', color: 'chart-3' },
+          ]}
+          data={[
+            { label: 'Jan', values: { orbit: 12, nebula: 8, pulsar: 4 } },
+            { label: 'Feb', values: { orbit: 16, nebula: 10, pulsar: 6 } },
+            { label: 'Mar', values: { orbit: 14, nebula: 13, pulsar: 9 } },
+            { label: 'Apr', values: { orbit: 21, nebula: 12, pulsar: 8 } },
+            { label: 'May', values: { orbit: 24, nebula: 16, pulsar: 11 } },
+            { label: 'Jun', values: { orbit: 28, nebula: 15, pulsar: 14 } },
+          ]}
+        />
+      </div>
+    ),
+    code: (c) => `<AreaChart
+  mode="${c.stacked ? 'stacked' : 'overlap'}"
+  series={[{ key: 'orbit', label: 'Orbit' }, { key: 'nebula', label: 'Nebula', color: 'accent' }]}
+  data={[{ label: 'Jan', values: { orbit: 12, nebula: 8 } }, …]}
+/>`,
+  },
+  {
+    id: 'pie-chart',
+    title: 'PieChart',
+    group: 'Charts',
+    blurb: 'Pie with proportional wedges, tooltip, arrow-key navigation and a toggleable legend.',
+    demo: () => (
+      <Charts.PieChart
+        data={[
+          { label: 'Direct', value: 42 },
+          { label: 'Social', value: 28 },
+          { label: 'Referral', value: 18 },
+          { label: 'Other', value: 12 },
+        ]}
+      />
+    ),
+    code: `<PieChart data={[{ label: 'Direct', value: 42 }, { label: 'Social', value: 28, color: 'accent' }, …]} />`,
+  },
+  {
+    id: 'radial-bar-chart',
+    title: 'RadialBarChart',
+    group: 'Charts',
+    blurb: 'Concentric progress rings, one per datum, filled to value / max.',
+    demo: () => (
+      <Charts.RadialBarChart
+        max={100}
+        data={[
+          { label: 'Move', value: 78 },
+          { label: 'Exercise', value: 52 },
+          { label: 'Stand', value: 34 },
+        ]}
+      />
+    ),
+    code: `<RadialBarChart max={100} data={[{ label: 'Move', value: 78 }, { label: 'Stand', value: 34, color: 'accent' }]} />`,
+  },
+  {
     id: 'sparkline',
     title: 'Sparkline',
     group: 'Charts',
@@ -2110,7 +2440,58 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         />
       </div>
     ),
-    code: `<BarChart data={[{ label: 'Mon', value: 12 }, …]} />`,
+    code: `<BarChart data={[{ label: 'Mon', value: 12 }, …]} />
+
+// Multi-series: mode="stacked" | "grouped"
+<BarChart
+  mode="stacked"
+  series={[{ key: 'web', label: 'Web' }, { key: 'app', label: 'App', color: 'accent' }]}
+  data={[{ label: 'Mon', values: { web: 12, app: 5 } }, …]}
+/>`,
+    variants: [
+      {
+        label: 'Stacked',
+        demo: () => (
+          <div class="w-full max-w-md" data-testid="bar-stacked">
+            <Charts.BarChart
+              mode="stacked"
+              series={[
+                { key: 'web', label: 'Web' },
+                { key: 'app', label: 'App', color: 'accent' },
+              ]}
+              data={[
+                { label: 'Mon', values: { web: 12, app: 5 } },
+                { label: 'Tue', values: { web: 19, app: 8 } },
+                { label: 'Wed', values: { web: 8, app: 11 } },
+                { label: 'Thu', values: { web: 22, app: 9 } },
+                { label: 'Fri', values: { web: 16, app: 14 } },
+              ]}
+            />
+          </div>
+        ),
+      },
+      {
+        label: 'Grouped',
+        demo: () => (
+          <div class="w-full max-w-md" data-testid="bar-grouped">
+            <Charts.BarChart
+              mode="grouped"
+              series={[
+                { key: 'web', label: 'Web' },
+                { key: 'app', label: 'App', color: 'accent' },
+              ]}
+              data={[
+                { label: 'Mon', values: { web: 12, app: 5 } },
+                { label: 'Tue', values: { web: 19, app: 8 } },
+                { label: 'Wed', values: { web: 8, app: 11 } },
+                { label: 'Thu', values: { web: 22, app: 9 } },
+                { label: 'Fri', values: { web: 16, app: 14 } },
+              ]}
+            />
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'donut-chart',
@@ -2478,6 +2859,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     blurb: 'Dialog (Kobalte). variant="center" for short confirmations; "drawer" (default) for forms.',
     controls: {
       variant: { type: 'select', label: 'variant', options: ['drawer', 'center'], default: 'center' },
+      size: { type: 'select', label: 'size', options: ['sm', 'md', 'lg', 'xl', 'full'], default: 'md' },
       title: { type: 'text', label: 'title', default: 'Confirm action' },
     },
     demo: (c) => {
@@ -2489,6 +2871,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
             open={open()}
             onOpenChange={setOpen}
             variant={c.variant as 'drawer' | 'center'}
+            size={c.size as 'sm' | 'md' | 'lg' | 'xl' | 'full'}
             title={c.title as string}
           >
             <p class="text-sm text-muted-foreground">Do you want to continue with this action?</p>
@@ -2504,17 +2887,89 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open</Button>
-<Modal open={open()} onOpenChange={setOpen} variant="${c.variant}" title="${c.title}">
+<Modal open={open()} onOpenChange={setOpen} variant="${c.variant}" size="${c.size}" title="${c.title}">
   <p>Do you want to continue?</p>
-</Modal>`,
+</Modal>
+// content taller than the viewport scrolls inside the dialog; the header stays pinned`,
+    variants: [
+      {
+        label: 'Tall content scrolls (size="lg")',
+        demo: () => {
+          const [open, setOpen] = createSignal(false)
+          return (
+            <>
+              <UI.Button variant="outline" onClick={() => setOpen(true)}>
+                Open tall modal
+              </UI.Button>
+              <UI.Modal
+                open={open()}
+                onOpenChange={setOpen}
+                variant="center"
+                size="lg"
+                title="Pick references"
+              >
+                <For each={Array.from({ length: 40 }, (_, i) => i + 1)}>
+                  {(n) => <p class="py-1 text-sm text-muted-foreground">Row {n}</p>}
+                </For>
+                <div class="mt-4 flex justify-end">
+                  <UI.Button data-testid="tall-confirm" onClick={() => setOpen(false)}>
+                    Confirm
+                  </UI.Button>
+                </div>
+              </UI.Modal>
+            </>
+          )
+        },
+      },
+      {
+        label: 'MultiSelect and DateField inside a scrolling body',
+        demo: () => {
+          const [open, setOpen] = createSignal(false)
+          const [sel, setSel] = createSignal<string[]>([])
+          const [due, setDue] = createSignal('')
+          return (
+            <>
+              <UI.Button variant="outline" onClick={() => setOpen(true)}>
+                Open settings modal
+              </UI.Button>
+              <UI.Modal open={open()} onOpenChange={setOpen} variant="center" title="Settings">
+                <UI.MultiSelect
+                  placeholder="Pick tags"
+                  options={[
+                    { value: 'a', label: 'Alpha' },
+                    { value: 'b', label: 'Beta' },
+                    { value: 'c', label: 'Gamma' },
+                  ]}
+                  value={sel()}
+                  onChange={setSel}
+                />
+                <p data-testid="ms-count" class="mt-2 text-sm text-muted-foreground">
+                  {sel().length} selected
+                </p>
+                <div class="mt-3">
+                  <UI.DateField value={due()} onChange={setDue} label="Due date" />
+                  <p data-testid="due-value" class="mt-1 text-sm text-muted-foreground">
+                    {due() || 'No date'}
+                  </p>
+                </div>
+                <For each={Array.from({ length: 40 }, (_, i) => i + 1)}>
+                  {(n) => <p class="py-1 text-sm text-muted-foreground">Setting {n}</p>}
+                </For>
+              </UI.Modal>
+            </>
+          )
+        },
+      },
+    ],
   },
   {
     id: 'drawer',
     title: 'Drawer',
     group: 'Overlays',
     blurb:
-      'Sliding panel anchored to the right (Kobalte Dialog), with an optional fixed header (title/subtitle).',
+      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle).',
     controls: {
+      side: { type: 'select', label: 'side', options: ['right', 'left', 'top', 'bottom'], default: 'right' },
       title: { type: 'text', label: 'title', default: 'Customer detail' },
       subtitle: { type: 'text', label: 'subtitle', default: 'Rivera S.A. de C.V.' },
     },
@@ -2528,6 +2983,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
           <UI.Drawer
             open={open()}
             onOpenChange={setOpen}
+            side={c.side as UI.DrawerSide}
             title={c.title as string}
             subtitle={c.subtitle as string}
           >
@@ -2538,7 +2994,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open panel</Button>
-<Drawer open={open()} onOpenChange={setOpen} title="${c.title}" subtitle="${c.subtitle}">
+<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}">
   <div class="p-6">…</div>
 </Drawer>`,
   },
@@ -2654,6 +3110,207 @@ toast.error('Failed to save')`,
 
   // ---- Navigation -----------------------------------------------------------
   {
+    id: 'menubar',
+    title: 'Menubar',
+    group: 'Navigation',
+    blurb:
+      'Desktop-style application menubar (Kobalte Menubar). Arrow Left/Right moves between menus, hovering switches menus once one is open, items can carry shortcuts, checkbox/radio state and nested submenus. Escape closes and returns focus to the trigger.',
+    demo: () => {
+      const [grid, setGrid] = createSignal(true)
+      const [rulers, setRulers] = createSignal(false)
+      const [zoom, setZoom] = createSignal('100')
+      const [last, setLast] = createSignal('Nothing yet')
+      return (
+        <div class="w-full max-w-xl space-y-3">
+          <UI.Menubar label="Orbit Studio">
+            <UI.MenubarMenu label="File">
+              <UI.MenubarItem shortcut={['Ctrl', 'N']} onSelect={() => setLast('New project')}>
+                New project
+              </UI.MenubarItem>
+              <UI.MenubarItem shortcut={['Ctrl', 'O']} onSelect={() => setLast('Open…')}>
+                Open…
+              </UI.MenubarItem>
+              <UI.MenubarSub label="Export as">
+                <UI.MenubarItem onSelect={() => setLast('Export PNG')}>PNG image</UI.MenubarItem>
+                <UI.MenubarItem onSelect={() => setLast('Export SVG')}>SVG vector</UI.MenubarItem>
+                <UI.MenubarItem onSelect={() => setLast('Export PDF')}>PDF document</UI.MenubarItem>
+              </UI.MenubarSub>
+              <UI.MenubarSeparator />
+              <UI.MenubarItem shortcut={['Ctrl', 'S']} onSelect={() => setLast('Save')}>
+                Save
+              </UI.MenubarItem>
+              <UI.MenubarItem disabled>Share (offline)</UI.MenubarItem>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="Edit">
+              <UI.MenubarItem shortcut={['Ctrl', 'Z']} onSelect={() => setLast('Undo')}>
+                Undo
+              </UI.MenubarItem>
+              <UI.MenubarItem shortcut={['Ctrl', 'Y']} onSelect={() => setLast('Redo')}>
+                Redo
+              </UI.MenubarItem>
+              <UI.MenubarSeparator />
+              <UI.MenubarItem destructive onSelect={() => setLast('Clear canvas')}>
+                Clear canvas
+              </UI.MenubarItem>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="View">
+              <UI.MenubarLabel>Guides</UI.MenubarLabel>
+              <UI.MenubarCheckboxItem checked={grid()} onChange={setGrid}>
+                Show grid
+              </UI.MenubarCheckboxItem>
+              <UI.MenubarCheckboxItem checked={rulers()} onChange={setRulers}>
+                Show rulers
+              </UI.MenubarCheckboxItem>
+              <UI.MenubarSeparator />
+              <UI.MenubarLabel>Zoom</UI.MenubarLabel>
+              <UI.MenubarRadioGroup value={zoom()} onChange={setZoom}>
+                <UI.MenubarRadioItem value="50">50%</UI.MenubarRadioItem>
+                <UI.MenubarRadioItem value="100">100%</UI.MenubarRadioItem>
+                <UI.MenubarRadioItem value="200">200%</UI.MenubarRadioItem>
+              </UI.MenubarRadioGroup>
+            </UI.MenubarMenu>
+            <UI.MenubarMenu label="Help">
+              <UI.MenubarItem onSelect={() => setLast('Keyboard shortcuts')}>
+                Keyboard shortcuts
+              </UI.MenubarItem>
+              <UI.MenubarItem onSelect={() => setLast('About Orbit Studio')}>
+                About Orbit Studio
+              </UI.MenubarItem>
+            </UI.MenubarMenu>
+          </UI.Menubar>
+          <p class="text-xs text-muted-foreground" data-testid="menubar-status">
+            Grid {grid() ? 'on' : 'off'} · rulers {rulers() ? 'on' : 'off'} · zoom {zoom()}% · last action:{' '}
+            {last()}
+          </p>
+        </div>
+      )
+    },
+    code: `<Menubar label="Orbit Studio">
+  <MenubarMenu label="File">
+    <MenubarItem shortcut={['Ctrl', 'N']} onSelect={newProject}>New project</MenubarItem>
+    <MenubarSub label="Export as">
+      <MenubarItem onSelect={exportPng}>PNG image</MenubarItem>
+    </MenubarSub>
+    <MenubarSeparator />
+    <MenubarItem disabled>Share (offline)</MenubarItem>
+  </MenubarMenu>
+  <MenubarMenu label="View">
+    <MenubarLabel>Guides</MenubarLabel>
+    <MenubarCheckboxItem checked={grid()} onChange={setGrid}>Show grid</MenubarCheckboxItem>
+    <MenubarSeparator />
+    <MenubarRadioGroup value={zoom()} onChange={setZoom}>
+      <MenubarRadioItem value="100">100%</MenubarRadioItem>
+      <MenubarRadioItem value="200">200%</MenubarRadioItem>
+    </MenubarRadioGroup>
+  </MenubarMenu>
+</Menubar>`,
+  },
+  {
+    id: 'navigation-menu',
+    title: 'NavigationMenu',
+    group: 'Navigation',
+    blurb:
+      'Site navigation whose triggers open rich panels (links with icon, title and description, plus a featured card) in one shared viewport that animates its size between panels. Hover or click opens, Escape closes, links are reachable with Tab. Below md it collapses to a hamburger that opens a Drawer with an Accordion of the sections.',
+    demo: () => (
+      <div class="min-h-[22rem] w-full">
+        <UI.NavigationMenu
+          label="Nebula"
+          mobileTitle="Nebula"
+          mobileSections={[
+            {
+              label: 'Products',
+              links: [
+                { title: 'Analytics', href: '#/navigation-menu', description: 'Dashboards that update live' },
+                { title: 'Automations', href: '#/navigation-menu', description: 'Workflows without code' },
+                { title: 'Security', href: '#/navigation-menu', description: 'Audit trails and roles' },
+              ],
+            },
+            {
+              label: 'Resources',
+              links: [
+                { title: 'Guides', href: '#/navigation-menu', description: 'Step-by-step tutorials' },
+                { title: 'Support', href: '#/navigation-menu', description: 'Talk to a human' },
+              ],
+            },
+            { label: 'Pricing', href: '#/navigation-menu' },
+          ]}
+        >
+          <UI.NavigationMenuItem>
+            <UI.NavigationMenuTrigger>Products</UI.NavigationMenuTrigger>
+            <UI.NavigationMenuContent>
+              <div class="grid w-[34rem] grid-cols-[1fr_1.4fr] gap-2 [&>li]:flex [&>li>a]:flex-1">
+                <UI.NavigationMenuPanelLink
+                  featured
+                  href="#/navigation-menu"
+                  title="Nebula Cloud"
+                  description="Everything below, in one workspace."
+                />
+                <div class="space-y-1">
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Layers class="h-4 w-4" />}
+                    title="Analytics"
+                    description="Dashboards that update live"
+                  />
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Zap class="h-4 w-4" />}
+                    title="Automations"
+                    description="Workflows without code"
+                  />
+                  <UI.NavigationMenuPanelLink
+                    href="#/navigation-menu"
+                    icon={<Compass class="h-4 w-4" />}
+                    title="Security"
+                    description="Audit trails and roles"
+                  />
+                </div>
+              </div>
+            </UI.NavigationMenuContent>
+          </UI.NavigationMenuItem>
+          <UI.NavigationMenuItem>
+            <UI.NavigationMenuTrigger>Resources</UI.NavigationMenuTrigger>
+            <UI.NavigationMenuContent>
+              <div class="w-56 space-y-1">
+                <UI.NavigationMenuPanelLink
+                  href="#/navigation-menu"
+                  icon={<BookOpen class="h-4 w-4" />}
+                  title="Guides"
+                  description="Step-by-step tutorials"
+                />
+                <UI.NavigationMenuPanelLink
+                  href="#/navigation-menu"
+                  icon={<LifeBuoy class="h-4 w-4" />}
+                  title="Support"
+                  description="Talk to a human"
+                />
+              </div>
+            </UI.NavigationMenuContent>
+          </UI.NavigationMenuItem>
+          <UI.NavigationMenuLink href="#/navigation-menu">Pricing</UI.NavigationMenuLink>
+        </UI.NavigationMenu>
+      </div>
+    ),
+    code: `<NavigationMenu
+  label="Nebula"
+  mobileSections={[
+    { label: 'Products', links: [{ title: 'Analytics', href: '/analytics', description: 'Live dashboards' }] },
+    { label: 'Pricing', href: '/pricing' },
+  ]}
+>
+  <NavigationMenuItem>
+    <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+    <NavigationMenuContent>
+      <div class="grid w-[34rem] grid-cols-[1fr_1.4fr] gap-2">
+        <NavigationMenuPanelLink featured href="/cloud" title="Nebula Cloud" description="One workspace." />
+        <NavigationMenuPanelLink href="/analytics" icon={<Layers />} title="Analytics" description="Live dashboards" />
+      </div>
+    </NavigationMenuContent>
+  </NavigationMenuItem>
+  <NavigationMenuLink href="/pricing">Pricing</NavigationMenuLink>
+</NavigationMenu>`,
+  },
+  {
     id: 'tabs',
     title: 'Tabs',
     group: 'Navigation',
@@ -2723,6 +3380,166 @@ toast.error('Failed to save')`,
     { value: 'payment', title: 'Which payment methods do you accept?', content: 'Card and bank transfer.' },
   ]}
 />`,
+  },
+  {
+    id: 'sidebar',
+    title: 'Sidebar',
+    group: 'Navigation',
+    blurb:
+      'Composable app sidebar: `SidebarProvider` holds the state (Ctrl/Cmd+B toggles), `Sidebar` collapses off-canvas or to an icon rail (with tooltips), and below the `md` breakpoint it opens as a `Drawer`. Parts: Header, Content, Group, Menu, MenuButton, MenuSub, Footer, Rail, Inset. The demo sits in a bounded box, not the page shell.',
+    controls: {
+      side: { type: 'select', label: 'side', options: ['left', 'right'], default: 'left' },
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['sidebar', 'floating', 'inset'],
+        default: 'sidebar',
+      },
+      collapsible: {
+        type: 'select',
+        label: 'collapsible',
+        options: ['icon', 'offcanvas', 'none'],
+        default: 'icon',
+      },
+    },
+    demo: (c) => {
+      const [page, setPage] = createSignal('overview')
+      const side = () => c.side as UI.SidebarSide
+      return (
+        <div class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border bg-background/40">
+          <UI.SidebarProvider class={side() === 'right' ? 'flex-row-reverse' : undefined}>
+            <UI.Sidebar
+              side={side()}
+              variant={c.variant as UI.SidebarVariant}
+              collapsible={c.collapsible as UI.SidebarCollapsible}
+              label="Orbit navigation"
+            >
+              <UI.SidebarHeader>
+                <div class="flex items-center gap-2 px-1.5 py-1 group-data-[icon-collapsed=true]/sidebar:justify-center group-data-[icon-collapsed=true]/sidebar:px-0">
+                  <span class="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-primary text-primary-foreground">
+                    <Rocket class="h-4 w-4" />
+                  </span>
+                  <span class="truncate text-sm font-bold group-data-[icon-collapsed=true]/sidebar:hidden">
+                    Orbit
+                  </span>
+                </div>
+              </UI.SidebarHeader>
+              <UI.SidebarContent>
+                <UI.SidebarGroup>
+                  <UI.SidebarGroupLabel>Workspace</UI.SidebarGroupLabel>
+                  <UI.SidebarGroupAction label="New project">
+                    <Plus />
+                  </UI.SidebarGroupAction>
+                  <UI.SidebarGroupContent>
+                    <UI.SidebarMenu>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuButton
+                          tooltip="Overview"
+                          active={page() === 'overview'}
+                          onClick={() => setPage('overview')}
+                        >
+                          <Home />
+                          <span>Overview</span>
+                        </UI.SidebarMenuButton>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuButton
+                          tooltip="Inbox"
+                          active={page() === 'inbox'}
+                          onClick={() => setPage('inbox')}
+                        >
+                          <Inbox />
+                          <span>Inbox</span>
+                        </UI.SidebarMenuButton>
+                        <UI.SidebarMenuBadge>12</UI.SidebarMenuBadge>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuSub label="Projects" icon={<Folder />} defaultOpen>
+                          <UI.SidebarMenuSubItem>
+                            <UI.SidebarMenuSubButton
+                              active={page() === 'nebula'}
+                              onClick={() => setPage('nebula')}
+                            >
+                              <span>Nebula redesign</span>
+                            </UI.SidebarMenuSubButton>
+                          </UI.SidebarMenuSubItem>
+                          <UI.SidebarMenuSubItem>
+                            <UI.SidebarMenuSubButton
+                              active={page() === 'launch'}
+                              onClick={() => setPage('launch')}
+                            >
+                              <span>Launch checklist</span>
+                            </UI.SidebarMenuSubButton>
+                          </UI.SidebarMenuSubItem>
+                        </UI.SidebarMenuSub>
+                      </UI.SidebarMenuItem>
+                      <UI.SidebarMenuItem>
+                        <UI.SidebarMenuSkeleton showIcon />
+                      </UI.SidebarMenuItem>
+                    </UI.SidebarMenu>
+                  </UI.SidebarGroupContent>
+                </UI.SidebarGroup>
+              </UI.SidebarContent>
+              <UI.SidebarFooter>
+                <UI.SidebarMenu>
+                  <UI.SidebarMenuItem>
+                    <UI.SidebarMenuButton
+                      tooltip="Settings"
+                      active={page() === 'settings'}
+                      onClick={() => setPage('settings')}
+                    >
+                      <Settings />
+                      <span>Settings</span>
+                    </UI.SidebarMenuButton>
+                  </UI.SidebarMenuItem>
+                </UI.SidebarMenu>
+              </UI.SidebarFooter>
+              <UI.SidebarRail />
+            </UI.Sidebar>
+            <UI.SidebarInset>
+              <div class="flex items-center gap-2 border-b border-border p-2">
+                <UI.SidebarTrigger />
+                <span class="text-sm font-semibold capitalize">{page()}</span>
+                <span class="ml-auto hidden text-xs text-muted-foreground sm:inline">Ctrl/Cmd+B toggles</span>
+              </div>
+              <p class="p-4 text-sm text-muted-foreground">Main content for “{page()}”.</p>
+            </UI.SidebarInset>
+          </UI.SidebarProvider>
+        </div>
+      )
+    },
+    code: (c) => `<SidebarProvider class="h-screen">
+  <Sidebar side="${c.side}" variant="${c.variant}" collapsible="${c.collapsible}">
+    <SidebarHeader>Orbit</SidebarHeader>
+    <SidebarContent>
+      <SidebarGroup>
+        <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+        <SidebarGroupContent>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton href="#/overview" active tooltip="Overview">
+                <Home /><span>Overview</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuSub label="Projects" icon={<Folder />} defaultOpen>
+                <SidebarMenuSubItem>
+                  <SidebarMenuSubButton href="#/nebula"><span>Nebula redesign</span></SidebarMenuSubButton>
+                </SidebarMenuSubItem>
+              </SidebarMenuSub>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroupContent>
+      </SidebarGroup>
+    </SidebarContent>
+    <SidebarRail />
+  </Sidebar>
+  <SidebarInset>
+    <SidebarTrigger />
+    …page…
+  </SidebarInset>
+</SidebarProvider>
+// useSidebar(): { open, setOpen, toggle, isMobile, openMobile, setOpenMobile }`,
   },
   {
     id: 'breadcrumb',
@@ -2891,8 +3708,71 @@ toast.error('Failed to save')`,
   <YourPage />   {/* glass cards now read over the tinted backdrop */}
 </div>
 
-<Aurora intensity={0.6} animated />   // stronger + slow drift`,
+<Aurora intensity={0.6} animated />   // stronger + slow drift
+
+// custom palette: CSS colors or theme tokens ('--primary'); glow is configurable too
+<Aurora colors={['#ff6a3d', '#ffb199', '--accent']} glowColor="#ff6a3d" glowOpacity={0.15} />`,
     variants: [
+      {
+        label: 'Custom palette (colors, glowColor)',
+        demo: () => {
+          const [palette, setPalette] = createSignal('sunset')
+          const PALETTES: Record<string, string[] | undefined> = {
+            tokens: undefined,
+            sunset: ['#ff6a3d', '#ffb199', '#c026d3'],
+            ocean: ['#0ea5e9', '#14b8a6', '#6366f1'],
+          }
+          return (
+            <div class="flex w-full flex-col gap-3">
+              <div class="flex gap-2" role="group" aria-label="Aurora palette">
+                <For each={Object.keys(PALETTES)}>
+                  {(name) => (
+                    <UI.Button
+                      variant={palette() === name ? 'primary' : 'outline'}
+                      aria-pressed={palette() === name}
+                      onClick={() => setPalette(name)}
+                    >
+                      {name}
+                    </UI.Button>
+                  )}
+                </For>
+              </div>
+              {/* A transformed box re-anchors the fixed Aurora to the demo area. */}
+              <div
+                data-testid="aurora-palette-demo"
+                class="relative h-40 w-full overflow-hidden rounded-xl border border-border [transform:translateZ(0)]"
+              >
+                <UI.Aurora
+                  pointerGlow={false}
+                  colors={PALETTES[palette()]}
+                  glowColor={palette() === 'sunset' ? '#ff6a3d' : undefined}
+                  glowOpacity={0.2}
+                  intensity={0.6}
+                />
+                <div class="relative grid h-full place-items-center">
+                  <UI.Card glass class="px-4 py-2 text-sm">
+                    {palette()}
+                  </UI.Card>
+                </div>
+              </div>
+            </div>
+          )
+        },
+      },
+      {
+        label: 'pointerGlow (transform-positioned)',
+        demo: () => (
+          <div
+            data-testid="aurora-glow-demo"
+            class="relative h-32 w-full overflow-hidden rounded-xl border border-border [transform:translateZ(0)]"
+          >
+            <UI.Aurora />
+            <p class="relative grid h-full place-items-center text-sm text-muted-foreground">
+              Move the pointer: the glow follows via transform.
+            </p>
+          </div>
+        ),
+      },
       {
         label: 'variant="blobs" (default)',
         demo: () => (
@@ -3362,6 +4242,246 @@ toast.error('Failed to save')`,
 ]} />`,
   },
   {
+    id: 'button-group',
+    title: 'ButtonGroup',
+    group: 'Actions',
+    blurb:
+      'Joins buttons into one segmented control: shared borders, only the outer corners rounded. Horizontal or vertical, `role="group"` with an `aria-label`. Works with `Button`, `ButtonGroupText`, `ButtonGroupSeparator` and a `Dropdown` trigger as the last child.',
+    controls: {
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['horizontal', 'vertical'],
+        default: 'horizontal',
+      },
+    },
+    demo: (c) => {
+      const [last, setLast] = createSignal('none')
+      return (
+        <div class="flex flex-col items-start gap-6">
+          <UI.ButtonGroup
+            orientation={c.orientation as UI.ButtonGroupOrientation}
+            aria-label="Text alignment"
+          >
+            <UI.Button variant="outline" onClick={() => setLast('left')}>
+              Left
+            </UI.Button>
+            <UI.Button variant="outline" onClick={() => setLast('center')}>
+              Center
+            </UI.Button>
+            <UI.Button variant="outline" onClick={() => setLast('right')}>
+              Right
+            </UI.Button>
+          </UI.ButtonGroup>
+          <p class="text-sm text-muted-foreground">
+            Last pressed: <span data-testid="bg-last">{last()}</span>
+          </p>
+          <UI.ButtonGroup aria-label="Publish actions">
+            <UI.Button>Publish</UI.Button>
+            <UI.ButtonGroupSeparator />
+            <UI.Dropdown
+              label="More publish options"
+              class="items-center rounded-md bg-primary px-2 text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring"
+              items={[
+                { label: 'Schedule', onSelect: () => setLast('schedule') },
+                { label: 'Save draft', onSelect: () => setLast('draft') },
+              ]}
+            >
+              <ChevronDown class="h-4 w-4" />
+            </UI.Dropdown>
+          </UI.ButtonGroup>
+          <UI.ButtonGroup aria-label="Quantity">
+            <UI.ButtonGroupText>Qty</UI.ButtonGroupText>
+            <UI.Button variant="outline">-</UI.Button>
+            <UI.Button variant="outline">+</UI.Button>
+          </UI.ButtonGroup>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<ButtonGroup${c.orientation === 'vertical' ? ' orientation="vertical"' : ''} aria-label="Text alignment">
+  <Button variant="outline">Left</Button>
+  <Button variant="outline">Center</Button>
+  <Button variant="outline">Right</Button>
+</ButtonGroup>
+
+// A Dropdown trigger works as the last child
+<ButtonGroup aria-label="Publish actions">
+  <Button>Publish</Button>
+  <ButtonGroupSeparator />
+  <Dropdown label="More options" items={items} class="rounded-md bg-primary px-2 text-primary-foreground">
+    <ChevronDown class="h-4 w-4" />
+  </Dropdown>
+</ButtonGroup>`,
+  },
+  {
+    id: 'aspect-ratio',
+    title: 'AspectRatio',
+    group: 'Layout',
+    blurb: 'Keeps a fixed width:height ratio with CSS `aspect-ratio`; children fill the box.',
+    controls: {
+      ratio: { type: 'select', label: 'ratio', options: ['16/9', '4/3', '1/1', '9/16'], default: '16/9' },
+    },
+    demo: (c) => {
+      const ratio = (): number => {
+        const [w, h] = String(c.ratio).split('/').map(Number)
+        return w / h
+      }
+      return (
+        <div class="w-full max-w-sm">
+          <UI.AspectRatio
+            ratio={ratio()}
+            class="overflow-hidden rounded-xl border border-border"
+            data-testid="ar-box"
+          >
+            <div class="grid place-items-center bg-gradient-to-br from-primary/30 to-muted text-sm text-muted-foreground">
+              {String(c.ratio)}
+            </div>
+          </UI.AspectRatio>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<AspectRatio ratio={${String(c.ratio).replace('/', ' / ')}} class="w-full overflow-hidden rounded-xl">
+  <img src="/cover.jpg" alt="" class="object-cover" />
+</AspectRatio>`,
+  },
+  {
+    id: 'label',
+    title: 'Label',
+    group: 'Forms',
+    blurb:
+      'Styled `<label>`: `for` ties it to a control so clicking it focuses the field. `required` adds a decorative asterisk; dims when `disabled` or when a preceding `.peer` control is disabled.',
+    controls: {
+      required: { type: 'boolean', label: 'required', default: true },
+      disabled: { type: 'boolean', label: 'disabled', default: false },
+    },
+    demo: (c) => {
+      const [name, setName] = createSignal('')
+      return (
+        <div class="grid w-full max-w-xs gap-2">
+          <UI.Label for="label-demo-name" required={Boolean(c.required)} disabled={Boolean(c.disabled)}>
+            Full name
+          </UI.Label>
+          <UI.Input
+            id="label-demo-name"
+            value={name()}
+            onInput={setName}
+            placeholder="Ada Lovelace"
+            disabled={Boolean(c.disabled)}
+          />
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<Label for="name"${c.required ? ' required' : ''}${c.disabled ? ' disabled' : ''}>Full name</Label>
+<Input id="name" value={name()} onInput={setName} />
+
+// Dims automatically after a disabled sibling marked .peer
+<input class="peer" disabled /> <Label>Notes</Label>`,
+  },
+  {
+    id: 'native-select',
+    title: 'NativeSelect',
+    group: 'Forms',
+    blurb:
+      'Styled native `<select>` with a chevron: the OS picker on mobile. Sizes sm/default, `invalid`, `disabled`; `<option>` and `<optgroup>` children; `value` and `onChange` pass through.',
+    controls: {
+      size: { type: 'select', label: 'size', options: ['default', 'sm'], default: 'default' },
+      invalid: { type: 'boolean', label: 'invalid', default: false },
+      disabled: { type: 'boolean', label: 'disabled', default: false },
+    },
+    demo: (c) => {
+      const [plan, setPlan] = createSignal('pro')
+      return (
+        <div class="grid w-full max-w-xs gap-2">
+          <UI.NativeSelect
+            aria-label="Plan"
+            size={c.size as UI.NativeSelectSize}
+            invalid={Boolean(c.invalid)}
+            disabled={Boolean(c.disabled)}
+            value={plan()}
+            onChange={(e) => setPlan(e.currentTarget.value)}
+          >
+            <optgroup label="Personal">
+              <option value="free">Free</option>
+              <option value="pro">Pro</option>
+            </optgroup>
+            <optgroup label="Teams">
+              <option value="team">Team</option>
+              <option value="enterprise">Enterprise</option>
+            </optgroup>
+          </UI.NativeSelect>
+          <p class="text-sm text-muted-foreground">
+            Selected: <span data-testid="ns-value">{plan()}</span>
+          </p>
+        </div>
+      )
+    },
+    code: (
+      c,
+    ) => `<NativeSelect${c.size === 'sm' ? ' size="sm"' : ''}${c.invalid ? ' invalid' : ''}${c.disabled ? ' disabled' : ''}
+  aria-label="Plan" value={plan()} onChange={(e) => setPlan(e.currentTarget.value)}>
+  <optgroup label="Personal">
+    <option value="free">Free</option>
+    <option value="pro">Pro</option>
+  </optgroup>
+</NativeSelect>`,
+  },
+  {
+    id: 'prose',
+    title: 'Prose',
+    group: 'Layout',
+    blurb:
+      'Typography wrapper for raw HTML or rendered markdown: headings, paragraphs, `.lead`, links, quotes, lists, code, tables. Pure Tailwind child selectors, no CSS file, no plugin. `size` sm/base/lg.',
+    controls: {
+      size: { type: 'select', label: 'size', options: ['sm', 'base', 'lg'], default: 'base' },
+    },
+    demo: (c) => (
+      <UI.Prose size={c.size as UI.ProseSize} class="w-full max-w-xl" data-testid="prose-demo">
+        <h2>Launch notes</h2>
+        <p class="lead">Orbit 2.0 ships next week with a faster editor.</p>
+        <p>
+          Read the <a href="#/prose">changelog</a> for every change, or try <code>orbit init</code> in a new
+          project.
+        </p>
+        <blockquote>Small releases, shipped often.</blockquote>
+        <ul>
+          <li>Faster startup</li>
+          <li>Offline drafts</li>
+        </ul>
+        <pre>
+          <code>orbit deploy --prod</code>
+        </pre>
+        <table>
+          <thead>
+            <tr>
+              <th>Plan</th>
+              <th>Seats</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Team</td>
+              <td>10</td>
+            </tr>
+          </tbody>
+        </table>
+      </UI.Prose>
+    ),
+    code: (c) => `<Prose${c.size === 'base' ? '' : ` size="${c.size}"`}>
+  <h2>Launch notes</h2>
+  <p class="lead">Orbit 2.0 ships next week.</p>
+  <p>Read the <a href="/changelog">changelog</a>.</p>
+</Prose>
+
+// Rendered markdown
+<Prose><div innerHTML={html()} /></Prose>`,
+  },
+  {
     id: 'kbd',
     title: 'Kbd',
     group: 'Layout',
@@ -3759,6 +4879,117 @@ toast.error('Failed to save')`,
     code: (c) => `<List${c.stagger ? ' stagger' : ''} items={[
   { title: 'Marina Vega', description: 'Product designer', avatar: <Avatar fallback="MV" /> },
 ]} />${c.stagger ? '\n\n// stagger = rows cascade in on mount (CSS, reduced-motion aware)' : ''}`,
+  },
+  {
+    id: 'item',
+    title: 'Item',
+    group: 'Data',
+    blurb:
+      'Composable row: `ItemMedia` (icon or image), `ItemContent` with title and description, trailing `ItemActions`, optional header/footer. Variants default/outline/muted, sizes default/sm/xs; `href` or `onClick` makes the whole row interactive.',
+    controls: {
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['default', 'outline', 'muted'],
+        default: 'outline',
+      },
+      size: { type: 'select', label: 'size', options: ['default', 'sm', 'xs'], default: 'default' },
+    },
+    demo: (c) => {
+      const [digest, setDigest] = createSignal(true)
+      return (
+        <UI.ItemGroup class="w-full max-w-md gap-2">
+          <UI.Item variant={c.variant as UI.ItemVariant} size={c.size as UI.ItemSize}>
+            <UI.ItemMedia variant="icon">
+              <Bell />
+            </UI.ItemMedia>
+            <UI.ItemContent>
+              <UI.ItemTitle>Weekly digest</UI.ItemTitle>
+              <UI.ItemDescription>A summary of your projects every Monday at 9:00.</UI.ItemDescription>
+            </UI.ItemContent>
+            <UI.ItemActions>
+              <UI.Switch checked={digest()} onChange={setDigest} label="Email" />
+            </UI.ItemActions>
+          </UI.Item>
+          <UI.Item variant={c.variant as UI.ItemVariant} size={c.size as UI.ItemSize} href="#/item">
+            <UI.ItemMedia variant="icon">
+              <Folder />
+            </UI.ItemMedia>
+            <UI.ItemContent>
+              <UI.ItemTitle>
+                Orbit launch assets <UI.Badge tone="neutral">12</UI.Badge>
+              </UI.ItemTitle>
+              <UI.ItemDescription>Updated 2 hours ago</UI.ItemDescription>
+            </UI.ItemContent>
+          </UI.Item>
+        </UI.ItemGroup>
+      )
+    },
+    code: (c) => `<Item variant="${c.variant}"${c.size === 'default' ? '' : ` size="${c.size}"`}>
+  <ItemMedia variant="icon"><Bell /></ItemMedia>
+  <ItemContent>
+    <ItemTitle>Weekly digest</ItemTitle>
+    <ItemDescription>A summary every Monday at 9:00.</ItemDescription>
+  </ItemContent>
+  <ItemActions><Switch checked={on()} onChange={setOn} label="Email" /></ItemActions>
+</Item>
+
+// href or onClick makes the whole row the hit target
+<Item href="/projects/orbit">…</Item>`,
+  },
+  {
+    id: 'scroll-area',
+    title: 'ScrollArea',
+    group: 'Layout',
+    blurb:
+      'Native scroll container with thin, token-tinted scrollbars. Keyboard-focusable; pass `label` to expose it as a named region. `orientation` vertical/horizontal/both.',
+    controls: {
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['vertical', 'horizontal'],
+        default: 'vertical',
+      },
+    },
+    demo: (c) =>
+      c.orientation === 'horizontal' ? (
+        <UI.ScrollArea
+          orientation="horizontal"
+          label="Palettes"
+          class="w-full max-w-md rounded-xl border border-border"
+        >
+          <div class="flex w-max gap-3 p-4">
+            <For each={Array.from({ length: 14 }, (_, i) => i)}>
+              {(i) => (
+                <div class="grid h-20 w-28 place-items-center rounded-lg border border-border bg-muted/40 text-sm text-muted-foreground">
+                  Tile {i + 1}
+                </div>
+              )}
+            </For>
+          </div>
+        </UI.ScrollArea>
+      ) : (
+        <UI.ScrollArea label="Release notes" class="h-56 w-full max-w-sm rounded-xl border border-border">
+          <div class="p-4">
+            <p class="mb-3 text-sm font-semibold">Release notes</p>
+            <For each={Array.from({ length: 30 }, (_, i) => 30 - i)}>
+              {(v) => (
+                <p class="border-b border-border py-2 text-sm text-muted-foreground">
+                  v0.{v}.0 — maintenance and fixes
+                </p>
+              )}
+            </For>
+          </div>
+        </UI.ScrollArea>
+      ),
+    code: (c) =>
+      c.orientation === 'horizontal'
+        ? `<ScrollArea orientation="horizontal" label="Palettes" class="w-full rounded-xl border border-border">
+  <div class="flex w-max gap-3 p-4">…tiles…</div>
+</ScrollArea>`
+        : `<ScrollArea label="Release notes" class="h-56 rounded-xl border border-border">
+  <div class="p-4">…long content…</div>
+</ScrollArea>`,
   },
   {
     id: 'countdown',
@@ -4599,10 +5830,65 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
         </UI.Message>
       </UI.ChatThread>
     ),
-    code: `<ChatThread maxWidth={520}>
-  <Message role="user">…</Message>
-  <Message role="assistant">…</Message>
-</ChatThread>`,
+    code: `<ChatThread maxWidth={520} apiRef={(a) => (api = a)}>
+  <Message id="m1" role="user">…</Message>
+  <Message id="m2" role="assistant">…</Message>
+</ChatThread>
+
+// Follows new output only while you are at the bottom; otherwise a
+// "Jump to latest" button appears. Prepending older messages keeps the view.
+api.scrollToMessage('m1')
+api.scrollToEnd()`,
+    variants: [
+      {
+        label: 'Scroll behaviour: prepend, append, jump to a message',
+        demo: () => {
+          const mk = (n: number) => ({ id: `m${n}`, text: `Message number ${n}` })
+          const [items, setItems] = createSignal(Array.from({ length: 12 }, (_, i) => mk(i + 10)))
+          let api: UI.ChatThreadApi | undefined
+          return (
+            <div class="flex w-full max-w-md flex-col gap-2">
+              <div class="flex flex-wrap gap-2">
+                <UI.Button
+                  variant="outline"
+                  onClick={() => {
+                    const first = Number(items()[0]!.id.slice(1))
+                    setItems([...Array.from({ length: 5 }, (_, i) => mk(first - 5 + i)), ...items()])
+                  }}
+                >
+                  Load older
+                </UI.Button>
+                <UI.Button
+                  variant="outline"
+                  onClick={() => {
+                    const last = Number(items()[items().length - 1]!.id.slice(1))
+                    setItems([...items(), mk(last + 1)])
+                  }}
+                >
+                  Add message
+                </UI.Button>
+                <UI.Button variant="outline" onClick={() => api?.scrollToMessage('m10')}>
+                  Go to first
+                </UI.Button>
+              </div>
+              <UI.ChatThread
+                apiRef={(a) => (api = a)}
+                maxWidth={440}
+                class="h-64 rounded-xl border border-border p-3"
+              >
+                <For each={items()}>
+                  {(m, i) => (
+                    <UI.Message id={m.id} role={i() % 2 ? 'assistant' : 'user'}>
+                      {m.text}
+                    </UI.Message>
+                  )}
+                </For>
+              </UI.ChatThread>
+            </div>
+          )
+        },
+      },
+    ],
   },
   {
     id: 'message',
@@ -4622,7 +5908,84 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
     ),
     code: `<Message role="user" author="Alex">…</Message>
 <Message role="assistant" author="Nova">…</Message>
-<Message role="system">Nova joined</Message>`,
+<Message role="system">Nova joined</Message>
+
+// Bubble styles, sides, reactions, attachments
+<Message role="user" variant="tinted" align="end" reactions={<Badge>+1</Badge>}>…</Message>
+
+// One sender, several consecutive messages
+<MessageGroup author="Nova" avatar={<Avatar name="Nova" size="sm" />} variant="secondary">
+  <Message role="assistant">First</Message>
+  <Message role="assistant">Second</Message>
+</MessageGroup>`,
+    variants: [
+      {
+        label: 'Bubble variants',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-2">
+            <For each={['default', 'secondary', 'muted', 'tinted', 'outline', 'ghost', 'destructive']}>
+              {(v) => (
+                <UI.Message role="assistant" variant={v as UI.MessageVariant} align="start">
+                  {v}
+                </UI.Message>
+              )}
+            </For>
+          </div>
+        ),
+      },
+      {
+        label: 'Alignment, reactions and attachments',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-3">
+            <UI.Message
+              role="user"
+              variant="tinted"
+              align="end"
+              reactions={
+                <>
+                  <UI.Badge tone="neutral">+1 2</UI.Badge>
+                  <UI.Badge tone="neutral">Done 1</UI.Badge>
+                </>
+              }
+              attachments={
+                <UI.Attachment size="sm" state="done">
+                  <UI.AttachmentMedia>
+                    <FileText />
+                  </UI.AttachmentMedia>
+                  <UI.AttachmentContent>
+                    <UI.AttachmentTitle>brief.pdf</UI.AttachmentTitle>
+                    <UI.AttachmentDescription>1.2 MB</UI.AttachmentDescription>
+                  </UI.AttachmentContent>
+                </UI.Attachment>
+              }
+            >
+              Here is the brief for the Orbit launch.
+            </UI.Message>
+            <UI.Message role="assistant" variant="secondary" align="start">
+              Got it, reading it now.
+            </UI.Message>
+          </div>
+        ),
+      },
+      {
+        label: 'MessageGroup',
+        demo: () => (
+          <div class="flex w-full max-w-md flex-col gap-3">
+            <UI.MessageGroup
+              author="Nova"
+              timestamp="2:42 PM"
+              avatar={<UI.Avatar name="Nova" size="sm" />}
+              variant="muted"
+              align="start"
+            >
+              <UI.Message role="assistant">Aurora's Q3 churn was 3.2%.</UI.Message>
+              <UI.Message role="assistant">That is down from 4.1% in Q2.</UI.Message>
+              <UI.Message role="assistant">Want the breakdown by plan?</UI.Message>
+            </UI.MessageGroup>
+          </div>
+        ),
+      },
+    ],
   },
   {
     id: 'streaming-text',
@@ -4676,6 +6039,118 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
 <SourceList sources={[{ title: 'Design spec', href: '/spec' }]} />`,
   },
   {
+    id: 'chat-marker',
+    title: 'ChatMarker',
+    group: 'Data',
+    blurb:
+      'Inline system note inside a conversation: plain, bordered pill, or a labelled separator with lines. Optional decorative icon.',
+    controls: {
+      variant: {
+        type: 'select',
+        label: 'variant',
+        options: ['default', 'border', 'separator'],
+        default: 'separator',
+      },
+    },
+    demo: (c) => (
+      <div class="flex w-full max-w-md flex-col gap-2">
+        <UI.ChatMarker variant={c.variant as UI.ChatMarkerVariant}>Yesterday</UI.ChatMarker>
+        <UI.ChatMarker variant={c.variant as UI.ChatMarkerVariant} icon={<UserPlus />}>
+          Nova joined the conversation
+        </UI.ChatMarker>
+      </div>
+    ),
+    code: (c) => `<ChatMarker variant="${c.variant}">Yesterday</ChatMarker>
+<ChatMarker variant="${c.variant}" icon={<UserPlus />}>Nova joined</ChatMarker>`,
+  },
+  {
+    id: 'attachment',
+    title: 'Attachment',
+    group: 'Data',
+    blurb:
+      'File or image chip built on Item: media, title, description and icon actions, with idle / uploading / processing / error / done states, a progress bar and a scroll-snap AttachmentGroup.',
+    controls: {
+      state: {
+        type: 'select',
+        label: 'state',
+        options: ['idle', 'uploading', 'processing', 'error', 'done'],
+        default: 'uploading',
+      },
+      size: { type: 'select', label: 'size', options: ['default', 'sm', 'xs'], default: 'default' },
+      orientation: {
+        type: 'select',
+        label: 'orientation',
+        options: ['horizontal', 'vertical'],
+        default: 'horizontal',
+      },
+    },
+    demo: (c) => (
+      <div class="w-full max-w-sm">
+        <UI.Attachment
+          state={c.state as UI.AttachmentState}
+          size={c.size as UI.ItemSize}
+          orientation={c.orientation as UI.AttachmentOrientation}
+          progress={42}
+        >
+          <UI.AttachmentMedia>
+            <FileText />
+          </UI.AttachmentMedia>
+          <UI.AttachmentContent>
+            <UI.AttachmentTitle>roadmap-q4.pdf</UI.AttachmentTitle>
+            <UI.AttachmentDescription>
+              {c.state === 'error' ? 'Upload failed — file too large' : '2.4 MB'}
+            </UI.AttachmentDescription>
+          </UI.AttachmentContent>
+          <UI.AttachmentActions>
+            <UI.AttachmentAction label="Remove roadmap-q4.pdf">
+              <X />
+            </UI.AttachmentAction>
+          </UI.AttachmentActions>
+        </UI.Attachment>
+      </div>
+    ),
+    code: (c) => `<Attachment state="${c.state}" progress={42}>
+  <AttachmentMedia><FileText /></AttachmentMedia>
+  <AttachmentContent>
+    <AttachmentTitle>roadmap-q4.pdf</AttachmentTitle>
+    <AttachmentDescription>2.4 MB</AttachmentDescription>
+  </AttachmentContent>
+  <AttachmentActions>
+    <AttachmentAction label="Remove"><X /></AttachmentAction>
+  </AttachmentActions>
+</Attachment>
+
+// Several, in a horizontal scroll-snap row
+<AttachmentGroup>…</AttachmentGroup>
+
+// In the composer
+<PromptComposer attachmentItems={<AttachmentGroup>…</AttachmentGroup>} … />`,
+    variants: [
+      {
+        label: 'AttachmentGroup',
+        demo: () => (
+          <div class="w-full max-w-sm">
+            <UI.AttachmentGroup>
+              <For each={['uploading', 'done', 'error', 'processing', 'idle'] as UI.AttachmentState[]}>
+                {(st, i) => (
+                  <UI.Attachment state={st} progress={30 + i() * 10} size="sm">
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>{`file-${i() + 1}.pdf`}</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>{st}</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                )}
+              </For>
+            </UI.AttachmentGroup>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
     id: 'prompt-composer',
     title: 'PromptComposer',
     group: 'Forms',
@@ -4699,7 +6174,48 @@ const [price, setPrice] = createSignal<[number, number]>([0, 100])
       )
     },
     code: `<PromptComposer value={value()} onInput={setValue} onSubmit={send}
-  attachments={['spec.pdf']} onAttach={pick} />`,
+  attachments={['spec.pdf']} onAttach={pick} />
+
+// Rich attachments with upload progress
+<PromptComposer attachmentItems={<AttachmentGroup>…</AttachmentGroup>} … />`,
+    variants: [
+      {
+        label: 'Attachment items',
+        demo: () => {
+          const [value, setValue] = createSignal('')
+          return (
+            <UI.PromptComposer
+              value={value()}
+              onInput={setValue}
+              onSubmit={() => setValue('')}
+              class="max-w-lg"
+              attachmentItems={
+                <UI.AttachmentGroup>
+                  <UI.Attachment size="sm" state="uploading" progress={64}>
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>spec.pdf</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>64%</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                  <UI.Attachment size="sm" state="error">
+                    <UI.AttachmentMedia>
+                      <FileText />
+                    </UI.AttachmentMedia>
+                    <UI.AttachmentContent>
+                      <UI.AttachmentTitle>huge.zip</UI.AttachmentTitle>
+                      <UI.AttachmentDescription>Too large</UI.AttachmentDescription>
+                    </UI.AttachmentContent>
+                  </UI.Attachment>
+                </UI.AttachmentGroup>
+              }
+            />
+          )
+        },
+      },
+    ],
   },
   {
     id: 'artifact-panel',

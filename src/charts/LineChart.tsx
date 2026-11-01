@@ -6,6 +6,7 @@
 import { createSignal, For, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { ChartXLabels } from './shared'
 
 export interface LineSeries {
   name?: string
@@ -255,9 +256,7 @@ export function LineChart(props: LineChartProps): JSX.Element {
       </div>
 
       <Show when={props.labels && props.labels.length > 0}>
-        <div class="mt-1 flex w-full text-xs text-muted-foreground">
-          <For each={props.labels}>{(label) => <span class="flex-1 truncate text-center">{label}</span>}</For>
-        </div>
+        <ChartXLabels labels={props.labels ?? []} />
       </Show>
     </div>
   )

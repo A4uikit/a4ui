@@ -42,6 +42,19 @@ export { createLinkedSelection, type LinkedSelection } from './lib/createLinkedS
 export { Accordion, type AccordionItem } from './ui/Accordion'
 export { Badge, type BadgeTone } from './ui/Badge'
 export { Button, type ButtonVariant } from './ui/Button'
+export {
+  ButtonGroup,
+  ButtonGroupText,
+  ButtonGroupSeparator,
+  type ButtonGroupProps,
+  type ButtonGroupTextProps,
+  type ButtonGroupSeparatorProps,
+  type ButtonGroupOrientation,
+} from './ui/ButtonGroup'
+export { AspectRatio, type AspectRatioProps } from './ui/AspectRatio'
+export { Label, type LabelProps } from './ui/Label'
+export { NativeSelect, type NativeSelectProps, type NativeSelectSize } from './ui/NativeSelect'
+export { Prose, type ProseProps, type ProseSize } from './ui/Prose'
 export { Card, CardHeader, CardTitle, CardContent } from './ui/Card'
 export { Checkbox } from './ui/Checkbox'
 export { DateField } from './ui/DateField'
@@ -49,12 +62,55 @@ export { TimeField, type TimeFieldProps } from './ui/TimeField'
 export { DateTimeField, type DateTimeFieldProps } from './ui/DateTimeField'
 export { DateRangePicker, type DateRange, type DateRangePickerProps } from './ui/DateRangePicker'
 export { FormField, FormLabel, FormControl, FormDescription, FormError, type FormFieldProps } from './ui/Form'
+export {
+  Field,
+  FieldSet,
+  FieldLegend,
+  FieldGroup,
+  FieldContent,
+  FieldLabel,
+  FieldTitle,
+  FieldDescription,
+  FieldSeparator,
+  FieldError,
+  type FieldProps,
+  type FieldSetProps,
+  type FieldLegendProps,
+  type FieldGroupProps,
+  type FieldLabelProps,
+  type FieldSeparatorProps,
+  type FieldErrorProps,
+  type FieldOrientation,
+} from './ui/Field'
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupText,
+  InputGroupButton,
+  InputGroupInput,
+  InputGroupTextarea,
+  type InputGroupProps,
+  type InputGroupAddonProps,
+  type InputGroupAddonAlign,
+  type InputGroupButtonProps,
+  type InputGroupButtonSize,
+  type InputGroupInputProps,
+  type InputGroupTextareaProps,
+} from './ui/InputGroup'
 export { FileUpload, type UploadFile, type FileUploadProps } from './ui/FileUpload'
 export { MultiSelect, type MultiSelectOption, type MultiSelectProps } from './ui/MultiSelect'
-export { Drawer } from './ui/Drawer'
+export { Drawer, type DrawerProps, type DrawerSide } from './ui/Drawer'
 export { Dropdown, type DropdownItem } from './ui/Dropdown'
 export { Dropzone } from './ui/Dropzone'
 export { Input } from './ui/Input'
+export {
+  Questionnaire,
+  type QuestionnaireProps,
+  type QuestionnaireQuestion,
+  type QuestionnaireOption,
+  type QuestionnaireAnswers,
+  type QuestionnaireLabels,
+} from './ui/Questionnaire'
 export { Modal } from './ui/Modal'
 export { PageHeader } from './ui/PageHeader'
 export { Pagination } from './ui/Pagination'
@@ -84,6 +140,37 @@ export { Toggle } from './ui/Toggle'
 export { ToggleGroup, type ToggleGroupOption } from './ui/ToggleGroup'
 export { SegmentedControl, type SegmentedOption } from './ui/SegmentedControl'
 export { Breadcrumb, type BreadcrumbItem } from './ui/Breadcrumb'
+export {
+  Menubar,
+  MenubarCheckboxItem,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarRadioGroup,
+  MenubarRadioItem,
+  MenubarSeparator,
+  MenubarSub,
+  type MenubarCheckboxItemProps,
+  type MenubarItemProps,
+  type MenubarMenuProps,
+  type MenubarProps,
+  type MenubarRadioGroupProps,
+  type MenubarRadioItemProps,
+  type MenubarSubProps,
+} from './ui/Menubar'
+export {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuPanelLink,
+  NavigationMenuTrigger,
+  type NavigationMenuContentProps,
+  type NavigationMenuLinkProps,
+  type NavigationMenuMobileSection,
+  type NavigationMenuPanelLinkProps,
+  type NavigationMenuProps,
+} from './ui/NavigationMenu'
 export { AlertDialog } from './ui/AlertDialog'
 export { ContextMenu, type ContextMenuItem } from './ui/ContextMenu'
 export { Combobox } from './ui/Combobox'
@@ -124,6 +211,23 @@ export {
 export { Anchor, type AnchorItem, type AnchorProps } from './ui/Anchor'
 export { Highlight, type HighlightProps } from './ui/Highlight'
 export { List, type ListItem } from './ui/List'
+export {
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemDescription,
+  ItemFooter,
+  ItemGroup,
+  ItemHeader,
+  ItemMedia,
+  ItemSeparator,
+  ItemTitle,
+  type ItemMediaVariant,
+  type ItemProps,
+  type ItemSize,
+  type ItemVariant,
+} from './ui/Item'
+export { ScrollArea, type ScrollAreaOrientation, type ScrollAreaProps } from './ui/ScrollArea'
 export { Countdown, type CountdownProps } from './ui/Countdown'
 export { Affix } from './ui/Affix'
 export { Transfer, type TransferItem, type TransferProps } from './ui/Transfer'
@@ -151,7 +255,31 @@ export { Clock, type ClockProps } from './ui/Clock'
 
 // Conversation / AI, transitions, and depth surfaces (roadmap phase 1).
 export { ChatThread, type ChatThreadProps } from './ui/ChatThread'
-export { Message, type MessageProps, type ChatRole } from './ui/Message'
+export {
+  Message,
+  MessageGroup,
+  type MessageProps,
+  type MessageGroupProps,
+  type MessageVariant,
+  type MessageAlign,
+  type ChatRole,
+} from './ui/Message'
+export { type ChatThreadApi } from './ui/ChatThread'
+export { ChatMarker, type ChatMarkerProps, type ChatMarkerVariant } from './ui/ChatMarker'
+export {
+  Attachment,
+  AttachmentMedia,
+  AttachmentContent,
+  AttachmentTitle,
+  AttachmentDescription,
+  AttachmentActions,
+  AttachmentAction,
+  AttachmentGroup,
+  type AttachmentProps,
+  type AttachmentActionProps,
+  type AttachmentState,
+  type AttachmentOrientation,
+} from './ui/Attachment'
 export { StreamingText, type StreamingTextProps } from './ui/StreamingText'
 export { Citation, type CitationProps, SourceList, type SourceListProps } from './ui/Citation'
 export { PromptComposer, type PromptComposerProps } from './ui/PromptComposer'
@@ -330,8 +458,42 @@ export { flyToCart, type FlyToCartOptions } from './lib/flyToCart'
 // Layout (src/layout) — generic shell + backdrop + toggles. App-coupled pieces
 // (Sidebar, Topbar, CompanySwitcher, DemoBanner, CommandPalette) stay in the app.
 export { AppShell } from './layout/AppShell'
+export {
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarRail,
+  SidebarInset,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupAction,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarMenuAction,
+  SidebarMenuBadge,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarMenuSkeleton,
+  useSidebar,
+  type SidebarProps,
+  type SidebarProviderProps,
+  type SidebarTriggerProps,
+  type SidebarGroupActionProps,
+  type SidebarMenuButtonProps,
+  type SidebarMenuSubProps,
+  type SidebarSide,
+  type SidebarVariant,
+  type SidebarCollapsible,
+} from './ui/Sidebar'
 export { SpaceBackground } from './layout/SpaceBackground'
 export { Aurora, type AuroraProps } from './layout/Aurora'
+export type { ModalProps } from './ui/Modal'
 export { ThemedScenery, type ThemedSceneryProps } from './layout/ThemedScenery'
 export { SnowScenery } from './layout/SnowScenery'
 export { ChristmasBackground } from './layout/ChristmasBackground'

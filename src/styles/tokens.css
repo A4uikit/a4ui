@@ -254,10 +254,11 @@ body {
 }
 
 /* Drawer / Modal drawer-variant slide-over (Kobalte Dialog presence →
-   animationend keyframes, keyed off data-expanded/data-closed like Modal). */
+   animationend keyframes, keyed off data-expanded/data-closed like Modal).
+   --drawer-offscreen is set per side by Drawer (default: off the right edge). */
 @keyframes drawer-in {
   from {
-    transform: translateX(100%);
+    transform: var(--drawer-offscreen, translateX(100%));
   }
   to {
     transform: translateX(0);
@@ -268,7 +269,7 @@ body {
     transform: translateX(0);
   }
   to {
-    transform: translateX(100%);
+    transform: var(--drawer-offscreen, translateX(100%));
   }
 }
 .drawer-content[data-expanded] {
@@ -291,4 +292,110 @@ body {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Questionnaire */
+@keyframes questionnaire-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes questionnaire-step-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* NavigationMenu — Kobalte keys viewport/panel presence off animation names, so
+   these MUST be @keyframes. Panels slide in from the side of the previously
+   open one (data-motion) and are hidden once they have slid out. */
+@keyframes navmenu-viewport-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-viewport-out {
+  from {
+    opacity: 1;
+    transform: none;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.97);
+  }
+}
+@keyframes navmenu-from-start {
+  from {
+    opacity: 0;
+    transform: translateX(-2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-from-end {
+  from {
+    opacity: 0;
+    transform: translateX(2.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes navmenu-to-start {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-2.5rem);
+  }
+}
+@keyframes navmenu-to-end {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(2.5rem);
+  }
+}
+.navmenu-viewport[data-expanded] {
+  animation: navmenu-viewport-in 0.2s ease-out;
+}
+.navmenu-viewport[data-closed] {
+  animation: navmenu-viewport-out 0.15s ease-in;
+}
+.navmenu-content[data-motion='from-start'] {
+  animation: navmenu-from-start 0.25s ease-out;
+}
+.navmenu-content[data-motion='from-end'] {
+  animation: navmenu-from-end 0.25s ease-out;
+}
+.navmenu-content[data-motion='to-start'] {
+  animation: navmenu-to-start 0.25s ease-in forwards;
+}
+.navmenu-content[data-motion='to-end'] {
+  animation: navmenu-to-end 0.25s ease-in forwards;
 }

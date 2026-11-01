@@ -30,7 +30,30 @@ export interface AuroraProps {
    * @default 'blobs'
    */
   variant?: 'blobs' | 'mesh'
+  /**
+   * Blob palette. Each entry is a CSS color (`'#ff6a3d'`, `'oklch(0.7 0.2 40)'`,
+   * `'hsl(var(--brand))'`) or a theme token written as a custom property name
+   * (`'--primary'`, `'--accent'`, `'--success'` ...). Entries are assigned to the
+   * blobs / mesh points in order and repeat when there are fewer colors than
+   * blobs. Defaults to the theme tokens `--primary` / `--accent`, so every theme
+   * still tints it for free.
+   */
+  colors?: string[]
+  /**
+   * Color of the cursor-following glow, same format as a `colors` entry.
+   * @default '--primary'
+   */
+  glowColor?: string
+  /** Peak opacity of the cursor glow, 0..1. @default 0.1 */
+  glowOpacity?: number
   class?: string
+}
+
+/** Resolve a palette entry to a CSS color at the given alpha. `--token` => theme token. */
+function colorAt(color: string, alpha: number): string {
+  const a = Math.min(1, Math.max(0, alpha))
+  if (color.startsWith('--')) return `hsl(var(${color}) / ${a.toFixed(2)})`
+  return `color-mix(in srgb, ${color} ${(a * 100).toFixed(0)}%, transparent)`
 }
 
 // Mesh variant — several token-tinted radial gradients composited into one
@@ -68,10 +91,16 @@ const BLOBS = [
  */
 export function Aurora(props: AuroraProps): JSX.Element {
   const intensity = (): number => props.intensity ?? 0.45
+  // Palette entry for blob/mesh index `i`: custom colors cycle; otherwise the
+  // built-in token for that slot.
+  const colorFor = (i: number, token: string): string => {
+    const list = props.colors
+    return list && list.length > 0 ? list[i % list.length] : token
+  }
   const meshBg = (): string =>
     MESH_STOPS.map(
-      (s) =>
-        `radial-gradient(45% 45% at ${s.at}, hsl(var(${s.token}) / ${(intensity() * s.a).toFixed(2)}), transparent 70%)`,
+      (s, i) =>
+        `radial-gradient(45% 45% at ${s.at}, ${colorAt(colorFor(i, s.token), intensity() * s.a)}, transparent 70%)`,
     ).join(', ')
   let root: HTMLDivElement | undefined
 
@@ -93,11 +122,11 @@ export function Aurora(props: AuroraProps): JSX.Element {
         when={props.variant === 'mesh'}
         fallback={
           <For each={BLOBS}>
-            {(b) => (
+            {(b, i) => (
               <div
                 class={cn('absolute rounded-full blur-3xl', b.pos, b.size, props.animated && 'aurora-drift')}
                 style={{
-                  background: `radial-gradient(circle, hsl(var(${b.token}) / ${(intensity() * b.a).toFixed(2)}), transparent 70%)`,
+                  background: `radial-gradient(circle, ${colorAt(colorFor(i(), b.token), intensity() * b.a)}, transparent 70%)`,
                 }}
               />
             )}
@@ -110,12 +139,12 @@ export function Aurora(props: AuroraProps): JSX.Element {
         />
       </Show>
       {/* Soft glow that follows the cursor across the backdrop (positioned by
-          bindPointerFx via left/top on pointermove). */}
+          bindPointerFx via transform, coalesced per frame). */}
       <div
         id="cursorGlow"
-        class="absolute h-[520px] w-[520px] rounded-full opacity-0 transition-opacity duration-300"
+        class="absolute h-[520px] w-[520px] rounded-full opacity-0 transition-opacity duration-300 will-change-transform"
         style={{
-          background: 'radial-gradient(circle, hsl(var(--primary) / 0.1), transparent 70%)',
+          background: `radial-gradient(circle, ${colorAt(props.glowColor ?? '--primary', props.glowOpacity ?? 0.1)}, transparent 70%)`,
           transform: 'translate(-50%,-50%)',
         }}
       />

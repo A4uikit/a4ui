@@ -12,7 +12,7 @@ import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 
-interface ModalProps extends ParentProps {
+export interface ModalProps extends ParentProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   /** Header title; omitting it hides the whole header bar. */
@@ -24,9 +24,39 @@ interface ModalProps extends ParentProps {
    * @default 'drawer'
    */
   variant?: 'drawer' | 'center'
+  /**
+   * Width of the dialog: `'sm'` 24rem, `'md'` 32rem, `'lg'` 42rem, `'xl'` 56rem,
+   * `'full'` the whole viewport minus margin. Omitted keeps the historical width
+   * (`variant="center"`: 32rem, `variant="drawer"`: 520px). Content taller than
+   * the viewport scrolls inside the dialog; the header stays pinned.
+   */
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   class?: string
   /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string
+}
+
+const CENTER_WIDTH = {
+  sm: 'max-w-sm',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+  full: 'max-w-full',
+} as const
+const DRAWER_WIDTH = {
+  sm: 'max-w-sm',
+  md: 'max-w-[520px]',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+  full: 'max-w-full',
+} as const
+
+// Popovers inside the dialog (MultiSelect, ...) are portaled to <body>, so
+// Kobalte sees a click on them as "outside" and would close the dialog. Those
+// panels carry `data-a4-floating`; interacting with one is not a dismissal.
+function keepForFloating(e: Event): void {
+  const target = (e as CustomEvent<{ originalEvent?: Event }>).detail?.originalEvent?.target ?? e.target
+  if (target instanceof Element && target.closest('[data-a4-floating]')) e.preventDefault()
 }
 
 /**
@@ -53,8 +83,10 @@ export function Modal(props: ModalProps): JSX.Element {
           fallback={
             <div class="fixed inset-0 z-50 flex justify-end">
               <Dialog.Content
+                onInteractOutside={keepForFloating}
                 class={cn(
-                  'drawer-content bg-glass flex h-full w-full max-w-[520px] flex-col overflow-y-auto border-l border-border text-card-foreground shadow-2xl',
+                  'drawer-content bg-glass flex h-full w-full flex-col overflow-y-auto border-l border-border text-card-foreground shadow-2xl',
+                  DRAWER_WIDTH[props.size ?? 'md'],
                   props.class,
                 )}
               >
@@ -78,13 +110,15 @@ export function Modal(props: ModalProps): JSX.Element {
         >
           <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
             <Dialog.Content
+              onInteractOutside={keepForFloating}
               class={cn(
-                'modal-content w-full max-w-lg rounded-xl border border-border bg-card text-card-foreground shadow-sm',
+                'modal-content flex max-h-[calc(100dvh-2rem)] w-full flex-col rounded-xl border border-border bg-card text-card-foreground shadow-sm',
+                CENTER_WIDTH[props.size ?? 'md'],
                 props.class,
               )}
             >
               <Show when={props.title}>
-                <div class="flex items-center justify-between border-b border-border p-6 pb-4">
+                <div class="flex shrink-0 items-center justify-between border-b border-border p-6 pb-4">
                   <Dialog.Title class="text-lg font-semibold leading-none tracking-tight">
                     {props.title}
                   </Dialog.Title>
@@ -96,7 +130,9 @@ export function Modal(props: ModalProps): JSX.Element {
                   </Dialog.CloseButton>
                 </div>
               </Show>
-              <div class="p-6 pt-4">{props.children}</div>
+              <div data-modal-body class="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6 pt-4">
+                {props.children}
+              </div>
             </Dialog.Content>
           </div>
         </Show>

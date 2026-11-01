@@ -18,6 +18,11 @@ export interface PromptComposerProps {
   /** Attachment labels/filenames shown as removable chips above the input. */
   attachments?: string[]
   onRemoveAttachment?: (index: number) => void
+  /**
+   * Rich attachment slot rendered above the input (alongside the chips above).
+   * Pass `Attachment`s, ideally wrapped in an `AttachmentGroup`.
+   */
+  attachmentItems?: JSX.Element
   /** When set, shows a paperclip button that calls this on click. */
   onAttach?: () => void
   class?: string
@@ -89,6 +94,12 @@ export function PromptComposer(props: PromptComposerProps): JSX.Element {
               </span>
             )}
           </For>
+        </div>
+      </Show>
+
+      <Show when={props.attachmentItems}>
+        <div data-slot="composer-attachments" class="mb-2">
+          {props.attachmentItems}
         </div>
       </Show>
 

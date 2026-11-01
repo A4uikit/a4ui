@@ -1,4 +1,4 @@
-// Right-anchored slide-over on Kobalte's Dialog primitive (focus trap +
+// Edge-anchored slide-over (right by default; `side` picks left/top/bottom) on Kobalte's Dialog primitive (focus trap +
 // presence for free, like Modal). The drawer-content class drives the
 // slide-in/out keyframes in styles.css off Kobalte's data-expanded/data-closed.
 // Pass a `title` for the sticky glass header, or omit it and render your own
@@ -20,10 +20,39 @@ interface DrawerProps extends ParentProps {
   class?: string
   /** Accessible label for the close button. @default 'Close' */
   closeLabel?: string
+  /** Edge the panel is anchored to and slides in from. @default 'right' */
+  side?: DrawerSide
 }
 
+export type DrawerSide = 'right' | 'left' | 'top' | 'bottom'
+
+const SIDE: Record<DrawerSide, { wrap: string; panel: string; offscreen: string }> = {
+  right: {
+    wrap: 'justify-end',
+    panel: 'h-full w-full max-w-[520px] border-l',
+    offscreen: 'translateX(100%)',
+  },
+  left: {
+    wrap: 'justify-start',
+    panel: 'h-full w-full max-w-[520px] border-r',
+    offscreen: 'translateX(-100%)',
+  },
+  top: {
+    wrap: 'flex-col justify-start',
+    panel: 'max-h-[85vh] w-full rounded-b-2xl border-b',
+    offscreen: 'translateY(-100%)',
+  },
+  bottom: {
+    wrap: 'flex-col justify-end',
+    panel: 'max-h-[85vh] w-full rounded-t-2xl border-t',
+    offscreen: 'translateY(100%)',
+  },
+}
+
+export type { DrawerProps }
+
 /**
- * Right-anchored slide-over panel built on Kobalte's `Dialog` (focus trap, portal,
+ * Edge-anchored slide-over panel (right by default, or `side="left" | "top" | "bottom"`) built on Kobalte's `Dialog` (focus trap, portal,
  * and open/close presence handled for you). Use for create/edit forms or detail
  * panels that need more room than a centered `Modal`.
  *
@@ -36,14 +65,18 @@ interface DrawerProps extends ParentProps {
  * ```
  */
 export function Drawer(props: DrawerProps): JSX.Element {
+  const side = (): (typeof SIDE)[DrawerSide] => SIDE[props.side ?? 'right']
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px]" />
-        <div class="fixed inset-0 z-50 flex justify-end">
+        <div class={cn('fixed inset-0 z-50 flex', side().wrap)}>
           <Dialog.Content
+            data-side={props.side ?? 'right'}
+            style={{ '--drawer-offscreen': side().offscreen }}
             class={cn(
-              'drawer-content flex h-full w-full max-w-[520px] flex-col overflow-y-auto border-l border-border bg-glass shadow-2xl',
+              'drawer-content flex flex-col overflow-y-auto border-border bg-glass shadow-2xl',
+              side().panel,
               props.class,
             )}
           >

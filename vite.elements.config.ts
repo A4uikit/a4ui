@@ -28,6 +28,6 @@ export default defineConfig({
       fileName: (format, name) => (format === 'iife' ? `${name}.iife.js` : `${name}.js`),
     },
     // Nothing external — the bundle must run standalone in any framework.
-    rollupOptions: {},
+    rolldownOptions: {},
   },
 })

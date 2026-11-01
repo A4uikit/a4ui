@@ -6,6 +6,74 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`Item`** — composable row primitive: `ItemMedia` (icon tile / image / custom),
+  `ItemContent` with `ItemTitle` + `ItemDescription`, trailing `ItemActions`, and
+  full-width `ItemHeader`/`ItemFooter`; `ItemGroup` + `ItemSeparator` to stack them.
+  Variants `default`/`outline`/`muted`, sizes `default`/`sm`/`xs`; `href` or
+  `onClick` turns the whole row into one link/button.
+- **`ScrollArea`** — native scroll container with thin, token-tinted scrollbars,
+  keyboard-focusable, exposed as a named region when given a `label`.
+  `orientation` `vertical` (default) / `horizontal` / `both`.
+- **`Drawer`** — `side` prop: `right` (default), `left`, `top`, `bottom`. Top and
+  bottom render as full-width sheets capped at 85vh.
+- **`Sidebar`** — composable application sidebar: `SidebarProvider` + `useSidebar`,
+  Ctrl/Cmd+B toggles; `side` left/right, `variant` sidebar/floating/inset,
+  `collapsible` offcanvas/icon/none. Parts: Header, Footer, Content, Group (+ Label,
+  Action, Content), Menu, MenuItem, MenuButton (`active`, `href`, tooltip in the icon
+  rail), MenuAction, MenuBadge, MenuSub, MenuSkeleton, Trigger, Rail, Inset. Below
+  `md` it renders in a `Drawer`. (#99)
+- **`Field`** family — `FieldSet`, `FieldLegend`, `FieldGroup`, `Field`,
+  `FieldContent`, `FieldLabel`, `FieldTitle`, `FieldDescription`, `FieldSeparator`,
+  `FieldError`. Label, description and error ids are wired to the control
+  automatically (`for`, `aria-describedby`, `aria-errormessage`, `aria-invalid`),
+  including controls that mount later; vertical/horizontal/responsive orientation;
+  `FieldError` takes an `errors` array. (#100)
+- **`InputGroup`** family — `InputGroup`, `InputGroupAddon` (inline-start/end,
+  block-start/end), `InputGroupText`, `InputGroupButton`, `InputGroupInput`,
+  `InputGroupTextarea`: one border and focus ring around an input with addons;
+  clicking an addon focuses the input. (#101)
+- **`ButtonGroup`** (+ `ButtonGroupText`, `ButtonGroupSeparator`), **`AspectRatio`**,
+  **`Label`**, **`NativeSelect`** and **`Prose`** (typography for raw HTML/markdown,
+  no plugin). (#102)
+- **Chat** — `Attachment` family (idle/uploading/processing/error/done, progress bar,
+  `AttachmentGroup` row), `ChatMarker` (default/border/separator), `MessageGroup`;
+  `Message` gains `variant`, `align`, `reactions`, `attachments`, `id`;
+  `PromptComposer` gains an `attachmentItems` slot; `ChatThread` keeps its position
+  when older messages are prepended, exposes `apiRef` (`scrollToMessage`,
+  `scrollToEnd`), shows a "Jump to latest" button and follows new output only while
+  pinned to the bottom. (#103)
+- **`Questionnaire`** — data-driven multi-step survey (single, multiple, free text),
+  progress, required validation, Previous/Skip/Next/Submit, digit-key shortcuts,
+  focus moved to each step's heading. (#104)
+- **Charts** — `BarChart` `mode="stacked" | "grouped"` with multi-series data;
+  new `AreaChart`, `PieChart`, `RadialBarChart`; shared `ChartTooltip` and
+  `ChartLegend` (toggleable series); keyboard navigation and an aria-label summary
+  on the new charts. (#105)
+- **`Menubar`** (+ Menu, Item, CheckboxItem, RadioGroup, RadioItem, Sub, Separator,
+  Label) with keycap shortcuts and submenus. (#106)
+- **`NavigationMenu`** (+ Item, Trigger, Content, Link, PanelLink): rich panels in a
+  size-animating viewport; below `md` a hamburger opens a left `Drawer` with the
+  sections (`mobileSections`). (#107)
+- **`Aurora`** — `colors`, `glowColor`, `glowOpacity` props to set the blob palette
+  and the pointer glow without overriding internal selectors. (#109)
+- **`Modal`** — `size` prop (`sm`/`md`/`lg`/`xl`/`full`); the center variant's body
+  scrolls under a pinned header. (#91)
+- **`@a4ui/core/preset`** ships type declarations; `tailwindcss ^3.4.0` is declared
+  as an optional peer dependency. (#80)
+
+### Fixed
+
+- **Pointer glow** (`Aurora` and the other sceneries) moves with `transform`, one
+  write per animation frame, instead of repainting glass surfaces on every pointer
+  move. (#84)
+- **`MultiSelect`, `DateField`, `TimeField`, `DateRangePicker` inside a `Modal`** —
+  their portaled panels received no clicks (the dialog sets `pointer-events: none`
+  outside itself) and interacting with them dismissed the dialog. (#92)
+- **`ChatThread`** — its scroller is keyboard-focusable (axe
+  `scrollable-region-focusable`).
+
 ### Security
 
 - **`solid-js` peer floor raised to `^1.9.16`.** Earlier 1.9.x releases pull in
@@ -14,6 +82,13 @@ changes, `patch` for fixes).
 
 ### Changed
 
+- **Major tooling upgrades:** Vite 8 (Rolldown; `rollupOptions` → `rolldownOptions`),
+  Vitest 5, vite-plugin-dts 5, TypeScript 6.0, ESLint 10 (`no-unassigned-vars` off
+  for Solid's `let ref!` pattern), jsdom 30, lint-staged 17. TypeScript 7 is not
+  adopted yet: typescript-eslint supports `<6.1` and the d.ts build needs the TS 6
+  API.
+- **`motion` 14** (runtime dependency). Only internal APIs were removed upstream;
+  the animated components were checked visually.
 - Dependencies bumped within their current majors (Kobalte 0.13.14, motion 12.43,
   lucide-solid 1.65, tailwind-merge 3.7, `@tanstack/solid-virtual` 3.13.51) and dev
   tooling (Vite 6.4.5, Playwright 1.64, Vitest 4.1.12, typescript-eslint 8.72).

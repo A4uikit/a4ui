@@ -17,7 +17,10 @@ Ships both as SolidJS components and as a **Web Components** bundle
 - `src/` — the published library:
   - `src/ui/*` — ~60 components (Button, Card, DateField, Calendar, Combobox,
     DataGrid, Tree/TreeSelect/Cascader, ColorPicker, Comment, Tour,
-    NotificationCenter, Command, Sortable, Clock, CalendarHeatmap, and more).
+    NotificationCenter, Command, Sortable, Clock, CalendarHeatmap, Item, ScrollArea,
+    Sidebar, Field, InputGroup, ButtonGroup, Menubar, NavigationMenu, Questionnaire,
+    Attachment, ChatMarker, Prose,
+    and more).
     **Motion components** (built on the `motion` engine, adapted from motion.dev
     examples, all tree-shakeable + reduced-motion aware): `ScrambleText`,
     `TextReveal`, `HoldToConfirm`, `LoadingDots`, `FillText`, `Curtain`, `Parallax`,

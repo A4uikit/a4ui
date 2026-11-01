@@ -15,6 +15,12 @@ export default tseslint.config(
     ...solid,
   },
   {
+    // ESLint 10's recommended set adds no-unassigned-vars, which flags Solid's
+    // `let el!: HTMLElement` + `ref={el}` pattern (the compiler assigns it).
+    files: ['**/*.{ts,tsx}'],
+    rules: { 'no-unassigned-vars': 'off' },
+  },
+  {
     files: ['scripts/**/*.{js,mjs,cjs}', 'create-a4ui/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
   },

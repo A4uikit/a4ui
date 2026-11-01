@@ -223,9 +223,10 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
         <Portal>
           <div
             ref={popRef}
+            data-a4-floating
             style={{ position: 'fixed', top: `${pos().top}px`, left: `${pos().left}px` }}
             class={cn(
-              'z-50 flex gap-1 divide-x divide-border rounded-lg border border-border bg-card p-2 text-card-foreground shadow-lg',
+              'pointer-events-auto z-50 flex gap-1 divide-x divide-border rounded-lg border border-border bg-card p-2 text-card-foreground shadow-lg',
               props.hour12 ? 'w-56' : 'w-44',
             )}
           >
