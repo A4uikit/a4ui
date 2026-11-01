@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.38.1] — 2026-10-31
+
 ### Fixed
 
 - `Modal`, `Drawer`, `Command`, `Image` (preview) and the phone `Sidebar` drawer
