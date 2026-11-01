@@ -7,6 +7,7 @@ import { createSignal, createUniqueId, For, onCleanup, onMount, Show } from 'sol
 import { cn } from '../lib/cn'
 import { Button } from './Button'
 import type { SectionLink } from './internal/sectionKit'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 export interface SiteNavProps {
   /** Brand name shown at the left; also the home link's text. */
@@ -45,6 +46,7 @@ const LINK =
  * ```
  */
 export function SiteNav(props: SiteNavProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const [open, setOpen] = createSignal(false)
   const panelId = createUniqueId()
   let root: HTMLElement | undefined
@@ -56,11 +58,11 @@ export function SiteNav(props: SiteNavProps): JSX.Element {
     const onDown = (event: PointerEvent) => {
       if (open() && root && !root.contains(event.target as Node)) setOpen(false)
     }
-    document.addEventListener('keydown', onKey)
-    document.addEventListener('pointerdown', onDown)
+    env.doc().addEventListener('keydown', onKey)
+    env.doc().addEventListener('pointerdown', onDown)
     onCleanup(() => {
-      document.removeEventListener('keydown', onKey)
-      document.removeEventListener('pointerdown', onDown)
+      env.doc().removeEventListener('keydown', onKey)
+      env.doc().removeEventListener('pointerdown', onDown)
     })
   })
 

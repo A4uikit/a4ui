@@ -3,6 +3,7 @@ import { Popover as KPopover } from '@kobalte/core/popover'
 import type { JSX, ParentProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 interface PopoverProps extends ParentProps {
   /** Element that opens the popover on click; wrapped in an inline-flex trigger. */
@@ -23,10 +24,11 @@ interface PopoverProps extends ParentProps {
  * ```
  */
 export function Popover(props: PopoverProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KPopover>
       <KPopover.Trigger class="inline-flex">{props.trigger}</KPopover.Trigger>
-      <KPopover.Portal>
+      <KPopover.Portal mount={portalMount()}>
         <KPopover.Content
           class={cn(
             'bg-glass z-50 rounded-lg border border-border p-4 text-card-foreground shadow-lg',

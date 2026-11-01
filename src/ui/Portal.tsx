@@ -4,9 +4,11 @@
 import type { JSX } from 'solid-js'
 import { Portal as SolidPortal } from 'solid-js/web'
 
+import { usePortalMount } from '../lib/portalMount'
+
 /** Props for {@link Portal}. */
 export interface PortalProps {
-  /** Where to mount. Defaults to `document.body`. */
+  /** Where to mount. Defaults to the nearest `PortalMountProvider`'s mount, else `document.body`. */
   mount?: Node
   /** Use a Shadow DOM root for the portal container. */
   useShadow?: boolean
@@ -26,8 +28,9 @@ export interface PortalProps {
  * ```
  */
 export function Portal(props: PortalProps): JSX.Element {
+  const contextMount = usePortalMount()
   return (
-    <SolidPortal mount={props.mount} useShadow={props.useShadow}>
+    <SolidPortal mount={props.mount ?? contextMount()} useShadow={props.useShadow}>
       {props.children}
     </SolidPortal>
   )

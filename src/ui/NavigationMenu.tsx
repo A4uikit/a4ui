@@ -12,6 +12,7 @@ import { useMediaQuery } from '../lib/media'
 import { Accordion } from './Accordion'
 import { Button } from './Button'
 import { Drawer } from './Drawer'
+import { useOverlayEnvironment, usePortalMount } from '../lib/portalMount'
 
 const TRIGGER =
   'inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-foreground outline-none transition-colors hover:bg-muted data-[expanded]:bg-muted focus-visible:ring-2 focus-visible:ring-ring'
@@ -172,6 +173,8 @@ export interface NavigationMenuContentProps extends ParentProps {
  * fit it. Put {@link NavigationMenuPanelLink}s in it, laid out with a grid.
  */
 export function NavigationMenuContent(props: NavigationMenuContentProps): JSX.Element {
+  const env = useOverlayEnvironment()
+  const portalMount = usePortalMount()
   // Kobalte's menu content swallows Tab, which would make the links unreachable
   // with a plain Tab press. Walk the panel's links with Tab / Shift+Tab, and
   // when the end is passed close the menu (focus returns to its trigger) so
@@ -179,7 +182,7 @@ export function NavigationMenuContent(props: NavigationMenuContentProps): JSX.El
   const onTab = (e: KeyboardEvent & { currentTarget: HTMLElement }): void => {
     if (e.key !== 'Tab') return
     const links = Array.from(e.currentTarget.querySelectorAll<HTMLElement>('a[role="menuitem"]'))
-    const at = links.indexOf(document.activeElement as HTMLElement)
+    const at = links.indexOf(env.doc().activeElement as HTMLElement)
     const next = at + (e.shiftKey ? -1 : 1)
     e.preventDefault()
     // Deferred: Kobalte's own Shift+Tab handling re-focuses the panel right after this handler.
@@ -188,7 +191,7 @@ export function NavigationMenuContent(props: NavigationMenuContentProps): JSX.El
     else e.currentTarget.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
   }
   return (
-    <KNav.Portal>
+    <KNav.Portal mount={portalMount()}>
       <KNav.Content
         class={cn(
           'navmenu-content absolute left-0 top-0 w-max max-w-[min(90vw,40rem)] p-3 outline-none',

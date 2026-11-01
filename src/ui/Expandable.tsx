@@ -4,10 +4,11 @@
 // scale, so its content never stretches. Covers the motion.dev "family dialog"
 // (size="dialog") and "app store layout" (size="full") patterns with one API.
 import { createSignal, Show, onCleanup, onMount, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
 
 import { cn } from '../lib/cn'
 import { animate, motionReduced } from '../lib/motion'
+import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 type Rect = { top: number; left: number; width: number; height: number }
 
@@ -47,6 +48,7 @@ const PAD = 24
  * ```
  */
 export function Expandable(props: ExpandableProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const [open, setOpen] = createSignal(false)
   let triggerEl: HTMLDivElement | undefined
   let panelEl: HTMLDivElement | undefined
@@ -61,8 +63,8 @@ export function Expandable(props: ExpandableProps): JSX.Element {
 
   // The panel's resting position/size, computed (not scaled) so text stays sharp.
   const finalRect = (el: HTMLDivElement): Rect => {
-    const vw = window.innerWidth
-    const vh = window.innerHeight
+    const vw = env.win().innerWidth
+    const vh = env.win().innerHeight
     if (props.size === 'full') {
       const width = vw - PAD * 2
       const height = vh - PAD * 2
@@ -155,9 +157,9 @@ export function Expandable(props: ExpandableProps): JSX.Element {
     if (e.key === 'Escape') doClose()
   }
 
-  onMount(() => document.addEventListener('keydown', onKeyDown))
+  onMount(() => env.doc().addEventListener('keydown', onKeyDown))
   onCleanup(() => {
-    document.removeEventListener('keydown', onKeyDown)
+    env.doc().removeEventListener('keydown', onKeyDown)
     controls?.stop()
   })
 

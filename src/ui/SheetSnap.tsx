@@ -11,6 +11,7 @@ import { createEffect, createSignal, onCleanup, onMount, Show, type JSX } from '
 import { cn } from '../lib/cn'
 import { animate, motionReduced } from '../lib/motion'
 import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 export interface SheetSnapProps {
   open: boolean
@@ -50,6 +51,7 @@ const clamp = (n: number, min: number, max: number) => Math.min(Math.max(n, min)
  * ```
  */
 export function SheetSnap(props: SheetSnapProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const snaps = () => (props.snapPoints?.length ? props.snapPoints : DEFAULT_SNAPS)
   const defaultIndex = () => clamp(props.defaultSnap ?? 0, 0, snaps().length - 1)
 
@@ -74,18 +76,18 @@ export function SheetSnap(props: SheetSnapProps): JSX.Element {
   let velocity = 0 // px/ms, positive = moving down (toward closed)
 
   const computeGeometry = () => {
-    const vh = window.innerHeight
+    const vh = env.win().innerHeight
     const pixelHeights = snaps().map((f) => f * vh)
     maxHeightPx = Math.max(...pixelHeights)
     translateYs = pixelHeights.map((h) => maxHeightPx - h)
   }
 
   const lockScroll = () => {
-    previousBodyOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    previousBodyOverflow = env.doc().body.style.overflow
+    env.doc().body.style.overflow = 'hidden'
   }
   const unlockScroll = () => {
-    document.body.style.overflow = previousBodyOverflow
+    env.doc().body.style.overflow = previousBodyOverflow
   }
 
   const animateTo = (target: number, onDone?: () => void) => {
@@ -110,7 +112,7 @@ export function SheetSnap(props: SheetSnapProps): JSX.Element {
       if (mounted()) return
       computeGeometry()
       snapIndex = defaultIndex()
-      previouslyFocused = document.activeElement as HTMLElement | null
+      previouslyFocused = env.doc().activeElement as HTMLElement | null
       setTranslateY(motionReduced() ? translateYs[snapIndex] : maxHeightPx)
       setMounted(true)
       lockScroll()
@@ -195,12 +197,12 @@ export function SheetSnap(props: SheetSnapProps): JSX.Element {
   }
 
   onMount(() => {
-    document.addEventListener('keydown', onKeyDown)
-    window.addEventListener('resize', onResize)
+    env.doc().addEventListener('keydown', onKeyDown)
+    env.win().addEventListener('resize', onResize)
   })
   onCleanup(() => {
-    document.removeEventListener('keydown', onKeyDown)
-    window.removeEventListener('resize', onResize)
+    env.doc().removeEventListener('keydown', onKeyDown)
+    env.win().removeEventListener('resize', onResize)
     controls?.stop()
     if (mounted()) unlockScroll()
   })

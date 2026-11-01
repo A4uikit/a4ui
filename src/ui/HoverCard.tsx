@@ -3,6 +3,7 @@ import { HoverCard as KHoverCard } from '@kobalte/core/hover-card'
 import type { JSX, ParentProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 interface HoverCardProps extends ParentProps {
   /** Content that opens the card on hover/focus. */
@@ -23,10 +24,11 @@ interface HoverCardProps extends ParentProps {
  * ```
  */
 export function HoverCard(props: HoverCardProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KHoverCard>
       <KHoverCard.Trigger class="inline-flex">{props.trigger}</KHoverCard.Trigger>
-      <KHoverCard.Portal>
+      <KHoverCard.Portal mount={portalMount()}>
         <KHoverCard.Content
           class={cn(
             'bg-glass z-50 rounded-lg border border-border p-4 text-card-foreground shadow-lg',

@@ -4,6 +4,7 @@ import { Check, ChevronsUpDown } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 interface ComboboxProps {
   /** Full list of selectable string options (filtered as the user types). */
@@ -30,6 +31,7 @@ interface ComboboxProps {
  * ```
  */
 export function Combobox(props: ComboboxProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KCombobox
       options={props.options}
@@ -57,7 +59,7 @@ export function Combobox(props: ComboboxProps): JSX.Element {
           </KCombobox.Icon>
         </KCombobox.Trigger>
       </KCombobox.Control>
-      <KCombobox.Portal>
+      <KCombobox.Portal mount={portalMount()}>
         <KCombobox.Content class="z-50 overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <KCombobox.Listbox class="max-h-60 overflow-y-auto" />
         </KCombobox.Content>

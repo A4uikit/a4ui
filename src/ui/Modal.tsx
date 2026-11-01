@@ -11,6 +11,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 export interface ModalProps extends ParentProps {
   open: boolean
@@ -56,7 +57,10 @@ const DRAWER_WIDTH = {
 // panels carry `data-a4-floating`; interacting with one is not a dismissal.
 function keepForFloating(e: Event): void {
   const target = (e as CustomEvent<{ originalEvent?: Event }>).detail?.originalEvent?.target ?? e.target
-  if (target instanceof Element && target.closest('[data-a4-floating]')) e.preventDefault()
+  // Duck-typed, not `instanceof Element`: inside an iframe the target belongs to
+  // another realm's Element.
+  const el = target as Partial<Element> | null
+  if (typeof el?.closest === 'function' && el.closest('[data-a4-floating]')) e.preventDefault()
 }
 
 /**
@@ -73,10 +77,11 @@ function keepForFloating(e: Event): void {
  * ```
  */
 export function Modal(props: ModalProps): JSX.Element {
+  const portalMount = usePortalMount()
   const isCenter = () => props.variant === 'center'
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={portalMount()}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <Show
           when={isCenter()}

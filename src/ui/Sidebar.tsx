@@ -26,6 +26,7 @@ import { cn } from '../lib/cn'
 import { useMediaQuery } from '../lib/media'
 import { Drawer } from './Drawer'
 import { ScrollArea } from './ScrollArea'
+import { useOverlayEnvironment, usePortalMount } from '../lib/portalMount'
 
 export type SidebarSide = 'left' | 'right'
 export type SidebarVariant = 'sidebar' | 'floating' | 'inset'
@@ -91,6 +92,7 @@ interface SidebarProviderProps extends ParentProps {
  * ```
  */
 export function SidebarProvider(props: SidebarProviderProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const isMobile = useMediaQuery('(max-width: 767px)')
   const [internal, setInternal] = createSignal(props.defaultOpen ?? true)
   const [openMobile, setOpenMobile] = createSignal(false)
@@ -112,15 +114,15 @@ export function SidebarProvider(props: SidebarProviderProps): JSX.Element {
       if (key === false || e.defaultPrevented) return
       if (e.key.toLowerCase() !== key.toLowerCase() || !(e.ctrlKey || e.metaKey) || e.altKey || e.shiftKey)
         return
-      const t = e.target
+      // Duck-typed, not `instanceof HTMLElement`, so it also holds for events from an iframe.
+      const t = e.target as Partial<HTMLElement> | null
       // Leave Ctrl+B alone inside text fields / rich editors.
-      if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)))
-        return
+      if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName ?? '')) return
       e.preventDefault()
       toggle()
     }
-    window.addEventListener('keydown', onKey)
-    onCleanup(() => window.removeEventListener('keydown', onKey))
+    env.win().addEventListener('keydown', onKey)
+    onCleanup(() => env.win().removeEventListener('keydown', onKey))
   })
 
   const value: SidebarContextValue = {
@@ -481,6 +483,7 @@ const ITEM_BASE =
 function MenuTooltip(
   props: ParentProps<{ tooltip?: JSX.Element; as: 'a' | 'button'; [key: string]: unknown }>,
 ) {
+  const portalMount = usePortalMount()
   const iconCollapsed = useContext(IconCollapsed)
   const ctx = useSidebarInternal()
   const [local, rest] = splitProps(props, ['tooltip', 'as', 'children'])
@@ -495,7 +498,7 @@ function MenuTooltip(
       <KTooltip.Trigger as={local.as} {...rest}>
         {local.children}
       </KTooltip.Trigger>
-      <KTooltip.Portal>
+      <KTooltip.Portal mount={portalMount()}>
         <KTooltip.Content class="z-50 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md">
           {local.tooltip}
         </KTooltip.Content>

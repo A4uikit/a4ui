@@ -46,11 +46,13 @@ export function createAnchorReflow(options: AnchorReflowOptions): () => void {
       return
     }
     const rect = el.getBoundingClientRect()
+    // The anchor's own window: inside a same-origin iframe that is the iframe's.
+    const view = el.ownerDocument.defaultView ?? window
     const gone =
       rect.bottom < -OFF_SCREEN_SLACK ||
-      rect.top > window.innerHeight + OFF_SCREEN_SLACK ||
+      rect.top > view.innerHeight + OFF_SCREEN_SLACK ||
       rect.right < 0 ||
-      rect.left > window.innerWidth
+      rect.left > view.innerWidth
     if (gone) options.close()
     else options.place()
   }

@@ -6,10 +6,11 @@
 import { Check, ChevronDown, X } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
-import { Portal } from 'solid-js/web'
 
 import { createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
+import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 /** One selectable option: a stable `value` and its display `label`. */
 export interface MultiSelectOption {
@@ -47,6 +48,7 @@ export interface MultiSelectProps {
  * ```
  */
 export function MultiSelect(props: MultiSelectProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const [open, setOpen] = createSignal(false)
   const [query, setQuery] = createSignal('')
 
@@ -66,7 +68,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
     const width = Math.max(r.width, MIN_W)
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8))
+    const left = Math.max(8, Math.min(r.left, env.win().innerWidth - width - 8))
     setPos({ top: r.bottom + 4, left, width })
   }
 
@@ -100,15 +102,15 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
 
   const toggleListeners = (isOpen: boolean) => {
     if (isOpen) {
-      document.addEventListener('mousedown', onDocPointer)
-      document.addEventListener('keydown', onKey)
-      window.addEventListener('scroll', reflow, true)
-      window.addEventListener('resize', reflow)
+      env.doc().addEventListener('mousedown', onDocPointer)
+      env.doc().addEventListener('keydown', onKey)
+      env.win().addEventListener('scroll', reflow, true)
+      env.win().addEventListener('resize', reflow)
     } else {
-      document.removeEventListener('mousedown', onDocPointer)
-      document.removeEventListener('keydown', onKey)
-      window.removeEventListener('scroll', reflow, true)
-      window.removeEventListener('resize', reflow)
+      env.doc().removeEventListener('mousedown', onDocPointer)
+      env.doc().removeEventListener('keydown', onKey)
+      env.win().removeEventListener('scroll', reflow, true)
+      env.win().removeEventListener('resize', reflow)
     }
   }
   // Reactively attach when open flips; always clean up on unmount.

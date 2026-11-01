@@ -6,12 +6,13 @@
 // itself (same as Sortable), so there's nothing to gate on reduced motion —
 // drops are instant either way.
 import { createEffect, createSignal, For, Show, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
 import { GripVertical } from 'lucide-solid'
 
 import { cn } from '../lib/cn'
 import { Badge } from './Badge'
 import { Card } from './Card'
+import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 /** A single card on a {@link Kanban} board. */
 export interface KanbanCard {
@@ -77,6 +78,7 @@ interface Drag {
  * ```
  */
 export function Kanban(props: KanbanProps): JSX.Element {
+  const env = useOverlayEnvironment()
   // eslint-disable-next-line solid/reactivity -- seed once; a createEffect below keeps it in sync
   const [local, setLocal] = createSignal<KanbanColumn[]>(props.columns)
   const [drag, setDrag] = createSignal<Drag | null>(null)
@@ -155,14 +157,14 @@ export function Kanban(props: KanbanProps): JSX.Element {
 
     const move = (ev: PointerEvent) => onDragMove(ev)
     const up = () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', up)
+      env.win().removeEventListener('pointermove', move)
+      env.win().removeEventListener('pointerup', up)
       const had = drag() !== null
       setDrag(null)
       if (had) props.onChange?.(local())
     }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', up)
+    env.win().addEventListener('pointermove', move)
+    env.win().addEventListener('pointerup', up)
   }
 
   return (

@@ -11,6 +11,7 @@ import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'so
 import { cn } from '../lib/cn'
 import { motionReduced } from '../lib/motion'
 import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 /** One image in a {@link Lightbox}. */
 export interface LightboxImage {
@@ -54,6 +55,7 @@ export interface LightboxProps {
  * ```
  */
 export function Lightbox(props: LightboxProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const [internalOpen, setInternalOpen] = createSignal(false)
   const open = createMemo(() => props.open ?? internalOpen())
 
@@ -95,10 +97,10 @@ export function Lightbox(props: LightboxProps): JSX.Element {
   // Lock body scroll while the overlay is open — same idiom as Modal's Dialog.
   createEffect(() => {
     if (!open() || typeof document === 'undefined') return
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+    const previousOverflow = env.doc().body.style.overflow
+    env.doc().body.style.overflow = 'hidden'
     onCleanup(() => {
-      document.body.style.overflow = previousOverflow
+      env.doc().body.style.overflow = previousOverflow
     })
   })
 
@@ -117,8 +119,8 @@ export function Lightbox(props: LightboxProps): JSX.Element {
         next()
       }
     }
-    window.addEventListener('keydown', onKeyDown)
-    onCleanup(() => window.removeEventListener('keydown', onKeyDown))
+    env.win().addEventListener('keydown', onKeyDown)
+    onCleanup(() => env.win().removeEventListener('keydown', onKeyDown))
   })
 
   return (

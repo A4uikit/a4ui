@@ -4,6 +4,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 /** A single actionable row rendered by {@link ContextMenu}. */
 export interface ContextMenuItem {
@@ -32,10 +33,11 @@ interface ContextMenuProps extends ParentProps {
  * ```
  */
 export function ContextMenu(props: ContextMenuProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KContextMenu>
       <KContextMenu.Trigger class={cn('inline-flex', props.class)}>{props.children}</KContextMenu.Trigger>
-      <KContextMenu.Portal>
+      <KContextMenu.Portal mount={portalMount()}>
         <KContextMenu.Content class="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <For each={props.items}>
             {(item) => (

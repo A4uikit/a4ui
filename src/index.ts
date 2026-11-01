@@ -32,6 +32,13 @@ export {
   spring,
 } from './lib/motion'
 export { useMediaQuery } from './lib/media'
+export {
+  PortalMountProvider,
+  usePortalMount,
+  useOverlayEnvironment,
+  type PortalMountProviderProps,
+  type OverlayEnvironment,
+} from './lib/portalMount'
 export { remeasureAfterLayout } from './lib/virtual'
 export { createOptimistic } from './lib/createOptimistic'
 export { startViewTransition } from './lib/viewTransition'

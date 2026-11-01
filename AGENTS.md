@@ -32,7 +32,7 @@ Ships both as SolidJS components and as a **Web Components** bundle
     `ScrollProgress`, `GradientText`, plus the `flyToCart` helper.
     `Calendar`/`DateField` share `src/ui/internal/CalendarCore.tsx` (day/month/year
     drill-down + year jumps). `src/layout/*` — `AppShell`, `SpaceBackground`, toggles.
-    `src/lib/*` — helpers (`cn`, `theme`, `motion`, `effects`, `media`, `virtual`).
+    `src/lib/*` — helpers (`cn`, `theme`, `motion`, `effects`, `media`, `virtual`, `portalMount`).
     `src/themes/*` — swappable color palettes (`palettes.ts` = the theme data;
     `index.ts` = `selectTheme`/`applyThemeDefinition`/`initTheme` runtime).
     `src/styles/*` — `tokens.css` (CSS vars + motion `@keyframes`) and `space.css`

@@ -7,6 +7,7 @@ import { Dialog } from '@kobalte/core/dialog'
 import { createEffect, createMemo, createSignal, For, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 /** A single selectable row in the palette. */
 export interface CommandItem {
@@ -49,6 +50,7 @@ export interface CommandProps {
  * ```
  */
 export function Command(props: CommandProps): JSX.Element {
+  const portalMount = usePortalMount()
   const [query, setQuery] = createSignal('')
   const [active, setActive] = createSignal(0)
 
@@ -94,7 +96,7 @@ export function Command(props: CommandProps): JSX.Element {
 
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={portalMount()}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-x-0 top-[14vh] z-50 mx-auto w-full max-w-lg px-4">
           <Dialog.Content

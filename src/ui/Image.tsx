@@ -9,6 +9,7 @@ import { createSignal, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { motionReduced } from '../lib/motion'
+import { usePortalMount } from '../lib/portalMount'
 
 export interface ImageProps {
   src: string
@@ -36,6 +37,7 @@ export interface ImageProps {
  * ```
  */
 export function Image(props: ImageProps): JSX.Element {
+  const portalMount = usePortalMount()
   const [open, setOpen] = createSignal(false)
   const preview = () => props.preview !== false
 
@@ -70,7 +72,7 @@ export function Image(props: ImageProps): JSX.Element {
         {img}
       </button>
       <Dialog open={open()} onOpenChange={setOpen}>
-        <Dialog.Portal>
+        <Dialog.Portal mount={portalMount()}>
           <Dialog.Overlay class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
           <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
             <Dialog.Content role="dialog" class="relative">

@@ -8,10 +8,11 @@
 // highlight.
 import type { JSX } from 'solid-js'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { Portal } from 'solid-js/web'
 
 import { cn } from '../lib/cn'
 import { Button } from './Button'
+import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 /** A single stop in a {@link Tour}. */
 export interface TourStep {
@@ -56,6 +57,7 @@ interface Rect {
  * ```
  */
 export function Tour(props: TourProps): JSX.Element {
+  const env = useOverlayEnvironment()
   const [index, setIndex] = createSignal(0)
   const [rect, setRect] = createSignal<Rect | null>(null)
 
@@ -74,7 +76,7 @@ export function Tour(props: TourProps): JSX.Element {
       setRect(null)
       return
     }
-    const el = document.querySelector(current.target)
+    const el = env.doc().querySelector(current.target)
     const box = el?.getBoundingClientRect()
     setRect(box ? { top: box.top, left: box.left, width: box.width, height: box.height } : null)
   }
@@ -89,11 +91,11 @@ export function Tour(props: TourProps): JSX.Element {
 
   onMount(() => {
     const onReflow = () => measure()
-    window.addEventListener('resize', onReflow)
-    window.addEventListener('scroll', onReflow, true)
+    env.win().addEventListener('resize', onReflow)
+    env.win().addEventListener('scroll', onReflow, true)
     onCleanup(() => {
-      window.removeEventListener('resize', onReflow)
-      window.removeEventListener('scroll', onReflow, true)
+      env.win().removeEventListener('resize', onReflow)
+      env.win().removeEventListener('scroll', onReflow, true)
     })
   })
 
@@ -125,7 +127,7 @@ export function Tour(props: TourProps): JSX.Element {
     }
     const gap = 12
     const below = box.top + box.height + gap
-    const placeBelow = below < window.innerHeight - 160
+    const placeBelow = below < env.win().innerHeight - 160
     return {
       position: 'fixed',
       top: placeBelow ? `${below}px` : `${box.top - gap}px`,

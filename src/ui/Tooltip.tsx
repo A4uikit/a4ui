@@ -3,6 +3,7 @@ import { Tooltip as KTooltip } from '@kobalte/core/tooltip'
 import type { JSX, ParentProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 interface TooltipProps extends ParentProps {
   /** Content shown inside the tooltip popover. */
@@ -23,10 +24,11 @@ interface TooltipProps extends ParentProps {
  * ```
  */
 export function Tooltip(props: TooltipProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KTooltip>
       <KTooltip.Trigger class="inline-flex">{props.children}</KTooltip.Trigger>
-      <KTooltip.Portal>
+      <KTooltip.Portal mount={portalMount()}>
         <KTooltip.Content
           class={cn(
             'z-50 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',

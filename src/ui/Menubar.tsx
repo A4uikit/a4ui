@@ -9,6 +9,7 @@ import { For, Show, splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { Kbd } from './Kbd'
+import { usePortalMount } from '../lib/portalMount'
 
 const CONTENT =
   'bg-glass z-50 min-w-[12rem] overflow-hidden rounded-xl p-1 text-sm text-foreground shadow-xl outline-none'
@@ -64,6 +65,7 @@ export interface MenubarMenuProps extends ClassProps {
 
 /** One top-level menu: a trigger button plus its popover of items. */
 export function MenubarMenu(props: MenubarMenuProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KMenubar.Menu>
       <KMenubar.Trigger
@@ -74,7 +76,7 @@ export function MenubarMenu(props: MenubarMenuProps): JSX.Element {
       >
         {props.label}
       </KMenubar.Trigger>
-      <KMenubar.Portal>
+      <KMenubar.Portal mount={portalMount()}>
         <KMenubar.Content class={cn(CONTENT, props.contentClass)}>{props.children}</KMenubar.Content>
       </KMenubar.Portal>
     </KMenubar.Menu>
@@ -183,13 +185,14 @@ export interface MenubarSubProps extends ClassProps {
 
 /** A nested submenu: opens with ArrowRight / hover, closes with ArrowLeft. */
 export function MenubarSub(props: MenubarSubProps): JSX.Element {
+  const portalMount = usePortalMount()
   return (
     <KMenubar.Sub overlap gutter={4} shift={-5}>
       <KMenubar.SubTrigger class={cn(ITEM, props.class)}>
         {props.label}
         <ChevronRight class="ml-auto h-3.5 w-3.5 text-muted-foreground" />
       </KMenubar.SubTrigger>
-      <KMenubar.Portal>
+      <KMenubar.Portal mount={portalMount()}>
         <KMenubar.SubContent class={CONTENT}>{props.children}</KMenubar.SubContent>
       </KMenubar.Portal>
     </KMenubar.Sub>

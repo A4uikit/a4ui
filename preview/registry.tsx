@@ -55,6 +55,7 @@ import * as UI from '../src'
 import * as Commerce from '../src/commerce'
 import * as Charts from '../src/charts'
 import { MarkdownGuide } from './MarkdownGuide'
+import { PortalMountDemo } from './PortalMountDemo'
 // Long-form guides render the actual repo markdown (single-source, never drift).
 import spatialGlassMd from '../SPATIAL-GLASS.md?raw'
 import integrationsMd from '../INTEGRATIONS.md?raw'
@@ -5474,6 +5475,25 @@ toast.error('Failed to save')`,
     ),
     code: `<Portal>
   <div class="fixed inset-0 grid place-items-center">Floating layer</div>
+</Portal>`,
+  },
+
+  {
+    id: 'portal-mount',
+    title: 'PortalMountProvider',
+    group: 'Layout',
+    blurb:
+      "Makes every overlay inside it (Modal, Popover, Tooltip, menus, pickers...) portal into a node you choose, and use that node's document and window for listeners, positioning and scroll lock. Use it to render A4ui into a same-origin iframe, like an editor canvas. Limitation: inside the frame, Kobalte-based overlays do not dismiss on outside click and do not trap Tab (Kobalte checks targets with the parent window's instanceof); Escape and close buttons work.",
+    demo: () => <PortalMountDemo />,
+    code: `const frame = iframe.contentDocument!
+// Solid delegates events on its own document; the frame needs them too.
+delegateEvents([...DelegatedEvents], frame)
+// Copy your stylesheets into frame.head as well.
+
+<Portal mount={frame.body}>
+  <PortalMountProvider mount={frame.body}>
+    <Page />
+  </PortalMountProvider>
 </Portal>`,
   },
 

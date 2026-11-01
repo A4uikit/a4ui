@@ -3,10 +3,11 @@
 // a floating clone follows the pointer through a Portal, and the grabbed
 // row's slot collapses into a dashed placeholder until it's dropped.
 import { createEffect, createSignal, For, Show, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
 import { GripVertical } from 'lucide-solid'
 
 import { cn } from '../lib/cn'
+import { Portal } from './Portal'
+import { useOverlayEnvironment } from '../lib/portalMount'
 
 export interface SortableProps<T> {
   /** The items to render, in current order. */
@@ -50,6 +51,7 @@ interface Drag {
  * ```
  */
 export function Sortable<T>(props: SortableProps<T>): JSX.Element {
+  const env = useOverlayEnvironment()
   // eslint-disable-next-line solid/reactivity -- seed once; a createEffect below keeps it in sync
   const [local, setLocal] = createSignal<T[]>(props.items)
   const [drag, setDrag] = createSignal<Drag | null>(null)
@@ -92,15 +94,15 @@ export function Sortable<T>(props: SortableProps<T>): JSX.Element {
 
     const move = (ev: PointerEvent) => onDragMove(ev)
     const up = () => {
-      window.removeEventListener('pointermove', move)
-      window.removeEventListener('pointerup', up)
+      env.win().removeEventListener('pointermove', move)
+      env.win().removeEventListener('pointerup', up)
       const order = local()
       const had = drag() !== null
       setDrag(null)
       if (had) props.onReorder(order)
     }
-    window.addEventListener('pointermove', move)
-    window.addEventListener('pointerup', up)
+    env.win().addEventListener('pointermove', move)
+    env.win().addEventListener('pointerup', up)
   }
 
   const draggedItem = () => {

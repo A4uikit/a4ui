@@ -9,6 +9,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 interface DrawerProps extends ParentProps {
   open: boolean
@@ -65,10 +66,11 @@ export type { DrawerProps }
  * ```
  */
 export function Drawer(props: DrawerProps): JSX.Element {
+  const portalMount = usePortalMount()
   const side = (): (typeof SIDE)[DrawerSide] => SIDE[props.side ?? 'right']
   return (
     <Dialog open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal mount={portalMount()}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px]" />
         <div class={cn('fixed inset-0 z-50 flex', side().wrap)}>
           <Dialog.Content

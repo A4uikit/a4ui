@@ -10,6 +10,7 @@ import type { JSX } from 'solid-js'
 import { For, Show, createSignal, untrack } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { usePortalMount } from '../lib/portalMount'
 
 /** A single selectable model in a {@link ModelPicker} menu. */
 export interface ModelOption {
@@ -50,6 +51,7 @@ export interface ModelPickerProps {
  * ```
  */
 export function ModelPicker(props: ModelPickerProps): JSX.Element {
+  const portalMount = usePortalMount()
   // Initial value only: read once (untracked), by design — this seeds the
   // uncontrolled fallback and must not re-run when `models`/`defaultValue` change later.
   const [internal, setInternal] = createSignal(untrack(() => props.defaultValue ?? props.models[0]?.id))
@@ -78,7 +80,7 @@ export function ModelPicker(props: ModelPickerProps): JSX.Element {
         <span class="truncate font-medium">{selectedModel()?.name}</span>
         <ChevronDown class="h-4 w-4 shrink-0 text-muted-foreground" />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
+      <DropdownMenu.Portal mount={portalMount()}>
         <DropdownMenu.Content class="z-50 min-w-64 overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <DropdownMenu.RadioGroup value={selectedId()} onChange={handleChange}>
             <For each={props.models}>

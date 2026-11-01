@@ -6,6 +6,27 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **`PortalMountProvider`** (#116) — overlays inside it portal into the node you
+  pass (e.g. `iframe.contentDocument.body`) instead of `document.body`, and their
+  document/window listeners, viewport measurements and scroll lock use that
+  node's document and window. Lets an app render A4ui into a same-origin iframe,
+  such as a visual editor canvas. Also `usePortalMount()` and
+  `useOverlayEnvironment()` for custom overlays, a `PortalMountProvider` docs
+  entry with a live iframe demo, and Playwright coverage of the iframe case.
+  Without a provider nothing changes. Known limitation: Kobalte (0.13.14) checks
+  event targets with the parent window's `instanceof Element`, so inside the
+  frame its outside-click dismiss and Tab focus trapping do not work; Escape,
+  close buttons and positioning do.
+
+### Fixed
+
+- `Modal` and the `Sidebar` keyboard shortcut no longer rely on `instanceof`
+  checks, which fail for nodes from another document (iframes).
+- Anchored popovers (`DateField`, `TimeField`, `DateRangePicker`, `MultiSelect`)
+  measure the viewport of the window their trigger lives in.
+
 ## [0.38.0] — 2026-10-31
 
 ### Added
