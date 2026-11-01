@@ -221,7 +221,7 @@ test.describe('menus', () => {
       await expect(demo.getByRole('menubar')).toHaveCount(0)
 
       await burger.click()
-      const drawer = page.getByRole('alertdialog', { name: 'Nebula' })
+      const drawer = page.getByRole('dialog', { name: 'Nebula' })
       await expect(drawer).toBeVisible()
       // Anchored to the left edge once the slide-in settles.
       await expect.poll(async () => (await drawer.boundingBox())?.x).toBe(0)

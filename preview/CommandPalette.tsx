@@ -1,6 +1,7 @@
 // ⌘K command palette — fuzzy-search every component and jump to its doc.
 // Lazy-loaded from App (it imports the registry), so the Home bundle stays small.
-import { Dialog } from '@kobalte/core/dialog'
+// Namespace import: see src/ui/Modal.tsx (#118).
+import * as Dialog from '@kobalte/core/dialog'
 import { createEffect, createMemo, createSignal, For, Show, type JSX } from 'solid-js'
 
 import { DOCS } from './registry'
@@ -49,7 +50,7 @@ export default function CommandPalette(props: CommandPaletteProps): JSX.Element 
   }
 
   return (
-    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+    <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-x-0 top-[14vh] z-50 mx-auto w-full max-w-lg px-4">
@@ -103,6 +104,6 @@ export default function CommandPalette(props: CommandPaletteProps): JSX.Element 
           </Dialog.Content>
         </div>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog.Root>
   )
 }

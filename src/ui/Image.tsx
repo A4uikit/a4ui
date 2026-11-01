@@ -2,7 +2,10 @@
 // Dialog primitive. The thumbnail lazy-loads; when `preview` is on it becomes a
 // button that opens a dimmed, backdrop-blurred overlay with an enlarged copy of
 // the image and a corner close button (focus trap/portal handled by Kobalte).
-import { Dialog } from '@kobalte/core/dialog'
+// Namespace import on purpose: Kobalte's `AlertDialog` is built with Object.assign on the
+// same `DialogRoot` function as `Dialog`, so `Dialog.Content` depends on module load order (#118).
+// The named exports (`Root`, `Content`, ...) are not affected.
+import * as Dialog from '@kobalte/core/dialog'
 import { X } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { createSignal, Show } from 'solid-js'
@@ -69,7 +72,7 @@ export function Image(props: ImageProps): JSX.Element {
       <button type="button" class="cursor-zoom-in" aria-label={props.alt} onClick={() => setOpen(true)}>
         {img}
       </button>
-      <Dialog open={open()} onOpenChange={setOpen}>
+      <Dialog.Root open={open()} onOpenChange={setOpen}>
         <Dialog.Portal>
           <Dialog.Overlay class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
           <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -88,7 +91,7 @@ export function Image(props: ImageProps): JSX.Element {
             </Dialog.Content>
           </div>
         </Dialog.Portal>
-      </Dialog>
+      </Dialog.Root>
     </Show>
   )
 }

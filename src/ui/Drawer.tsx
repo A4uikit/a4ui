@@ -3,7 +3,10 @@
 // slide-in/out keyframes in styles.css off Kobalte's data-expanded/data-closed.
 // Pass a `title` for the sticky glass header, or omit it and render your own
 // inside `children`.
-import { Dialog } from '@kobalte/core/dialog'
+// Namespace import on purpose: Kobalte's `AlertDialog` is built with Object.assign on the
+// same `DialogRoot` function as `Dialog`, so `Dialog.Content` depends on module load order (#118).
+// The named exports (`Root`, `Content`, ...) are not affected.
+import * as Dialog from '@kobalte/core/dialog'
 import { X } from 'lucide-solid'
 import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
@@ -67,7 +70,7 @@ export type { DrawerProps }
 export function Drawer(props: DrawerProps): JSX.Element {
   const side = (): (typeof SIDE)[DrawerSide] => SIDE[props.side ?? 'right']
   return (
-    <Dialog open={props.open} onOpenChange={props.onOpenChange}>
+    <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px]" />
         <div class={cn('fixed inset-0 z-50 flex', side().wrap)}>
@@ -100,6 +103,6 @@ export function Drawer(props: DrawerProps): JSX.Element {
           </Dialog.Content>
         </div>
       </Dialog.Portal>
-    </Dialog>
+    </Dialog.Root>
   )
 }
