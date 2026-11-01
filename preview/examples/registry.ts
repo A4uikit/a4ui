@@ -127,4 +127,10 @@ export const EXAMPLES: ExampleEntry[] = [
     blurb: 'Admin dashboard with charts, metric sparklines, a filter, and a users table.',
     component: lazy(() => import('./Admin')),
   },
+  {
+    id: 'business-site',
+    title: 'Business site',
+    blurb: 'Small-business site built only from page-section blocks, pricing and a logo wall.',
+    component: lazy(() => import('./BusinessSite')),
+  },
 ]

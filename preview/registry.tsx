@@ -105,6 +105,7 @@ export const DOC_GROUPS = [
   'Feedback',
   'Navigation',
   'Layout',
+  'Sections',
   'Motion',
   'Guides',
 ]
@@ -8466,6 +8467,286 @@ const [sheet, setSheet] = createSignal<string[][]>([])
 <ActivityFeed items={[
   { id: '1', actor: 'Ada', action: <>commented</>, timestamp: '2026-07-21T15:40:00Z' },
 ]} />`,
+  },
+
+  // ---- Sections (data-driven page blocks) -----------------------------------
+  {
+    id: 'site-nav',
+    title: 'SiteNav',
+    group: 'Sections',
+    blurb:
+      'Top bar of a marketing site: brand, links and a call-to-action, collapsing into a menu on phones.',
+    controls: { sticky: { type: 'boolean', label: 'sticky', default: false } },
+    demo: (c) => (
+      <div class="overflow-hidden rounded-xl border border-border">
+        <UI.SiteNav
+          brand="Northwind"
+          sticky={c.sticky as boolean}
+          links={[
+            { label: 'Features', href: '#/site-nav' },
+            { label: 'Pricing', href: '#/site-nav' },
+            { label: 'FAQ', href: '#/site-nav' },
+          ]}
+          cta={{ label: 'Get started', href: '#/site-nav' }}
+        />
+      </div>
+    ),
+    code: (c) => `<SiteNav
+  brand="Northwind"${c.sticky ? '' : '\n  sticky={false}'}
+  links={[{ label: 'Features', href: '#features' }, { label: 'Pricing', href: '#pricing' }]}
+  cta={{ label: 'Get started', href: '/signup' }}
+/>`,
+  },
+  {
+    id: 'hero-section',
+    title: 'Hero',
+    group: 'Sections',
+    blurb:
+      'Opening section of a landing page: headline, subtitle, two calls-to-action and an optional image.',
+    controls: {
+      layout: { type: 'select', label: 'layout', options: ['center', 'split'], default: 'center' },
+      background: {
+        type: 'select',
+        label: 'background',
+        options: ['aurora', 'image', 'none'],
+        default: 'aurora',
+      },
+    },
+    demo: (c) => (
+      <div class="overflow-hidden rounded-xl border border-border">
+        <UI.Hero
+          eyebrow="Now booking for spring"
+          title="Websites that bring customers in"
+          subtitle="A fast, good-looking site for your business, live in days instead of months."
+          primary={{ label: 'Get a quote', href: '#/hero-section' }}
+          secondary={{ label: 'See our work', href: '#/hero-section' }}
+          image="https://picsum.photos/seed/a4hero/1200/800"
+          layout={c.layout as UI.HeroLayout}
+          background={c.background as UI.HeroBackground}
+        />
+      </div>
+    ),
+    code: (c) => `<Hero
+  eyebrow="Now booking for spring"
+  title="Websites that bring customers in"
+  subtitle="A fast, good-looking site for your business."
+  primary={{ label: 'Get a quote', href: '#contact' }}
+  secondary={{ label: 'See our work', href: '#work' }}
+  image="/hero.jpg"
+  layout="${String(c.layout)}"
+  background="${String(c.background)}"
+/>`,
+  },
+  {
+    id: 'feature-grid',
+    title: 'FeatureGrid',
+    group: 'Sections',
+    blurb:
+      'A heading over a responsive grid of feature cards, each with an optional icon, a title and a short text.',
+    controls: { columns: { type: 'select', label: 'columns', options: ['2', '3', '4'], default: '3' } },
+    demo: (c) => (
+      <UI.FeatureGrid
+        title="Everything a small business needs"
+        subtitle="No plugins to babysit, no surprise bills."
+        columns={Number(c.columns) as 2 | 3 | 4}
+        items={[
+          { title: 'Fast by default', text: 'Pages load in under a second on a phone.', icon: <Zap /> },
+          { title: 'Secure', text: 'HTTPS, backups and updates handled for you.', icon: <Settings /> },
+          { title: 'Looks right everywhere', text: 'Light, dark and every screen size.', icon: <Sparkles /> },
+          { title: 'Easy edits', text: 'Change text and photos without a developer.', icon: <FileText /> },
+        ]}
+      />
+    ),
+    code: (c) => `<FeatureGrid
+  title="Everything a small business needs"
+  columns={${String(c.columns)}}
+  items={[
+    { title: 'Fast by default', text: 'Pages load in under a second.', icon: <Zap /> },
+    { title: 'Secure', text: 'HTTPS, backups and updates handled.' },
+  ]}
+/>`,
+  },
+  {
+    id: 'testimonials',
+    title: 'Testimonials',
+    group: 'Sections',
+    blurb: 'Customer quotes with name, role and avatar, as a grid of cards or a scrolling marquee.',
+    controls: { layout: { type: 'select', label: 'layout', options: ['grid', 'marquee'], default: 'grid' } },
+    demo: (c) => (
+      <UI.Testimonials
+        title="What our clients say"
+        layout={c.layout as UI.TestimonialsLayout}
+        items={[
+          {
+            quote: 'We doubled our bookings the month the new site went live.',
+            name: 'Ana Ruiz',
+            role: 'Owner, Brisa Spa',
+          },
+          {
+            quote: 'They understood what we needed in one call.',
+            name: 'Luis Ortega',
+            role: 'Director, Ortega Legal',
+            avatar: 'https://picsum.photos/seed/a4-luis/80/80',
+          },
+          {
+            quote: 'Fast, clear, and the site looks great on phones.',
+            name: 'Marta Gil',
+            role: 'Founder, Pan & Co.',
+          },
+        ]}
+      />
+    ),
+    code: (c) => `<Testimonials
+  title="What our clients say"
+  layout="${String(c.layout)}"
+  items={[{ quote: 'We doubled our bookings.', name: 'Ana Ruiz', role: 'Owner, Brisa Spa', avatar: '/ana.jpg' }]}
+/>`,
+  },
+  {
+    id: 'faq',
+    title: 'Faq',
+    group: 'Sections',
+    blurb: 'Frequently asked questions as an accordion under a heading.',
+    demo: () => (
+      <UI.Faq
+        title="Frequently asked questions"
+        items={[
+          { question: 'How long does a site take?', answer: 'Most sites go live in one to two weeks.' },
+          { question: 'Can I edit it myself?', answer: 'Yes. Text and photos are editable without code.' },
+          {
+            question: 'Do you offer hosting?',
+            answer: 'Hosting, domain and SSL are included in every plan.',
+          },
+        ]}
+      />
+    ),
+    code: `<Faq
+  title="Frequently asked questions"
+  items={[{ question: 'How long does a site take?', answer: 'One to two weeks.' }]}
+/>`,
+  },
+  {
+    id: 'cta-banner',
+    title: 'CtaBanner',
+    group: 'Sections',
+    blurb: 'A call-to-action band with a headline and one or two buttons on a tinted glass panel.',
+    demo: () => (
+      <UI.CtaBanner
+        title="Ready to get more customers?"
+        subtitle="Tell us about your business and get a quote within a day."
+        primary={{ label: 'Get a quote', href: '#/cta-banner' }}
+        secondary={{ label: 'Call us', href: 'tel:+525512345678' }}
+      />
+    ),
+    code: `<CtaBanner
+  title="Ready to get more customers?"
+  primary={{ label: 'Get a quote', href: '#contact' }}
+  secondary={{ label: 'Call us', href: 'tel:+525512345678' }}
+/>`,
+  },
+  {
+    id: 'contact-section',
+    title: 'ContactSection',
+    group: 'Sections',
+    blurb: 'A contact form beside email, phone and address; posts to a URL or mailto: link, no backend.',
+    demo: () => (
+      <UI.ContactSection
+        title="Get in touch"
+        subtitle="We reply within one business day."
+        fields={['name', 'email', 'phone', 'message']}
+        onSubmit={(values) => UI.toast.success(`Thanks, ${values.name ?? 'friend'}!`)}
+        email="hello@northwind.example"
+        phone="+52 55 1234 5678"
+        address={'Av. Reforma 123\nCiudad de México'}
+      />
+    ),
+    code: `<ContactSection
+  title="Get in touch"
+  fields={['name', 'email', 'phone', 'message']}
+  action="mailto:hello@northwind.example"
+  email="hello@northwind.example"
+  phone="+52 55 1234 5678"
+  address="Av. Reforma 123, Ciudad de México"
+/>`,
+  },
+  {
+    id: 'site-footer',
+    title: 'SiteFooter',
+    group: 'Sections',
+    blurb: 'Site footer with brand, tagline, link columns, social icons and a copyright line.',
+    demo: () => (
+      <div class="overflow-hidden rounded-xl border border-border">
+        <UI.SiteFooter
+          brand="Northwind"
+          tagline="Websites for small businesses."
+          columns={[
+            {
+              title: 'Company',
+              links: [
+                { label: 'About', href: '#/site-footer' },
+                { label: 'Careers', href: '#/site-footer' },
+              ],
+            },
+            {
+              title: 'Services',
+              links: [
+                { label: 'Websites', href: '#/site-footer' },
+                { label: 'Hosting', href: '#/site-footer' },
+              ],
+            },
+            {
+              title: 'Legal',
+              links: [
+                { label: 'Privacy', href: '#/site-footer' },
+                { label: 'Terms', href: '#/site-footer' },
+              ],
+            },
+          ]}
+          social={[
+            { network: 'instagram', href: 'https://instagram.com' },
+            { network: 'facebook', href: 'https://facebook.com' },
+            { network: 'x', href: 'https://x.com' },
+            { network: 'linkedin', href: 'https://linkedin.com' },
+          ]}
+        />
+      </div>
+    ),
+    code: `<SiteFooter
+  brand="Northwind"
+  tagline="Websites for small businesses."
+  columns={[{ title: 'Company', links: [{ label: 'About', href: '/about' }] }]}
+  social={[{ network: 'instagram', href: 'https://instagram.com/northwind' }]}
+/>`,
+  },
+  {
+    id: 'team-grid',
+    title: 'TeamGrid',
+    group: 'Sections',
+    blurb: 'The people behind a business: photo or initials, name, role and a short bio.',
+    demo: () => (
+      <UI.TeamGrid
+        title="Meet the team"
+        members={[
+          {
+            name: 'Ana Ruiz',
+            role: 'Founder',
+            bio: 'Ten years building sites for local shops.',
+            photo: 'https://picsum.photos/seed/a4-ana/160/160',
+          },
+          { name: 'Luis Ortega', role: 'Design lead', bio: 'Turns brands into pages people remember.' },
+          {
+            name: 'Marta Gil',
+            role: 'Developer',
+            bio: 'Keeps every site fast and accessible.',
+            photo: 'https://picsum.photos/seed/a4-marta/160/160',
+          },
+        ]}
+      />
+    ),
+    code: `<TeamGrid
+  title="Meet the team"
+  members={[{ name: 'Ana Ruiz', role: 'Founder', bio: 'Ten years building sites.', photo: '/ana.jpg' }]}
+/>`,
   },
 ]
 
