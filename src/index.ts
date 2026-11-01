@@ -179,6 +179,33 @@ export { Stepper, type StepItem, type StepperProps } from './ui/Stepper'
 export { Timeline, type TimelineItem, type TimelineTone, type TimelineProps } from './ui/Timeline'
 export { Rating, type RatingProps } from './ui/Rating'
 export { PricingTable, type PricingTier, type PricingPeriod } from './ui/PricingTable'
+// Page sections — data-driven marketing blocks.
+export type { SectionLink } from './ui/internal/sectionKit'
+export { SiteNav, type SiteNavProps } from './ui/SiteNav'
+export { Hero, type HeroProps, type HeroLayout, type HeroBackground } from './ui/Hero'
+export { FeatureGrid, type FeatureGridProps, type FeatureItem } from './ui/FeatureGrid'
+export {
+  Testimonials,
+  type TestimonialsProps,
+  type TestimonialItem,
+  type TestimonialsLayout,
+} from './ui/Testimonials'
+export { Faq, type FaqProps, type FaqItem } from './ui/Faq'
+export { CtaBanner, type CtaBannerProps } from './ui/CtaBanner'
+export {
+  ContactSection,
+  type ContactSectionProps,
+  type ContactField,
+  type ContactValues,
+} from './ui/ContactSection'
+export {
+  SiteFooter,
+  type SiteFooterProps,
+  type FooterColumn,
+  type SocialLink,
+  type SocialNetwork,
+} from './ui/SiteFooter'
+export { TeamGrid, type TeamGridProps, type TeamMember } from './ui/TeamGrid'
 export { BeforeAfter, type BeforeAfterProps } from './ui/BeforeAfter'
 export {
   Configurator,

@@ -20,6 +20,9 @@ Ships both as SolidJS components and as a **Web Components** bundle
     NotificationCenter, Command, Sortable, Clock, CalendarHeatmap, Item, ScrollArea,
     Sidebar, Field, InputGroup, ButtonGroup, Menubar, NavigationMenu, Questionnaire,
     Attachment, ChatMarker, Prose,
+    and the data-driven page sections (SiteNav, Hero, FeatureGrid, Testimonials,
+    Faq, CtaBanner, ContactSection, SiteFooter, TeamGrid, sharing
+    `src/ui/internal/sectionKit.tsx`),
     and more).
     **Motion components** (built on the `motion` engine, adapted from motion.dev
     examples, all tree-shakeable + reduced-motion aware): `ScrambleText`,

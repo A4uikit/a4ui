@@ -8,6 +8,15 @@ changes, `patch` for fixes).
 
 ### Added
 
+- **Page sections** — nine marketing-page blocks driven entirely by plain data
+  props (strings, enums, arrays of plain objects; no required JSX), so a page can
+  be described as a list of blocks: `SiteNav` (brand, links, CTA, phone disclosure
+  menu), `Hero` (`center`/`split` layout, `aurora`/`image`/`none` background),
+  `FeatureGrid`, `Testimonials` (`grid`/`marquee`), `Faq`, `CtaBanner`,
+  `ContactSection` (native POST to a URL or `mailto:`, or `onSubmit`),
+  `SiteFooter` (link columns, social icons) and `TeamGrid`. New `Sections` docs
+  group and a "Business site" example built only from these blocks plus
+  `PricingTable` and `LogoWall`.
 - **`Item`** — composable row primitive: `ItemMedia` (icon tile / image / custom),
   `ItemContent` with `ItemTitle` + `ItemDescription`, trailing `ItemActions`, and
   full-width `ItemHeader`/`ItemFooter`; `ItemGroup` + `ItemSeparator` to stack them.

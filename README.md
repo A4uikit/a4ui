@@ -182,7 +182,7 @@ mode switch — a theme recolors underneath either mode.
 
 ## Components
 
-75+ components across nine categories (this is a sample — see the
+75+ components across ten categories (this is a sample — see the
 **[docs site](https://a4ui.pages.dev/)** or `src/index.ts` for the
 full list):
 
@@ -196,6 +196,7 @@ full list):
 | Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`, `FloatingToolbar`, `ArtifactPanel`, `MasterDetail`, `ScrollArea`, `Item`, `Prose`                                                                                                                                                                        |
 | Commerce       | `ProductCard`, `ProductGrid`, `PriceTag`, `PriceBlock`, `QuantityStepper`, `CartLine`, `CartSummary`, `FilterGroup`, `FacetSidebar`, `ConditionScale`                                                                                                                                                                                             |
 | Charts         | `Sparkline`, `BarChart`, `AreaChart`, `PieChart`, `DonutChart`, `RadialBarChart` (native SVG, theme-tinted)                                                                                                                                                                                                                                       |
+| Sections       | `SiteNav`, `Hero`, `FeatureGrid`, `Testimonials`, `Faq`, `CtaBanner`, `ContactSection`, `SiteFooter`, `TeamGrid` (data-driven page blocks: plain props, no JSX required)                                                                                                                                                                          |
 | Motion         | `ScrambleText`, `TextReveal`, `Typewriter`, `GradientText`, `HoldToConfirm`, `LoadingDots`, `FillText`, `Curtain`, `Parallax`, `ScrollProgress`, `Ripple`, `Magnetic`, `TiltCard`, `Spotlight`, `NotificationStack`, `MultiStateBadge`, `NowPlaying`, `Expandable`, `StreamingText`, `PageTransition`, `ScrollScene`, `StickyReveal`, `flyToCart` |
 
 Domain-specific sets ship as **subpath entries** so the base package stays lean —
