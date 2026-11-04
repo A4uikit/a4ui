@@ -7,8 +7,8 @@ import { spawnRipple } from './Ripple'
 export type FloatingActionButtonPosition = 'bottom-right' | 'bottom-left'
 
 const POSITION_CLASSES: Record<FloatingActionButtonPosition, string> = {
-  'bottom-right': 'bottom-6 right-6',
-  'bottom-left': 'bottom-6 left-6',
+  'bottom-right': 'bottom-6 end-6',
+  'bottom-left': 'bottom-6 start-6',
 }
 
 // brightness-110 on hover keeps the tint theme-agnostic — it lifts whatever

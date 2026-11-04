@@ -11,6 +11,7 @@ import type { JSX } from 'solid-js'
 import { createSignal, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 import { motionReduced } from '../lib/motion'
 
 export interface ImageProps {
@@ -73,7 +74,7 @@ export function Image(props: ImageProps): JSX.Element {
         {img}
       </button>
       <Dialog.Root open={open()} onOpenChange={setOpen}>
-        <Dialog.Portal>
+        <Dialog.Portal ref={portalDir}>
           <Dialog.Overlay class="fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
           <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
             <Dialog.Content role="dialog" class="relative">
@@ -83,7 +84,7 @@ export function Image(props: ImageProps): JSX.Element {
                 class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain"
               />
               <Dialog.CloseButton
-                class="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-lg bg-background/70 text-foreground transition hover:bg-muted"
+                class="absolute end-2 top-2 grid h-8 w-8 place-items-center rounded-lg bg-background/70 text-foreground transition hover:bg-muted"
                 aria-label="Close"
               >
                 <X class="h-5 w-5" />

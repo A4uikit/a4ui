@@ -23,11 +23,20 @@ import {
 } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
+import { useDirection } from './DirectionProvider'
 import { useMediaQuery } from '../lib/media'
 import { Drawer } from './Drawer'
 import { ScrollArea } from './ScrollArea'
 
-export type SidebarSide = 'left' | 'right'
+/**
+ * Which edge the sidebar sits on. The layout is a flex row in DOM order, so the
+ * edge follows the reading direction: `start` (alias `left`) is the leading
+ * edge, `end` (alias `right`) the trailing one. Under `dir="rtl"` `start` is the
+ * right-hand side.
+ */
+export type SidebarSide = 'start' | 'end' | 'left' | 'right'
+const isStart = (side: SidebarSide): boolean => side === 'start' || side === 'left'
 export type SidebarVariant = 'sidebar' | 'floating' | 'inset'
 export type SidebarCollapsible = 'offcanvas' | 'icon' | 'none'
 
@@ -95,7 +104,7 @@ export function SidebarProvider(props: SidebarProviderProps): JSX.Element {
   const [internal, setInternal] = createSignal(props.defaultOpen ?? true)
   const [openMobile, setOpenMobile] = createSignal(false)
   const [config, setConfig] = createSignal<ReturnType<SidebarContextValue['config']>>({
-    side: 'left',
+    side: 'start',
     variant: 'sidebar',
     collapsible: 'offcanvas',
   })
@@ -144,7 +153,7 @@ export function SidebarProvider(props: SidebarProviderProps): JSX.Element {
 }
 
 interface SidebarProps extends ParentProps {
-  /** Which edge it sits on. @default 'left' */
+  /** Which edge it sits on; follows `dir` (see {@link SidebarSide}). @default 'start' */
   side?: SidebarSide
   /** `sidebar` is flush, `floating` is a detached rounded panel, `inset` has no surface of its own (pair with `SidebarInset`). @default 'sidebar' */
   variant?: SidebarVariant
@@ -169,7 +178,7 @@ interface SidebarProps extends ParentProps {
  */
 export function Sidebar(props: SidebarProps): JSX.Element {
   const ctx = useSidebarInternal()
-  const side = () => props.side ?? 'left'
+  const side = () => props.side ?? 'start'
   const variant = () => props.variant ?? 'sidebar'
   const collapsible = () => props.collapsible ?? 'offcanvas'
   createEffect(() => ctx.setConfig({ side: side(), variant: variant(), collapsible: collapsible() }))
@@ -185,7 +194,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
       class={cn(
         'relative flex h-full w-full min-w-0 flex-col',
         variant() === 'sidebar' &&
-          cn('bg-glass', side() === 'left' ? 'border-r border-border' : 'border-l border-border'),
+          cn('bg-glass', isStart(side()) ? 'border-e border-border' : 'border-s border-border'),
         variant() === 'floating' && 'rounded-xl border border-border bg-glass shadow-lg',
         props.class,
       )}
@@ -202,7 +211,7 @@ export function Sidebar(props: SidebarProps): JSX.Element {
           <Drawer
             open={ctx.openMobile()}
             onOpenChange={ctx.setOpenMobile}
-            side={side()}
+            side={isStart(side()) ? 'start' : 'end'}
             title={label()}
             class="max-w-[var(--sidebar-w)] p-0"
           >
@@ -233,10 +242,16 @@ export function Sidebar(props: SidebarProps): JSX.Element {
           <div
             class={cn(
               'absolute inset-y-0 transition-[transform,visibility] duration-200 ease-out',
-              side() === 'left' ? 'left-0' : 'right-0',
+              isStart(side()) ? 'start-0' : 'end-0',
               variant() !== 'sidebar' && 'p-2',
               collapsible() === 'icon' ? 'w-full' : 'w-[var(--sidebar-w)]',
-              offscreen() && cn('invisible', side() === 'left' ? '-translate-x-full' : 'translate-x-full'),
+              offscreen() &&
+                cn(
+                  'invisible',
+                  isStart(side())
+                    ? '-translate-x-full rtl:translate-x-full'
+                    : 'translate-x-full rtl:-translate-x-full',
+                ),
             )}
           >
             {surface()}
@@ -275,7 +290,7 @@ export function SidebarTrigger(props: SidebarTriggerProps): JSX.Element {
         props.class,
       )}
     >
-      {props.children ?? <PanelLeft class="h-4 w-4" aria-hidden="true" />}
+      {props.children ?? <PanelLeft class="h-4 w-4 rtl:-scale-x-100" aria-hidden="true" />}
     </button>
   )
 }
@@ -287,7 +302,7 @@ export function SidebarTrigger(props: SidebarTriggerProps): JSX.Element {
  */
 export function SidebarRail(props: { class?: string }): JSX.Element {
   const ctx = useSidebarInternal()
-  const left = () => ctx.config().side === 'left'
+  const left = () => isStart(ctx.config().side)
   return (
     <button
       type="button"
@@ -297,8 +312,10 @@ export function SidebarRail(props: { class?: string }): JSX.Element {
       title="Toggle sidebar"
       onClick={() => ctx.toggle()}
       class={cn(
-        'absolute inset-y-0 z-10 hidden w-3 after:absolute after:inset-y-0 after:left-1/2 after:w-px after:bg-transparent after:transition-colors hover:after:bg-border md:block',
-        left() ? '-right-1.5 cursor-w-resize' : '-left-1.5 cursor-e-resize',
+        'absolute inset-y-0 z-10 hidden w-3 after:absolute after:inset-y-0 after:start-1/2 after:w-px after:bg-transparent after:transition-colors hover:after:bg-border md:block',
+        left()
+          ? '-end-1.5 cursor-w-resize rtl:cursor-e-resize'
+          : '-start-1.5 cursor-e-resize rtl:cursor-w-resize',
         props.class,
       )}
     />
@@ -325,7 +342,7 @@ export function SidebarInset(props: ParentProps<{ class?: string }>): JSX.Elemen
         inset() &&
           cn(
             'm-2 rounded-xl border border-border bg-glass shadow-sm',
-            ctx.config().side === 'left' ? 'ml-0' : 'mr-0',
+            isStart(ctx.config().side) ? 'ms-0' : 'me-0',
           ),
         props.class,
       )}
@@ -416,7 +433,7 @@ export function SidebarGroupAction(props: SidebarGroupActionProps): JSX.Element 
       aria-label={props.label}
       onClick={(e) => props.onClick?.(e)}
       class={cn(
-        'absolute right-1 top-0 grid h-6 w-6 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-data-[icon-collapsed=true]/sidebar:hidden [&>svg]:h-4 [&>svg]:w-4',
+        'absolute end-1 top-0 grid h-6 w-6 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-data-[icon-collapsed=true]/sidebar:hidden [&>svg]:h-4 [&>svg]:w-4',
         props.class,
       )}
     >
@@ -476,17 +493,20 @@ const SIZE: Record<MenuButtonSize, string> = {
 // child is visually hidden (sr-only) so the accessible name survives, and the
 // icon is centred.
 const ITEM_BASE =
-  'flex w-full min-w-0 items-center gap-2.5 rounded-lg px-2.5 text-left font-medium text-foreground/80 outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground group-has-[[data-sidebar=menu-action]]/item:pr-9 [&>svg]:h-[18px] [&>svg]:w-[18px] [&>svg]:shrink-0 [&>span]:truncate group-data-[icon-collapsed=true]/sidebar:justify-center group-data-[icon-collapsed=true]/sidebar:px-0 group-data-[icon-collapsed=true]/sidebar:[&>span]:sr-only'
+  'flex w-full min-w-0 items-center gap-2.5 rounded-lg px-2.5 text-start font-medium text-foreground/80 outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground group-has-[[data-sidebar=menu-action]]/item:pe-9 [&>svg]:h-[18px] [&>svg]:w-[18px] [&>svg]:shrink-0 [&>span]:truncate group-data-[icon-collapsed=true]/sidebar:justify-center group-data-[icon-collapsed=true]/sidebar:px-0 group-data-[icon-collapsed=true]/sidebar:[&>span]:sr-only'
 
 function MenuTooltip(
   props: ParentProps<{ tooltip?: JSX.Element; as: 'a' | 'button'; [key: string]: unknown }>,
 ) {
   const iconCollapsed = useContext(IconCollapsed)
   const ctx = useSidebarInternal()
+  const dir = useDirection()
   const [local, rest] = splitProps(props, ['tooltip', 'as', 'children'])
+  // Kobalte placements are physical: the tooltip opens toward the content side.
+  const towardContent = () => (isStart(ctx.config().side) === (dir() === 'ltr') ? 'right' : 'left')
   return (
     <KTooltip
-      placement={ctx.config().side === 'left' ? 'right' : 'left'}
+      placement={towardContent()}
       gutter={10}
       openDelay={150}
       closeDelay={0}
@@ -495,7 +515,7 @@ function MenuTooltip(
       <KTooltip.Trigger as={local.as} {...rest}>
         {local.children}
       </KTooltip.Trigger>
-      <KTooltip.Portal>
+      <KTooltip.Portal ref={portalDir}>
         <KTooltip.Content class="z-50 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md">
           {local.tooltip}
         </KTooltip.Content>
@@ -565,7 +585,7 @@ export function SidebarMenuAction(
       aria-label={props.label}
       onClick={(e) => props.onClick?.(e)}
       class={cn(
-        'absolute right-1 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-data-[icon-collapsed=true]/sidebar:hidden [&>svg]:h-4 [&>svg]:w-4',
+        'absolute end-1 top-1/2 grid h-6 w-6 -translate-y-1/2 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring group-data-[icon-collapsed=true]/sidebar:hidden [&>svg]:h-4 [&>svg]:w-4',
         props.showOnHover &&
           'opacity-0 focus-visible:opacity-100 group-focus-within/item:opacity-100 group-hover/item:opacity-100',
         props.class,
@@ -582,7 +602,7 @@ export function SidebarMenuBadge(props: ParentProps<{ class?: string }>): JSX.El
     <span
       data-sidebar="menu-badge"
       class={cn(
-        'pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none rounded-md bg-primary/15 px-1.5 text-[11px] font-semibold tabular-nums text-primary group-data-[icon-collapsed=true]/sidebar:hidden',
+        'pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 select-none rounded-md bg-primary/15 px-1.5 text-[11px] font-semibold tabular-nums text-primary group-data-[icon-collapsed=true]/sidebar:hidden',
         props.class,
       )}
     >
@@ -651,8 +671,8 @@ export function SidebarMenuSub(props: SidebarMenuSubProps): JSX.Element {
         <ChevronRight
           aria-hidden="true"
           class={cn(
-            'ml-auto h-4 w-4 shrink-0 transition-transform duration-200 group-data-[icon-collapsed=true]/sidebar:hidden',
-            shown() && 'rotate-90',
+            'ms-auto h-4 w-4 shrink-0 transition-transform duration-200 group-data-[icon-collapsed=true]/sidebar:hidden',
+            shown() ? 'rotate-90' : 'rtl:-scale-x-100',
           )}
         />
       </MenuTooltip>
@@ -664,7 +684,7 @@ export function SidebarMenuSub(props: SidebarMenuSubProps): JSX.Element {
         )}
       >
         <div class="min-h-0 overflow-hidden">
-          <ul class="ml-4 mt-1 flex list-none flex-col gap-0.5 border-l border-border py-0.5 pl-2.5">
+          <ul class="ms-4 mt-1 flex list-none flex-col gap-0.5 border-s border-border py-0.5 ps-2.5">
             {props.children}
           </ul>
         </div>
@@ -688,7 +708,7 @@ export function SidebarMenuSubButton(
 ): JSX.Element {
   const cls = () =>
     cn(
-      'flex h-8 w-full min-w-0 items-center gap-2 rounded-md px-2 text-left text-[13px] font-medium text-foreground/75 outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground [&>span]:truncate',
+      'flex h-8 w-full min-w-0 items-center gap-2 rounded-md px-2 text-start text-[13px] font-medium text-foreground/75 outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring aria-[current=page]:bg-muted aria-[current=page]:text-foreground [&>span]:truncate',
       props.class,
     )
   return (

@@ -41,7 +41,7 @@ export function Faq(props: FaqProps): JSX.Element {
       class={cn('mx-auto flex w-full max-w-3xl flex-col gap-10 px-5 py-20', props.class)}
     >
       <SectionHeading title={props.title} subtitle={props.subtitle} />
-      <div class="card rounded-xl px-5 sm:px-6 [&_button]:py-4 [&_button]:text-left [&_button]:text-base">
+      <div class="card rounded-xl px-5 sm:px-6 [&_button]:py-4 [&_button]:text-start [&_button]:text-base">
         <Accordion
           multiple={props.multiple}
           class="[&>*:last-child]:border-b-0"

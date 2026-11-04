@@ -4,7 +4,7 @@
 // scale, so its content never stretches. Covers the motion.dev "family dialog"
 // (size="dialog") and "app store layout" (size="full") patterns with one API.
 import { createSignal, Show, onCleanup, onMount, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
 import { cn } from '../lib/cn'
 import { animate, motionReduced } from '../lib/motion'
@@ -206,7 +206,7 @@ export function Expandable(props: ExpandableProps): JSX.Element {
               type="button"
               aria-label="Close"
               onClick={doClose}
-              class="absolute right-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              class="absolute end-3 top-3 z-10 grid h-8 w-8 place-items-center rounded-full bg-muted/80 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
             >
               <svg
                 viewBox="0 0 24 24"

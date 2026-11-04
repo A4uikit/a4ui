@@ -1978,7 +1978,9 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
           </UI.InputGroup>
           <UI.InputGroup>
             <UI.InputGroupAddon>
-              <UI.InputGroupText>https://</UI.InputGroupText>
+              <UI.InputGroupText>
+                <bdi dir="ltr">https://</bdi>
+              </UI.InputGroupText>
             </UI.InputGroupAddon>
             <UI.InputGroupInput value={url()} onInput={setUrl} placeholder="orbit.dev" aria-label="Website" />
           </UI.InputGroup>
@@ -2970,7 +2972,12 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     blurb:
       'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle).',
     controls: {
-      side: { type: 'select', label: 'side', options: ['right', 'left', 'top', 'bottom'], default: 'right' },
+      side: {
+        type: 'select',
+        label: 'side',
+        options: ['right', 'left', 'start', 'end', 'top', 'bottom'],
+        default: 'right',
+      },
       title: { type: 'text', label: 'title', default: 'Customer detail' },
       subtitle: { type: 'text', label: 'subtitle', default: 'Rivera S.A. de C.V.' },
     },
@@ -3389,7 +3396,7 @@ toast.error('Failed to save')`,
     blurb:
       'Composable app sidebar: `SidebarProvider` holds the state (Ctrl/Cmd+B toggles), `Sidebar` collapses off-canvas or to an icon rail (with tooltips), and below the `md` breakpoint it opens as a `Drawer`. Parts: Header, Content, Group, Menu, MenuButton, MenuSub, Footer, Rail, Inset. The demo sits in a bounded box, not the page shell.',
     controls: {
-      side: { type: 'select', label: 'side', options: ['left', 'right'], default: 'left' },
+      side: { type: 'select', label: 'side', options: ['left', 'right', 'start', 'end'], default: 'left' },
       variant: {
         type: 'select',
         label: 'variant',
@@ -3408,7 +3415,7 @@ toast.error('Failed to save')`,
       const side = () => c.side as UI.SidebarSide
       return (
         <div class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border bg-background/40">
-          <UI.SidebarProvider class={side() === 'right' ? 'flex-row-reverse' : undefined}>
+          <UI.SidebarProvider class={side() === 'right' || side() === 'end' ? 'flex-row-reverse' : undefined}>
             <UI.Sidebar
               side={side()}
               variant={c.variant as UI.SidebarVariant}
@@ -5475,6 +5482,81 @@ toast.error('Failed to save')`,
     code: `<Portal>
   <div class="fixed inset-0 grid place-items-center">Floating layer</div>
 </Portal>`,
+  },
+
+  {
+    id: 'direction-provider',
+    title: 'DirectionProvider',
+    group: 'Layout',
+    blurb:
+      'Right-to-left support: sets dir on the DOM, tells Kobalte which way arrow keys move, and carries the direction into overlays that portal to <body>.',
+    controls: {
+      dir: { type: 'select', label: 'dir', options: ['rtl', 'ltr'], default: 'rtl' },
+    },
+    demo: (c) => {
+      const [tab, setTab] = createSignal('general')
+      const [open, setOpen] = createSignal(false)
+      const [q, setQ] = createSignal('')
+      return (
+        <UI.DirectionProvider dir={c.dir as 'ltr' | 'rtl'}>
+          <div class="flex w-full max-w-md flex-col gap-4">
+            <UI.InputGroup>
+              <UI.InputGroupAddon>
+                <Search />
+              </UI.InputGroupAddon>
+              <UI.InputGroupInput value={q()} onInput={setQ} placeholder="Search" aria-label="Search" />
+            </UI.InputGroup>
+            <UI.Tabs
+              value={tab()}
+              onChange={setTab}
+              items={[
+                { value: 'general', label: 'General', content: <p class="text-sm">General settings.</p> },
+                {
+                  value: 'security',
+                  label: 'Security',
+                  content: <p class="text-sm">Password and access.</p>,
+                },
+                { value: 'billing', label: 'Billing', content: <p class="text-sm">Payment methods.</p> },
+              ]}
+            />
+            <div class="flex flex-wrap items-center gap-2">
+              <UI.Dropdown
+                label="Actions"
+                items={[
+                  { label: 'Edit', onSelect: () => undefined },
+                  { label: 'Duplicate', onSelect: () => undefined },
+                ]}
+              >
+                <span class="inline-flex items-center gap-1 rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground">
+                  Actions ▾
+                </span>
+              </UI.Dropdown>
+              <UI.Button onClick={() => setOpen(true)}>Open modal</UI.Button>
+            </div>
+            <UI.Modal open={open()} onOpenChange={setOpen} variant="center" title="Modal">
+              <p class="text-sm text-muted-foreground">
+                This dialog is portaled to the body and still follows the provider.
+              </p>
+            </UI.Modal>
+          </div>
+        </UI.DirectionProvider>
+      )
+    },
+    code: (c) => `import { DirectionProvider, useDirection } from '@a4ui/core'
+
+// Wrap the app (or any subtree). Overlays opened inside it
+// (Modal, Drawer, Popover, Dropdown, Tooltip, Command...) inherit the direction
+// even though they render in <body>.
+<DirectionProvider dir="${c.dir}"${c.dir === 'rtl' ? ' locale="ar"' : ''}>
+  <App />
+</DirectionProvider>
+
+// Read it anywhere below the provider:
+const dir = useDirection() // () => 'ltr' | 'rtl'
+
+// Mount <Toaster /> inside the provider so toasts follow it too.
+// Drawer and Sidebar accept side="start" | "end" (follow dir);
+// "left" | "right" on Drawer stay physical.`,
   },
 
   // ---- Guides ---------------------------------------------------------------

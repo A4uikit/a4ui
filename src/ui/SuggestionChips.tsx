@@ -36,7 +36,7 @@ export function SuggestionChips(props: SuggestionChipsProps): JSX.Element {
     <div class={cn('flex flex-wrap gap-2', props.class)}>
       <For each={props.suggestions}>
         {(suggestion) => (
-          <span class="inline-flex items-center gap-1 rounded-full border border-border pl-3 pr-1.5 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
+          <span class="inline-flex items-center gap-1 rounded-full border border-border ps-3 pe-1.5 py-1.5 text-sm text-foreground transition-colors hover:bg-muted">
             <button
               type="button"
               onClick={() => props.onSelect?.(suggestion)}

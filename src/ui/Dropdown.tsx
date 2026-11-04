@@ -4,6 +4,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 /** A single selectable row in a {@link Dropdown} menu. */
 export interface DropdownItem {
@@ -48,7 +49,7 @@ export function Dropdown(props: DropdownProps): JSX.Element {
       <DropdownMenu.Trigger class={cn('inline-flex', props.class)} aria-label={props.label}>
         {props.children}
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
+      <DropdownMenu.Portal ref={portalDir}>
         <DropdownMenu.Content class="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <For each={props.items}>
             {(item) => (

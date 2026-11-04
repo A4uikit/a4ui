@@ -8,6 +8,8 @@ import { Dumbbell, Hash, Lightbulb, Leaf, Plane, Search, Smile, Users, Utensils 
 import { createMemo, createSignal, For, Show, type Component, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
+import { useDirection } from './DirectionProvider'
 
 type Category = 'Smileys' | 'People' | 'Nature' | 'Food' | 'Activity' | 'Travel' | 'Objects' | 'Symbols'
 
@@ -276,6 +278,7 @@ export interface EmojiPickerProps {
  * ```
  */
 export function EmojiPicker(props: EmojiPickerProps): JSX.Element {
+  const dir = useDirection()
   const [query, setQuery] = createSignal('')
   const [recents, setRecents] = createSignal<string[]>([])
 
@@ -320,9 +323,9 @@ export function EmojiPicker(props: EmojiPickerProps): JSX.Element {
     if (index === -1) return
     const columns = 8
     const delta =
-      event.key === 'ArrowRight'
+      readingKey(event.key, dir()) === 'ArrowRight'
         ? 1
-        : event.key === 'ArrowLeft'
+        : readingKey(event.key, dir()) === 'ArrowLeft'
           ? -1
           : event.key === 'ArrowDown'
             ? columns

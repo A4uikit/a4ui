@@ -3,6 +3,7 @@ import { Popover as KPopover } from '@kobalte/core/popover'
 import type { JSX, ParentProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 interface PopoverProps extends ParentProps {
   /** Element that opens the popover on click; wrapped in an inline-flex trigger. */
@@ -26,7 +27,7 @@ export function Popover(props: PopoverProps): JSX.Element {
   return (
     <KPopover>
       <KPopover.Trigger class="inline-flex">{props.trigger}</KPopover.Trigger>
-      <KPopover.Portal>
+      <KPopover.Portal ref={portalDir}>
         <KPopover.Content
           class={cn(
             'bg-glass z-50 rounded-lg border border-border p-4 text-card-foreground shadow-lg',

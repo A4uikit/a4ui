@@ -14,6 +14,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 export interface ModalProps extends ParentProps {
   open: boolean
@@ -79,7 +80,7 @@ export function Modal(props: ModalProps): JSX.Element {
   const isCenter = () => props.variant === 'center'
   return (
     <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal ref={portalDir}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <Show
           when={isCenter()}
@@ -88,7 +89,7 @@ export function Modal(props: ModalProps): JSX.Element {
               <Dialog.Content
                 onInteractOutside={keepForFloating}
                 class={cn(
-                  'drawer-content bg-glass flex h-full w-full flex-col overflow-y-auto border-l border-border text-card-foreground shadow-2xl',
+                  'drawer-content bg-glass flex h-full w-full flex-col overflow-y-auto border-s border-border text-card-foreground shadow-2xl',
                   DRAWER_WIDTH[props.size ?? 'md'],
                   props.class,
                 )}

@@ -152,7 +152,7 @@ export function FacetSidebar(props: FacetSidebarProps): JSX.Element {
         <Show when={props.onClearAll}>
           <Button
             variant="ghost"
-            class="ml-auto h-auto px-2 py-1 text-xs"
+            class="ms-auto h-auto px-2 py-1 text-xs"
             onClick={() => props.onClearAll?.()}
           >
             Clear all

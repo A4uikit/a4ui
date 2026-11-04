@@ -100,10 +100,10 @@ export function Transfer(props: TransferProps): JSX.Element {
       {pane(titles()[0], available)}
       <div class="flex flex-col items-center justify-center gap-2">
         <Button variant="outline" class="px-2" onClick={moveRight} aria-label="Move to selected">
-          <ChevronRight class="h-4 w-4" />
+          <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
         </Button>
         <Button variant="outline" class="px-2" onClick={moveLeft} aria-label="Move to available">
-          <ChevronLeft class="h-4 w-4" />
+          <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
         </Button>
       </div>
       {pane(titles()[1], chosen)}

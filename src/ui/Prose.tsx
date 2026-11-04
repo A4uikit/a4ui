@@ -29,14 +29,14 @@ const PROSE =
   '[&_h4]:mb-2 [&_h4]:mt-4 [&_h4]:font-semibold ' +
   '[&_p]:my-4 [&_.lead]:text-muted-foreground ' +
   '[&_a]:font-medium [&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4 [&_a:hover]:opacity-80 ' +
-  '[&_blockquote]:my-6 [&_blockquote]:border-l-2 [&_blockquote]:border-border [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted-foreground ' +
-  '[&_ul]:my-4 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_li]:my-1 ' +
+  '[&_blockquote]:my-6 [&_blockquote]:border-s-2 [&_blockquote]:border-border [&_blockquote]:ps-4 [&_blockquote]:italic [&_blockquote]:text-muted-foreground ' +
+  '[&_ul]:my-4 [&_ul]:list-disc [&_ul]:ps-6 [&_ol]:my-4 [&_ol]:list-decimal [&_ol]:ps-6 [&_li]:my-1 ' +
   '[&_code]:rounded [&_code]:bg-muted [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:font-mono [&_code]:text-[0.875em] ' +
   '[&_pre]:my-4 [&_pre]:overflow-x-auto [&_pre]:rounded-lg [&_pre]:border [&_pre]:border-border [&_pre]:bg-muted [&_pre]:p-4 ' +
   '[&_pre_code]:bg-transparent [&_pre_code]:p-0 ' +
   '[&_hr]:my-8 [&_hr]:border-border ' +
   '[&_table]:my-6 [&_table]:w-full [&_table]:border-collapse [&_table]:text-sm ' +
-  '[&_th]:border-b [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold ' +
+  '[&_th]:border-b [&_th]:border-border [&_th]:px-3 [&_th]:py-2 [&_th]:text-start [&_th]:font-semibold ' +
   '[&_td]:border-b [&_td]:border-border [&_td]:px-3 [&_td]:py-2'
 
 /**

@@ -40,7 +40,7 @@ export function SpeedDial(props: SpeedDialProps): JSX.Element {
   const [open, setOpen] = createSignal(false)
 
   return (
-    <div class={cn('fixed bottom-6 right-6 z-40 flex flex-col items-center gap-3', props.class)}>
+    <div class={cn('fixed bottom-6 end-6 z-40 flex flex-col items-center gap-3', props.class)}>
       <Show when={open()}>
         <div class="flex flex-col items-center gap-3">
           <For each={props.actions}>

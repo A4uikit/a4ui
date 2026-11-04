@@ -8,12 +8,13 @@ import type { JSX, ParentProps } from 'solid-js'
 import { For, Show, splitProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 import { Kbd } from './Kbd'
 
 const CONTENT =
   'bg-glass z-50 min-w-[12rem] overflow-hidden rounded-xl p-1 text-sm text-foreground shadow-xl outline-none'
 const ITEM =
-  'relative flex cursor-pointer select-none items-center gap-2 rounded-md py-1.5 pl-8 pr-2 outline-none transition-colors data-[highlighted]:bg-muted data-[expanded]:bg-muted data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus-visible:ring-2 focus-visible:ring-ring'
+  'relative flex cursor-pointer select-none items-center gap-2 rounded-md py-1.5 ps-8 pe-2 outline-none transition-colors data-[highlighted]:bg-muted data-[expanded]:bg-muted data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus-visible:ring-2 focus-visible:ring-ring'
 
 interface ClassProps extends ParentProps {
   class?: string
@@ -74,7 +75,7 @@ export function MenubarMenu(props: MenubarMenuProps): JSX.Element {
       >
         {props.label}
       </KMenubar.Trigger>
-      <KMenubar.Portal>
+      <KMenubar.Portal ref={portalDir}>
         <KMenubar.Content class={cn(CONTENT, props.contentClass)}>{props.children}</KMenubar.Content>
       </KMenubar.Portal>
     </KMenubar.Menu>
@@ -95,7 +96,7 @@ export interface MenubarItemProps extends ClassProps {
 function Shortcut(props: { keys?: string[] }): JSX.Element {
   return (
     <Show when={props.keys?.length}>
-      <span class="ml-auto flex gap-0.5 pl-6" aria-hidden="true">
+      <span class="ms-auto flex gap-0.5 ps-6" aria-hidden="true">
         <For each={props.keys}>{(k) => <Kbd class="min-w-[1.25rem] px-1 py-0 text-[11px]">{k}</Kbd>}</For>
       </span>
     </Show>
@@ -133,7 +134,7 @@ export function MenubarCheckboxItem(props: MenubarCheckboxItemProps): JSX.Elemen
       onChange={(v) => props.onChange?.(v)}
       disabled={props.disabled}
     >
-      <KMenubar.ItemIndicator class="absolute left-2 inline-flex items-center">
+      <KMenubar.ItemIndicator class="absolute start-2 inline-flex items-center">
         <Check class="h-3.5 w-3.5" />
       </KMenubar.ItemIndicator>
       {props.children}
@@ -167,7 +168,7 @@ export interface MenubarRadioItemProps extends ClassProps {
 export function MenubarRadioItem(props: MenubarRadioItemProps): JSX.Element {
   return (
     <KMenubar.RadioItem class={cn(ITEM, props.class)} value={props.value} disabled={props.disabled}>
-      <KMenubar.ItemIndicator class="absolute left-2 inline-flex items-center">
+      <KMenubar.ItemIndicator class="absolute start-2 inline-flex items-center">
         <Circle class="h-2 w-2 fill-current" />
       </KMenubar.ItemIndicator>
       {props.children}
@@ -187,9 +188,9 @@ export function MenubarSub(props: MenubarSubProps): JSX.Element {
     <KMenubar.Sub overlap gutter={4} shift={-5}>
       <KMenubar.SubTrigger class={cn(ITEM, props.class)}>
         {props.label}
-        <ChevronRight class="ml-auto h-3.5 w-3.5 text-muted-foreground" />
+        <ChevronRight class="ms-auto h-3.5 w-3.5 text-muted-foreground rtl:-scale-x-100" />
       </KMenubar.SubTrigger>
-      <KMenubar.Portal>
+      <KMenubar.Portal ref={portalDir}>
         <KMenubar.SubContent class={CONTENT}>{props.children}</KMenubar.SubContent>
       </KMenubar.Portal>
     </KMenubar.Sub>
@@ -205,7 +206,7 @@ export function MenubarSeparator(props: { class?: string }): JSX.Element {
 export function MenubarLabel(props: ClassProps): JSX.Element {
   const [local] = splitProps(props, ['class', 'children'])
   return (
-    <div class={cn('px-2 py-1.5 pl-8 text-xs font-semibold text-muted-foreground', local.class)}>
+    <div class={cn('px-2 py-1.5 ps-8 text-xs font-semibold text-muted-foreground', local.class)}>
       {local.children}
     </div>
   )

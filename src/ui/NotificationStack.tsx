@@ -50,7 +50,7 @@ export function NotificationStack(props: NotificationStackProps): JSX.Element {
       <div
         class={cn(
           expanded()
-            ? 'max-h-[60vh] space-y-2 overflow-y-auto pr-1'
+            ? 'max-h-[60vh] space-y-2 overflow-y-auto pe-1'
             : cn('relative', canExpand() && 'cursor-pointer'),
         )}
         style={

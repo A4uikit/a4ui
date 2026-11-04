@@ -46,7 +46,7 @@ export function ReasoningTrace(props: ReasoningTraceProps): JSX.Element {
         class="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground hover:bg-muted"
       >
         <Brain class="h-4 w-4 shrink-0" aria-hidden="true" />
-        <span class="flex-1 text-left">{props.label ?? 'Reasoning'}</span>
+        <span class="flex-1 text-start">{props.label ?? 'Reasoning'}</span>
         <Show when={props.streaming}>
           <span class="relative flex h-1.5 w-1.5 shrink-0" aria-hidden="true">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-current opacity-75 motion-reduce:animate-none" />

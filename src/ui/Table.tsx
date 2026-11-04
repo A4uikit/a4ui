@@ -61,7 +61,7 @@ export function Table(props: TableProps): JSX.Element {
 export function TableHead(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
-    <thead class={cn('border-b border-border text-left text-muted-foreground', local.class)} {...rest}>
+    <thead class={cn('border-b border-border text-start text-muted-foreground', local.class)} {...rest}>
       {local.children}
     </thead>
   )

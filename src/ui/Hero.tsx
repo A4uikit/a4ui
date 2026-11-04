@@ -89,8 +89,8 @@ export function Hero(props: HeroProps): JSX.Element {
     >
       <Show when={background() === 'aurora'}>
         <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10">
-          <div class="aurora-drift absolute -left-[10%] -top-[30%] h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl" />
-          <div class="aurora-drift absolute -right-[10%] top-[10%] h-[24rem] w-[24rem] rounded-full bg-accent/25 blur-3xl [animation-delay:-9s]" />
+          <div class="aurora-drift absolute -start-[10%] -top-[30%] h-[28rem] w-[28rem] rounded-full bg-primary/30 blur-3xl" />
+          <div class="aurora-drift absolute -end-[10%] top-[10%] h-[24rem] w-[24rem] rounded-full bg-accent/25 blur-3xl [animation-delay:-9s]" />
         </div>
       </Show>
       <Show when={photoBackdrop()}>

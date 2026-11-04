@@ -42,7 +42,7 @@ export function Pagination(props: PaginationProps): JSX.Element {
           aria-label={props.labels?.previous ?? 'Previous page'}
           onClick={() => props.onChange(props.page - 1)}
         >
-          <ChevronLeft class="h-4 w-4" />
+          <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
         </button>
         <span class="px-2 font-mono text-[12px] tabular-nums">
           {(props.labels?.page ?? ((p, t) => `Page ${p} of ${t}`))(props.page, props.totalPages)}
@@ -54,7 +54,7 @@ export function Pagination(props: PaginationProps): JSX.Element {
           aria-label={props.labels?.next ?? 'Next page'}
           onClick={() => props.onChange(props.page + 1)}
         >
-          <ChevronRight class="h-4 w-4" />
+          <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
         </button>
       </div>
     </div>

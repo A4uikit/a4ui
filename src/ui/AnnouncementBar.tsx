@@ -76,7 +76,7 @@ export function AnnouncementBar(props: AnnouncementBarProps): JSX.Element {
         class={cn(
           'relative w-full rounded-none px-4 py-2 text-center text-sm',
           TONE[props.tone ?? 'primary'],
-          props.dismissible && 'pr-10',
+          props.dismissible && 'pe-10',
           props.class,
         )}
       >
@@ -91,7 +91,7 @@ export function AnnouncementBar(props: AnnouncementBarProps): JSX.Element {
 
         <Show when={props.couponCode}>
           {(code) => (
-            <span class="ml-2 inline-flex items-center gap-1 rounded-md bg-black/10 px-2 py-0.5 font-mono">
+            <span class="ms-2 inline-flex items-center gap-1 rounded-md bg-black/10 px-2 py-0.5 font-mono">
               {code()}
               <button
                 type="button"
@@ -113,7 +113,7 @@ export function AnnouncementBar(props: AnnouncementBarProps): JSX.Element {
             type="button"
             aria-label="Dismiss announcement"
             onClick={dismiss}
-            class="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-1 transition-opacity hover:opacity-80 motion-reduce:transition-none"
+            class="absolute end-2 top-1/2 -translate-y-1/2 rounded-sm p-1 transition-opacity hover:opacity-80 motion-reduce:transition-none"
           >
             <X class="h-4 w-4" />
           </button>

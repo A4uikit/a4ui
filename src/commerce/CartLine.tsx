@@ -66,7 +66,7 @@ export function CartLine(props: CartLineProps): JSX.Element {
         onChange={(quantity) => props.onQuantityChange?.(quantity)}
         min={1}
       />
-      <span class="min-w-[4rem] text-right font-medium tabular-nums text-foreground">
+      <span class="min-w-[4rem] text-end font-medium tabular-nums text-foreground">
         {format(lineTotal())}
       </span>
       <Show when={props.onRemove}>

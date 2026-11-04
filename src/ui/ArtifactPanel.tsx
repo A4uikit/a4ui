@@ -51,7 +51,7 @@ export function ArtifactPanel(props: ArtifactPanelProps): JSX.Element {
       aria-hidden={!props.open}
       class={cn(
         'card h-full shrink-0 overflow-hidden border-border bg-glass',
-        props.open ? 'border-l' : 'border-0',
+        props.open ? 'border-s' : 'border-0',
         reduced() ? undefined : 'transition-[width] duration-300 ease-in-out',
         props.class,
       )}

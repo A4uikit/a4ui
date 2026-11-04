@@ -41,10 +41,10 @@ export function Accordion(props: AccordionProps): JSX.Element {
         {(item) => (
           <KAccordion.Item value={item.value} class="border-b border-border">
             <KAccordion.Header>
-              <KAccordion.Trigger class="flex w-full items-center justify-between py-3 text-sm font-medium text-foreground [&[data-expanded]>svg]:rotate-90">
+              <KAccordion.Trigger class="flex w-full items-center justify-between py-3 text-sm font-medium text-foreground [&[data-expanded]>svg]:rotate-90 [&[data-expanded]>svg]:rtl:scale-x-100">
                 {item.title}
                 <svg
-                  class="h-3.5 w-3.5 shrink-0 transition-transform duration-200"
+                  class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 rtl:-scale-x-100"
                   viewBox="0 0 20 20"
                   fill="none"
                   stroke="currentColor"

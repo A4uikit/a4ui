@@ -364,7 +364,7 @@ export function FieldError(props: FieldErrorProps): JSX.Element {
     <Show when={visible()}>
       <div id={id} role="alert" data-slot="field-error" class={cn('text-xs text-destructive', props.class)}>
         <Show when={messages().length > 1} fallback={<>{messages()[0] ?? props.children}</>}>
-          <ul class="ml-4 list-disc space-y-0.5">
+          <ul class="ms-4 list-disc space-y-0.5">
             <For each={messages()}>{(m) => <li>{m}</li>}</For>
           </ul>
         </Show>

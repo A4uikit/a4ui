@@ -89,7 +89,7 @@ export function HoldToConfirm(props: HoldToConfirmProps): JSX.Element {
     if (!fillEl) return
     controls = animate(fillEl, { scaleX: [0, 1] }, { duration: holdMs() / 1000, ease: 'linear' })
     controls.finished
-      // eslint-disable-next-line solid/reactivity -- promise callback, not a tracked scope; setHolding runs fine here
+
       .then(() => {
         if (active) succeed()
       })
@@ -132,7 +132,7 @@ export function HoldToConfirm(props: HoldToConfirmProps): JSX.Element {
       <span
         aria-hidden="true"
         ref={fillEl}
-        class="absolute inset-0 origin-left bg-primary/25"
+        class="absolute inset-0 origin-left rtl:origin-right bg-primary/25"
         style={{ transform: 'scaleX(0)' }}
       />
       <span class="relative z-10">{props.label ?? 'Hold to confirm'}</span>

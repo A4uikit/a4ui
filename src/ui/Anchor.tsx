@@ -87,7 +87,7 @@ export function Anchor(props: AnchorProps): JSX.Element {
             class={cn(
               'block rounded px-3 py-1.5 text-sm transition-colors',
               activeId() === item.id
-                ? 'border-l-2 border-primary font-medium text-primary'
+                ? 'border-s-2 border-primary font-medium text-primary'
                 : 'text-muted-foreground hover:text-foreground',
             )}
           >

@@ -246,12 +246,12 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
     >
       <div class="grid" style={{ 'grid-template-columns': `48px repeat(${props.cols}, minmax(80px, 1fr))` }}>
         <div role="row" class="contents">
-          <div aria-hidden="true" class="border-b border-r border-border bg-muted" />
+          <div aria-hidden="true" class="border-b border-e border-border bg-muted" />
           <For each={headers()}>
             {(h) => (
               <div
                 role="columnheader"
-                class="border-b border-r border-border bg-muted px-2 py-1 text-center text-xs font-semibold text-muted-foreground"
+                class="border-b border-e border-border bg-muted px-2 py-1 text-center text-xs font-semibold text-muted-foreground"
               >
                 {h}
               </div>
@@ -263,7 +263,7 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
             <div role="row" class="contents">
               <div
                 role="rowheader"
-                class="border-b border-r border-border bg-muted px-2 py-1 text-center text-xs text-muted-foreground"
+                class="border-b border-e border-border bg-muted px-2 py-1 text-center text-xs text-muted-foreground"
               >
                 {r + 1}
               </div>
@@ -273,7 +273,7 @@ export function SpreadsheetGrid(props: SpreadsheetGridProps): JSX.Element {
                     role="gridcell"
                     aria-selected={isActive(r, c)}
                     class={cn(
-                      'relative h-8 border-b border-r border-border px-2 py-1 text-sm cursor-cell',
+                      'relative h-8 border-b border-e border-border px-2 py-1 text-sm cursor-cell',
                       inSelection(r, c) && 'bg-primary/10',
                       isActive(r, c) && 'ring-2 ring-inset ring-primary',
                       isAnchor(r, c) && !isActive(r, c) && 'border-primary',

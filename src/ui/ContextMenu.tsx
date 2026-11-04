@@ -4,6 +4,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 /** A single actionable row rendered by {@link ContextMenu}. */
 export interface ContextMenuItem {
@@ -35,7 +36,7 @@ export function ContextMenu(props: ContextMenuProps): JSX.Element {
   return (
     <KContextMenu>
       <KContextMenu.Trigger class={cn('inline-flex', props.class)}>{props.children}</KContextMenu.Trigger>
-      <KContextMenu.Portal>
+      <KContextMenu.Portal ref={portalDir}>
         <KContextMenu.Content class="z-50 min-w-[10rem] overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <For each={props.items}>
             {(item) => (

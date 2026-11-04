@@ -54,8 +54,8 @@ export interface InputGroupAddonProps extends ParentProps, JSX.HTMLAttributes<HT
 // Inline addons share the control's row (control is flex-1); block addons take
 // a full row above/below it via `basis-full` + flex-wrap on the group.
 const ADDON_ALIGN: Record<InputGroupAddonAlign, string> = {
-  'inline-start': 'order-1 pl-3',
-  'inline-end': 'order-3 pr-3',
+  'inline-start': 'order-1 ps-3',
+  'inline-end': 'order-3 pe-3',
   'block-start': 'order-0 basis-full px-3 pt-2',
   'block-end': 'order-4 basis-full px-3 pb-2',
 }

@@ -21,6 +21,7 @@ import {
   activeTheme,
   AppShell,
   Button,
+  DirectionProvider,
   Drawer,
   EffectsToggle,
   initTheme,
@@ -30,6 +31,7 @@ import {
   Toaster,
 } from '../src'
 import { Home } from './Home'
+import { docsRtl } from './rtlStore'
 import { ThemeSelect } from './ThemeSelect'
 import { applyOverrides } from './themeStore'
 
@@ -366,7 +368,9 @@ export function App(): JSX.Element {
         </Suspense>
       </Show>
 
-      <Toaster />
+      <DirectionProvider dir={docsRtl() ? 'rtl' : 'ltr'}>
+        <Toaster />
+      </DirectionProvider>
     </>
   )
 }

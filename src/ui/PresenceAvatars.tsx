@@ -85,19 +85,19 @@ export function PresenceAvatars(props: PresenceAvatarsProps): JSX.Element {
         <For each={shown()}>
           {(user, index) => (
             <div
-              class={cn('relative rounded-full ring-2 ring-background', index() > 0 && '-ml-2')}
+              class={cn('relative rounded-full ring-2 ring-background', index() > 0 && '-ms-2')}
               title={user.name}
             >
               <Avatar src={user.avatar} alt={user.name} fallback={initials(user.name)} />
               <span
                 aria-hidden="true"
-                class="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-background"
+                class="absolute bottom-0 end-0 h-2.5 w-2.5 rounded-full bg-emerald-500 ring-2 ring-background"
               />
             </div>
           )}
         </For>
         <Show when={overflow() > 0}>
-          <div class="-ml-2 rounded-full ring-2 ring-background">
+          <div class="-ms-2 rounded-full ring-2 ring-background">
             <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
               +{overflow()}
             </span>
@@ -125,7 +125,7 @@ export function PresenceAvatars(props: PresenceAvatarsProps): JSX.Element {
                       />
                     </svg>
                     <span
-                      class="ml-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium text-white shadow"
+                      class="ms-1.5 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium text-white shadow"
                       style={{ 'background-color': color() }}
                     >
                       {user()!.name}

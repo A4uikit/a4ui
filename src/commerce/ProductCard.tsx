@@ -95,7 +95,7 @@ export function ProductCard(props: ProductCardProps): JSX.Element {
           {/* Diagonal corner ribbon (clipped by the overflow-hidden image box). */}
           <span
             class={cn(
-              'absolute -right-9 top-3.5 w-32 rotate-45 py-1 text-center text-[11px] font-semibold uppercase tracking-wide shadow-md',
+              'absolute -end-9 top-3.5 w-32 rotate-45 py-1 text-center text-[11px] font-semibold uppercase tracking-wide shadow-md',
               RIBBON_TONE[inferTone(props.badge, props.badgeTone)],
             )}
           >

@@ -127,7 +127,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
               aria-label="Previous"
               onClick={() => (mode() === 'months' ? stepYear(-1) : setYearBase(yearBase() - YEARS_PER_PAGE))}
             >
-              <ChevronLeft class="h-4 w-4" />
+              <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
             </button>
             <button type="button" class={headerLabel} onClick={() => setMode('days')}>
               <Show when={mode() === 'months'} fallback={`${years()[0]} – ${years()[YEARS_PER_PAGE - 1]}`}>
@@ -140,7 +140,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
               aria-label="Next"
               onClick={() => (mode() === 'months' ? stepYear(1) : setYearBase(yearBase() + YEARS_PER_PAGE))}
             >
-              <ChevronRight class="h-4 w-4" />
+              <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
             </button>
           </div>
         }
@@ -148,10 +148,10 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
         <div class="mb-2 flex items-center justify-between gap-1">
           <div class="flex items-center">
             <button type="button" class={navBtn} aria-label="Previous year" onClick={() => stepYear(-1)}>
-              <ChevronsLeft class="h-4 w-4" />
+              <ChevronsLeft class="h-4 w-4 rtl:-scale-x-100" />
             </button>
             <button type="button" class={navBtn} aria-label="Previous month" onClick={() => stepMonth(-1)}>
-              <ChevronLeft class="h-4 w-4" />
+              <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
             </button>
           </div>
           <div class="flex items-center gap-0.5">
@@ -164,10 +164,10 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
           </div>
           <div class="flex items-center">
             <button type="button" class={navBtn} aria-label="Next month" onClick={() => stepMonth(1)}>
-              <ChevronRight class="h-4 w-4" />
+              <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
             </button>
             <button type="button" class={navBtn} aria-label="Next year" onClick={() => stepYear(1)}>
-              <ChevronsRight class="h-4 w-4" />
+              <ChevronsRight class="h-4 w-4 rtl:-scale-x-100" />
             </button>
           </div>
         </div>
