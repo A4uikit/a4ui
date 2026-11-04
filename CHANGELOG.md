@@ -6,6 +6,33 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- **Right-to-left support.** `DirectionProvider` (and `useDirection()`) wraps
+  Kobalte's `I18nProvider` and sets `dir` on a `display: contents` wrapper.
+  Overlays that render in `<body>` (Modal, Drawer, Popover, Dropdown, Tooltip,
+  HoverCard, Command, Combobox, menus, the date/time pickers, Tour, ...) copy the
+  provider's direction onto their portal container, so they render RTL too. The
+  docs get an RTL switch on every example.
+- `Drawer` accepts `side="start" | "end"` (follow the direction); `"left"` and
+  `"right"` stay physical. `Sidebar` `side` accepts `"start" | "end"` and now
+  defaults to `"start"`; `"left"` / `"right"` are aliases of `start` / `end`.
+  `NavigationMenu`'s phone drawer uses `side="start"`, so its `data-side` is now
+  `"start"` instead of `"left"`.
+
+### Changed
+
+- Physical Tailwind utilities (`ml-`, `pr-`, `left-`, `text-right`, `border-l`,
+  `rounded-r`, ...) are now logical (`ms-`, `pe-`, `start-`, `text-end`,
+  `border-s`, `rounded-e`) across `src/`. Left-to-right rendering is unchanged.
+- Directional chevrons mirror under RTL; horizontal slide keyframes (toast,
+  questionnaire, navigation menu, skeleton shimmer, drawer) use `--dir-x`;
+  `Carousel`, `Splitter`, `Rating`, `CategoryStrip`, `EmojiPicker` and `Lightbox`
+  swap their horizontal arrow keys, drag and layout under RTL; tree indentation
+  uses `padding-inline-start`.
+- Code blocks (`Snippet`, `CodeEditor`, `DiffViewer`) stay left-to-right inside
+  an RTL page.
+
 ## [0.38.1] — 2026-10-31
 
 ### Fixed

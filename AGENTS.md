@@ -19,7 +19,8 @@ Ships both as SolidJS components and as a **Web Components** bundle
     DataGrid, Tree/TreeSelect/Cascader, ColorPicker, Comment, Tour,
     NotificationCenter, Command, Sortable, Clock, CalendarHeatmap, Item, ScrollArea,
     Sidebar, Field, InputGroup, ButtonGroup, Menubar, NavigationMenu, Questionnaire,
-    Attachment, ChatMarker, Prose,
+    Attachment, ChatMarker, Prose, DirectionProvider (RTL; portaled overlays copy its `dir`
+    via `portalDir` in `src/lib/direction.ts`),
     and the data-driven page sections (SiteNav, Hero, FeatureGrid, Testimonials,
     Faq, CtaBanner, ContactSection, SiteFooter, TeamGrid, sharing
     `src/ui/internal/sectionKit.tsx`),
@@ -75,6 +76,13 @@ npm test             # Playwright suite (auto-starts/reuses the preview server)
   — never add `Co-Authored-By:` or "Generated with …" trailers.
 - **Commits:** atomic, in **English**, Conventional-Commits style
   (`feat:` `fix:` `docs:` `chore:` `ci:` `test:`).
+- **Direction:** use logical utilities, never physical ones, for anything that should
+  mirror in RTL: `ms-/me-/ps-/pe-/start-/end-/text-start/text-end/border-s/border-e/
+rounded-s/rounded-e`, and `rtl:` variants for what has no logical form (`translate-x`,
+  `origin-*`, flipping a chevron with `rtl:-scale-x-100`). Horizontal CSS offsets in
+  `tokens.css` multiply by `--dir-x`. A new portal (`<Portal>`/`*.Portal`) must pass
+  `ref={portalDir}`. Geometry-bound widgets (charts, maps, carousels in 3D, code)
+  stay physical on purpose.
 - **CSS doctrine (blocked):** anything Tailwind can express → Tailwind utilities in
   JSX. Glass surfaces → the plugin in `preset.js`. CSS variables + motion
   `@keyframes` → `src/styles/tokens.css`. Starfield → `src/styles/space.css`.

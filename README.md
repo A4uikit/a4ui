@@ -180,6 +180,33 @@ recolors live, then copy the exported CSS or JSON and apply it as a
 `ThemeDefinition`. This is separate from the light/dark `setTheme`/`toggleTheme`
 mode switch — a theme recolors underneath either mode.
 
+### Right-to-left
+
+Wrap the app (or any subtree) in `DirectionProvider`. It sets `dir` on the DOM,
+tells Kobalte which way arrow keys move (Tabs, Menubar, Slider, menus), and
+copies the direction onto overlays that render in `<body>` (Modal, Drawer,
+Popover, Dropdown, Tooltip, Command):
+
+```tsx
+import { DirectionProvider, useDirection } from '@a4ui/core'
+
+render(
+  () => (
+    <DirectionProvider dir="rtl" locale="ar">
+      <App />
+    </DirectionProvider>
+  ),
+  document.getElementById('root')!,
+)
+```
+
+Components use logical Tailwind utilities (`ms-*`, `start-*`, `text-start`), so
+nothing else needs configuring. Mount `<Toaster />` inside the provider. `Drawer`
+and `Sidebar` take `side="start" | "end"`, which follows the direction;
+`Drawer`'s `"left" | "right"` stay physical. Charts, maps, code blocks and
+other geometry-bound widgets keep their own left-to-right layout. The docs have
+an RTL switch on every example.
+
 ## Components
 
 75+ components across ten categories (this is a sample — see the
@@ -193,7 +220,7 @@ full list):
 | Data & display | `Table`, `DataGrid`, `Tree`, `Calendar`, `Timeline`, `Stat`, `Descriptions`, `SpecSheet`, `RatingsSummary`, `LogoWall`, `ChatThread`, `Message`, `Attachment`, `Citation`, `CodeTabs`, `DataView`, `BalanceCard`, `TransactionFeed`, `KpiBlock`, `BlockEditor`, `CalendarHeatmap`                                                                 |
 | Navigation     | `Tabs`, `Breadcrumb`, `Pagination`, `Command`, `Anchor`, `Stepper`, `BottomNavigation`, `CategoryStrip`, `Spaces`, `SideRail`, `Sidebar`, `NavigationMenu`                                                                                                                                                                                        |
 | Feedback       | `Alert`, `AnnouncementBar`, `Toast`, `Progress`, `Skeleton`, `Empty`, `Result`, `NotificationCenter`                                                                                                                                                                                                                                              |
-| Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `Card`, `Splitter`, `Affix`, `NavGroup`, `FloatingToolbar`, `ArtifactPanel`, `MasterDetail`, `ScrollArea`, `Item`, `Prose`                                                                                                                                                                        |
+| Layout         | `AppShell`, `SpaceBackground`, `ThemedScenery`, `DirectionProvider`, `Card`, `Splitter`, `Affix`, `NavGroup`, `FloatingToolbar`, `ArtifactPanel`, `MasterDetail`, `ScrollArea`, `Item`, `Prose`                                                                                                                                                   |
 | Commerce       | `ProductCard`, `ProductGrid`, `PriceTag`, `PriceBlock`, `QuantityStepper`, `CartLine`, `CartSummary`, `FilterGroup`, `FacetSidebar`, `ConditionScale`                                                                                                                                                                                             |
 | Charts         | `Sparkline`, `BarChart`, `AreaChart`, `PieChart`, `DonutChart`, `RadialBarChart` (native SVG, theme-tinted)                                                                                                                                                                                                                                       |
 | Sections       | `SiteNav`, `Hero`, `FeatureGrid`, `Testimonials`, `Faq`, `CtaBanner`, `ContactSection`, `SiteFooter`, `TeamGrid` (data-driven page blocks: plain props, no JSX required)                                                                                                                                                                          |
