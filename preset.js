@@ -67,8 +67,8 @@ const glass = plugin(({ addComponents, addVariant, e }) => {
       position: 'relative',
       overflow: 'hidden',
       background: 'hsl(var(--card) / 0.5)',
-      backdropFilter: 'blur(14px) saturate(180%)',
       WebkitBackdropFilter: 'blur(14px) saturate(180%)',
+      backdropFilter: 'blur(14px) saturate(180%)',
       border: '1px solid hsl(var(--foreground) / 0.14)',
       borderRadius: 'var(--radius-xl, 1rem)',
       boxShadow:
@@ -87,8 +87,8 @@ const glass = plugin(({ addComponents, addVariant, e }) => {
     '.card': {
       position: 'relative',
       background: 'hsl(var(--card) / 0.55)',
-      backdropFilter: 'blur(8px) saturate(150%)',
       WebkitBackdropFilter: 'blur(8px) saturate(150%)',
+      backdropFilter: 'blur(8px) saturate(150%)',
       border: '1px solid hsl(var(--foreground) / 0.16)',
       borderRadius: 'var(--radius-xl, 1rem)',
       boxShadow: '0 1px 2px hsl(var(--shadow) / 0.05), 0 4px 12px hsl(var(--shadow) / 0.1)',
@@ -156,8 +156,8 @@ const glass = plugin(({ addComponents, addVariant, e }) => {
     // ---- Floating overlay glass (menus, modals, drawers, toasts) ----
     '.bg-glass': {
       background: 'hsl(var(--card) / 0.72)',
-      backdropFilter: 'blur(14px) saturate(160%)',
       WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+      backdropFilter: 'blur(14px) saturate(160%)',
       border: '1px solid hsl(var(--foreground) / 0.14)',
     },
     "[data-theme='light'] .bg-glass": {
@@ -185,8 +185,8 @@ const glass = plugin(({ addComponents, addVariant, e }) => {
     },
     'html.calm .card, html.calm .bg-glass': {
       background: 'hsl(var(--card))',
-      backdropFilter: 'none',
       WebkitBackdropFilter: 'none',
+      backdropFilter: 'none',
     },
     'html.calm .tile-glass': {
       background: 'hsl(var(--muted))',

@@ -166,7 +166,7 @@ test.describe('interactions', () => {
     await page.goto('/#/slash-menu')
     const options = page.getByRole('option')
     await expect(options).toHaveCount(5)
-    await page.locator('main input').first().fill('tab')
+    await page.getByTestId('demo').locator('input').first().fill('tab')
     await expect(options).toHaveCount(1)
     await expect(options.first()).toContainText('Table')
   })
@@ -215,7 +215,7 @@ test.describe('interactions', () => {
   test('button doc control updates the code block', async ({ page }) => {
     await page.goto('/#/button')
     // Toggle the `disabled` control; the code block should reflect it.
-    await page.locator('input[role="switch"]').first().click({ force: true })
+    await page.getByRole('switch', { name: 'disabled' }).click({ force: true })
     await expect(page.locator('pre')).toContainText('disabled')
   })
 

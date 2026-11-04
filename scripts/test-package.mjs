@@ -22,6 +22,7 @@
 
 import { execSync } from 'node:child_process'
 import fs from 'node:fs'
+import { createRequire } from 'node:module'
 import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -29,6 +30,7 @@ import { fileURLToPath } from 'node:url'
 // fileURLToPath (not `new URL(...).pathname`) so repo paths containing spaces or
 // other URL-escaped characters resolve to a real filesystem path.
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
+const require = createRequire(import.meta.url)
 
 const REQUIRED_DIST_FILES = [
   'dist/index.js',
@@ -73,6 +75,33 @@ function fail(label, detail) {
 
 // Compiles the documented Tailwind 4 setup in a project where the package is a real
 // directory under node_modules, the way a registry install leaves it.
+// Tailwind 3 output run through the CSS minifier Vite 8 uses. A prefixed
+// declaration placed after its standard twin makes the minifier drop the standard
+// one, and Chromium then renders glass with no blur at all. The docs and Playwright
+// run unminified in dev, so only a real minify pass can catch this.
+function checkGlassSurvivesMinify() {
+  const css = execSync(
+    `node --input-type=module -e "
+      import postcss from 'postcss'
+      import tailwind from 'tailwindcss'
+      import preset from './preset.js'
+      const config = { presets: [preset], content: [{ raw: 'bg-glass card' }] }
+      const out = await postcss([tailwind(config)]).process('@tailwind components;', { from: undefined })
+      process.stdout.write(out.css)
+    "`,
+    { cwd: repoRoot, encoding: 'utf8' },
+  )
+  const { transform } = require('lightningcss')
+  const { code } = transform({ filename: 'glass.css', code: Buffer.from(css), minify: true })
+  const min = code.toString()
+  const rule = min.match(/\.bg-glass\{[^}]*\}/)?.[0]
+  if (!rule) fail('minified preset emits .bg-glass', min.slice(0, 200))
+  if (!/(^|[{;])backdrop-filter:/.test(rule)) {
+    fail('glass keeps the standard backdrop-filter after minifying', rule)
+  }
+  pass('glass keeps the standard backdrop-filter after minifying')
+}
+
 function checkTailwind4(tarballPath, tmpDir) {
   fs.writeFileSync(path.join(tmpDir, 'package.json'), JSON.stringify({ type: 'module', private: true }))
   console.log('Installing tarball + tailwindcss@4 + @tailwindcss/cli into a second temp project...')
@@ -298,6 +327,7 @@ function main() {
     // 8. Tailwind 4: compile theme.css from the installed location.
     tailwind4Dir = fs.mkdtempSync(path.join(os.tmpdir(), 'a4ui-pkg-tw4-'))
     checkTailwind4(tarballPath, tailwind4Dir)
+    checkGlassSurvivesMinify()
 
     console.log('\nPackage validation summary:')
     console.log(checks.join('\n'))

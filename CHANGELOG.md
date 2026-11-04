@@ -49,6 +49,9 @@ changes, `patch` for fixes).
 
 ### Fixed
 
+- **Glass surfaces had no blur in Chromium when minified with Vite 8.** The preset emitted
+  `backdrop-filter` before `-webkit-backdrop-filter`, and the minifier kept only the prefixed one.
+  The order is now swapped, and `test:package` checks it through the real minifier.
 - `Sparkline` no longer exposes an unnamed `role="img"`: pass the new `label` prop to name it, otherwise it is hidden from assistive tech as decoration.
 - `SidebarMenuBadge` and the `warning` `Badge` in light mode now reach WCAG AA contrast.
 - `KpiBlock`: the delta badge wraps under the value instead of overflowing a narrow card.
