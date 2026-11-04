@@ -14,8 +14,8 @@ changes, `patch` for fixes).
   surfaces, calm mode, the `light:` variant and the `@source` for the components.
   It also holds Tailwind 3's meaning for what Tailwind 4 changed (default border
   and ring, the shadow, radius and blur scales, the palette, line heights,
-  placeholder, button cursor, `hover:` on touch screens, `space-*`, `divide-*`,
-  `outline-none`, and the cascade between glass rules and utilities), so
+  placeholder, form control backgrounds, button cursor, `hover:` on touch screens,
+  `space-*`, `divide-*`, `outline-none`, gradient interpolation, and the cascade between glass rules and utilities), so
   components look the same under both majors. This reaches consumer code using the
   same class names; see `INTEGRATIONS.md`. `examples/tailwind4` builds in CI.
 - **Right-to-left support.** `DirectionProvider` (and `useDirection()`) wraps
