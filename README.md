@@ -11,7 +11,7 @@
 [![npm downloads](https://img.shields.io/npm/dm/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/@a4ui/core.svg)](https://bundlephobia.com/package/@a4ui/core)
 
-Accessible SolidJS **Spatial Glass** component library — 75+ components,
+Accessible SolidJS **Spatial Glass** component library — 240+ components,
 layouts, runtime themes, a motion system, **1500+ icons** (lucide), and
 framework-agnostic Web Components. Named after the 4 people in the Rivera
 family. 🙂
@@ -136,7 +136,7 @@ Browse the full set at [lucide.dev/icons](https://lucide.dev/icons).
 
 A4ui is **tree-shakeable** — `sideEffects` is `["**/*.css"]`, so the only thing
 that lands in your bundle is what you actually `import`. You never pay for the
-75+ components you don't use, and adding components to the library **doesn't grow
+240+ components you don't use, and adding components to the library **doesn't grow
 your app**. Import à la carte:
 
 ```tsx
@@ -150,7 +150,7 @@ Approximate **gzipped** weights (measured on 0.13.0; JS excludes the `solid-js`,
 | ----------------------------------------------------- | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **First component** (e.g. `Button` + the `cn` helper) | ~10–11 kB                | One-time baseline (includes `tailwind-merge`). Shared by every component.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | **Typical extra primitive**                           | ~0.1–0.5 kB              | `Button` alone 10.7 kB → `Button + Card + Badge + Input` 11.1 kB. Heavier ones (`DataGrid`, `Calendar`, `Combobox`, `Tour`) cost more via their Kobalte/behavior deps.                                                                                                                                                                                                                                                                                                                                                                                                  |
-| **Whole barrel** (`@a4ui/core`, all 75+ used)         | ~53.0 kB                 | Only if you literally import everything — the realistic ceiling.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| **Whole barrel** (`@a4ui/core`, everything used)      | ~53.0 kB                 | Only if you literally import everything — the realistic ceiling.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `@a4ui/core/commerce`                                 | ~3.0 kB                  | ProductCard, CartSummary, PriceTag…                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | `@a4ui/core/charts`                                   | ~2.5 kB                  | Sparkline, BarChart, DonutChart (native SVG).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `@a4ui/core/styles.css`                               | ~5.3 kB                  | Tokens + motion keyframes (needs the Tailwind preset for utilities).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
@@ -238,7 +238,7 @@ an RTL switch on every example.
 
 ## Components
 
-75+ components across ten categories (this is a sample — see the
+240+ components across eleven categories (this is a sample — see the
 **[docs site](https://a4ui.pages.dev/)** or `src/index.ts` for the
 full list):
 

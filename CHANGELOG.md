@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.39.0] — 2026-11-03
+
 ### Added
 
 - **Tailwind 4 support.** `@import '@a4ui/core/theme.css'` after
