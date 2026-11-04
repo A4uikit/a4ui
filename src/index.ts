@@ -277,6 +277,12 @@ export { ColorPicker, type ColorPickerProps } from './ui/ColorPicker'
 export { Comment, type CommentData, type CommentProps } from './ui/Comment'
 export { CalendarHeatmap, type HeatmapValue, type CalendarHeatmapProps } from './ui/CalendarHeatmap'
 export { Portal, type PortalProps } from './ui/Portal'
+export {
+  DirectionProvider,
+  useDirection,
+  type Direction,
+  type DirectionProviderProps,
+} from './ui/DirectionProvider'
 export { Sortable, type SortableProps } from './ui/Sortable'
 export { Clock, type ClockProps } from './ui/Clock'
 

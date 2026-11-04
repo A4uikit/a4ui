@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [react-webcomponents, solidstart-ssr, astro-solid]
+        app: [react-webcomponents, solidstart-ssr, astro-solid, tailwind4]
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7

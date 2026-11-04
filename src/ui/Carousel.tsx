@@ -6,7 +6,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-solid'
 import { For, createSignal, onCleanup, onMount, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
 import { motionReduced } from '../lib/motion'
+import { useDirection } from './DirectionProvider'
 
 export interface CarouselProps {
   /** Slides to page through, one visible at a time. */
@@ -37,6 +39,7 @@ export interface CarouselProps {
  * ```
  */
 export function Carousel(props: CarouselProps): JSX.Element {
+  const dir = useDirection()
   const [index, setIndex] = createSignal(0)
   const count = (): number => props.slides.length
 
@@ -49,10 +52,11 @@ export function Carousel(props: CarouselProps): JSX.Element {
   const next = (): void => go(index() + 1)
 
   const onKeyDown = (e: KeyboardEvent): void => {
-    if (e.key === 'ArrowLeft') {
+    const key = readingKey(e.key, dir())
+    if (key === 'ArrowLeft') {
       e.preventDefault()
       prev()
-    } else if (e.key === 'ArrowRight') {
+    } else if (key === 'ArrowRight') {
       e.preventDefault()
       next()
     }
@@ -80,8 +84,10 @@ export function Carousel(props: CarouselProps): JSX.Element {
     const width = viewport?.clientWidth ?? 1
     const dx = dragPx()
     const threshold = Math.max(48, width * 0.2)
-    if (dx <= -threshold) next()
-    else if (dx >= threshold) prev()
+    // A swipe toward the start of the line goes forward: left in LTR, right in RTL.
+    const forward = dir() === 'rtl' ? dx : -dx
+    if (forward >= threshold) next()
+    else if (forward <= -threshold) prev()
     setDragPx(0)
     setDragging(false)
   }
@@ -119,7 +125,9 @@ export function Carousel(props: CarouselProps): JSX.Element {
             swipeOn() && count() > 1 && 'touch-pan-y cursor-grab active:cursor-grabbing',
             !dragging() && 'transition-transform duration-500 ease-out',
           )}
-          style={{ transform: `translateX(calc(-${index() * 100}% + ${dragPx()}px))` }}
+          style={{
+            transform: `translateX(calc(${index() * -100}% * var(--dir-x, 1) + ${dragPx()}px))`,
+          }}
           onPointerDown={onPointerDown}
           onPointerMove={onPointerMove}
           onPointerUp={endDrag}
@@ -132,17 +140,17 @@ export function Carousel(props: CarouselProps): JSX.Element {
           type="button"
           aria-label="Previous slide"
           onClick={prev}
-          class="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90"
+          class="absolute start-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90"
         >
-          <ChevronLeft class="h-5 w-5" />
+          <ChevronLeft class="h-5 w-5 rtl:-scale-x-100" />
         </button>
         <button
           type="button"
           aria-label="Next slide"
           onClick={next}
-          class="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90"
+          class="absolute end-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-primary text-primary-foreground shadow transition-opacity hover:opacity-90"
         >
-          <ChevronRight class="h-5 w-5" />
+          <ChevronRight class="h-5 w-5 rtl:-scale-x-100" />
         </button>
       </div>
 

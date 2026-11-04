@@ -225,7 +225,7 @@ test.describe('menus', () => {
       await expect(drawer).toBeVisible()
       // Anchored to the left edge once the slide-in settles.
       await expect.poll(async () => (await drawer.boundingBox())?.x).toBe(0)
-      await expect(drawer).toHaveAttribute('data-side', 'left')
+      await expect(drawer).toHaveAttribute('data-side', 'start')
 
       const products = drawer.getByRole('button', { name: 'Products' })
       await expect(products).toHaveAttribute('aria-expanded', 'false')

@@ -8,6 +8,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 interface AlertDialogProps extends ParentProps {
   /** Whether the dialog is currently visible. */
@@ -34,7 +35,7 @@ interface AlertDialogProps extends ParentProps {
 export function AlertDialog(props: AlertDialogProps): JSX.Element {
   return (
     <KAlertDialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-      <KAlertDialog.Portal>
+      <KAlertDialog.Portal ref={portalDir}>
         <KAlertDialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
           <KAlertDialog.Content

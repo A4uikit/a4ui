@@ -13,6 +13,9 @@
 //     presets: [a4ui],
 //     content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 //   }
+//
+// Tailwind 3 only. Tailwind 4 consumers use `@a4ui/core/theme.css`, which
+// scripts/build-theme-css.mjs generates from this file.
 
 // Explicit .js extension so the preset resolves under strict Node ESM (used by
 // our elements-css build), not just bundlers.
@@ -21,7 +24,15 @@ import plugin from 'tailwindcss/plugin.js'
 // Frosted "space glass" surfaces. addComponents so they tree-shake like any
 // utility (emitted only when the class is found in scanned content — a4ui's own
 // components use them, so scanning ./node_modules/@a4ui/core/dist covers it).
-const glass = plugin(({ addComponents, addVariant }) => {
+const glass = plugin(({ addComponents, addVariant, e }) => {
+  // Tailwind 4 reaches this only through `@config`. It would otherwise stop on a
+  // message about `addUtilities` that says nothing about the actual problem, and the
+  // components need more than this preset there anyway. `e` is a Tailwind 3 plugin API.
+  if (typeof e !== 'function') {
+    throw new Error(
+      "@a4ui/core/preset requires Tailwind 3. On Tailwind 4, remove the preset and add `@import '@a4ui/core/theme.css';` after `@import 'tailwindcss';` in your CSS.",
+    )
+  }
   // `light:` applies when an ancestor is in the light theme (`[data-theme='light']`),
   // mirroring how dark is the base and light is the override throughout A4ui. Used
   // for theme-aware tints (e.g. Badge tones) that need a lighter foreground on dark
@@ -56,8 +67,8 @@ const glass = plugin(({ addComponents, addVariant }) => {
       position: 'relative',
       overflow: 'hidden',
       background: 'hsl(var(--card) / 0.5)',
-      backdropFilter: 'blur(14px) saturate(180%)',
       WebkitBackdropFilter: 'blur(14px) saturate(180%)',
+      backdropFilter: 'blur(14px) saturate(180%)',
       border: '1px solid hsl(var(--foreground) / 0.14)',
       borderRadius: 'var(--radius-xl, 1rem)',
       boxShadow:
@@ -76,8 +87,8 @@ const glass = plugin(({ addComponents, addVariant }) => {
     '.card': {
       position: 'relative',
       background: 'hsl(var(--card) / 0.55)',
-      backdropFilter: 'blur(8px) saturate(150%)',
       WebkitBackdropFilter: 'blur(8px) saturate(150%)',
+      backdropFilter: 'blur(8px) saturate(150%)',
       border: '1px solid hsl(var(--foreground) / 0.16)',
       borderRadius: 'var(--radius-xl, 1rem)',
       boxShadow: '0 1px 2px hsl(var(--shadow) / 0.05), 0 4px 12px hsl(var(--shadow) / 0.1)',
@@ -145,8 +156,8 @@ const glass = plugin(({ addComponents, addVariant }) => {
     // ---- Floating overlay glass (menus, modals, drawers, toasts) ----
     '.bg-glass': {
       background: 'hsl(var(--card) / 0.72)',
-      backdropFilter: 'blur(14px) saturate(160%)',
       WebkitBackdropFilter: 'blur(14px) saturate(160%)',
+      backdropFilter: 'blur(14px) saturate(160%)',
       border: '1px solid hsl(var(--foreground) / 0.14)',
     },
     "[data-theme='light'] .bg-glass": {
@@ -174,8 +185,8 @@ const glass = plugin(({ addComponents, addVariant }) => {
     },
     'html.calm .card, html.calm .bg-glass': {
       background: 'hsl(var(--card))',
-      backdropFilter: 'none',
       WebkitBackdropFilter: 'none',
+      backdropFilter: 'none',
     },
     'html.calm .tile-glass': {
       background: 'hsl(var(--muted))',

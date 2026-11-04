@@ -6,9 +6,9 @@
 import { Check, ChevronDown, X } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 
 /** One selectable option: a stable `value` and its display `label`. */
@@ -66,7 +66,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
     const width = Math.max(r.width, MIN_W)
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8))
+    const left = anchoredLeft(btnRef, width)
     setPos({ top: r.bottom + 4, left, width })
   }
 
@@ -151,7 +151,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
         aria-haspopup="listbox"
         aria-expanded={open()}
         onClick={() => (open() ? close() : openPopover())}
-        class="flex min-h-9 h-auto w-full flex-wrap items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex min-h-9 h-auto w-full flex-wrap items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-start text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
       >
         <span class="flex flex-1 flex-wrap items-center gap-1">
           <Show
@@ -217,7 +217,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
                         aria-pressed={isSelected()}
                         onClick={() => toggleValue(opt.value)}
                         class={cn(
-                          'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm outline-none transition-colors hover:bg-muted focus:bg-muted',
+                          'flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-start text-sm outline-none transition-colors hover:bg-muted focus:bg-muted',
                           isSelected() && 'bg-primary/10',
                         )}
                       >

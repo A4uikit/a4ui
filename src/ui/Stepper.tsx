@@ -90,7 +90,7 @@ export function Stepper(props: StepperProps): JSX.Element {
                     aria-hidden="true"
                     class={cn(
                       connectorFilled() ? 'bg-primary' : 'bg-border',
-                      isVertical() ? 'ml-4 -mt-1 mb-1 w-0.5 flex-1' : 'mx-2 h-0.5 flex-1',
+                      isVertical() ? 'ms-4 -mt-1 mb-1 w-0.5 flex-1' : 'mx-2 h-0.5 flex-1',
                     )}
                   />
                 </Show>

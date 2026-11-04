@@ -70,6 +70,7 @@
     },
     "./styles.css": "./dist/styles.css",
     "./full.css": "./dist/full.css",
+    "./theme.css": "./dist/theme.css",
     "./elements": {
       "import": "./dist/elements.js",
       "default": "./dist/elements.js"
@@ -86,8 +87,9 @@
   },
   "scripts": {
     "prebuild": "node scripts/sync-version.mjs",
-    "build": "vite build && npm run build:elements",
+    "build": "vite build && npm run build:elements && npm run build:theme",
     "build:elements": "vite build --config vite.elements.config.ts && node scripts/build-elements-css.mjs",
+    "build:theme": "node scripts/build-theme-css.mjs",
     "dev": "vite build --watch",
     "preview": "node scripts/gen-llms.mjs && vite --config vite.preview.config.ts",
     "preview:build": "node scripts/gen-llms.mjs && vite build --config vite.preview.config.ts",
@@ -119,7 +121,7 @@
   },
   "peerDependencies": {
     "solid-js": "^1.9.16",
-    "tailwindcss": "^3.4.0"
+    "tailwindcss": "^3.4.0 || ^4.0.0"
   },
   "dependencies": {
     "@kobalte/core": "^0.13.14",

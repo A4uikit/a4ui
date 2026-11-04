@@ -60,8 +60,8 @@ export function PillSearch(props: PillSearchProps): JSX.Element {
             aria-label={field.label}
             onClick={() => props.onFieldClick?.(field.key)}
             class={cn(
-              'flex min-w-[6.5rem] shrink-0 flex-col items-start px-4 py-2 text-left transition-colors duration-150 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring',
-              index() === 0 ? 'rounded-l-full' : 'border-l border-border',
+              'flex min-w-[6.5rem] shrink-0 flex-col items-start px-4 py-2 text-start transition-colors duration-150 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring',
+              index() === 0 ? 'rounded-s-full' : 'border-s border-border',
             )}
           >
             <span class="text-xs font-medium text-muted-foreground">{field.label}</span>
@@ -71,7 +71,7 @@ export function PillSearch(props: PillSearchProps): JSX.Element {
           </button>
         )}
       </For>
-      <div class="shrink-0 py-1.5 pl-1 pr-1.5">
+      <div class="shrink-0 py-1.5 ps-1 pe-1.5">
         <button
           type="button"
           aria-label="Search"

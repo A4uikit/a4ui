@@ -76,7 +76,7 @@ export function SpecSheet(props: SpecSheetProps): JSX.Element {
                     )}
                   >
                     <dt class="text-muted-foreground">{row.label}</dt>
-                    <dd class="text-right font-medium text-foreground">{row.value}</dd>
+                    <dd class="text-end font-medium text-foreground">{row.value}</dd>
                   </div>
                 )}
               </For>

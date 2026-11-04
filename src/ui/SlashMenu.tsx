@@ -116,7 +116,7 @@ export function SlashMenu(props: SlashMenuProps): JSX.Element {
                 onMouseEnter={() => setActive(i())}
                 onClick={() => pick(item)}
                 class={cn(
-                  'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-left transition-colors',
+                  'flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-start transition-colors',
                   active() === i() ? 'bg-muted' : undefined,
                 )}
               >

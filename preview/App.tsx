@@ -21,6 +21,7 @@ import {
   activeTheme,
   AppShell,
   Button,
+  DirectionProvider,
   Drawer,
   EffectsToggle,
   initTheme,
@@ -30,6 +31,7 @@ import {
   Toaster,
 } from '../src'
 import { Home } from './Home'
+import { docsRtl } from './rtlStore'
 import { ThemeSelect } from './ThemeSelect'
 import { applyOverrides } from './themeStore'
 
@@ -222,10 +224,14 @@ export function App(): JSX.Element {
           >
             Home
           </Button>
-          <Button variant={navVariant(isDocs())} onClick={() => openDocs()}>
+          <Button class="px-2 sm:px-3" variant={navVariant(isDocs())} onClick={() => openDocs()}>
             Docs
           </Button>
-          <Button variant={navVariant(inExamples())} onClick={() => setView({ kind: 'examples' })}>
+          <Button
+            class="px-2 sm:px-3"
+            variant={navVariant(inExamples())}
+            onClick={() => setView({ kind: 'examples' })}
+          >
             Examples
           </Button>
         </nav>
@@ -283,7 +289,11 @@ export function App(): JSX.Element {
 
   return (
     <>
-      <AppShell topbar={topbar} background={<Scenery />} maxWidth="1600px">
+      <AppShell
+        topbar={topbar}
+        background={<Scenery />}
+        maxWidth={view().kind === 'home' ? '1920px' : '1600px'}
+      >
         <Switch fallback={<Home onExplore={() => openDocs()} />}>
           <Match when={view().kind === 'hero'}>
             <Suspense>
@@ -358,7 +368,9 @@ export function App(): JSX.Element {
         </Suspense>
       </Show>
 
-      <Toaster />
+      <DirectionProvider dir={docsRtl() ? 'rtl' : 'ltr'}>
+        <Toaster />
+      </DirectionProvider>
     </>
   )
 }

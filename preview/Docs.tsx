@@ -4,9 +4,10 @@
 import { For, Show, type JSX } from 'solid-js'
 import { createStore } from 'solid-js/store'
 
-import { Card, Input, NumberInput, Select, Switch } from '../src'
+import { Card, DirectionProvider, Input, NumberInput, Select, Switch } from '../src'
 import { CodeBlock } from './CodeBlock'
 import { DOCS, type Control, type DocEntry } from './registry'
+import { docsRtl as rtl, setDocsRtl as setRtl } from './rtlStore'
 
 // The input widget for a non-boolean control (booleans use a Switch directly).
 function fieldInput(c: Control, value: () => unknown, onChange: (v: unknown) => void): JSX.Element {
@@ -58,12 +59,19 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
   return (
     <>
       <section class="space-y-3">
-        <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Example</h2>
-        <Card glass class="p-6">
-          <div data-testid="demo" class="flex flex-wrap items-start gap-4">
-            {props.entry.demo(values as never)}
-          </div>
-        </Card>
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Example</h2>
+          <span data-testid="rtl-toggle">
+            <Switch checked={rtl()} onChange={setRtl} label="RTL" />
+          </span>
+        </div>
+        <DirectionProvider dir={rtl() ? 'rtl' : 'ltr'}>
+          <Card glass class="p-6">
+            <div data-testid="demo" class="flex flex-wrap items-start gap-4">
+              {props.entry.demo(values as never)}
+            </div>
+          </Card>
+        </DirectionProvider>
         <Show when={entries.length}>
           <div class="rounded-lg border border-border bg-card/40 p-4">
             <p class="mb-3 text-[11px] font-semibold uppercase tracking-wide text-muted-foreground">
@@ -88,9 +96,11 @@ function ControlledDemo(props: { entry: DocEntry }): JSX.Element {
               {(v) => (
                 <div class="space-y-2">
                   <p class="text-xs font-medium text-muted-foreground">{v.label}</p>
-                  <Card glass class="flex flex-wrap items-start gap-4 p-6">
-                    {v.demo()}
-                  </Card>
+                  <DirectionProvider dir={rtl() ? 'rtl' : 'ltr'}>
+                    <Card glass class="flex flex-wrap items-start gap-4 p-6">
+                      {v.demo()}
+                    </Card>
+                  </DirectionProvider>
                 </div>
               )}
             </For>

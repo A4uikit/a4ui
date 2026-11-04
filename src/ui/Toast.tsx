@@ -6,6 +6,7 @@ import type { JSX } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { useDirection } from './DirectionProvider'
 
 /** Visual/semantic tone of a toast — controls its border/background accent color. */
 export type ToastTone = 'success' | 'error' | 'info'
@@ -58,11 +59,16 @@ export const toast = {
   info: (title: string, description?: string) => show('info', title, description),
 }
 
-/** Mount once near the app root — hosts the toast viewport. */
+/**
+ * Mount once near the app root — hosts the toast viewport. Mount it inside a
+ * `DirectionProvider` for RTL: the viewport sits in the end corner (the left
+ * one under RTL) and swipe-to-dismiss follows the direction.
+ */
 export function Toaster(): JSX.Element {
+  const dir = useDirection()
   return (
-    <KToast.Region duration={5000} swipeDirection="right">
-      <KToast.List class="fixed bottom-4 right-4 z-50 flex w-80 flex-col gap-2 outline-none" />
+    <KToast.Region duration={5000} swipeDirection={dir() === 'rtl' ? 'left' : 'right'}>
+      <KToast.List class="fixed bottom-4 end-4 z-50 flex w-80 flex-col gap-2 outline-none" />
     </KToast.Region>
   )
 }

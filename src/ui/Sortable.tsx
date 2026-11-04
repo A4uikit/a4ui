@@ -3,7 +3,7 @@
 // a floating clone follows the pointer through a Portal, and the grabbed
 // row's slot collapses into a dashed placeholder until it's dropped.
 import { createEffect, createSignal, For, Show, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 import { GripVertical } from 'lucide-solid'
 
 import { cn } from '../lib/cn'

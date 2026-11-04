@@ -6,6 +6,8 @@ import type { JSX } from 'solid-js'
 import { createSignal, For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
+import { useDirection } from './DirectionProvider'
 
 export interface RatingProps {
   /** Currently selected rating, from 0 to `max`. */
@@ -30,6 +32,7 @@ export interface RatingProps {
  * ```
  */
 export function Rating(props: RatingProps): JSX.Element {
+  const dir = useDirection()
   const [hover, setHover] = createSignal(0)
   const max = () => props.max ?? 5
   const stars = () => Array.from({ length: max() }, (_, i) => i + 1)
@@ -79,10 +82,11 @@ export function Rating(props: RatingProps): JSX.Element {
               onBlur={() => setHover(0)}
               onClick={() => set(n)}
               onKeyDown={(e) => {
-                if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+                const key = readingKey(e.key, dir())
+                if (key === 'ArrowRight' || key === 'ArrowUp') {
                   e.preventDefault()
                   set(Math.min(props.value + 1, max()))
-                } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+                } else if (key === 'ArrowLeft' || key === 'ArrowDown') {
                   e.preventDefault()
                   set(Math.max(props.value - 1, 0))
                 }

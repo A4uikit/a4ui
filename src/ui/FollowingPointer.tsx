@@ -75,7 +75,7 @@ export function FollowingPointer(props: FollowingPointerProps): JSX.Element {
         <div
           ref={pointerEl}
           aria-hidden="true"
-          class="pointer-events-none absolute left-0 top-0 z-50 flex items-center opacity-0 transition-opacity duration-150 will-change-transform"
+          class="pointer-events-none absolute start-0 top-0 z-50 flex items-center opacity-0 transition-opacity duration-150 will-change-transform"
         >
           <svg
             width="20"
@@ -96,7 +96,7 @@ export function FollowingPointer(props: FollowingPointerProps): JSX.Element {
           <Show when={props.label}>
             <div
               class={cn(
-                'ml-2 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium shadow-lg',
+                'ms-2 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium shadow-lg',
                 tone() === 'accent'
                   ? 'bg-accent text-accent-foreground'
                   : 'bg-primary text-primary-foreground',

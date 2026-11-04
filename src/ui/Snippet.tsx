@@ -42,21 +42,24 @@ export function Snippet(props: SnippetProps): JSX.Element {
   return (
     <div class={cn('relative rounded-lg border border-border bg-muted px-3 py-2', props.class)}>
       <Show when={props.language}>
-        <span class="absolute right-9 top-2 rounded bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+        <span class="absolute end-9 top-2 rounded bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
           {props.language}
         </span>
       </Show>
       <button
         type="button"
         aria-label={copied() ? 'Copied' : 'Copy to clipboard'}
-        class="absolute right-2 top-2 inline-flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground"
+        class="absolute end-2 top-2 inline-flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:text-foreground"
         onClick={copy}
       >
         <Show when={copied()} fallback={<Copy class="h-3.5 w-3.5" />}>
           <Check class="h-3.5 w-3.5" />
         </Show>
       </button>
-      <pre class="overflow-x-auto whitespace-pre pr-8 font-mono text-sm text-foreground">
+      <pre
+        dir="ltr"
+        class="overflow-x-auto whitespace-pre pr-8 rtl:pl-8 rtl:pr-0 font-mono text-sm text-foreground"
+      >
         <code>{props.code}</code>
       </pre>
     </div>

@@ -36,7 +36,7 @@ export function KpiBlock(props: KpiBlockProps): JSX.Element {
     <Card glass class={props.class}>
       <CardContent class="p-5">
         <p class="text-sm text-muted-foreground">{props.label}</p>
-        <div class="mt-1 flex items-center gap-2">
+        <div class="mt-1 flex flex-wrap items-center gap-2">
           <span class="text-2xl font-semibold text-foreground">{props.value}</span>
           <Show when={props.delta !== undefined}>
             <Badge tone={(props.delta as number) >= 0 ? 'success' : 'danger'}>

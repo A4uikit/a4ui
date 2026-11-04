@@ -61,7 +61,7 @@ export function Table(props: TableProps): JSX.Element {
 export function TableHead(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
-    <thead class={cn('border-b border-border text-left text-muted-foreground', local.class)} {...rest}>
+    <thead class={cn('border-b border-border text-muted-foreground', local.class)} {...rest}>
       {local.children}
     </thead>
   )
@@ -112,7 +112,10 @@ export function TableRow(props: TableProps): JSX.Element {
 export function TableHeadCell(props: TableProps): JSX.Element {
   const [local, rest] = splitProps(props, ['class', 'children'])
   return (
-    <th class={cn('px-3 py-2 text-xs font-semibold uppercase tracking-wide', local.class)} {...rest}>
+    <th
+      class={cn('px-3 py-2 text-start text-xs font-semibold uppercase tracking-wide', local.class)}
+      {...rest}
+    >
       {local.children}
     </th>
   )

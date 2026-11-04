@@ -52,7 +52,7 @@ export function CodeTabs(props: CodeTabsProps): JSX.Element {
 
   return (
     <div class={cn('overflow-hidden rounded-lg border border-border bg-card', props.class)}>
-      <div class="flex items-center justify-between border-b border-border pr-2">
+      <div class="flex items-center justify-between border-b border-border pe-2">
         <div class="flex" role="tablist">
           <For each={props.tabs}>
             {(tab, index) => (

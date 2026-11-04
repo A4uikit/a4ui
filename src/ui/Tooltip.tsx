@@ -3,6 +3,7 @@ import { Tooltip as KTooltip } from '@kobalte/core/tooltip'
 import type { JSX, ParentProps } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 interface TooltipProps extends ParentProps {
   /** Content shown inside the tooltip popover. */
@@ -26,7 +27,7 @@ export function Tooltip(props: TooltipProps): JSX.Element {
   return (
     <KTooltip>
       <KTooltip.Trigger class="inline-flex">{props.children}</KTooltip.Trigger>
-      <KTooltip.Portal>
+      <KTooltip.Portal ref={portalDir}>
         <KTooltip.Content
           class={cn(
             'z-50 rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-card-foreground shadow-md',

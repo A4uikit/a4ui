@@ -55,12 +55,12 @@ export function Timeline(props: TimelineProps): JSX.Element {
     <ol class={cn('relative flex flex-col gap-6', props.class)}>
       <For each={props.items}>
         {(item, index) => (
-          <li class="relative flex gap-4 pl-2">
+          <li class="relative flex gap-4 ps-2">
             {/* Line segment: hidden on the last item so it doesn't extend past the dot. */}
             <Show when={index() < props.items.length - 1}>
               <span
                 aria-hidden="true"
-                class="absolute left-[calc(0.5rem+0.375rem)] top-3 -bottom-6 w-px -translate-x-1/2 bg-border"
+                class="absolute start-[calc(0.5rem+0.375rem)] top-3 -bottom-6 w-px -translate-x-1/2 bg-border"
               />
             </Show>
             <span

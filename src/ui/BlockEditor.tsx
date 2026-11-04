@@ -115,7 +115,7 @@ export function BlockEditor(props: BlockEditorProps): JSX.Element {
           onClick={() => setMenuOpen((open) => !open)}
           aria-expanded={menuOpen()}
         >
-          <Plus class="mr-1 h-4 w-4" />
+          <Plus class="me-1 h-4 w-4" />
           Add block
         </Button>
 

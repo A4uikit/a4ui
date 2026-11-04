@@ -120,7 +120,7 @@ export function JsonViewer(props: JsonViewerProps): JSX.Element {
 
     return (
       <Show when={visible()}>
-        <li style={{ 'padding-left': `${nodeProps.depth * 1}rem` }}>
+        <li style={{ 'padding-inline-start': `${nodeProps.depth * 1}rem` }}>
           <Show
             when={isExpandable(value())}
             fallback={
@@ -143,7 +143,7 @@ export function JsonViewer(props: JsonViewerProps): JSX.Element {
                     <ChevronRight
                       class={cn(
                         'h-3.5 w-3.5 shrink-0 self-center transition-transform duration-150',
-                        isOpen() && 'rotate-90',
+                        isOpen() ? 'rotate-90' : 'rtl:-scale-x-100',
                       )}
                       aria-hidden="true"
                     />

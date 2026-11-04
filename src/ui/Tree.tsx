@@ -64,14 +64,14 @@ export function Tree(props: TreeProps): JSX.Element {
       <li role="treeitem" aria-expanded={hasChildren() ? isExpanded() : undefined}>
         <div
           class="flex items-center gap-1.5 rounded-md px-2 py-1 text-sm text-foreground hover:bg-muted cursor-pointer"
-          style={{ 'padding-left': `${nodeProps.depth * 1 + 0.5}rem` }}
+          style={{ 'padding-inline-start': `${nodeProps.depth * 1 + 0.5}rem` }}
           onClick={() => hasChildren() && toggle(nodeProps.node.id)}
         >
           <Show when={hasChildren()} fallback={<span class="h-3.5 w-3.5 shrink-0" aria-hidden="true" />}>
             <ChevronRight
               class={cn(
                 'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-                isExpanded() && 'rotate-90',
+                isExpanded() ? 'rotate-90' : 'rtl:-scale-x-100',
               )}
               aria-hidden="true"
             />

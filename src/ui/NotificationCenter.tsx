@@ -44,7 +44,7 @@ export function NotificationCenter(props: NotificationCenterProps): JSX.Element 
     <span class={cn('relative inline-grid place-items-center rounded-md p-2 text-foreground', props.class)}>
       <Bell class="h-5 w-5" />
       <Show when={unread() > 0}>
-        <span class="absolute -right-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] text-primary-foreground">
+        <span class="absolute -end-1 -top-1 grid h-4 min-w-4 place-items-center rounded-full bg-primary px-1 text-[10px] text-primary-foreground">
           {unread()}
         </span>
       </Show>

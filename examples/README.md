@@ -38,6 +38,9 @@ npm run build
 - **`astro-solid/`** — an Astro app rendering a native Solid component
   (`Button`) as a `client:only="solid-js"` island via `@astrojs/solid-js`.
   Exercises the Astro integration path documented in `INTEGRATIONS.md`.
+- **`tailwind4/`** — Vite + Solid on real Tailwind 4 (its own dependency, via
+  `@tailwindcss/vite`), styled only by `@a4ui/core/theme.css`. The repo itself
+  stays on Tailwind 3.
 
 ## CI
 

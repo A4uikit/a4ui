@@ -38,13 +38,13 @@ export function AvatarGroup(props: AvatarGroupProps): JSX.Element {
     <div class={cn('flex items-center', props.class)}>
       <For each={shown()}>
         {(avatar, index) => (
-          <div class={cn('ring-2 ring-background rounded-full', index() > 0 && '-ml-2')}>
+          <div class={cn('ring-2 ring-background rounded-full', index() > 0 && '-ms-2')}>
             <Avatar src={avatar.src} alt={avatar.alt} fallback={avatar.fallback} />
           </div>
         )}
       </For>
       {overflow() > 0 && (
-        <div class="-ml-2 ring-2 ring-background rounded-full">
+        <div class="-ms-2 ring-2 ring-background rounded-full">
           <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-muted text-xs font-medium text-muted-foreground">
             +{overflow()}
           </span>

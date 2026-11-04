@@ -7,9 +7,9 @@
 import { CalendarDays } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { createEffect, createMemo, createSignal, onCleanup, Show } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 import { CalendarCore } from './internal/CalendarCore'
 
@@ -94,7 +94,7 @@ export function DateRangePicker(props: DateRangePickerProps): JSX.Element {
   const place = () => {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - POP_W - 8))
+    const left = anchoredLeft(btnRef, POP_W)
     setPos({ top: r.bottom + 4, left })
   }
 
@@ -181,7 +181,7 @@ export function DateRangePicker(props: DateRangePickerProps): JSX.Element {
         type="button"
         disabled={props.disabled}
         onClick={() => (open() ? close() : openPopover())}
-        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-start text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
       >
         <span class={triggerLabel() ? '' : 'text-muted-foreground'}>
           {triggerLabel() ?? props.label ?? 'Select range'}

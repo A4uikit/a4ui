@@ -4,6 +4,8 @@
 import type { JSX } from 'solid-js'
 import { Portal as SolidPortal } from 'solid-js/web'
 
+import { portalDir } from '../lib/direction'
+
 /** Props for {@link Portal}. */
 export interface PortalProps {
   /** Where to mount. Defaults to `document.body`. */
@@ -27,7 +29,7 @@ export interface PortalProps {
  */
 export function Portal(props: PortalProps): JSX.Element {
   return (
-    <SolidPortal mount={props.mount} useShadow={props.useShadow}>
+    <SolidPortal mount={props.mount} useShadow={props.useShadow} ref={portalDir}>
       {props.children}
     </SolidPortal>
   )

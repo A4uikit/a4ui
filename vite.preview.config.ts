@@ -2,6 +2,8 @@
 // build (vite.config.ts): this one runs Solid + Tailwind (via the a4ui preset)
 // over preview/ + src/, so the glass plugin and utilities resolve exactly as a
 // consumer's build would. Run: `npm run preview` (dev) or `npm run preview:build`.
+import { readFileSync } from 'node:fs'
+
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 import tailwind from 'tailwindcss'
@@ -34,8 +36,21 @@ function asyncCss() {
   }
 }
 
+// Entry count per docs group, read from the registry source so the Home page can
+// show real numbers without importing the registry (and every demo) up front.
+function docCounts(): Record<string, number> {
+  const registry = readFileSync(new URL('./preview/registry.tsx', import.meta.url), 'utf8')
+  const counts: Record<string, number> = {}
+  for (const m of registry.matchAll(/id: '[^']+',\s*title: '[^']*',\s*group: '([^']*)',/g)) {
+    counts[m[1]] = (counts[m[1]] ?? 0) + 1
+  }
+  if (Object.keys(counts).length === 0) throw new Error('No doc entries matched in preview/registry.tsx')
+  return counts
+}
+
 export default defineConfig({
   root: 'preview',
+  define: { __A4UI_DOC_COUNTS__: JSON.stringify(docCounts()) },
   server: {
     // The catalog imports from ../src (outside the preview root).
     fs: { allow: ['..'] },
