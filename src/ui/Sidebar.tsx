@@ -602,7 +602,7 @@ export function SidebarMenuBadge(props: ParentProps<{ class?: string }>): JSX.El
     <span
       data-sidebar="menu-badge"
       class={cn(
-        'pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 select-none rounded-md bg-primary/15 px-1.5 text-[11px] font-semibold tabular-nums text-primary group-data-[icon-collapsed=true]/sidebar:hidden',
+        'pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 select-none rounded-md bg-primary/15 px-1.5 text-[11px] font-semibold tabular-nums text-foreground group-data-[icon-collapsed=true]/sidebar:hidden',
         props.class,
       )}
     >

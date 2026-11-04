@@ -55,3 +55,16 @@ export function createAnchorReflow(options: AnchorReflowOptions): () => void {
     else options.place()
   }
 }
+
+/**
+ * Viewport `left` for a fixed panel aligned with its trigger's inline-start edge,
+ * kept 8px inside the viewport. Under `dir="rtl"` that is the trigger's right
+ * edge, so the panel extends leftwards. The direction is read from the trigger,
+ * which also works for a `dir` set by a provider or an ancestor element.
+ */
+export function anchoredLeft(anchor: HTMLElement, panelWidth: number): number {
+  const rect = anchor.getBoundingClientRect()
+  const rtl = getComputedStyle(anchor).direction === 'rtl'
+  const start = rtl ? rect.right - panelWidth : rect.left
+  return Math.max(8, Math.min(start, window.innerWidth - panelWidth - 8))
+}

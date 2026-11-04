@@ -9,7 +9,7 @@ import type { JSX } from 'solid-js'
 import { Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 import { CalendarCore } from './internal/CalendarCore'
 
@@ -93,7 +93,7 @@ export function DateField(props: DateFieldProps): JSX.Element {
   const place = () => {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - POP_W - 8))
+    const left = anchoredLeft(btnRef, POP_W)
     setPos({ top: r.bottom + 4, left })
   }
 

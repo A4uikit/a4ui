@@ -9,7 +9,7 @@ import type { JSX } from 'solid-js'
 import { createEffect, createMemo, createSignal, onCleanup, Show } from 'solid-js'
 import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 import { CalendarCore } from './internal/CalendarCore'
 
@@ -94,7 +94,7 @@ export function DateRangePicker(props: DateRangePickerProps): JSX.Element {
   const place = () => {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - POP_W - 8))
+    const left = anchoredLeft(btnRef, POP_W)
     setPos({ top: r.bottom + 4, left })
   }
 

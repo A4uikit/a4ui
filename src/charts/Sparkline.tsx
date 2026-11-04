@@ -17,6 +17,8 @@ export interface SparklineProps {
   tone?: 'primary' | 'accent' | 'destructive'
   /** Fill the area under the line faintly. Default false. */
   area?: boolean
+  /** Accessible description, e.g. 'Revenue, rising'. Without it the chart is hidden from assistive tech as decoration. */
+  label?: string
   class?: string
 }
 
@@ -76,7 +78,9 @@ export function Sparkline(props: SparklineProps): JSX.Element {
       height={height()}
       viewBox={`0 0 ${width()} ${height()}`}
       preserveAspectRatio="none"
-      role="img"
+      role={props.label ? 'img' : undefined}
+      aria-label={props.label}
+      aria-hidden={props.label ? undefined : 'true'}
     >
       <Show when={points().length > 0}>
         <Show when={props.area}>

@@ -15,7 +15,7 @@ export type BadgeTone = 'neutral' | 'success' | 'warning' | 'danger' | 'info'
 const TONE_CLASSES: Record<BadgeTone, string> = {
   neutral: 'bg-muted text-muted-foreground ring-border',
   success: 'bg-emerald-500/15 text-emerald-300 ring-emerald-500/30 light:text-emerald-700',
-  warning: 'bg-amber-500/15 text-amber-300 ring-amber-500/30 light:text-amber-700',
+  warning: 'bg-amber-500/15 text-amber-300 ring-amber-500/30 light:text-amber-800',
   danger: 'bg-rose-500/15 text-rose-300 ring-rose-500/30 light:text-rose-700',
   info: 'bg-sky-500/15 text-sky-300 ring-sky-500/30 light:text-sky-700',
 }

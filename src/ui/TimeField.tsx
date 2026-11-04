@@ -8,7 +8,7 @@ import type { JSX } from 'solid-js'
 import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 
 type AmPm = 'AM' | 'PM'
@@ -108,7 +108,7 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
     const w = popWidth()
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - w - 8))
+    const left = anchoredLeft(btnRef, w)
     setPos({ top: r.bottom + 4, left })
   }
 

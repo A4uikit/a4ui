@@ -2013,7 +2013,9 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
               <UI.InputGroupButton size="icon-xs" variant="outline" aria-label="Attach">
                 <Plus />
               </UI.InputGroupButton>
-              <UI.InputGroupText class="ml-auto">{msg().length} / 280</UI.InputGroupText>
+              <UI.InputGroupText class="ms-auto">
+                <bdi>{msg().length} / 280</bdi>
+              </UI.InputGroupText>
               <UI.InputGroupButton size="xs" variant="primary">
                 Send
               </UI.InputGroupButton>

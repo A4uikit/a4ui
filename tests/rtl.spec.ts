@@ -46,6 +46,41 @@ test.describe('rtl', () => {
     expect(await page.evaluate(() => document.documentElement.hasAttribute('dir'))).toBe(false)
   })
 
+  test('DateField: the panel lines up with the trigger start edge in both directions', async ({ page }) => {
+    for (const rtl of [false, true]) {
+      const demo = await open(page, 'date-field', rtl)
+      const trigger = demo.locator('button').first()
+      const t = await box(trigger)
+      await trigger.click()
+      const panel = page.locator('[data-a4-floating]').first()
+      await expect(panel).toBeVisible()
+      const p = await box(panel)
+      if (rtl) expect(Math.abs(p.x + p.width - (t.x + t.width))).toBeLessThanOrEqual(1)
+      else expect(Math.abs(p.x - t.x)).toBeLessThanOrEqual(1)
+      await page.keyboard.press('Escape')
+    }
+  })
+
+  test('Table: header text follows the direction instead of centering', async ({ page }) => {
+    for (const [rtl, side] of [
+      [false, 'left'],
+      [true, 'right'],
+    ] as const) {
+      const demo = await open(page, 'table', rtl)
+      const cell = demo.locator('th').first()
+      const offsets = await cell.evaluate((th) => {
+        const range = document.createRange()
+        range.selectNodeContents(th)
+        const text = range.getBoundingClientRect()
+        const cellBox = th.getBoundingClientRect()
+        return { left: text.left - cellBox.left, right: cellBox.right - text.right }
+      })
+      // Hugging one side: the padding only, while the other side has the slack.
+      expect(offsets[side]).toBeLessThanOrEqual(16)
+      expect(offsets[side === 'left' ? 'right' : 'left']).toBeGreaterThan(offsets[side])
+    }
+  })
+
   test('InputGroup: the leading icon is on the left in LTR and on the right in RTL', async ({ page }) => {
     const demo = await open(page, 'input-group', false)
     const input = demo.getByRole('textbox', { name: 'Search' })

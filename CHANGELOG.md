@@ -35,6 +35,8 @@ changes, `patch` for fixes).
 
 ### Fixed
 
+- `Sparkline` no longer exposes an unnamed `role="img"`: pass the new `label` prop to name it, otherwise it is hidden from assistive tech as decoration.
+- `SidebarMenuBadge` and the `warning` `Badge` in light mode now reach WCAG AA contrast.
 - `KpiBlock`: the delta badge wraps under the value instead of overflowing a narrow card.
 
 ## [0.38.1] — 2026-10-31

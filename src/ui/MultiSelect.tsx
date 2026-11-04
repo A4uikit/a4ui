@@ -8,7 +8,7 @@ import type { JSX } from 'solid-js'
 import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
 import { Portal } from './Portal'
 
-import { createAnchorReflow } from '../lib/anchored'
+import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
 
 /** One selectable option: a stable `value` and its display `label`. */
@@ -66,7 +66,7 @@ export function MultiSelect(props: MultiSelectProps): JSX.Element {
     if (!btnRef) return
     const r = btnRef.getBoundingClientRect()
     const width = Math.max(r.width, MIN_W)
-    const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8))
+    const left = anchoredLeft(btnRef, width)
     setPos({ top: r.bottom + 4, left, width })
   }
 
