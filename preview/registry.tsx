@@ -138,21 +138,26 @@ export const DOCS: DocEntry[] = [
         <p>1. Install the package. 2. Add the preset to Tailwind. 3. Import the styles once. Done.</p>
         <p>
           Requires <code class="rounded bg-muted px-1 font-mono">solid-js</code> and{' '}
-          <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> in your project.
+          <code class="rounded bg-muted px-1 font-mono">tailwindcss</code> (3.4 or 4) in your project. The
+          setup differs: on Tailwind 4, one CSS import replaces steps 2 and 3.
         </p>
       </div>
     ),
     code: `# 1. install
 npm install @a4ui/core
 
-// 2. tailwind.config.ts — add the preset
+// Tailwind 4 — 2. your CSS entry, and that is all
+@import 'tailwindcss';
+@import '@a4ui/core/theme.css';
+
+// Tailwind 3 — 2. tailwind.config.ts: add the preset
 import a4ui from '@a4ui/core/preset'
 export default {
   presets: [a4ui],
   content: ['./src/**/*.{ts,tsx}', './node_modules/@a4ui/core/dist/**/*.js'],
 }
 
-// 3. your entry (just once)
+// Tailwind 3 — 3. your entry (just once)
 import '@a4ui/core/styles.css'`,
   },
   {

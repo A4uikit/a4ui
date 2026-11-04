@@ -8,6 +8,16 @@ changes, `patch` for fixes).
 
 ### Added
 
+- **Tailwind 4 support.** `@import '@a4ui/core/theme.css'` after
+  `@import 'tailwindcss'` replaces the preset, the `content` globs and `styles.css`.
+  It is generated from `preset.js` at build time and carries the tokens, glass
+  surfaces, calm mode, the `light:` variant and the `@source` for the components.
+  It also holds Tailwind 3's meaning for what Tailwind 4 changed (default border
+  and ring, the shadow, radius and blur scales, the palette, line heights,
+  placeholder, form control backgrounds, button cursor, `hover:` on touch screens,
+  `space-*`, `divide-*`, `outline-none`, gradient interpolation, and the cascade between glass rules and utilities), so
+  components look the same under both majors. This reaches consumer code using the
+  same class names; see `INTEGRATIONS.md`. `examples/tailwind4` builds in CI.
 - **Right-to-left support.** `DirectionProvider` (and `useDirection()`) wraps
   Kobalte's `I18nProvider` and sets `dir` on a `display: contents` wrapper.
   Overlays that render in `<body>` (Modal, Drawer, Popover, Dropdown, Tooltip,
@@ -22,6 +32,10 @@ changes, `patch` for fixes).
 
 ### Changed
 
+- The `tailwindcss` peer range is now `^3.4.0 || ^4.0.0`, so installing Tailwind 4
+  no longer gives a peer warning. The Tailwind 3 setup on Tailwind 4 is still
+  unstyled without any error unless `@config` loads the preset, which now throws with
+  the fix. The preset's behaviour on Tailwind 3 is unchanged.
 - Physical Tailwind utilities (`ml-`, `pr-`, `left-`, `text-right`, `border-l`,
   `rounded-r`, ...) are now logical (`ms-`, `pe-`, `start-`, `text-end`,
   `border-s`, `rounded-e`) across `src/`. Left-to-right rendering is unchanged.

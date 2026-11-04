@@ -1,5 +1,6 @@
 // Types for `@a4ui/core/preset` — the Spatial Glass Tailwind preset.
-// Requires Tailwind CSS v3 (`tailwindcss@^3.4.0`): v4 removed `presets:`.
+// Requires Tailwind CSS v3 (`tailwindcss@^3.4.0`): v4 removed `presets:`. On v4, use
+// `@import '@a4ui/core/theme.css'` instead; loading this preset there throws.
 import type { Config } from 'tailwindcss'
 
 /**
