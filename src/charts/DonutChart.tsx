@@ -71,6 +71,12 @@ export function DonutChart(props: DonutChartProps): JSX.Element {
   const radius = () => Math.max(size() / 2 - thickness() / 2, 0)
   const circumference = () => 2 * Math.PI * radius()
   const total = () => props.data.reduce((sum, d) => sum + d.value, 0)
+  const summary = () => {
+    const sum = total() || 1
+    return `Donut chart. ${props.data
+      .map((d) => `${d.label} ${d.value} (${Math.round((d.value / sum) * 100)}%)`)
+      .join(', ')}`
+  }
 
   const arcs = () =>
     sliceAngles(props.data.map((d) => d.value)).map((slice) => ({
@@ -85,7 +91,13 @@ export function DonutChart(props: DonutChartProps): JSX.Element {
       class={cn('relative inline-flex items-center justify-center', props.class)}
       style={{ width: `${size()}px`, height: `${size()}px` }}
     >
-      <svg width={size()} height={size()} viewBox={`0 0 ${size()} ${size()}`} role="img">
+      <svg
+        width={size()}
+        height={size()}
+        viewBox={`0 0 ${size()} ${size()}`}
+        role="img"
+        aria-label={summary()}
+      >
         <g transform={`rotate(-90 ${center()} ${center()})`}>
           <circle
             cx={center()}

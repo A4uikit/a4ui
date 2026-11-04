@@ -6,6 +6,12 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Fixed
+
+- `DonutChart` has an accessible name: its `role="img"` now reads each segment with
+  its value and share, matching `PieChart`. It had no name before, which fails WCAG
+  1.1.1 (axe `svg-img-alt`) on any page that uses the chart.
+
 ## [0.39.0] — 2026-11-03
 
 ### Added

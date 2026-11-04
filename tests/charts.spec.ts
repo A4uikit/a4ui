@@ -144,6 +144,13 @@ test.describe('multi-series charts', () => {
     expect(label).toContain('Mon: Web 12, App 5')
   })
 
+  test('DonutChart: the role=img names every segment with its share', async ({ page }) => {
+    await page.goto('/#/donut-chart')
+    await expect(page.getByTestId('demo').getByRole('img')).toHaveAccessibleName(
+      'Donut chart. Direct 42 (42%), Social 28 (28%), Referral 18 (18%), Other 12 (12%)',
+    )
+  })
+
   test('AreaChart: stacked layers sit above each other, gradient fills, keyboard tooltip', async ({
     page,
   }) => {
