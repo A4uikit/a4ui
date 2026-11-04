@@ -88,7 +88,7 @@ looking the same under both majors, which means it sets these for your own code 
 | `hover:` applies only under `(hover: hover)`                          | `hover:` applies on touch screens too                                   |
 | Margin and padding zeroed on every element                            | `td`, `th`, `option`, `dialog` and `[popover]` keep theirs              |
 
-`space-*`, `divide-*` and `outline-none` are different: no theme value reaches them,
+`space-*`, `divide-*`, `outline-none`, `bg-gradient-to-*` (sRGB, not Oklab) and gradient stops with an alpha (`from-primary/40`) are different: no theme value reaches them,
 so `theme.css` carries the Tailwind 3 rules for the values the components use. Other
 values in your code (say `space-y-7`) get Tailwind 4's rule.
 

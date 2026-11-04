@@ -253,6 +253,11 @@ function layerStylesheet(css, sink) {
         walk(node, [...wrappers, `@${node.name} ${node.params}`])
       } else if (node.type === 'rule') {
         placeRule(node, wrappers, sink)
+        for (const child of node.nodes) {
+          if (child.type !== 'rule') continue
+          const nested = child.clone({ selector: child.selector.replace(/&/g, node.selector) })
+          placeRule(nested, wrappers, sink)
+        }
       }
     })
   }
@@ -280,6 +285,14 @@ button,
 :disabled {
   cursor: default;
 }
+/* Tailwind 4 also strips these from form controls; Tailwind 3 did it for buttons only. */
+input:where(:not([type='button'], [type='reset'], [type='submit'])),
+select,
+optgroup,
+textarea {
+  background-color: revert-layer;
+  border-radius: revert-layer;
+}
 /* Tailwind 4 zeroes margin and padding on everything; Tailwind 3 listed the elements. */
 td,
 th,
@@ -299,12 +312,40 @@ dialog,
 //    first, to clear what the Tailwind 4 rule set.
 //  - `outline-none` now removes the outline, where Tailwind 3 kept a transparent one
 //    that forced-colors mode turns visible.
+//  - `from-x/40` and friends now resolve to a color-mix(), and one such stop moves the
+//    whole gradient from sRGB to Oklab interpolation. Only their color is restored:
+//    Tailwind 4 still builds the gradient from these variables.
+//  - `bg-gradient-to-*` now names Oklab outright, so its direction is restored too.
 const CHILD_RESETS = [
   [/space-y-(?!reverse)/, 'margin-block-end: 0;'],
   [/space-x-(?!reverse)/, 'margin-inline-end: 0;'],
   [/divide-y(?!-reverse)/, 'border-bottom-width: 0;'],
   [/divide-x(?!-reverse)/, 'border-inline-end-width: 0;'],
+  // Any other divide-* is a color, which Tailwind 4 also sets on the first child.
+  [/divide-(?!reverse|opacity)/, `border-color: ${v3.borderColor.DEFAULT};`],
 ]
+
+// The stop's color alone, from a Tailwind 3 `from-*`, `via-*` or `to-*` rule.
+function gradientStopRule(rule) {
+  const decl = (prop) => rule.nodes.find((n) => n.prop === prop)?.value
+  const stop = rule.selector.match(/(?:^|[.:])(from|via|to)-/)?.[1]
+  const color =
+    stop === 'via'
+      ? decl('--tw-gradient-stops')?.match(
+          /var\(--tw-gradient-from\), (.+) var\(--tw-gradient-via-position\)/,
+        )?.[1]
+      : decl(`--tw-gradient-${stop}`)?.replace(/ var\(--tw-gradient-\w+-position\)$/, '')
+  if (!color) throw new Error(`build-theme-css: no gradient color in ${rule.selector}`)
+  return `${rule.selector} {\n  --tw-gradient-${stop}: ${color};\n}\n`
+}
+
+function gradientDirectionRule(rule) {
+  const direction = rule.nodes
+    .find((n) => n.prop === 'background-image')
+    ?.value.match(/^linear-gradient\((to [a-z ]+), var\(--tw-gradient-stops\)\)$/)?.[1]
+  if (!direction) throw new Error(`build-theme-css: no gradient direction in ${rule.selector}`)
+  return `${rule.selector} {\n  --tw-gradient-position: ${direction};\n}\n`
+}
 
 async function tailwind3Rules() {
   const { root: css } = await postcss([
@@ -313,7 +354,9 @@ async function tailwind3Rules() {
   const rules = []
   css.walkRules((rule) => {
     const isChildRule = /(^|[:.-])(space|divide)-/.test(rule.selector)
-    if (!isChildRule && !/(^|[:.-])outline-none/.test(rule.selector)) return
+    const isAlphaStop = /(^|[.:])(from|via|to)-[^ ]*\\\//.test(rule.selector)
+    const isDirection = /(^|[.:])bg-gradient-to-/.test(rule.selector)
+    if (!isChildRule && !isAlphaStop && !isDirection && !/(^|[:.-])outline-none/.test(rule.selector)) return
     const [prefix] = rule.selector.split(' > ')
     if (isChildRule && prefix === rule.selector) {
       throw new Error(`build-theme-css: unexpected rule ${rule.selector}`)
@@ -324,7 +367,11 @@ async function tailwind3Rules() {
       wrappers.unshift(`@${at.name} ${at.params}`)
     }
     const resetRule = reset ? `:where(${prefix} > :not(:last-child)) {\n  ${reset}\n}\n` : ''
-    const block = `${resetRule}${rule.toString()}`
+    const block = isAlphaStop
+      ? gradientStopRule(rule)
+      : isDirection
+        ? gradientDirectionRule(rule)
+        : `${resetRule}${rule.toString()}`
     rules.push(wrappers.reduceRight((inner, wrapper) => `${wrapper} {\n${inner}\n}`, block))
   })
   return rules
