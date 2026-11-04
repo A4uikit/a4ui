@@ -6,11 +6,18 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.39.1] — 2026-11-04
+
 ### Fixed
 
 - `DonutChart` has an accessible name: its `role="img"` now reads each segment with
   its value and share, matching `PieChart`. It had no name before, which fails WCAG
   1.1.1 (axe `svg-img-alt`) on any page that uses the chart.
+
+### Docs
+
+- Lighthouse report and scores measured again on the redesigned home page
+  (Performance 99, median of three desktop runs).
 
 ## [0.39.0] — 2026-11-03
 
