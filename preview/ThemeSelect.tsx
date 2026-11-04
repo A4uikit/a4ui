@@ -20,7 +20,7 @@ export function ThemeSelect(): JSX.Element {
       <span class="flex items-center gap-1.5">
         <span aria-hidden="true">{activeTheme().icon}</span>
         <span class="hidden sm:inline">{activeTheme().label}</span>
-        <ChevronDown class="h-3.5 w-3.5 opacity-60" />
+        <ChevronDown class="hidden h-3.5 w-3.5 opacity-60 sm:block" />
       </span>
     </Dropdown>
   )
