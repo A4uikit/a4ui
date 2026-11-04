@@ -45,9 +45,14 @@ Ships both as SolidJS components and as a **Web Components** bundle
     (its own `index.ts` barrel + a `commerce` entry in `vite.config.ts` + a
     `./commerce` export). New category sets (e.g. charts) follow the same pattern so
     the base package stays lean.
-- `preset.js` — the Tailwind preset: semantic colors → CSS vars, fonts, radius, and
+- `preset.js` — the Tailwind 3 preset: semantic colors → CSS vars, fonts, radius, and
   the **glass surface plugin** (`.card` / `.bg-glass` / `.glow-edge` / calm mode).
   Shipped in the package.
+- `scripts/build-theme-css.mjs` — generates `dist/theme.css`, the Tailwind 4 entry, from
+  `preset.js`, `tokens.css`, `space.css` and the Tailwind 3 theme, as the last step of
+  `npm run build`. Never edit its output: a new setting in `preset.js` either flows
+  through or stops the build. The library and the docs site stay on Tailwind 3;
+  only `examples/tailwind4` has Tailwind 4, in its own `node_modules`.
 - `preview/` — the **docs site** (dev-only, NOT published). Vite SPA with hash
   routing; **`preview/registry.tsx` is the single source of truth** for the docs.
 - `tests/` — Playwright suite: `docs.spec.ts` (every doc renders + behaviors,
@@ -83,6 +88,12 @@ rounded-s/rounded-e`, and `rtl:` variants for what has no logical form (`transla
   `tokens.css` multiply by `--dir-x`. A new portal (`<Portal>`/`*.Portal`) must pass
   `ref={portalDir}`. Geometry-bound widgets (charts, maps, carousels in 3D, code)
   stay physical on purpose.
+- **Both Tailwind majors:** class names in `src/` must mean the same under 3 and 4, with
+  no per-major forks. Prefer the form that does: `w-[var(--x)]`, not `w-[--x]`
+  (Tailwind 4 reads that as a literal). Put stacked variants in one arbitrary variant
+  when order matters: `[&::-webkit-scrollbar-thumb:hover]:`, not
+  `hover:[&::-webkit-scrollbar-thumb]:`. Using `space-*` or `divide-*`
+  is fine: the theme build copies the Tailwind 3 rules for what `src/` uses.
 - **CSS doctrine (blocked):** anything Tailwind can express → Tailwind utilities in
   JSX. Glass surfaces → the plugin in `preset.js`. CSS variables + motion
   `@keyframes` → `src/styles/tokens.css`. Starfield → `src/styles/space.css`.

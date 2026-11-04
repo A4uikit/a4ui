@@ -19,7 +19,7 @@ A4ui ships **SolidJS** components. There are two ways to use it, depending on yo
 npm i @a4ui/core solid-js
 ```
 
-`tailwind.config.js`:
+On Tailwind 3, `tailwind.config.js` (on Tailwind 4, see [below](#tailwind-4)):
 
 ```js
 import a4ui from '@a4ui/core/preset'
@@ -44,6 +44,61 @@ export default () => (
   </Card>
 )
 ```
+
+---
+
+## Tailwind 4
+
+```bash
+npm i @a4ui/core solid-js
+npm i -D tailwindcss @tailwindcss/vite
+```
+
+```ts
+// vite.config.ts
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite'
+import solid from 'vite-plugin-solid'
+
+export default defineConfig({ plugins: [solid(), tailwindcss()] })
+```
+
+```css
+/* src/index.css, imported once from your entry */
+@import 'tailwindcss';
+@import '@a4ui/core/theme.css';
+```
+
+That replaces the preset, the `content` globs and `@a4ui/core/styles.css`. Keep the
+order: `theme.css` has to come after Tailwind. [`examples/tailwind4`](./examples/tailwind4)
+is a working app.
+
+`theme.css` is generated from `preset.js` at build time. It keeps the components
+looking the same under both majors, which means it sets these for your own code too:
+
+| Tailwind 4 changed                                                    | `theme.css` keeps the Tailwind 3 behaviour                              |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Default `border` color is `currentColor`                              | Gray 200                                                                |
+| `ring` is 1px, `currentColor`; `outline` is 1px                       | `ring` is 3px blue at 50%; `outline` is 3px                             |
+| `shadow-sm`, `rounded-sm`, `blur-sm`, `drop-shadow-sm` moved one step | The Tailwind 3 value at each name. Tailwind 4's `-xs` and `-2xs` remain |
+| Palette in `oklch`                                                    | The Tailwind 3 hex values                                               |
+| `text-*` line heights are unitless                                    | Lengths, so `text-sm text-[10px]` keeps a 20px line                     |
+| Placeholder is `currentColor` at 50%                                  | Gray 400                                                                |
+| Buttons have `cursor: default`                                        | `cursor: pointer`, `default` when disabled                              |
+| `hover:` applies only under `(hover: hover)`                          | `hover:` applies on touch screens too                                   |
+| Margin and padding zeroed on every element                            | `td`, `th`, `option`, `dialog` and `[popover]` keep theirs              |
+
+`space-*`, `divide-*` and `outline-none` are different: no theme value reaches them,
+so `theme.css` carries the Tailwind 3 rules for the values the components use. Other
+values in your code (say `space-y-7`) get Tailwind 4's rule.
+
+Rules from `theme.css` compete with your utilities the same way the preset's do under
+Tailwind 3: `.card` loses to `rounded-2xl`, and `.a4-field:focus` beats `border-input`.
+
+If a Tailwind 4 build has no A4ui styles, it is most likely still on the Tailwind 3
+setup. Tailwind 4 does not read `tailwind.config.js` without `@config`, so nothing of
+the package runs during that build and it cannot report the problem. With `@config`,
+`@a4ui/core/preset` throws and names the fix.
 
 ---
 

@@ -35,7 +35,8 @@ Three layers, one identity:
 npm install @a4ui/core
 ```
 
-Peer dependency: `solid-js` (>= 1.9).
+Peer dependencies: `solid-js` (>= 1.9) and, optionally, `tailwindcss` (`^3.4.0` or
+`^4.0.0`; the setup differs, see below).
 
 **Starting fresh?** Scaffold a preconfigured Solid + Vite + A4ui app (with or
 without Tailwind):
@@ -47,7 +48,33 @@ npm create a4ui@latest my-app
 
 ## Use
 
-**With Tailwind** (recommended) — add the A4ui preset so the components'
+**With Tailwind 4** — import `@a4ui/core/theme.css` after Tailwind in your CSS, and
+nothing else. It carries the tokens, the glass classes, the `light:` variant and
+the `@source` that scans the components:
+
+```css
+/* src/index.css */
+@import 'tailwindcss';
+@import '@a4ui/core/theme.css';
+```
+
+```tsx
+import './index.css'
+import { Button } from '@a4ui/core'
+
+export default () => <Button variant="primary">Save</Button>
+```
+
+Tailwind 4 ignores `tailwind.config.js` and its `presets:` unless `@config` names
+it, so the Tailwind 3 setup below builds without error on Tailwind 4 and produces
+no A4ui styles. If you see unstyled components, check this first.
+
+`theme.css` pins the scales the components were written for, so in your own code
+`shadow-sm`, `rounded-sm`, `blur-sm`, `ring`, the default palette and the default
+border color mean what they mean in Tailwind 3 (details in
+[`INTEGRATIONS.md`](./INTEGRATIONS.md#tailwind-4)).
+
+**With Tailwind 3** — add the A4ui preset so the components'
 utilities and glass classes (`bg-primary/90`, `.card`, `.glow-edge`) resolve
 against A4ui's tokens, and import the token stylesheet once:
 
@@ -78,7 +105,8 @@ import { Button } from '@a4ui/core'
 ```
 
 (`styles.css` ships only the CSS variables + motion keyframes — it needs the
-Tailwind preset to generate the component utilities; `full.css` is the
+Tailwind 3 preset to generate the component utilities; `theme.css` already includes it;
+`full.css` is the
 self-contained alternative. The framework-agnostic `elements` bundle ships its
 own precompiled CSS too.)
 
@@ -302,7 +330,8 @@ Drop this into your project's `AGENTS.md` / `CLAUDE.md` to prime your agent:
 
 > This project uses **@a4ui/core** (SolidJS "Spatial Glass" design system). Import
 > components as named exports from `@a4ui/core`; import `@a4ui/core/styles.css`
-> once in the app entry; add `@a4ui/core/preset` to `tailwind.config` (optional).
+> once in the app entry; add `@a4ui/core/preset` to `tailwind.config` (optional). On
+> Tailwind 4, `@import '@a4ui/core/theme.css'` after Tailwind replaces both.
 > Props are typed with JSDoc/`@example` in the package's `.d.ts`.
 > **For the A4ui look, follow the Spatial Glass recipe** (in `llms.txt` and
 > https://a4ui.pages.dev/#/guide-spatial-glass): put an `<Aurora/>` backdrop
