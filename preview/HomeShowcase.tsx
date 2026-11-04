@@ -114,7 +114,7 @@ function FormPanel(): JSX.Element {
 function CalendarPanel(): JSX.Element {
   const [day, setDay] = createSignal(new Date())
   return (
-    <Panel title="Calendar" href="#/calendar" class="xl:col-span-3">
+    <Panel title="Calendar" href="#/calendar" class="xl:col-span-4">
       <Calendar value={day()} onChange={setDay} class="mx-auto" />
     </Panel>
   )
@@ -122,7 +122,7 @@ function CalendarPanel(): JSX.Element {
 
 function ChatPanel(): JSX.Element {
   return (
-    <Panel title="Chat" href="#/message" class="md:col-span-2 xl:col-span-5">
+    <Panel title="Chat" href="#/message" class="md:col-span-2 xl:col-span-4">
       <div class="flex flex-1 flex-col justify-end gap-3">
         <Message role="user" author="Rosa" variant="tinted" align="end" timestamp="9:41">
           Can the invoice go out today?

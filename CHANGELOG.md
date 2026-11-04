@@ -6,6 +6,10 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Fixed
+
+- `KpiBlock`: the delta badge wraps under the value instead of overflowing a narrow card.
+
 ## [0.38.1] — 2026-10-31
 
 ### Fixed

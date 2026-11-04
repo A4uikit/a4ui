@@ -41,6 +41,30 @@ test.describe('home page', () => {
     })
   }
 
+  for (const width of [375, 768, 1024, 1280, 1440, 1920]) {
+    test(`nothing sticks out of its card at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 900 })
+      await page.goto('/')
+      await expect(page.getByTestId('home-showcase')).toBeVisible()
+      await expect(page.getByTestId('home-hero-panel')).toBeVisible()
+      const escaped = await page.getByTestId('home').evaluate((root) => {
+        const out: string[] = []
+        for (const card of root.querySelectorAll(
+          '[data-testid="home-hero-panel"], [data-testid="home-showcase"] > *',
+        )) {
+          const edge = card.getBoundingClientRect().right
+          for (const el of card.querySelectorAll('*')) {
+            if (el.getBoundingClientRect().right > edge + 1) {
+              out.push(`${el.tagName.toLowerCase()}: ${(el.textContent ?? '').trim().slice(0, 30)}`)
+            }
+          }
+        }
+        return out
+      })
+      expect(escaped).toEqual([])
+    })
+  }
+
   test('the component count matches the docs registry', async ({ page }) => {
     const registry = readFileSync(new URL('../preview/registry.tsx', import.meta.url), 'utf8')
     const groups = [...registry.matchAll(/id: '[^']+',\s*title: '[^']*',\s*group: '([^']*)',/g)].map(
