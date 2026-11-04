@@ -134,11 +134,22 @@ body {
   animation: modal-content-out 0.15s ease-in;
 }
 
+/* Reading direction as a number, so horizontal slide offsets can mirror:
+   `translateX(calc(16px * var(--dir-x)))`. Inherited, so any element (including
+   portaled overlays, which get their own `dir`) sees the nearest `dir`. */
+:root,
+[dir='ltr'] {
+  --dir-x: 1;
+}
+[dir='rtl'] {
+  --dir-x: -1;
+}
+
 /* Toast — same animationend-only presence mechanism as Dialog. */
 @keyframes toast-in {
   from {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateX(calc(16px * var(--dir-x, 1)));
   }
   to {
     opacity: 1;
@@ -152,7 +163,7 @@ body {
   }
   to {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateX(calc(16px * var(--dir-x, 1)));
   }
 }
 .toast-item[data-opened] {
@@ -167,7 +178,7 @@ body {
    on every theme; the sweep is a pure CSS animation (no engine). */
 @keyframes skeleton-shimmer {
   100% {
-    transform: translateX(100%);
+    transform: translateX(calc(100% * var(--dir-x, 1)));
   }
 }
 .skeleton-shimmer {
@@ -178,8 +189,13 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  transform: translateX(-100%);
-  background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.08), transparent);
+  transform: translateX(calc(-100% * var(--dir-x, 1)));
+  background: linear-gradient(
+    calc(90deg * var(--dir-x, 1)),
+    transparent,
+    hsl(var(--foreground) / 0.08),
+    transparent
+  );
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
 
@@ -298,7 +314,7 @@ body {
 @keyframes questionnaire-step-in {
   from {
     opacity: 0;
-    transform: translateX(16px);
+    transform: translateX(calc(16px * var(--dir-x, 1)));
   }
   to {
     opacity: 1;
@@ -308,7 +324,7 @@ body {
 @keyframes questionnaire-step-in-back {
   from {
     opacity: 0;
-    transform: translateX(-16px);
+    transform: translateX(calc(-16px * var(--dir-x, 1)));
   }
   to {
     opacity: 1;
@@ -342,7 +358,7 @@ body {
 @keyframes navmenu-from-start {
   from {
     opacity: 0;
-    transform: translateX(-2.5rem);
+    transform: translateX(calc(-2.5rem * var(--dir-x, 1)));
   }
   to {
     opacity: 1;
@@ -352,7 +368,7 @@ body {
 @keyframes navmenu-from-end {
   from {
     opacity: 0;
-    transform: translateX(2.5rem);
+    transform: translateX(calc(2.5rem * var(--dir-x, 1)));
   }
   to {
     opacity: 1;
@@ -367,7 +383,7 @@ body {
   to {
     opacity: 0;
     visibility: hidden;
-    transform: translateX(-2.5rem);
+    transform: translateX(calc(-2.5rem * var(--dir-x, 1)));
   }
 }
 @keyframes navmenu-to-end {
@@ -378,7 +394,7 @@ body {
   to {
     opacity: 0;
     visibility: hidden;
-    transform: translateX(2.5rem);
+    transform: translateX(calc(2.5rem * var(--dir-x, 1)));
   }
 }
 .navmenu-viewport[data-expanded] {

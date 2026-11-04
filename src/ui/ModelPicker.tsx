@@ -10,6 +10,7 @@ import type { JSX } from 'solid-js'
 import { For, Show, createSignal, untrack } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 /** A single selectable model in a {@link ModelPicker} menu. */
 export interface ModelOption {
@@ -78,7 +79,7 @@ export function ModelPicker(props: ModelPickerProps): JSX.Element {
         <span class="truncate font-medium">{selectedModel()?.name}</span>
         <ChevronDown class="h-4 w-4 shrink-0 text-muted-foreground" />
       </DropdownMenu.Trigger>
-      <DropdownMenu.Portal>
+      <DropdownMenu.Portal ref={portalDir}>
         <DropdownMenu.Content class="z-50 min-w-64 overflow-hidden rounded-md border border-border bg-card p-1 text-card-foreground shadow-sm">
           <DropdownMenu.RadioGroup value={selectedId()} onChange={handleChange}>
             <For each={props.models}>

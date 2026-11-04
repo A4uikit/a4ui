@@ -51,7 +51,7 @@ export function UsageMeter(props: UsageMeterProps): JSX.Element {
         <Show when={props.label}>
           <KMeter.Label>{props.label}</KMeter.Label>
         </Show>
-        <KMeter.ValueLabel class="ml-auto tabular-nums text-muted-foreground" />
+        <KMeter.ValueLabel class="ms-auto tabular-nums text-muted-foreground" />
       </div>
       <KMeter.Track class="h-2 overflow-hidden rounded-full bg-muted">
         <KMeter.Fill

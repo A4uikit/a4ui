@@ -17,7 +17,7 @@ interface ButtonGroupProps extends ParentProps {
 export type { ButtonGroupProps }
 
 const HORIZONTAL =
-  'flex-row [&>*:not(:first-child)]:-ml-px [&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none'
+  'flex-row [&>*:not(:first-child)]:-ms-px [&>*:not(:first-child)]:rounded-s-none [&>*:not(:last-child)]:rounded-e-none'
 const VERTICAL =
   'flex-col [&>*]:w-full [&>*:not(:first-child)]:-mt-px [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none'
 

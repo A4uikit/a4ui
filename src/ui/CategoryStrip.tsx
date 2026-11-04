@@ -5,6 +5,8 @@ import type { JSX } from 'solid-js'
 import { For } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
+import { useDirection } from './DirectionProvider'
 
 /** A single selectable category: value, label, and optional leading icon. */
 export interface CategoryItem {
@@ -31,6 +33,7 @@ export interface CategoryStripProps {
  * ```
  */
 export function CategoryStrip(props: CategoryStripProps): JSX.Element {
+  const dir = useDirection()
   const activeIndex = () => props.items.findIndex((item) => item.value === props.value)
 
   const onKeyDown = (event: KeyboardEvent) => {
@@ -39,7 +42,7 @@ export function CategoryStrip(props: CategoryStripProps): JSX.Element {
     const count = props.items.length
     if (count === 0) return
     const current = activeIndex()
-    const delta = event.key === 'ArrowRight' ? 1 : -1
+    const delta = readingKey(event.key, dir()) === 'ArrowRight' ? 1 : -1
     const next = ((current === -1 ? 0 : current) + delta + count) % count
     props.onChange(props.items[next].value)
   }

@@ -10,6 +10,7 @@ import * as Dialog from '@kobalte/core/dialog'
 import { createEffect, createMemo, createSignal, For, Show, type JSX } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 /** A single selectable row in the palette. */
 export interface CommandItem {
@@ -97,7 +98,7 @@ export function Command(props: CommandProps): JSX.Element {
 
   return (
     <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal ref={portalDir}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-background/80 backdrop-blur-sm" />
         <div class="fixed inset-x-0 top-[14vh] z-50 mx-auto w-full max-w-lg px-4">
           <Dialog.Content
@@ -132,7 +133,7 @@ export function Command(props: CommandProps): JSX.Element {
                         onMouseEnter={() => setActive(i())}
                         onClick={() => pick(item)}
                         class={cn(
-                          'flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-left transition-colors',
+                          'flex w-full items-center justify-between gap-3 rounded-md px-3 py-2 text-start transition-colors',
                           active() === i() ? 'bg-primary/15 text-foreground' : 'text-muted-foreground',
                         )}
                       >

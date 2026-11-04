@@ -131,7 +131,7 @@ export function PricingTable(props: PricingTableProps): JSX.Element {
               class={cn('relative flex flex-col', tier.highlighted && 'ring-2 ring-primary')}
             >
               <Show when={tier.highlighted}>
-                <Badge tone="info" class="absolute -top-3 right-6">
+                <Badge tone="info" class="absolute -top-3 end-6">
                   Popular
                 </Badge>
               </Show>

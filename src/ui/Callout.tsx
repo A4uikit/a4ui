@@ -48,7 +48,7 @@ export interface CalloutProps {
 export function Callout(props: CalloutProps): JSX.Element {
   const tone = () => TONE[props.tone ?? 'info']
   return (
-    <div class={cn('flex gap-3 rounded-lg border-l-4 p-4 text-sm text-foreground', tone().wrap, props.class)}>
+    <div class={cn('flex gap-3 rounded-lg border-s-4 p-4 text-sm text-foreground', tone().wrap, props.class)}>
       <Show
         when={props.icon}
         fallback={<Dynamic component={tone().Icon} class={cn('mt-0.5 h-4 w-4 shrink-0', tone().icon)} />}

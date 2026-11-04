@@ -46,11 +46,11 @@ export function ToolCallTimeline(props: ToolCallTimelineProps): JSX.Element {
     <ol class={cn('relative flex flex-col gap-4', props.class)}>
       <For each={props.calls}>
         {(call, index) => (
-          <li class="relative flex gap-3 pl-1">
+          <li class="relative flex gap-3 ps-1">
             <Show when={index() < props.calls.length - 1}>
               <span
                 aria-hidden="true"
-                class="absolute left-[calc(0.5rem+2px)] top-6 -bottom-4 w-px -translate-x-1/2 bg-border"
+                class="absolute start-[calc(0.5rem+2px)] top-6 -bottom-4 w-px -translate-x-1/2 bg-border"
               />
             </Show>
             <StatusNode status={call.status} />

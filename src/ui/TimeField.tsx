@@ -6,7 +6,7 @@
 import { Clock } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { For, Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
 import { createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
@@ -200,7 +200,7 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
 
   const optionClass = (selected: boolean) =>
     cn(
-      'rounded-md px-2 py-1 text-left text-sm transition-colors',
+      'rounded-md px-2 py-1 text-start text-sm transition-colors',
       selected ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted',
     )
 
@@ -211,7 +211,7 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
         type="button"
         disabled={props.disabled}
         onClick={() => (open() ? close() : openPopover())}
-        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-start text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
       >
         <span class={displayLabel(props.value, props.hour12 ?? false) ? '' : 'text-muted-foreground'}>
           {displayLabel(props.value, props.hour12 ?? false) ?? props.label ?? 'Select time'}
@@ -226,12 +226,12 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
             data-a4-floating
             style={{ position: 'fixed', top: `${pos().top}px`, left: `${pos().left}px` }}
             class={cn(
-              'pointer-events-auto z-50 flex gap-1 divide-x divide-border rounded-lg border border-border bg-card p-2 text-card-foreground shadow-lg',
+              'pointer-events-auto z-50 flex gap-1 divide-x rtl:divide-x-reverse divide-border rounded-lg border border-border bg-card p-2 text-card-foreground shadow-lg',
               props.hour12 ? 'w-56' : 'w-44',
             )}
           >
             <div
-              class="flex max-h-56 flex-1 flex-col gap-0.5 overflow-y-auto pr-1"
+              class="flex max-h-56 flex-1 flex-col gap-0.5 overflow-y-auto pe-1"
               role="listbox"
               aria-label="Hour"
             >
@@ -278,7 +278,7 @@ export function TimeField(props: TimeFieldProps): JSX.Element {
 
             <Show when={props.hour12}>
               <div
-                class="flex max-h-56 flex-1 flex-col gap-0.5 overflow-y-auto pl-1"
+                class="flex max-h-56 flex-1 flex-col gap-0.5 overflow-y-auto ps-1"
                 role="listbox"
                 aria-label="AM or PM"
               >

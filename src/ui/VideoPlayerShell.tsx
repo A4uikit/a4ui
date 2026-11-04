@@ -242,7 +242,7 @@ export function VideoPlayerShell(props: VideoPlayerShellProps): JSX.Element {
             {formatTime(currentTime())} / {formatTime(duration())}
           </span>
 
-          <div class="ml-1 flex items-center gap-1">
+          <div class="ms-1 flex items-center gap-1">
             <button type="button" aria-label={muted() ? 'Unmute' : 'Mute'} onClick={toggleMute} class="p-1">
               <Show when={!muted() && volume() > 0} fallback={<VolumeX class="h-4 w-4" />}>
                 <Volume2 class="h-4 w-4" />
@@ -260,7 +260,7 @@ export function VideoPlayerShell(props: VideoPlayerShellProps): JSX.Element {
             />
           </div>
 
-          <div class="ml-auto flex items-center gap-2">
+          <div class="ms-auto flex items-center gap-2">
             <Show when={pipSupported()}>
               <button type="button" aria-label="Picture in picture" onClick={togglePip} class="p-1">
                 <PictureInPicture2 class="h-4 w-4" />

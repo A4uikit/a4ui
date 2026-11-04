@@ -6,7 +6,7 @@
 // itself (same as Sortable), so there's nothing to gate on reduced motion —
 // drops are instant either way.
 import { createEffect, createSignal, For, Show, type JSX } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 import { GripVertical } from 'lucide-solid'
 
 import { cn } from '../lib/cn'

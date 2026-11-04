@@ -90,7 +90,7 @@ export function AvailabilityPicker(props: AvailabilityPickerProps): JSX.Element 
   return (
     <div class={cn('flex overflow-hidden rounded-xl border border-border bg-card', props.class)}>
       {/* Date list */}
-      <div class="flex w-32 shrink-0 flex-col gap-1 overflow-y-auto border-r border-border p-2">
+      <div class="flex w-32 shrink-0 flex-col gap-1 overflow-y-auto border-e border-border p-2">
         <For each={dates()} fallback={<p class="p-2 text-xs text-muted-foreground">No dates</p>}>
           {(dateKey) => {
             const d = parseDateKey(dateKey)
@@ -103,7 +103,7 @@ export function AvailabilityPicker(props: AvailabilityPickerProps): JSX.Element 
                 disabled={count() === 0}
                 onClick={() => setViewingDate(dateKey)}
                 class={cn(
-                  'flex flex-col items-start rounded-md px-2 py-1.5 text-left transition-colors',
+                  'flex flex-col items-start rounded-md px-2 py-1.5 text-start transition-colors',
                   isActive() ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-muted',
                   count() === 0 && !isActive() && 'text-muted-foreground/50',
                 )}

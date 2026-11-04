@@ -84,7 +84,7 @@ export function InlineSelect(props: InlineSelectProps): JSX.Element {
         fallback={
           <button
             type="button"
-            class="rounded px-1.5 py-0.5 text-left hover:bg-muted"
+            class="rounded px-1.5 py-0.5 text-start hover:bg-muted"
             aria-label={`Edit — ${selectedLabel()}`}
             onClick={() => setEditing(true)}
           >

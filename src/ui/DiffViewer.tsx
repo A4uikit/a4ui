@@ -131,6 +131,7 @@ export function DiffViewer(props: DiffViewerProps): JSX.Element {
   return (
     <div
       role="figure"
+      dir="ltr"
       aria-label={ariaLabel()}
       class={cn('overflow-hidden rounded-lg border border-border bg-card', props.class)}
     >
@@ -144,16 +145,16 @@ export function DiffViewer(props: DiffViewerProps): JSX.Element {
           <For each={rows()}>
             {(line) => (
               <div class={cn('flex', ROW_BG[line.type])}>
-                <span class="w-12 shrink-0 select-none py-0.5 pr-2 text-right tabular-nums text-xs text-muted-foreground">
+                <span class="w-12 shrink-0 select-none py-0.5 pe-2 text-end tabular-nums text-xs text-muted-foreground">
                   {line.oldNum ?? ''}
                 </span>
-                <span class="w-12 shrink-0 select-none py-0.5 pr-2 text-right tabular-nums text-xs text-muted-foreground">
+                <span class="w-12 shrink-0 select-none py-0.5 pe-2 text-end tabular-nums text-xs text-muted-foreground">
                   {line.newNum ?? ''}
                 </span>
                 <span class={cn('w-5 shrink-0 select-none py-0.5 text-center', MARKER_TONE[line.type])}>
                   {MARKER[line.type]}
                 </span>
-                <span class={cn('flex-1 whitespace-pre py-0.5 pr-4', CONTENT_TONE[line.type])}>
+                <span class={cn('flex-1 whitespace-pre py-0.5 pe-4', CONTENT_TONE[line.type])}>
                   {line.content}
                 </span>
               </div>

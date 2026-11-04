@@ -28,7 +28,7 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
       <summary class="mt-3 flex cursor-pointer list-none select-none items-center justify-between rounded-md px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground transition-colors hover:bg-muted hover:text-foreground [&::-webkit-details-marker]:hidden">
         <span>{props.title}</span>
         <svg
-          class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-[[open]]:rotate-90"
+          class="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-[[open]]:rotate-90 rtl:-scale-x-100 rtl:group-[[open]]:scale-x-100"
           viewBox="0 0 20 20"
           fill="none"
           stroke="currentColor"
@@ -39,7 +39,7 @@ export function NavGroup(props: NavGroupProps): JSX.Element {
           <path d="M7 5l6 5-6 5" />
         </svg>
       </summary>
-      <div class="ml-4 mt-1 space-y-0.5 border-l border-border pl-2">{props.children}</div>
+      <div class="ms-4 mt-1 space-y-0.5 border-s border-border ps-2">{props.children}</div>
     </details>
   )
 }

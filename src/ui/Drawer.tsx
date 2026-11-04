@@ -12,6 +12,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 
 interface DrawerProps extends ParentProps {
   open: boolean
@@ -27,18 +28,35 @@ interface DrawerProps extends ParentProps {
   side?: DrawerSide
 }
 
-export type DrawerSide = 'right' | 'left' | 'top' | 'bottom'
+/**
+ * `left` / `right` are physical edges. `start` / `end` follow the reading
+ * direction (`start` is the right edge under `dir="rtl"`).
+ */
+export type DrawerSide = 'right' | 'left' | 'start' | 'end' | 'top' | 'bottom'
 
 const SIDE: Record<DrawerSide, { wrap: string; panel: string; offscreen: string }> = {
+  // `right` / `left` are physical and never flip; `end` / `start` follow the
+  // reading direction (flex `justify-*` and `border-s/e` are logical, while the
+  // slide offset uses `--dir-x`, which `[dir=rtl]` sets to -1 in tokens.css).
   right: {
-    wrap: 'justify-end',
+    wrap: 'justify-end rtl:justify-start',
     panel: 'h-full w-full max-w-[520px] border-l',
     offscreen: 'translateX(100%)',
   },
   left: {
-    wrap: 'justify-start',
+    wrap: 'justify-start rtl:justify-end',
     panel: 'h-full w-full max-w-[520px] border-r',
     offscreen: 'translateX(-100%)',
+  },
+  end: {
+    wrap: 'justify-end',
+    panel: 'h-full w-full max-w-[520px] border-s',
+    offscreen: 'translateX(calc(100% * var(--dir-x, 1)))',
+  },
+  start: {
+    wrap: 'justify-start',
+    panel: 'h-full w-full max-w-[520px] border-e',
+    offscreen: 'translateX(calc(-100% * var(--dir-x, 1)))',
   },
   top: {
     wrap: 'flex-col justify-start',
@@ -55,7 +73,7 @@ const SIDE: Record<DrawerSide, { wrap: string; panel: string; offscreen: string 
 export type { DrawerProps }
 
 /**
- * Edge-anchored slide-over panel (right by default, or `side="left" | "top" | "bottom"`) built on Kobalte's `Dialog` (focus trap, portal,
+ * Edge-anchored slide-over panel (right by default, or `side="left" | "start" | "end" | "top" | "bottom"`) built on Kobalte's `Dialog` (focus trap, portal,
  * and open/close presence handled for you). Use for create/edit forms or detail
  * panels that need more room than a centered `Modal`.
  *
@@ -71,7 +89,7 @@ export function Drawer(props: DrawerProps): JSX.Element {
   const side = (): (typeof SIDE)[DrawerSide] => SIDE[props.side ?? 'right']
   return (
     <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
-      <Dialog.Portal>
+      <Dialog.Portal ref={portalDir}>
         <Dialog.Overlay class="modal-overlay fixed inset-0 z-40 bg-black/50 backdrop-blur-[2px]" />
         <div class={cn('fixed inset-0 z-50 flex', side().wrap)}>
           <Dialog.Content

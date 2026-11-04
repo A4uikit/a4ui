@@ -136,11 +136,11 @@ export function ActivityFeed(props: ActivityFeedProps): JSX.Element {
             <ol class="relative flex flex-col gap-5">
               <For each={group.items}>
                 {(item, index) => (
-                  <li class="relative flex gap-3 pl-1">
+                  <li class="relative flex gap-3 ps-1">
                     <Show when={index() < group.items.length - 1}>
                       <span
                         aria-hidden="true"
-                        class="absolute left-[1.375rem] top-9 -bottom-5 w-px -translate-x-1/2 bg-border"
+                        class="absolute start-[1.375rem] top-9 -bottom-5 w-px -translate-x-1/2 bg-border"
                       />
                     </Show>
                     <Show

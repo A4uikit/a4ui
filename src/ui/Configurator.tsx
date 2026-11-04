@@ -125,7 +125,7 @@ export function Configurator(props: ConfiguratorProps): JSX.Element {
                       >
                         {o.label}
                         <Show when={o.price}>
-                          <span class="ml-1 opacity-70">· {fmt(o.price as number)}</span>
+                          <span class="ms-1 opacity-70">· {fmt(o.price as number)}</span>
                         </Show>
                       </button>
                     )}
@@ -144,7 +144,7 @@ export function Configurator(props: ConfiguratorProps): JSX.Element {
                           <span class="text-sm text-foreground">
                             {it.label}
                             <Show when={it.price}>
-                              <span class="ml-1 text-muted-foreground">· {fmt(it.price as number)}</span>
+                              <span class="ms-1 text-muted-foreground">· {fmt(it.price as number)}</span>
                             </Show>
                           </span>
                           <div class="flex items-center gap-2">

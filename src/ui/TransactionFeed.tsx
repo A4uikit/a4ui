@@ -86,7 +86,7 @@ export function TransactionFeed(props: TransactionFeedProps): JSX.Element {
           <p class="truncate text-xs text-muted-foreground">{tx.subtitle}</p>
         </Show>
       </div>
-      <div class="shrink-0 text-right">
+      <div class="shrink-0 text-end">
         <p
           class={cn(
             'text-sm font-medium tabular-nums',

@@ -48,7 +48,7 @@ export function NativeSelect(props: NativeSelectProps): JSX.Element {
         ref={select}
         aria-invalid={local.invalid ? 'true' : undefined}
         class={cn(
-          'peer w-full appearance-none rounded-md border bg-background pl-3 pr-9 text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50',
+          'peer w-full appearance-none rounded-md border bg-background ps-3 pe-9 text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50',
           local.invalid ? 'border-destructive' : 'border-input',
           SIZE[local.size ?? 'default'],
           local.class,
@@ -59,7 +59,7 @@ export function NativeSelect(props: NativeSelectProps): JSX.Element {
       </select>
       <ChevronDown
         aria-hidden="true"
-        class="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground peer-disabled:opacity-50"
+        class="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground peer-disabled:opacity-50"
       />
     </div>
   )

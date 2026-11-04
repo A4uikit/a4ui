@@ -143,7 +143,7 @@ function GroupView(props: GroupViewProps): JSX.Element {
   }
 
   return (
-    <div class={cn('flex flex-col gap-2 rounded-md p-2', props.depth > 0 && 'border-l-2 border-border pl-3')}>
+    <div class={cn('flex flex-col gap-2 rounded-md p-2', props.depth > 0 && 'border-s-2 border-border ps-3')}>
       <div class="flex flex-wrap items-center gap-2">
         <div
           class="inline-flex overflow-hidden rounded-md border border-input"
@@ -169,18 +169,18 @@ function GroupView(props: GroupViewProps): JSX.Element {
           </For>
         </div>
         <Button variant="outline" onClick={addRule}>
-          <Plus class="mr-1 h-3.5 w-3.5" aria-hidden="true" />
+          <Plus class="me-1 h-3.5 w-3.5" aria-hidden="true" />
           Rule
         </Button>
         <Button variant="outline" onClick={addGroup}>
-          <Plus class="mr-1 h-3.5 w-3.5" aria-hidden="true" />
+          <Plus class="me-1 h-3.5 w-3.5" aria-hidden="true" />
           Group
         </Button>
         <Show when={props.onRemove}>
           {(remove) => (
             <button
               type="button"
-              class="ml-auto rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              class="ms-auto rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
               aria-label="Remove group"
               onClick={() => remove()()}
             >

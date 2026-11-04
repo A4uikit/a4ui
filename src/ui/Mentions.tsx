@@ -150,7 +150,7 @@ export function Mentions(props: MentionsProps): JSX.Element {
               <button
                 type="button"
                 class={cn(
-                  'w-full rounded px-2 py-1.5 text-left text-sm hover:bg-muted',
+                  'w-full rounded px-2 py-1.5 text-start text-sm hover:bg-muted',
                   i() === highlighted() && 'bg-muted',
                 )}
                 onMouseDown={(ev) => {

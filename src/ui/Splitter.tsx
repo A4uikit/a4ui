@@ -2,6 +2,8 @@
 import type { JSX } from 'solid-js'
 import { createSignal } from 'solid-js'
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
+import { useDirection } from './DirectionProvider'
 
 export interface SplitterProps {
   /** Content of the first pane (left when horizontal, top when vertical). */
@@ -35,6 +37,7 @@ export interface SplitterProps {
  * ```
  */
 export function Splitter(props: SplitterProps): JSX.Element {
+  const dir = useDirection()
   const orientation = () => props.orientation ?? 'horizontal'
   const min = () => props.min ?? 15
   const max = () => props.max ?? 85
@@ -50,7 +53,7 @@ export function Splitter(props: SplitterProps): JSX.Element {
     const rect = container.getBoundingClientRect()
     const pct =
       orientation() === 'horizontal'
-        ? ((event.clientX - rect.left) / rect.width) * 100
+        ? ((dir() === 'rtl' ? rect.right - event.clientX : event.clientX - rect.left) / rect.width) * 100
         : ((event.clientY - rect.top) / rect.height) * 100
     setSize(clamp(pct))
   }
@@ -72,8 +75,10 @@ export function Splitter(props: SplitterProps): JSX.Element {
   const onKeyDown = (event: KeyboardEvent) => {
     const step = 3
     let delta = 0
-    if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') delta = -step
-    else if (event.key === 'ArrowRight' || event.key === 'ArrowDown') delta = step
+    // The first pane sits on the right under rtl, so the horizontal keys swap.
+    const key = readingKey(event.key, dir())
+    if (key === 'ArrowLeft' || key === 'ArrowUp') delta = -step
+    else if (key === 'ArrowRight' || key === 'ArrowDown') delta = step
     else if (event.key === 'Home') return setSize(min())
     else if (event.key === 'End') return setSize(max())
     else return

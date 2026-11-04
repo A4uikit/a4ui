@@ -90,7 +90,7 @@ export function MasterDetail(props: MasterDetailProps): JSX.Element {
                 tabindex={-1}
                 onClick={() => select(item.id)}
                 class={cn(
-                  'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-left text-sm transition-colors',
+                  'flex w-full items-center justify-between gap-2 rounded-lg px-3 py-2 text-start text-sm transition-colors',
                   isSelected() ? 'bg-muted text-foreground' : 'text-muted-foreground hover:bg-muted/60',
                 )}
               >

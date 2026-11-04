@@ -233,13 +233,13 @@ export function CodeEditor(props: CodeEditorProps): JSX.Element {
   }
 
   return (
-    <div class={cn('relative flex overflow-hidden rounded-md border border-border bg-card', local.class)}>
+    <div
+      dir="ltr"
+      class={cn('relative flex overflow-hidden rounded-md border border-border bg-card', local.class)}
+    >
       <div
         aria-hidden="true"
-        class={cn(
-          SHARED_TEXT,
-          'select-none border-r border-border bg-muted text-right text-muted-foreground',
-        )}
+        class={cn(SHARED_TEXT, 'select-none border-e border-border bg-muted text-end text-muted-foreground')}
       >
         <For each={lines()}>{(_line, index) => <div>{index() + 1}</div>}</For>
       </div>

@@ -8,6 +8,7 @@ import type { JSX, ParentProps } from 'solid-js'
 import { createSignal, For, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { portalDir } from '../lib/direction'
 import { useMediaQuery } from '../lib/media'
 import { Accordion } from './Accordion'
 import { Button } from './Button'
@@ -91,7 +92,7 @@ function MobileNavigation(props: NavigationMenuProps): JSX.Element {
       >
         <MenuIcon class="h-4 w-4" />
       </Button>
-      <Drawer side="left" open={open()} onOpenChange={setOpen} title={props.mobileTitle ?? 'Menu'}>
+      <Drawer side="start" open={open()} onOpenChange={setOpen} title={props.mobileTitle ?? 'Menu'}>
         <div
           class="p-5"
           onKeyDown={(e) => {
@@ -188,10 +189,10 @@ export function NavigationMenuContent(props: NavigationMenuContentProps): JSX.El
     else e.currentTarget.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
   }
   return (
-    <KNav.Portal>
+    <KNav.Portal ref={portalDir}>
       <KNav.Content
         class={cn(
-          'navmenu-content absolute left-0 top-0 w-max max-w-[min(90vw,40rem)] p-3 outline-none',
+          'navmenu-content absolute start-0 top-0 w-max max-w-[min(90vw,40rem)] p-3 outline-none',
           props.class,
         )}
         onKeyDown={onTab}
@@ -237,7 +238,7 @@ export function NavigationMenuPanelLink(props: NavigationMenuPanelLinkProps): JS
     <KNav.Item
       href={props.href}
       class={cn(
-        'flex gap-3 rounded-xl p-3 text-left no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
+        'flex gap-3 rounded-xl p-3 text-start no-underline outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring',
         props.featured
           ? 'flex-col justify-end bg-gradient-to-br from-primary/30 to-accent/20 hover:from-primary/40'
           : 'items-start hover:bg-muted data-[highlighted]:bg-muted',

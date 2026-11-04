@@ -100,7 +100,7 @@ export function TreeTable<T>(props: TreeTableProps<T>): JSX.Element {
             <TableRow>
               <For each={props.columns}>
                 {(col, colIndex) => (
-                  <TableCell class={cn(col.align === 'right' && 'text-right tabular-nums')}>
+                  <TableCell class={cn(col.align === 'right' && 'text-end tabular-nums')}>
                     <Show
                       when={colIndex() === 0}
                       fallback={
@@ -111,7 +111,7 @@ export function TreeTable<T>(props: TreeTableProps<T>): JSX.Element {
                     >
                       <div
                         class="flex items-center gap-1.5"
-                        style={{ 'padding-left': `${rowsProps.depth * 1}rem` }}
+                        style={{ 'padding-inline-start': `${rowsProps.depth * 1}rem` }}
                       >
                         <Show
                           when={hasChildren()}
@@ -127,7 +127,7 @@ export function TreeTable<T>(props: TreeTableProps<T>): JSX.Element {
                             <ChevronRight
                               class={cn(
                                 'h-3.5 w-3.5 transition-transform duration-200',
-                                isExpanded() && 'rotate-90',
+                                isExpanded() ? 'rotate-90' : 'rtl:-scale-x-100',
                               )}
                               aria-hidden="true"
                             />
@@ -159,7 +159,7 @@ export function TreeTable<T>(props: TreeTableProps<T>): JSX.Element {
         <TableRow>
           <For each={props.columns}>
             {(col) => (
-              <TableHeadCell class={cn(col.align === 'right' && 'text-right')}>{col.header}</TableHeadCell>
+              <TableHeadCell class={cn(col.align === 'right' && 'text-end')}>{col.header}</TableHeadCell>
             )}
           </For>
         </TableRow>

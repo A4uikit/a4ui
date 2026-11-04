@@ -54,7 +54,7 @@ export function BarList(props: BarListProps): JSX.Element {
         {(datum) => (
           <div class="relative isolate flex h-8 w-full min-w-0 items-center overflow-hidden rounded-md bg-muted/40">
             <div
-              class={cn('absolute inset-y-0 left-0 rounded-md transition-all', fillClass())}
+              class={cn('absolute inset-y-0 start-0 rounded-md transition-all', fillClass())}
               style={{ width: `${Math.max((datum.value / max()) * 100, 0)}%` }}
             />
             <Show

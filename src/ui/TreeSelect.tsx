@@ -97,14 +97,14 @@ export function TreeSelect(props: TreeSelectProps): JSX.Element {
             'flex items-center gap-1.5 rounded-md px-2 py-1 text-sm text-foreground hover:bg-muted cursor-pointer',
             isSelected() && 'bg-accent text-accent-foreground',
           )}
-          style={{ 'padding-left': `${nodeProps.depth * 1 + 0.5}rem` }}
+          style={{ 'padding-inline-start': `${nodeProps.depth * 1 + 0.5}rem` }}
           onClick={() => (hasChildren() ? toggle(nodeProps.node.id) : select(nodeProps.node))}
         >
           <Show when={hasChildren()} fallback={<span class="h-3.5 w-3.5 shrink-0" aria-hidden="true" />}>
             <ChevronRight
               class={cn(
                 'h-3.5 w-3.5 shrink-0 transition-transform duration-200',
-                isExpanded() && 'rotate-90',
+                isExpanded() ? 'rotate-90' : 'rtl:-scale-x-100',
               )}
               aria-hidden="true"
             />

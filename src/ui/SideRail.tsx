@@ -60,7 +60,7 @@ export function SideRail(props: SideRailProps): JSX.Element {
     <div
       role="tablist"
       aria-orientation="vertical"
-      class={cn('flex w-20 flex-col items-stretch gap-1 border-r border-border bg-glass py-2', props.class)}
+      class={cn('flex w-20 flex-col items-stretch gap-1 border-e border-border bg-glass py-2', props.class)}
     >
       <For each={props.items}>
         {(item, index) => {
@@ -92,14 +92,14 @@ export function SideRail(props: SideRailProps): JSX.Element {
               <span
                 aria-hidden="true"
                 class={cn(
-                  'absolute inset-y-1 left-0 w-0.5 rounded-full bg-primary transition-opacity',
+                  'absolute inset-y-1 start-0 w-0.5 rounded-full bg-primary transition-opacity',
                   active() ? 'opacity-100' : 'opacity-0',
                 )}
               />
               <span class="relative inline-flex">
                 {item.icon}
                 <Show when={item.badge}>
-                  <span class="absolute -right-2 -top-2">{item.badge}</span>
+                  <span class="absolute -end-2 -top-2">{item.badge}</span>
                 </Show>
               </span>
               <Show when={showLabels()}>

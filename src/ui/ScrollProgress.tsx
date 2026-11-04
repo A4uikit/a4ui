@@ -44,12 +44,12 @@ export function ScrollProgress(props: ScrollProgressProps): JSX.Element {
   return (
     <div
       aria-hidden="true"
-      class={cn('fixed top-0 left-0 z-[9999] w-full', props.class)}
+      class={cn('fixed top-0 start-0 z-[9999] w-full', props.class)}
       style={{ height: `${props.height ?? 3}px` }}
     >
       <div
         ref={bar}
-        class="origin-left will-change-transform"
+        class="origin-left rtl:origin-right will-change-transform"
         style={{
           height: '100%',
           width: '100%',

@@ -38,14 +38,14 @@ export function NumberInput(props: NumberInputProps): JSX.Element {
       maxValue={props.max}
       class={cn('inline-flex items-stretch', props.class)}
     >
-      <KNumberField.DecrementTrigger class={cn(TRIGGER_CLASS, 'rounded-l-md')} aria-label="Decrement">
+      <KNumberField.DecrementTrigger class={cn(TRIGGER_CLASS, 'rounded-s-md')} aria-label="Decrement">
         −
       </KNumberField.DecrementTrigger>
       <KNumberField.Input
         aria-label={props['aria-label']}
         class="w-16 border-y border-input bg-background px-3 py-2 text-center text-sm text-foreground outline-none transition-colors a4-field"
       />
-      <KNumberField.IncrementTrigger class={cn(TRIGGER_CLASS, 'rounded-r-md')} aria-label="Increment">
+      <KNumberField.IncrementTrigger class={cn(TRIGGER_CLASS, 'rounded-e-md')} aria-label="Increment">
         +
       </KNumberField.IncrementTrigger>
     </KNumberField>

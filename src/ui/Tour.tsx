@@ -8,7 +8,7 @@
 // highlight.
 import type { JSX } from 'solid-js'
 import { createEffect, createSignal, onCleanup, onMount, Show } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
 import { cn } from '../lib/cn'
 import { Button } from './Button'

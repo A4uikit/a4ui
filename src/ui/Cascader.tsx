@@ -126,7 +126,7 @@ export function Cascader(props: CascaderProps): JSX.Element {
         <div class="absolute z-50 mt-1 flex overflow-hidden rounded-md border border-border bg-card text-card-foreground shadow-md">
           <For each={columns()}>
             {(column, colIndex) => (
-              <ul class="min-w-[10rem] max-h-64 overflow-y-auto border-r border-border p-1 last:border-r-0">
+              <ul class="min-w-[10rem] max-h-64 overflow-y-auto border-e border-border p-1 last:border-e-0">
                 <For each={column}>
                   {(opt) => {
                     const hasChildren = () => !!opt.children && opt.children.length > 0
@@ -142,7 +142,7 @@ export function Cascader(props: CascaderProps): JSX.Element {
                       >
                         <span class="truncate">{opt.label}</span>
                         <Show when={hasChildren()}>
-                          <ChevronRight class="h-4 w-4 shrink-0 opacity-60" />
+                          <ChevronRight class="h-4 w-4 shrink-0 opacity-60 rtl:-scale-x-100" />
                         </Show>
                       </li>
                     )

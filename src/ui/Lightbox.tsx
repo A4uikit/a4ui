@@ -9,7 +9,9 @@ import type { JSX } from 'solid-js'
 import { createEffect, createMemo, createSignal, For, onCleanup, Show } from 'solid-js'
 
 import { cn } from '../lib/cn'
+import { readingKey } from '../lib/direction'
 import { motionReduced } from '../lib/motion'
+import { useDirection } from './DirectionProvider'
 import { Portal } from './Portal'
 
 /** One image in a {@link Lightbox}. */
@@ -54,6 +56,7 @@ export interface LightboxProps {
  * ```
  */
 export function Lightbox(props: LightboxProps): JSX.Element {
+  const dir = useDirection()
   const [internalOpen, setInternalOpen] = createSignal(false)
   const open = createMemo(() => props.open ?? internalOpen())
 
@@ -109,10 +112,10 @@ export function Lightbox(props: LightboxProps): JSX.Element {
       if (e.key === 'Escape') {
         e.preventDefault()
         close()
-      } else if (e.key === 'ArrowLeft') {
+      } else if (readingKey(e.key, dir()) === 'ArrowLeft') {
         e.preventDefault()
         prev()
-      } else if (e.key === 'ArrowRight') {
+      } else if (readingKey(e.key, dir()) === 'ArrowRight') {
         e.preventDefault()
         next()
       }
@@ -175,9 +178,9 @@ export function Lightbox(props: LightboxProps): JSX.Element {
                     e.stopPropagation()
                     prev()
                   }}
-                  class="absolute left-2 z-10 grid h-10 w-10 place-items-center rounded-full bg-card/80 text-foreground transition hover:bg-muted disabled:pointer-events-none disabled:opacity-40 sm:left-4"
+                  class="absolute start-2 z-10 grid h-10 w-10 place-items-center rounded-full bg-card/80 text-foreground transition hover:bg-muted disabled:pointer-events-none disabled:opacity-40 sm:start-4"
                 >
-                  <ChevronLeft class="h-6 w-6" />
+                  <ChevronLeft class="h-6 w-6 rtl:-scale-x-100" />
                 </button>
               </Show>
 
@@ -204,9 +207,9 @@ export function Lightbox(props: LightboxProps): JSX.Element {
                     e.stopPropagation()
                     next()
                   }}
-                  class="absolute right-2 z-10 grid h-10 w-10 place-items-center rounded-full bg-card/80 text-foreground transition hover:bg-muted disabled:pointer-events-none disabled:opacity-40 sm:right-4"
+                  class="absolute end-2 z-10 grid h-10 w-10 place-items-center rounded-full bg-card/80 text-foreground transition hover:bg-muted disabled:pointer-events-none disabled:opacity-40 sm:end-4"
                 >
-                  <ChevronRight class="h-6 w-6" />
+                  <ChevronRight class="h-6 w-6 rtl:-scale-x-100" />
                 </button>
               </Show>
             </div>

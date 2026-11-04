@@ -80,7 +80,7 @@ export function Comment(props: CommentProps): JSX.Element {
         </div>
       </div>
       <Show when={props.comment.replies?.length}>
-        <div class="mt-4 space-y-4 border-l border-border pl-4">
+        <div class="mt-4 space-y-4 border-s border-border ps-4">
           <For each={props.comment.replies}>
             {(reply) => <Comment comment={reply} actions={props.actions} />}
           </For>

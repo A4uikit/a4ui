@@ -7,7 +7,7 @@
 import { CalendarDays } from 'lucide-solid'
 import type { JSX } from 'solid-js'
 import { Show, createEffect, createMemo, createSignal, onCleanup } from 'solid-js'
-import { Portal } from 'solid-js/web'
+import { Portal } from './Portal'
 
 import { createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
@@ -155,7 +155,7 @@ export function DateField(props: DateFieldProps): JSX.Element {
         type="button"
         disabled={props.disabled}
         onClick={() => (open() ? close() : openPopover())}
-        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-left text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
+        class="flex w-full items-center justify-between gap-2 rounded-md border border-input bg-background px-3 py-2 text-start text-sm text-foreground outline-none transition-colors a4-field disabled:cursor-not-allowed disabled:opacity-50"
       >
         <span class={displayLabel(props.value, props.months ?? MONTHS) ? '' : 'text-muted-foreground'}>
           {displayLabel(props.value, props.months ?? MONTHS) ?? props.label ?? 'Select date'}

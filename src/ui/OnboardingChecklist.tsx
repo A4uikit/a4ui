@@ -118,7 +118,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps): JSX.Elemen
                   </button>
                   <button
                     type="button"
-                    class="min-w-0 flex-1 text-left"
+                    class="min-w-0 flex-1 text-start"
                     aria-expanded={hasDetail() ? isExpanded() : undefined}
                     disabled={!hasDetail()}
                     onClick={() => hasDetail() && toggleExpanded(step.id)}
@@ -141,7 +141,7 @@ export function OnboardingChecklist(props: OnboardingChecklistProps): JSX.Elemen
                     )}
                   >
                     <div class="overflow-hidden">
-                      <div class="mt-2 pl-8 text-sm text-muted-foreground">
+                      <div class="mt-2 ps-8 text-sm text-muted-foreground">
                         <Show when={step.description}>{step.description}</Show>
                         <Show when={step.action}>
                           {(action) => (

@@ -72,7 +72,7 @@ export function Item(props: ItemProps): JSX.Element {
       data-variant={local.variant ?? 'default'}
       data-size={local.size ?? 'default'}
       class={cn(
-        'group/item flex w-full flex-wrap items-center rounded-lg text-left text-foreground outline-none transition-colors',
+        'group/item flex w-full flex-wrap items-center rounded-lg text-start text-foreground outline-none transition-colors',
         VARIANT[local.variant ?? 'default'],
         SIZE[local.size ?? 'default'],
         interactive() && 'cursor-pointer hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring',
