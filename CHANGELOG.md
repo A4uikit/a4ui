@@ -6,6 +6,10 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `Drawer` `aside` prop: optional side panel next to the content (widens the panel from `md`, stacks below on phones; inside the focus trap).
+
 ## [0.39.0] — 2026-11-03
 
 ### Added

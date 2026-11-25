@@ -2977,8 +2977,9 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Drawer',
     group: 'Overlays',
     blurb:
-      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle).',
+      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle). `aside` adds a side panel next to the content (a drawing beside its form): the panel widens from `md` up and the aside stacks below the content on phones.',
     controls: {
+      aside: { type: 'boolean', label: 'aside', default: false },
       side: {
         type: 'select',
         label: 'side',
@@ -3001,6 +3002,13 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
             side={c.side as UI.DrawerSide}
             title={c.title as string}
             subtitle={c.subtitle as string}
+            aside={
+              c.aside ? (
+                <div class="grid h-48 place-items-center rounded-lg border border-dashed border-border text-sm text-muted-foreground md:h-full">
+                  Aside: a part drawing, a preview…
+                </div>
+              ) : undefined
+            }
           >
             <div class="p-6 text-sm text-muted-foreground">Side panel content: a form, details, etc.</div>
           </UI.Drawer>
@@ -3009,7 +3017,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open panel</Button>
-<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}">
+<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}"${c.aside ? '\n  aside={<PartDrawing />}' : ''}>
   <div class="p-6">…</div>
 </Drawer>`,
   },
