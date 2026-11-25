@@ -45,7 +45,7 @@ const STATS = [
 
 // Google Lighthouse scores, measured live on the deployed site (desktop).
 const SCORES = [
-  { n: '97', label: 'Performance' },
+  { n: '99', label: 'Performance' },
   { n: '100', label: 'Accessibility' },
   { n: '100', label: 'Best Practices' },
   { n: '100', label: 'SEO' },

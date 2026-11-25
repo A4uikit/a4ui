@@ -13,7 +13,7 @@ const MODES = ['dark', 'light'] as const
 
 // Pages that between them render most token combinations (buttons of every
 // variant, badge tones, form inputs + muted labels, cards, headings, tables).
-const GENERAL_PAGES = ['', 'button', 'input', 'alert', 'table', 'select']
+const GENERAL_PAGES = ['', 'button', 'input', 'alert', 'table', 'select', 'donut-chart', 'gauge-chart']
 const CONTRAST_PAGES = ['', 'button', 'badge']
 
 function summarize(violations: { id: string; nodes: { target: unknown[] }[] }[]): string {
