@@ -11,6 +11,7 @@ changes, `patch` for fixes).
 - `ProductGrid` `stagger` prop: cells cascade in on mount (CSS, reduced-motion aware).
 - `ToggleGroup`: the pressed segment is now a sliding thumb (honors calm mode / reduced motion).
 - `Drawer` `aside` prop: optional side panel next to the content (widens the panel from `md`, stacks below on phones; inside the focus trap).
+- `AreaChart`: `showGrid`, `valueFormat`, `maxXLabels`, `xLabelFormat`, `ariaLabel` and `empty` (a localizable empty state; empty `data` no longer renders a broken chart). `ChartXLabels` gains `max` / `format`.
 
 ## [0.39.0] — 2026-11-03
 
