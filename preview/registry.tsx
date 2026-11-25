@@ -2348,14 +2348,20 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'AreaChart',
     group: 'Charts',
     blurb:
-      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation.',
+      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation. Optional `showGrid`, `valueFormat` (tooltip + accessible summary), `maxXLabels` / `xLabelFormat`, `ariaLabel` and an `empty` state.',
     controls: {
       stacked: { type: 'boolean', label: 'stacked', default: true },
+      grid: { type: 'boolean', label: 'showGrid', default: false },
+      money: { type: 'boolean', label: 'valueFormat ($)', default: false },
+      thin: { type: 'boolean', label: 'maxXLabels 3', default: false },
     },
     demo: (c) => (
       <div class="w-full max-w-lg" data-testid="area-demo">
         <Charts.AreaChart
           mode={c.stacked ? 'stacked' : 'overlap'}
+          showGrid={c.grid as boolean}
+          valueFormat={c.money ? (v) => `$${v.toLocaleString('en-US')}.00` : undefined}
+          maxXLabels={c.thin ? 3 : undefined}
           series={[
             { key: 'orbit', label: 'Orbit' },
             { key: 'nebula', label: 'Nebula', color: 'accent' },
@@ -2373,7 +2379,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </div>
     ),
     code: (c) => `<AreaChart
-  mode="${c.stacked ? 'stacked' : 'overlap'}"
+  mode="${c.stacked ? 'stacked' : 'overlap'}"${c.grid ? '\n  showGrid' : ''}${c.money ? '\n  valueFormat={(v) => `$${v.toFixed(2)}`}' : ''}${c.thin ? '\n  maxXLabels={3}' : ''}
   series={[{ key: 'orbit', label: 'Orbit' }, { key: 'nebula', label: 'Nebula', color: 'accent' }]}
   data={[{ label: 'Jan', values: { orbit: 12, nebula: 8 } }, …]}
 />`,

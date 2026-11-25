@@ -6,6 +6,10 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `AreaChart`: `showGrid`, `valueFormat`, `maxXLabels`, `xLabelFormat`, `ariaLabel` and `empty` (a localizable empty state; empty `data` no longer renders a broken chart). `ChartXLabels` gains `max` / `format`.
+
 ## [0.39.0] — 2026-11-03
 
 ### Added

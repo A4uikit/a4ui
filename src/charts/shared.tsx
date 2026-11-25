@@ -282,20 +282,29 @@ export function arcPath(
  * width). Each label sits on its point; the first and last are anchored to the
  * edges so they are not clipped.
  */
-export function ChartXLabels(props: { labels: string[] }): JSX.Element {
-  const frac = (i: number): number => (props.labels.length <= 1 ? 0.5 : i / (props.labels.length - 1))
-  const shift = (i: number): string =>
-    props.labels.length <= 1 ? '-50%' : i === 0 ? '0%' : i === props.labels.length - 1 ? '-100%' : '-50%'
+export function ChartXLabels(props: {
+  labels: string[]
+  /** Show at most about this many labels (evenly thinned, last one always kept). Default: all. */
+  max?: number
+  /** Transform each label for display only (e.g. `(l) => l.slice(2)`). */
+  format?: (label: string) => string
+}): JSX.Element {
+  const n = (): number => props.labels.length
+  const frac = (i: number): number => (n() <= 1 ? 0.5 : i / (n() - 1))
+  const shift = (i: number): string => (n() <= 1 ? '-50%' : i === 0 ? '0%' : i === n() - 1 ? '-100%' : '-50%')
+  const every = (): number => (props.max && props.max > 0 ? Math.max(1, Math.ceil(n() / props.max)) : 1)
+  const shown = (): { label: string; i: number }[] =>
+    props.labels.map((label, i) => ({ label, i })).filter(({ i }) => i % every() === 0 || i === n() - 1)
   return (
     <div class="relative mt-1 h-4 w-full text-xs text-muted-foreground" aria-hidden="true">
-      <For each={props.labels}>
-        {(label, i) => (
+      <For each={shown()}>
+        {(l) => (
           <span
             data-x-label
             class="absolute top-0 whitespace-nowrap"
-            style={{ left: `${frac(i()) * 100}%`, transform: `translateX(${shift(i())})` }}
+            style={{ left: `${frac(l.i) * 100}%`, transform: `translateX(${shift(l.i)})` }}
           >
-            {label}
+            {props.format ? props.format(l.label) : l.label}
           </span>
         )}
       </For>
