@@ -1350,7 +1350,8 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'toggle-group',
     title: 'ToggleGroup',
     group: 'Actions',
-    blurb: 'Row of segmented buttons; the value can become null when deselected.',
+    blurb:
+      'Row of segmented buttons with a sliding thumb; the value can become null when deselected.',
     demo: () => {
       const [align, setAlign] = createSignal<string | null>('left')
       return (
@@ -2194,9 +2195,10 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'product-grid',
     title: 'ProductGrid',
     group: 'Commerce',
-    blurb: 'Responsive grid wrapper for ProductCards (2 / 3 / 4 columns).',
+    blurb:
+      'Responsive grid wrapper for ProductCards (2 / 3 / 4 columns). `stagger` cascades the cells in on mount.',
     demo: () => (
-      <Commerce.ProductGrid class="max-w-2xl">
+      <Commerce.ProductGrid stagger class="max-w-2xl">
         <Commerce.ProductCard
           title="Nebula Hoodie"
           price={64}
@@ -2218,7 +2220,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         />
       </Commerce.ProductGrid>
     ),
-    code: `<ProductGrid>
+    code: `<ProductGrid stagger>
   <ProductCard … />
   <ProductCard … />
 </ProductGrid>`,

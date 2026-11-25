@@ -6,6 +6,11 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `ProductGrid` `stagger` prop: cells cascade in on mount (CSS, reduced-motion aware).
+- `ToggleGroup`: the pressed segment is now a sliding thumb (honors calm mode / reduced motion).
+
 ## [0.39.0] — 2026-11-03
 
 ### Added
