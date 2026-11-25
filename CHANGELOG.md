@@ -6,6 +6,11 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `DateField` / `DateRangePicker` `labels` prop (type `CalendarLabels`): localizable accessible names for the calendar's previous/next month and year buttons.
+- `Toaster` `closeLabel` prop: localizable accessible name of each toast's close button.
+
 ## [0.39.0] — 2026-11-03
 
 ### Added
