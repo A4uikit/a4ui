@@ -3,7 +3,7 @@
 // anywhere (pages, mutations' onError/onSuccess).
 import { Toast as KToast, toaster } from '@kobalte/core/toast'
 import type { JSX } from 'solid-js'
-import { Show } from 'solid-js'
+import { Show, createEffect, createSignal } from 'solid-js'
 
 import { cn } from '../lib/cn'
 import { useDirection } from './DirectionProvider'
@@ -16,6 +16,9 @@ const TONE_CLASSES: Record<ToastTone, string> = {
   error: 'border-destructive/30 bg-destructive/10',
   info: 'border-sky-500/30 bg-sky-500/10',
 }
+
+// Accessible name of every toast's close button; set once by <Toaster closeLabel>.
+const [closeLabel, setCloseLabel] = createSignal('Close')
 
 function show(tone: ToastTone, title: string, description?: string): void {
   toaster.show((props) => (
@@ -35,7 +38,7 @@ function show(tone: ToastTone, title: string, description?: string): void {
           <KToast.Description class="text-muted-foreground">{description}</KToast.Description>
         </Show>
       </div>
-      <KToast.CloseButton class="text-muted-foreground hover:text-foreground" aria-label="Close">
+      <KToast.CloseButton class="text-muted-foreground hover:text-foreground" aria-label={closeLabel()}>
         ✕
       </KToast.CloseButton>
     </KToast>
@@ -64,8 +67,12 @@ export const toast = {
  * `DirectionProvider` for RTL: the viewport sits in the end corner (the left
  * one under RTL) and swipe-to-dismiss follows the direction.
  */
-export function Toaster(): JSX.Element {
+export function Toaster(props: {
+  /** Accessible name of each toast's close button (localize it here). @default 'Close' */
+  closeLabel?: string
+}): JSX.Element {
   const dir = useDirection()
+  createEffect(() => setCloseLabel(props.closeLabel ?? 'Close'))
   return (
     <KToast.Region duration={5000} swipeDirection={dir() === 'rtl' ? 'left' : 'right'}>
       <KToast.List class="fixed bottom-4 end-4 z-50 flex w-80 flex-col gap-2 outline-none" />

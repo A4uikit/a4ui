@@ -28,6 +28,27 @@ const WEEKDAYS_SUN = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
 
 const YEARS_PER_PAGE = 12
 
+/** Accessible names of the calendar's navigation buttons (override to localize). */
+export interface CalendarLabels {
+  previousMonth: string
+  nextMonth: string
+  previousYear: string
+  nextYear: string
+  /** Back one year (month view) or one page of years (year view). */
+  previous: string
+  /** Forward one year (month view) or one page of years (year view). */
+  next: string
+}
+
+export const DEFAULT_CALENDAR_LABELS: CalendarLabels = {
+  previousMonth: 'Previous month',
+  nextMonth: 'Next month',
+  previousYear: 'Previous year',
+  nextYear: 'Next year',
+  previous: 'Previous',
+  next: 'Next',
+}
+
 export interface CalendarCoreProps {
   /** Currently selected day (for highlight); undefined = none. */
   selected?: Date
@@ -43,6 +64,8 @@ export interface CalendarCoreProps {
   months?: string[]
   /** Weekday headers in DISPLAY order, matching `weekStart` (7). */
   weekdays?: string[]
+  /** Accessible names of the navigation buttons; missing keys fall back to English. */
+  labels?: Partial<CalendarLabels>
   /** Month first shown (its year/month seed the view). @default today */
   initialView?: Date
   class?: string
@@ -61,6 +84,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
   const months = () => props.months ?? MONTHS_FULL
   const weekdays = () => props.weekdays ?? WEEKDAYS_SUN
   const weekStart = () => props.weekStart ?? 0
+  const label = (key: keyof CalendarLabels): string => props.labels?.[key] ?? DEFAULT_CALENDAR_LABELS[key]
 
   // eslint-disable-next-line solid/reactivity -- seed the view once; the user navigates from here
   const seed = props.initialView ?? props.selected ?? new Date()
@@ -124,7 +148,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
             <button
               type="button"
               class={navBtn}
-              aria-label="Previous"
+              aria-label={label('previous')}
               onClick={() => (mode() === 'months' ? stepYear(-1) : setYearBase(yearBase() - YEARS_PER_PAGE))}
             >
               <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
@@ -137,7 +161,7 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
             <button
               type="button"
               class={navBtn}
-              aria-label="Next"
+              aria-label={label('next')}
               onClick={() => (mode() === 'months' ? stepYear(1) : setYearBase(yearBase() + YEARS_PER_PAGE))}
             >
               <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
@@ -147,10 +171,20 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
       >
         <div class="mb-2 flex items-center justify-between gap-1">
           <div class="flex items-center">
-            <button type="button" class={navBtn} aria-label="Previous year" onClick={() => stepYear(-1)}>
+            <button
+              type="button"
+              class={navBtn}
+              aria-label={label('previousYear')}
+              onClick={() => stepYear(-1)}
+            >
               <ChevronsLeft class="h-4 w-4 rtl:-scale-x-100" />
             </button>
-            <button type="button" class={navBtn} aria-label="Previous month" onClick={() => stepMonth(-1)}>
+            <button
+              type="button"
+              class={navBtn}
+              aria-label={label('previousMonth')}
+              onClick={() => stepMonth(-1)}
+            >
               <ChevronLeft class="h-4 w-4 rtl:-scale-x-100" />
             </button>
           </div>
@@ -163,10 +197,10 @@ export function CalendarCore(props: CalendarCoreProps): JSX.Element {
             </button>
           </div>
           <div class="flex items-center">
-            <button type="button" class={navBtn} aria-label="Next month" onClick={() => stepMonth(1)}>
+            <button type="button" class={navBtn} aria-label={label('nextMonth')} onClick={() => stepMonth(1)}>
               <ChevronRight class="h-4 w-4 rtl:-scale-x-100" />
             </button>
-            <button type="button" class={navBtn} aria-label="Next year" onClick={() => stepYear(1)}>
+            <button type="button" class={navBtn} aria-label={label('nextYear')} onClick={() => stepYear(1)}>
               <ChevronsRight class="h-4 w-4 rtl:-scale-x-100" />
             </button>
           </div>
