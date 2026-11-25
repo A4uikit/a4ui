@@ -1350,8 +1350,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'toggle-group',
     title: 'ToggleGroup',
     group: 'Actions',
-    blurb:
-      'Row of segmented buttons with a sliding thumb; the value can become null when deselected.',
+    blurb: 'Row of segmented buttons with a sliding thumb; the value can become null when deselected.',
     demo: () => {
       const [align, setAlign] = createSignal<string | null>('left')
       return (
