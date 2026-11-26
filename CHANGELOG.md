@@ -6,6 +6,8 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+## [0.40.0] — 2026-11-25
+
 ### Added
 
 - `ProductGrid` `stagger` prop: cells cascade in on mount (CSS, reduced-motion aware).
