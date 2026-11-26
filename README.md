@@ -4,7 +4,7 @@
 
 [![npm](https://img.shields.io/npm/v/@a4ui/core.svg)](https://www.npmjs.com/package/@a4ui/core)
 [![license](https://img.shields.io/npm/l/@a4ui/core.svg)](./LICENSE)
-[![Lighthouse: Performance 97](https://img.shields.io/badge/Lighthouse-Perf_97-success)](https://a4ui.pages.dev/lighthouse.html)
+[![Lighthouse: Performance 99](https://img.shields.io/badge/Lighthouse-Perf_99-success)](https://a4ui.pages.dev/lighthouse.html)
 [![Lighthouse: Accessibility 100](https://img.shields.io/badge/A11y-100-success)](https://a4ui.pages.dev/lighthouse.html)
 [![Lighthouse: Best Practices 100](https://img.shields.io/badge/Best_Practices-100-success)](https://a4ui.pages.dev/lighthouse.html)
 [![Lighthouse: SEO 100](https://img.shields.io/badge/SEO-100-success)](https://a4ui.pages.dev/lighthouse.html)

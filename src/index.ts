@@ -8,7 +8,7 @@
 //   import '@a4ui/core/styles.css'
 //   import { Button, Card, Modal } from '@a4ui/core'
 
-export const A4UI_VERSION = '0.39.0'
+export const A4UI_VERSION = '0.39.1'
 
 // Helpers (src/lib) — generic, framework-level utilities.
 export { cn } from './lib/cn'
@@ -58,6 +58,7 @@ export { Prose, type ProseProps, type ProseSize } from './ui/Prose'
 export { Card, CardHeader, CardTitle, CardContent } from './ui/Card'
 export { Checkbox } from './ui/Checkbox'
 export { DateField } from './ui/DateField'
+export { type CalendarLabels } from './ui/internal/CalendarCore'
 export { TimeField, type TimeFieldProps } from './ui/TimeField'
 export { DateTimeField, type DateTimeFieldProps } from './ui/DateTimeField'
 export { DateRangePicker, type DateRange, type DateRangePickerProps } from './ui/DateRangePicker'

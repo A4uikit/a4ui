@@ -6,6 +6,28 @@ changes, `patch` for fixes).
 
 ## [Unreleased]
 
+### Added
+
+- `ProductGrid` `stagger` prop: cells cascade in on mount (CSS, reduced-motion aware).
+- `ToggleGroup`: the pressed segment is now a sliding thumb (honors calm mode / reduced motion).
+- `Drawer` `aside` prop: optional side panel next to the content (widens the panel from `md`, stacks below on phones; inside the focus trap).
+- `AreaChart`: `showGrid`, `valueFormat`, `maxXLabels`, `xLabelFormat`, `ariaLabel` and `empty` (a localizable empty state; empty `data` no longer renders a broken chart). `ChartXLabels` gains `max` / `format`.
+- `DateField` / `DateRangePicker` `labels` prop (type `CalendarLabels`): localizable accessible names for the calendar's previous/next month and year buttons.
+- `Toaster` `closeLabel` prop: localizable accessible name of each toast's close button.
+
+## [0.39.1] — 2026-11-04
+
+### Fixed
+
+- `DonutChart` has an accessible name: its `role="img"` now reads each segment with
+  its value and share, matching `PieChart`. It had no name before, which fails WCAG
+  1.1.1 (axe `svg-img-alt`) on any page that uses the chart.
+
+### Docs
+
+- Lighthouse report and scores measured again on the redesigned home page
+  (Performance 99, median of three desktop runs).
+
 ## [0.39.0] — 2026-11-03
 
 ### Added

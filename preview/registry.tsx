@@ -1350,7 +1350,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'toggle-group',
     title: 'ToggleGroup',
     group: 'Actions',
-    blurb: 'Row of segmented buttons; the value can become null when deselected.',
+    blurb: 'Row of segmented buttons with a sliding thumb; the value can become null when deselected.',
     demo: () => {
       const [align, setAlign] = createSignal<string | null>('left')
       return (
@@ -2194,9 +2194,10 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     id: 'product-grid',
     title: 'ProductGrid',
     group: 'Commerce',
-    blurb: 'Responsive grid wrapper for ProductCards (2 / 3 / 4 columns).',
+    blurb:
+      'Responsive grid wrapper for ProductCards (2 / 3 / 4 columns). `stagger` cascades the cells in on mount.',
     demo: () => (
-      <Commerce.ProductGrid class="max-w-2xl">
+      <Commerce.ProductGrid stagger class="max-w-2xl">
         <Commerce.ProductCard
           title="Nebula Hoodie"
           price={64}
@@ -2218,7 +2219,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
         />
       </Commerce.ProductGrid>
     ),
-    code: `<ProductGrid>
+    code: `<ProductGrid stagger>
   <ProductCard … />
   <ProductCard … />
 </ProductGrid>`,
@@ -2348,14 +2349,20 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'AreaChart',
     group: 'Charts',
     blurb:
-      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation.',
+      'Multi-series area chart: overlapping or stacked, gradient fills, tooltip and arrow-key navigation. Optional `showGrid`, `valueFormat` (tooltip + accessible summary), `maxXLabels` / `xLabelFormat`, `ariaLabel` and an `empty` state.',
     controls: {
       stacked: { type: 'boolean', label: 'stacked', default: true },
+      grid: { type: 'boolean', label: 'showGrid', default: false },
+      money: { type: 'boolean', label: 'valueFormat ($)', default: false },
+      thin: { type: 'boolean', label: 'maxXLabels 3', default: false },
     },
     demo: (c) => (
       <div class="w-full max-w-lg" data-testid="area-demo">
         <Charts.AreaChart
           mode={c.stacked ? 'stacked' : 'overlap'}
+          showGrid={c.grid as boolean}
+          valueFormat={c.money ? (v) => `$${v.toLocaleString('en-US')}.00` : undefined}
+          maxXLabels={c.thin ? 3 : undefined}
           series={[
             { key: 'orbit', label: 'Orbit' },
             { key: 'nebula', label: 'Nebula', color: 'accent' },
@@ -2373,7 +2380,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
       </div>
     ),
     code: (c) => `<AreaChart
-  mode="${c.stacked ? 'stacked' : 'overlap'}"
+  mode="${c.stacked ? 'stacked' : 'overlap'}"${c.grid ? '\n  showGrid' : ''}${c.money ? '\n  valueFormat={(v) => `$${v.toFixed(2)}`}' : ''}${c.thin ? '\n  maxXLabels={3}' : ''}
   series={[{ key: 'orbit', label: 'Orbit' }, { key: 'nebula', label: 'Nebula', color: 'accent' }]}
   data={[{ label: 'Jan', values: { orbit: 12, nebula: 8 } }, …]}
 />`,
@@ -2977,8 +2984,9 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     title: 'Drawer',
     group: 'Overlays',
     blurb:
-      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle).',
+      'Sliding panel anchored to an edge (Kobalte Dialog): `side` right (default), left, top or bottom, with an optional fixed header (title/subtitle). `aside` adds a side panel next to the content (a drawing beside its form): the panel widens from `md` up and the aside stacks below the content on phones.',
     controls: {
+      aside: { type: 'boolean', label: 'aside', default: false },
       side: {
         type: 'select',
         label: 'side',
@@ -3001,6 +3009,13 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
             side={c.side as UI.DrawerSide}
             title={c.title as string}
             subtitle={c.subtitle as string}
+            aside={
+              c.aside ? (
+                <div class="grid h-48 place-items-center rounded-lg border border-dashed border-border text-sm text-muted-foreground md:h-full">
+                  Aside: a part drawing, a preview…
+                </div>
+              ) : undefined
+            }
           >
             <div class="p-6 text-sm text-muted-foreground">Side panel content: a form, details, etc.</div>
           </UI.Drawer>
@@ -3009,7 +3024,7 @@ flyToCart(productEl, cartIconEl, { image: product.image, onArrive: () => addToCa
     },
     code: (c) => `const [open, setOpen] = createSignal(false)
 <Button onClick={() => setOpen(true)}>Open panel</Button>
-<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}">
+<Drawer open={open()} onOpenChange={setOpen}${c.side === 'right' ? '' : ` side="${c.side}"`} title="${c.title}" subtitle="${c.subtitle}"${c.aside ? '\n  aside={<PartDrawing />}' : ''}>
   <div class="p-6">…</div>
 </Drawer>`,
   },

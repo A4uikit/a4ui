@@ -34,6 +34,18 @@ export interface AreaChartProps {
   showTooltip?: boolean
   /** Toggleable legend. Default true. */
   showLegend?: boolean
+  /** Format a value for the tooltip and the accessible summary (currency, units…). Default `String`. */
+  valueFormat?: (value: number) => string
+  /** Horizontal guide lines at 0, 50% and 100% of the max value. Default false. */
+  showGrid?: boolean
+  /** Show at most about this many x labels, evenly thinned. Default: every label. */
+  maxXLabels?: number
+  /** Display transform for the x labels only (the tooltip keeps the full label). */
+  xLabelFormat?: (label: string) => string
+  /** Accessible name of the chart; replaces the generated summary (e.g. for another language). */
+  ariaLabel?: string
+  /** Content shown instead of the chart when `data` is empty. Default "No data". */
+  empty?: JSX.Element
   class?: string
 }
 
@@ -96,11 +108,14 @@ export function AreaChart(props: AreaChartProps): JSX.Element {
     })
   })
 
+  const fmt = (v: number): string => (props.valueFormat ? props.valueFormat(v) : String(v))
   const summary = () =>
+    props.ariaLabel ??
     `${stacked() ? 'Stacked area' : 'Area'} chart. ` +
-    props.data
-      .map((d) => `${d.label}: ${props.series.map((s) => `${s.label} ${val(d, s.key)}`).join(', ')}`)
-      .join('; ')
+      props.data
+        .map((d) => `${d.label}: ${props.series.map((s) => `${s.label} ${fmt(val(d, s.key))}`).join(', ')}`)
+        .join('; ')
+  const gridYs = () => [0, 0.5, 1].map((t) => height() - t * height())
 
   let svgRef: SVGSVGElement | undefined
   const onPointerMove = (e: PointerEvent) => {
@@ -121,86 +136,127 @@ export function AreaChart(props: AreaChartProps): JSX.Element {
   }
 
   return (
-    <div class={cn('w-full', props.class)}>
-      <Show when={props.showLegend ?? true}>
-        <ChartLegend
-          class="mb-2"
-          hidden={hidden()}
-          onToggle={toggle}
-          items={props.series.map((s, i) => ({ key: s.key, label: s.label, color: seriesColor(s.color, i) }))}
-        />
-      </Show>
-      <div
-        class={cn('relative w-full', FOCUS_CLASS)}
-        tabindex="0"
-        role="img"
-        aria-label={summary()}
-        data-chart="area"
-        data-mode={props.mode ?? 'overlap'}
-        onKeyDown={nav.onKeyDown}
-        onFocus={nav.onFocus}
-        onBlur={nav.onBlur}
-      >
-        <svg
-          ref={svgRef}
-          class="block w-full overflow-visible"
-          viewBox={`0 0 ${VIEW_W} ${height()}`}
-          preserveAspectRatio="none"
-          height={height()}
-          aria-hidden="true"
-          onPointerMove={onPointerMove}
-          onPointerLeave={() => nav.setActive(null)}
+    <Show
+      when={props.data.length > 0}
+      fallback={
+        <div
+          data-chart-empty
+          class={cn('flex w-full items-center justify-center text-sm text-muted-foreground', props.class)}
+          style={{ height: `${height()}px` }}
         >
-          <defs>
-            <For each={props.series}>
-              {(s, i) => (
-                <linearGradient id={`${uid}-${s.key}`} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color={seriesColor(s.color, i())} stop-opacity="0.55" />
-                  <stop offset="100%" stop-color={seriesColor(s.color, i())} stop-opacity="0.05" />
-                </linearGradient>
+          {props.empty ?? 'No data'}
+        </div>
+      }
+    >
+      <div class={cn('w-full', props.class)}>
+        <Show when={props.showLegend ?? true}>
+          <ChartLegend
+            class="mb-2"
+            hidden={hidden()}
+            onToggle={toggle}
+            items={props.series.map((s, i) => ({
+              key: s.key,
+              label: s.label,
+              color: seriesColor(s.color, i),
+            }))}
+          />
+        </Show>
+        <div
+          class={cn('relative w-full', FOCUS_CLASS)}
+          tabindex="0"
+          role="img"
+          aria-label={summary()}
+          data-chart="area"
+          data-mode={props.mode ?? 'overlap'}
+          onKeyDown={nav.onKeyDown}
+          onFocus={nav.onFocus}
+          onBlur={nav.onBlur}
+        >
+          <svg
+            ref={svgRef}
+            class="block w-full overflow-visible"
+            viewBox={`0 0 ${VIEW_W} ${height()}`}
+            preserveAspectRatio="none"
+            height={height()}
+            aria-hidden="true"
+            onPointerMove={onPointerMove}
+            onPointerLeave={() => nav.setActive(null)}
+          >
+            <defs>
+              <For each={props.series}>
+                {(s, i) => (
+                  <linearGradient id={`${uid}-${s.key}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color={seriesColor(s.color, i())} stop-opacity="0.55" />
+                    <stop offset="100%" stop-color={seriesColor(s.color, i())} stop-opacity="0.05" />
+                  </linearGradient>
+                )}
+              </For>
+            </defs>
+            <Show when={props.showGrid}>
+              <For each={gridYs()}>
+                {(y) => (
+                  <line
+                    data-grid
+                    x1={0}
+                    x2={VIEW_W}
+                    y1={y}
+                    y2={y}
+                    stroke="hsl(var(--border))"
+                    stroke-width={1}
+                    vector-effect="non-scaling-stroke"
+                  />
+                )}
+              </For>
+            </Show>
+            <For each={layers()}>
+              {(l) => (
+                <g data-series={l.key}>
+                  <path d={l.area} fill={`url(#${uid}-${l.key})`} stroke="none" data-area />
+                  <path
+                    d={l.line}
+                    fill="none"
+                    stroke={l.color}
+                    stroke-width={2}
+                    stroke-linejoin="round"
+                    vector-effect="non-scaling-stroke"
+                  />
+                </g>
               )}
             </For>
-          </defs>
-          <For each={layers()}>
-            {(l) => (
-              <g data-series={l.key}>
-                <path d={l.area} fill={`url(#${uid}-${l.key})`} stroke="none" data-area />
-                <path
-                  d={l.line}
-                  fill="none"
-                  stroke={l.color}
-                  stroke-width={2}
-                  stroke-linejoin="round"
-                  vector-effect="non-scaling-stroke"
-                />
-              </g>
+            <Show when={nav.active() !== null}>
+              <line
+                data-cursor
+                x1={xFor(nav.active() ?? 0)}
+                x2={xFor(nav.active() ?? 0)}
+                y1={0}
+                y2={height()}
+                stroke="hsl(var(--border))"
+                stroke-width={1}
+                vector-effect="non-scaling-stroke"
+              />
+            </Show>
+          </svg>
+          <Show when={(props.showTooltip ?? true) && activeDatum()}>
+            {(d) => (
+              <ChartTooltip
+                title={d().label}
+                left={`${frac() * 100}%`}
+                anchor={frac()}
+                rows={visible().map((s) => ({
+                  label: s.label,
+                  value: fmt(val(d(), s.key)),
+                  color: colorOf(s.key),
+                }))}
+              />
             )}
-          </For>
-          <Show when={nav.active() !== null}>
-            <line
-              data-cursor
-              x1={xFor(nav.active() ?? 0)}
-              x2={xFor(nav.active() ?? 0)}
-              y1={0}
-              y2={height()}
-              stroke="hsl(var(--border))"
-              stroke-width={1}
-              vector-effect="non-scaling-stroke"
-            />
           </Show>
-        </svg>
-        <Show when={(props.showTooltip ?? true) && activeDatum()}>
-          {(d) => (
-            <ChartTooltip
-              title={d().label}
-              left={`${frac() * 100}%`}
-              anchor={frac()}
-              rows={visible().map((s) => ({ label: s.label, value: val(d(), s.key), color: colorOf(s.key) }))}
-            />
-          )}
-        </Show>
+        </div>
+        <ChartXLabels
+          labels={props.data.map((d) => d.label)}
+          max={props.maxXLabels}
+          format={props.xLabelFormat}
+        />
       </div>
-      <ChartXLabels labels={props.data.map((d) => d.label)} />
-    </div>
+    </Show>
   )
 }

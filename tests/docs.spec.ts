@@ -337,6 +337,35 @@ test.describe('interactions', () => {
     await expect(page.getByText(/Side panel content/)).toBeVisible()
   })
 
+  test('drawer aside widens the panel (md+) or stacks below the content (phones), focus stays trapped', async ({
+    page,
+  }) => {
+    await page.goto('/#/drawer')
+    const viewport = page.viewportSize()
+    if (!viewport) throw new Error('viewport size is not set for this project')
+    await page.getByRole('switch', { name: 'aside' }).click({ force: true })
+    await page.getByRole('button', { name: 'Open panel' }).click()
+    const panel = page.getByRole('dialog', { name: 'Customer detail' })
+    const main = panel.locator('[data-drawer-main]')
+    const aside = panel.locator('[data-drawer-aside]')
+    await expect(aside).toBeVisible()
+    await expect(aside).toContainText('Aside:')
+    await expect.poll(async () => (await panel.boundingBox())?.x).toBeGreaterThanOrEqual(0)
+    const m = await main.boundingBox()
+    const a = await aside.boundingBox()
+    if (!m || !a) throw new Error('missing boxes')
+    if (viewport.width >= 768) {
+      expect((await panel.boundingBox())?.width).toBeGreaterThan(520)
+      expect(a.x + a.width).toBeLessThanOrEqual(m.x + 1) // aside on the screen side, left of the content
+    } else {
+      expect(a.y).toBeGreaterThanOrEqual(m.y + m.height - 1) // stacked below
+    }
+    for (let i = 0; i < 4; i++) await page.keyboard.press('Tab')
+    await expect(panel.locator(':focus')).toHaveCount(1)
+    await page.keyboard.press('Escape')
+    await expect(panel).toBeHidden()
+  })
+
   test('drawer side="left" anchors the panel to the left edge, "bottom" to the bottom', async ({ page }) => {
     await page.goto('/#/drawer')
     const viewport = page.viewportSize()

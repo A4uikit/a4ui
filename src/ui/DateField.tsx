@@ -11,7 +11,7 @@ import { Portal } from './Portal'
 
 import { anchoredLeft, createAnchorReflow } from '../lib/anchored'
 import { cn } from '../lib/cn'
-import { CalendarCore } from './internal/CalendarCore'
+import { CalendarCore, type CalendarLabels } from './internal/CalendarCore'
 
 const WEEKDAYS = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
 const MONTHS = [
@@ -64,6 +64,8 @@ interface DateFieldProps {
   months?: string[]
   /** Weekday headers, Monday-first (7 entries). */
   weekdays?: string[]
+  /** Accessible names of the calendar navigation buttons (localize them here). */
+  labels?: Partial<CalendarLabels>
 }
 
 /**
@@ -178,6 +180,7 @@ export function DateField(props: DateFieldProps): JSX.Element {
               weekStart={1}
               months={props.months}
               weekdays={props.weekdays ?? WEEKDAYS}
+              labels={props.labels}
             />
           </div>
         </Portal>

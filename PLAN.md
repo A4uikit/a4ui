@@ -5,6 +5,10 @@ Working plan for the next round of `@a4ui/core`. Tracked on GitHub —
 below is its own issue with a deliverables checklist. This file mirrors that so the
 plan survives in the working tree. The previous round (#26–#35, index #36) is done.
 
+**Status at 0.39.1:** waves 0 to 3 are shipped, except TypeScript 7, blocked until
+typescript-eslint supports it. Wave 4 (templates#24) is in review as
+[templates#26](https://github.com/A4uikit/templates/pull/26).
+
 ## Wave 0 — security (serial)
 
 - [#111](https://github.com/A4uikit/a4ui/pull/111) — dependency bump within current

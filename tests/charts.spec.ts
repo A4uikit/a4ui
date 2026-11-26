@@ -144,6 +144,13 @@ test.describe('multi-series charts', () => {
     expect(label).toContain('Mon: Web 12, App 5')
   })
 
+  test('DonutChart: the role=img names every segment with its share', async ({ page }) => {
+    await page.goto('/#/donut-chart')
+    await expect(page.getByTestId('demo').getByRole('img')).toHaveAccessibleName(
+      'Donut chart. Direct 42 (42%), Social 28 (28%), Referral 18 (18%), Other 12 (12%)',
+    )
+  })
+
   test('AreaChart: stacked layers sit above each other, gradient fills, keyboard tooltip', async ({
     page,
   }) => {
@@ -179,6 +186,28 @@ test.describe('multi-series charts', () => {
     await demo.getByRole('button', { name: 'Nebula' }).click()
     await expect(demo.locator('g[data-series="nebula"]')).toHaveCount(0)
     await expect(demo.locator('g[data-series]')).toHaveCount(2)
+  })
+
+  test('AreaChart: showGrid, valueFormat, maxXLabels and accessible summary options', async ({ page }) => {
+    await page.goto('/#/area-chart')
+    const demo = page.getByTestId('area-demo')
+    const chart = demo.locator('[data-chart="area"]')
+    await chart.waitFor()
+    await expect(demo.locator('line[data-grid]')).toHaveCount(0)
+    await expect(demo.locator('[data-x-label]')).toHaveCount(6)
+
+    await page.getByRole('switch', { name: 'showGrid' }).click({ force: true })
+    await expect(demo.locator('line[data-grid]')).toHaveCount(3)
+
+    await page.getByRole('switch', { name: 'maxXLabels 3' }).click({ force: true })
+    // 6 points, max 3 -> every 2nd plus the last: Jan, Mar, May, Jun
+    await expect(demo.locator('[data-x-label]')).toHaveText(['Jan', 'Mar', 'May', 'Jun'])
+
+    await page.getByRole('switch', { name: 'valueFormat ($)' }).click({ force: true })
+    expect(await chart.getAttribute('aria-label')).toContain('Orbit $12.00')
+    await chart.focus()
+    await chart.press('Home')
+    await expect(demo.locator('[data-chart-tooltip]')).toContainText('Orbit:$12.00')
   })
 
   test('PieChart: slice angles are proportional to values and match the path geometry', async ({ page }) => {

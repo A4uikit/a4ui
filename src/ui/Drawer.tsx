@@ -26,6 +26,25 @@ interface DrawerProps extends ParentProps {
   closeLabel?: string
   /** Edge the panel is anchored to and slides in from. @default 'right' */
   side?: DrawerSide
+  /**
+   * Optional side panel shown next to the main content (e.g. a part drawing next to
+   * its form). From `md` up the panel widens and the aside sits beside the content, on
+   * the screen side of it (for `side="right"` it is on the left); below `md` it stacks
+   * under the content. It lives inside the dialog, so the focus trap covers it and
+   * working in it keeps the drawer open. Ignored layout-wise for `top` / `bottom`
+   * (always stacked).
+   */
+  aside?: JSX.Element
+}
+
+// Row direction (md+) that puts the aside on the open-screen side of the content.
+const ASIDE_ROW: Record<DrawerSide, string> = {
+  right: 'md:flex-row-reverse rtl:md:flex-row',
+  left: 'md:flex-row rtl:md:flex-row-reverse',
+  end: 'md:flex-row-reverse',
+  start: 'md:flex-row',
+  top: '',
+  bottom: '',
 }
 
 /**
@@ -87,6 +106,26 @@ export type { DrawerProps }
  */
 export function Drawer(props: DrawerProps): JSX.Element {
   const side = (): (typeof SIDE)[DrawerSide] => SIDE[props.side ?? 'right']
+  const sideKey = (): DrawerSide => props.side ?? 'right'
+  const horizontal = () => sideKey() !== 'top' && sideKey() !== 'bottom'
+  const header = () => (
+    <Show when={props.title}>
+      <div class="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-5 py-4 backdrop-blur">
+        <div>
+          <Dialog.Title class="text-[16px] font-bold leading-tight">{props.title}</Dialog.Title>
+          <Show when={props.subtitle}>
+            <p class="text-[12px] text-muted-foreground">{props.subtitle}</p>
+          </Show>
+        </div>
+        <Dialog.CloseButton
+          class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
+          aria-label={props.closeLabel ?? 'Close'}
+        >
+          <X class="h-5 w-5" />
+        </Dialog.CloseButton>
+      </div>
+    </Show>
+  )
   return (
     <Dialog.Root open={props.open} onOpenChange={props.onOpenChange}>
       <Dialog.Portal ref={portalDir}>
@@ -95,29 +134,44 @@ export function Drawer(props: DrawerProps): JSX.Element {
           <Dialog.Content
             data-side={props.side ?? 'right'}
             style={{ '--drawer-offscreen': side().offscreen }}
+            data-aside={props.aside ? '' : undefined}
             class={cn(
               'drawer-content flex flex-col overflow-y-auto border-border bg-glass shadow-2xl',
               side().panel,
+              props.aside &&
+                horizontal() && ['md:max-w-[min(1080px,100vw)] md:flex-row', ASIDE_ROW[sideKey()]],
               props.class,
             )}
           >
-            <Show when={props.title}>
-              <div class="sticky top-0 z-10 flex items-center justify-between border-b border-border bg-background/90 px-5 py-4 backdrop-blur">
-                <div>
-                  <Dialog.Title class="text-[16px] font-bold leading-tight">{props.title}</Dialog.Title>
-                  <Show when={props.subtitle}>
-                    <p class="text-[12px] text-muted-foreground">{props.subtitle}</p>
-                  </Show>
-                </div>
-                <Dialog.CloseButton
-                  class="grid h-9 w-9 place-items-center rounded-lg text-muted-foreground transition hover:bg-muted hover:text-foreground"
-                  aria-label={props.closeLabel ?? 'Close'}
-                >
-                  <X class="h-5 w-5" />
-                </Dialog.CloseButton>
+            <Show
+              when={props.aside}
+              fallback={
+                <>
+                  {header()}
+                  {props.children}
+                </>
+              }
+            >
+              <div
+                data-drawer-main
+                class={cn(
+                  'flex min-w-0 flex-col',
+                  horizontal() && 'md:w-[520px] md:shrink-0 md:overflow-y-auto',
+                )}
+              >
+                {header()}
+                {props.children}
+              </div>
+              <div
+                data-drawer-aside
+                class={cn(
+                  'min-w-0 border-t border-border p-3',
+                  horizontal() && 'md:flex-1 md:overflow-y-auto md:border-t-0',
+                )}
+              >
+                {props.aside}
               </div>
             </Show>
-            {props.children}
           </Dialog.Content>
         </div>
       </Dialog.Portal>
